@@ -1,0 +1,29 @@
+<div align="center">
+<h2 class="page-header">Account Login</h2>
+{{!-- <form method="post" action="/login"> --}}
+<form>
+  <div class="form-group">
+    {{!-- Username --}}
+    <input type="text" class="form-control" name="username" placeholder="Username" style="width: 20%">
+  </div>
+  <div class="form-group">
+    {{!-- Password --}}
+    <input type="password" class="form-control" name="password" placeholder="Password" style="width: 20%">
+  </div>
+  <button type="button" class="btn btn-success" onclick="login()">Login</button>
+  {{!-- <button type="submit" class="btn btn-success">Login</button> --}}
+</form>
+</div>
+
+{{!-- <script id="name-template" type="text/x-handlebars-template">
+	<div>
+	<h1>Hi, {{myFirstName}}</h1>
+	</div>
+</script>
+
+<script type="text/javascript">
+	var context = { myFirstName: "Farid" }
+	var source = $("#name-template").html()
+	var template = Handlebars.compile(source)
+	$(document.body).append(template(context))
+</script> --}}
