@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>The Other Half</title>
+	<title>My Match</title>
   <script
     src="https://code.jquery.com/jquery-3.2.1.min.js"
     integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
@@ -43,25 +43,27 @@
           <ul class="nav nav-pills pull-left">
             <li role="presentation"><a href="/">The Other Half</a></li>
           </ul>
+          {{!-- {{#if currentUser }} --}}
           <div id="loggedIn">
             <ul class="nav nav-pills pull-right">
-              <h4 align="center" id="welcomeUser"></h4>
+              {{!-- <h4 align="center" id="welcomeUser"></h4> --}}
                 <li role="presentation"><a href="/">Dashboard</a></li>
-                <li role="presentation"><a href="/logout">Logout</a></li>
-                <li role="presentation"><a href="/home">Profile</a></li>
+                <li role="presentation"><button onclick="logout()">Log Out</li>
+                <li role="presentation"><button onclick="profile()">Profile</a></li>
             </ul>
           </div>
-
+          {{!-- {{else}} --}}
           <div id="loggedOut">
             <ul class="nav nav-pills pull-right">
                 <li role="presentation"><a href="/login">Login</a></li>
                 <li role="presentation"><a href="/register">Register</a></li>
             </ul>
           </div>
+          {{!-- {{/if}} --}}
         </nav>
-        {{#if user}}
+        {{!-- {{#if user}}
         <h3 class="text-muted" class="destinations">Networking</h3>
-        {{/if}}
+        {{/if}} --}}
       </div>
 
 

@@ -12,28 +12,19 @@ var User = require('../models/user')
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('main')
-});
-
-router.get('/home', function(req, res, next) {
-	res.render('home')
+  res.render('home')
 });
 
 router.get('/register', function(req, res, next) {
   res.render('register')
 });
 
-router.get('/profile/:username', function(req, res, next) {
-	console.log('req.params')
-	console.log(req.params)
-
+router.get('/:username', function(req, res, next) {
 	User.findOne({ username: req.params.username }, function(err, user) {
 		if (err) throw err
 		else {
-			console.log("The user is")
-			console.log(user)
 			res.render('profile', {
-				user: user.first_name
+				currentUser: user
 			})
 		}
 	})
@@ -44,7 +35,7 @@ router.get('/login', function(req, res, next) {
 });
 
 router.get('/logout', function(req, res, next) {
-  res.render('logout')
+	res.render('logout')
 });
 
 router.post('/register', function(req, res) {
@@ -65,13 +56,11 @@ router.post('/register', function(req, res) {
 	var errors = req.validationErrors()
 
 	if (errors) {
-		console.log("Errors")
 		res.render('register', {
 			errors: errors
 		})
 	} else {
 		if (password === confirm_password) {
-			console.log("Password confirmed.  Proceed.")
 			var newUser = new User ({
 				first_name: first_name,
 				last_name: last_name,
@@ -80,9 +69,7 @@ router.post('/register', function(req, res) {
 				password: password
 			})
 
-			User.createUser(newUser, function(err, user) {
-				// console.log('user', user)
-			})
+			User.createUser(newUser, function(err, user) {})
 		
 			req.flash('success_message', 'You are registered and can now log in!');
 			res.redirect('/login');
@@ -93,7 +80,7 @@ router.post('/register', function(req, res) {
 	}
 })
 
-router.put('/login', function(req, res) {
+router.post('/login', function(req, res) {
 	// Password is not encrypted here
 	console.log('req.body')
 	console.log(req.body)
@@ -108,6 +95,7 @@ router.put('/login', function(req, res) {
 			if (result) {
 				var token = jwt.encode(user, JWT_SECRET)
 				return res.status(200).send({ user: user, token: token })
+				// return res.redirect('/profile/' + user.username)
 			} else {
 				return res.status(401).send({error: "Something is wrong."})
 			}

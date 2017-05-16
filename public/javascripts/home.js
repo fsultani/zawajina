@@ -1,16 +1,19 @@
 $(document).ready(function() {
-	if (window.location.href == window.location.origin + '/home') {
+	if (Cookies.get('username')) {
 		$("#loggedIn").show()
-		$("#loggedOut").hide()
+		$("#loggedOut").remove()
 
-		console.log("You're in the home page.  Your available cookies are below.")
-		console.log(Cookies.get('username'))
-		console.log(Cookies.get('first_name'))
-		console.log(Cookies.get('last_name'))
-		console.log(Cookies.get('email'))
+		$("#currentUser").html("Welcome, " + Cookies.get('first_name'))
+	} else {
+		$("#currentUser").html("Welcome to the site")
+		$("#loggedIn").remove()
+		$("#loggedOut").show()
+	}
 
-		$("#welcomeUser").html("Welcome, " + Cookies.get('first_name'))
-		$("#first_name").html(Cookies.get('first_name'))
-
+	profile = () => {
+		$.get('/' + Cookies.get('username'), function(data) {
+			console.log('data')
+			console.log(data)
+		})
 	}
 })
