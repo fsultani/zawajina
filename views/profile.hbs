@@ -6,12 +6,12 @@
 	<h5 align="center">Login above, or register for a new account.</h5>
 {{/if}} --}}
 
-<div id="userLoggedIn">
-	<h2 align="center" class="dashboard-text">Welcome</h2>
-	<h5 align="center">You are logged in</h5>
-</div>
-
+{{#if currentUser }}
+<h2 align="center" class="dashboard-text">Welcome, {{currentUser.first_name}}</h2>
+<h5 align="center">You are logged in</h5>
+{{else}}
 <div id="notLoggedIn">
 	<h2 align="center" class="dashboard-text">Welcome to The Other Half</h2>
 	<h5 align="center">Login above, or register for a new account.</h5>
 </div>
+{{/if}}	

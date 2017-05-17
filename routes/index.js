@@ -12,14 +12,20 @@ var User = require('../models/user')
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
+	console.log("Home page")
   res.render('home')
 });
 
+router.get('/dashboard', function(req, res, next) {
+  res.render('dashboard')
+});
+
 router.get('/register', function(req, res, next) {
+	console.log("Registration page.")
   res.render('register')
 });
 
-router.get('/:username', function(req, res, next) {
+router.get('/user/:username', function(req, res, next) {
 	User.findOne({ username: req.params.username }, function(err, user) {
 		if (err) throw err
 		else {
@@ -94,8 +100,8 @@ router.post('/login', function(req, res) {
 		bcrypt.compare(req.body.password, user.password, function(err, result) {
 			if (result) {
 				var token = jwt.encode(user, JWT_SECRET)
-				return res.status(200).send({ user: user, token: token })
-				// return res.redirect('/profile/' + user.username)
+				// return res.status(200).send({ user: user, token: token })
+				return res.redirect('/user/' + user.username)
 			} else {
 				return res.status(401).send({error: "Something is wrong."})
 			}

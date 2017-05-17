@@ -11,9 +11,11 @@ $(document).ready(function() {
 	}
 
 	profile = () => {
-		$.get('/' + Cookies.get('username'), function(data) {
-			console.log('data')
-			console.log(data)
+		$.ajax({
+			url: "/" + Cookies.get('username'),
+			success: function(data) {
+				console.log(data)
+			}
 		})
 	}
 })

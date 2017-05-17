@@ -47,9 +47,10 @@
           <div id="loggedIn">
             <ul class="nav nav-pills pull-right">
               {{!-- <h4 align="center" id="welcomeUser"></h4> --}}
-                <li role="presentation"><a href="/">Dashboard</a></li>
+                <li role="presentation"><a href="/dashboard">Dashboard</a></li>
                 <li role="presentation"><button onclick="logout()">Log Out</li>
-                <li role="presentation"><button onclick="profile()">Profile</a></li>
+                {{!-- <li role="presentation"><button onclick="profile()">Profile</a></li> --}}
+                <li role="presentation"><a href="/{{username}}">Profile</a></li>
             </ul>
           </div>
           {{!-- {{else}} --}}

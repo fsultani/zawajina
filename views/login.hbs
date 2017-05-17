@@ -1,15 +1,15 @@
 <div align="center">
 <h2 class="page-header">Account Login</h2>
-{{!-- <form method="post" action="/login"> --}}
+<form method="post" action="/login" onsubmit="return validateForm()">
 <form>
   <div class="form-group">
-    <input type="text" class="form-control" name="username" placeholder="Username" style="width: 20%">
+    <input type="text" class="form-control" name="username" placeholder="Username" style="width: 20%" required>
   </div>
   <div class="form-group">
-    <input type="password" class="form-control" name="password" placeholder="Password" style="width: 20%">
+    <input type="password" class="form-control" name="password" placeholder="Password" style="width: 20%" required>
   </div>
-  {{!-- <button type="submit" class="btn btn-success">Login</button> --}}
-  <button type="button" class="btn btn-success" onclick="login()">Login</button>
+  <input type="submit" class="btn btn-success" value="Login">
+  {{!-- <button type="button" class="btn btn-success" onclick="login()">Login</button> --}}
 </form>
 </div>
 
