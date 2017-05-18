@@ -1,5 +1,6 @@
 var express = require('express')
-// var passport = require('passport');
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
 var bcrypt = require('bcryptjs')
 var jwt = require('jwt-simple')
 
@@ -10,27 +11,68 @@ var router = express.Router()
 
 var User = require('../models/user')
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-	console.log("Home page")
-  res.render('home')
+function ensureAuthenticated(req, res, next){
+	if(req.isAuthenticated()){
+		return next();
+	} else {
+		res.redirect('/login');
+	}
+}
+
+/* GET root page. */
+router.get('/', ensureAuthenticated, function(req, res, next) {
+	res.render('home')
 });
 
-router.get('/dashboard', function(req, res, next) {
-  res.render('dashboard')
+/* GET home page. */
+router.get('/home', ensureAuthenticated, function(req, res, next) {
+	User.findOne({ username: req.user.username }, function(err, user) {
+		if (err) throw err
+		else {
+			User.find(function(err, all) {
+				if (err) throw err
+				else {
+					res.render('home', {
+						user: user,
+						allUsers: all
+					})
+				}
+			})
+		}
+	})
+});
+
+router.get('/dashboard', ensureAuthenticated, function(req, res, next) {
+	User.findOne({ username: req.user.username }, function(err, user) {
+		if (err) throw err
+		else {
+			res.render('dashboard', {
+				user: user
+			})
+		}
+	})
 });
 
 router.get('/register', function(req, res, next) {
-	console.log("Registration page.")
   res.render('register')
 });
 
-router.get('/user/:username', function(req, res, next) {
+router.get('/user/:username', ensureAuthenticated, function(req, res, next) {
+	console.log("User that's logged in:", req.user)
 	User.findOne({ username: req.params.username }, function(err, user) {
+		console.log("User being viewed:", user)
 		if (err) throw err
 		else {
 			res.render('profile', {
-				currentUser: user
+				user: user,
+				currentUser: req.user,
+				helpers: {
+            is: function(a, b, options) {
+              if (a == b) {
+                return options.fn(this);
+              }
+            }
+          }
 			})
 		}
 	})
@@ -41,6 +83,7 @@ router.get('/login', function(req, res, next) {
 });
 
 router.get('/logout', function(req, res, next) {
+	req.logout()
 	res.render('logout')
 });
 
@@ -86,26 +129,62 @@ router.post('/register', function(req, res) {
 	}
 })
 
-router.post('/login', function(req, res) {
-	// Password is not encrypted here
-	console.log('req.body')
-	console.log(req.body)
-	
-	User.findOne({ username: req.body.username }, function(err, user) {
-		// Password is encrypted here
-		if (err) throw err
-		console.log('user')
-		console.log(user)
+passport.use(new LocalStrategy(
+  function(username, password, done) {
+  	User.getUserByUsername(username, function(err, user) {
+  		if (err) throw err;
+  		if (!user) {
+  			return done(null, false, {message: 'Unknown user'});
+  		}
+  		User.comparePassword(password, user.password, function(err, isMatch) {
+  			if (err) throw err;
+  			if(isMatch) {
+  				return done(null, user);
+  			} else {
+  				return done(null, false, {message: 'Invalid password'});
+  			}
+  		})
+  	})
+  }
+));
 
-		bcrypt.compare(req.body.password, user.password, function(err, result) {
-			if (result) {
-				var token = jwt.encode(user, JWT_SECRET)
-				// return res.status(200).send({ user: user, token: token })
-				return res.redirect('/user/' + user.username)
-			} else {
-				return res.status(401).send({error: "Something is wrong."})
-			}
-		})
-	})
-})
+passport.serializeUser(function(user, done) {
+  done(null, user.id);
+});
+
+passport.deserializeUser(function(id, done) {
+  User.getUserById(id, function(err, user) {
+    done(err, user);
+  });
+});
+
+router.post('/login', passport.authenticate('local', {
+  	successRedirect: '/home',
+  	failureRedirect: '/login',
+  	failureFlash: true,
+}));
+
+// router.post('/login', function(req, res) {
+// 	// Password is not encrypted here
+// 	// console.log('req.body')
+// 	// console.log(req.body)
+	
+// 	User.findOne({ username: req.body.username }, function(err, user) {
+// 		// Password is encrypted here
+// 		if (err) throw err
+// 		// console.log('user')
+// 		// console.log(user)
+
+// 		bcrypt.compare(req.body.password, user.password, function(err, result) {
+// 			if (result) {
+// 				var token = jwt.encode(user, JWT_SECRET)
+// 				// return res.status(200).send({ user: user, token: token })
+// 				return res.redirect('/user/' + user.username)
+// 			} else {
+// 				return res.status(401).send({error: "Something is wrong."})
+// 			}
+// 		})
+// 	})
+// })
+
 module.exports = router

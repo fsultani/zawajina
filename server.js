@@ -3,8 +3,10 @@ var path = require('path');
 var favicon = require('serve-favicon');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var handlebars = require('express-handlebars');
+var exphbs = require('express-handlebars');
 var session = require('express-session')
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
 var expressValidator = require('express-validator')
 var flash = require('connect-flash');
 var mongo = require('mongodb')
@@ -21,7 +23,7 @@ var users = require('./routes/users');
 // view engine setup
 // Make the 'views' folder the starting point for any route that uses res.render
 app.set('views', path.join(__dirname, 'views'));
-app.engine('.hbs', handlebars({defaultLayout:'layout', extname: '.hbs'}));
+app.engine('.hbs', exphbs({defaultLayout:'layout', extname: '.hbs'}));
 app.set('view engine', '.hbs');
 
 // uncomment after placing your favicon in /public
@@ -41,6 +43,10 @@ app.use(session({
   saveUninitialized: true,
   // cookie: { secure: true }
 }))
+
+// Passport init
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Express Validator
 app.use(expressValidator({
