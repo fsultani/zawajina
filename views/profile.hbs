@@ -1,26 +1,32 @@
-{{!-- {{#if user }}
-	<h2 align="center" class="dashboard-text">Welcome, {{user.first_name }}</h2>
-	<h5 align="center">You are logged in</h5>
-{{else}}
-	<h2 align="center" class="dashboard-text">Welcome to The Other Half</h2>
-	<h5 align="center">Login above, or register for a new account.</h5>
-{{/if}} --}}
+{{#if logged_in}}
+	{{#if current_user }}
+	<center>
+	<h2 class="dashboard-text">{{current_user.first_name}}'s profile page</h2>
 
-{{#if user }}
-<center>
-<h2 class="dashboard-text">{{user.first_name}}'s profile page</h2>
+	<button onclick="edit()">Edit</button>
 
-{{#is currentUser.username user.username }}
-<button onclick="edit()">Edit</button>
-{{/is}}
-{{!-- <div id="userLoggedIn">
-<button>Edit</button>
-</div> --}}
+	<h3>
+		{{current_user.first_name}}, you are the only one who can view this page!
+	</h3>
 
-</center>
+	{{else}}
+	<center>
+	<h3>
+		This is {{other_user.first_name}}'s page.
+	</h3>
+	</center>
+	{{/if}}
+
 {{else}}
 <div id="notLoggedIn">
 	<h2 align="center" class="dashboard-text">Welcome to The Other Half</h2>
 	<h5 align="center">Login above, or register for a new account.</h5>
 </div>
-{{/if}}	
+{{/if}}
+</center>
+
+{{!-- {{#if logged_in }}
+You're logged in!
+{{else}}
+Nope.
+{{/if}} --}}
