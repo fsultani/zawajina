@@ -1,29 +1,21 @@
-{{!-- <div>
-	<center>
-		<div id="currentUser">
-			<h4 id="currentUser"></h4>
-		</div>
-	</center>
-</div> --}}
-
 <center>
-<h1>Home page</h1>
-{{#if user }}
-{{user.first_name}}, you are on the home page.
+	<h1>Home page</h1>
+	{{#if user }}
+	{{user.first_name}}, you are on the home page.
 
-<h3>All members on this site:</h3>
+	<h3>All members on this site:</h3>
 
-{{#each allUsers }}
-<a href="/user/{{this.username}}">
-	<div class="col-md-6 col-md-offset-3">
-		<div class="well">
-		{{ this.first_name }}
+	{{#each allUsers }}
+	<a href="/user/{{this.username}}">
+		<div class="col-md-6 col-md-offset-3">
+			<div class="well">
+			{{ this.first_name }}
+			</div>
 		</div>
-	</div>
-</a>
-{{/each}}
+	</a>
+	{{/each}}
 
-{{else}}
-Welcome to the site.
-{{/if}}
+	{{else}}
+	Welcome to the site.
+	{{/if}}
 </center>

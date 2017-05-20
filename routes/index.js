@@ -15,13 +15,18 @@ function ensureAuthenticated(req, res, next){
 	if(req.isAuthenticated()){
 		return next();
 	} else {
-		res.redirect('/login');
+		res.redirect('/');
 	}
 }
 
 /* GET root page. */
-router.get('/', ensureAuthenticated, function(req, res, next) {
-	res.render('home')
+router.get('/', function(req, res, next) {
+	if(req.isAuthenticated()){
+		return res.redirect('/home');
+		next();
+	} else {
+		res.render('home')
+	}
 });
 
 /* GET home page. */
@@ -64,7 +69,7 @@ router.get('/user/:username', ensureAuthenticated, function(req, res, next) {
 		if (err) throw err
 		else {
 			if (req.user.username == user.username) {
-				res.render('profile', {
+				res.render('user_profile', {
 					user: req.user
 				})
 			} else {
