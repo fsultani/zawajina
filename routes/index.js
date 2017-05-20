@@ -57,36 +57,6 @@ router.get('/register', function(req, res, next) {
   res.render('register')
 });
 
-// helpers: {
-//   is: function(a, b, options) {
-//     if (a == b) {
-//       return options.fn(this);
-//     }
-//   }
-// }
-
-// router.get('/user/:username', ensureAuthenticated, function(req, res, next) {
-// 	console.log("User that's logged in:", req.user)
-// 	User.findOne({ username: req.params.username }, function(err, user) {
-// 		console.log("User being viewed:", user)
-// 		if (err) throw err
-// 		else {
-// 			if (req.user.username == user.username) {
-// 				data = {
-// 					logged_in: req.user,
-// 					current_user: req.user
-// 				}
-// 			} else {
-// 				data = {
-// 					logged_in: user,
-// 					other_user: user
-// 				}
-// 			}
-// 			res.render('profile', data)
-// 		}
-// 	})
-// });
-
 router.get('/user/:username', ensureAuthenticated, function(req, res, next) {
 	console.log("User that's logged in:", req.user)
 	User.findOne({ username: req.params.username }, function(err, user) {
