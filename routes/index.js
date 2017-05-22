@@ -10,6 +10,42 @@ var JWT_SECRET = Buffer.from('fe1a1915a379f3be5394b64d14794932', 'hex')
 var router = express.Router()
 
 var User = require('../models/user')
+var Message = require('../models/message')
+
+passport.use(new LocalStrategy(
+  function(username, password, done) {
+  	User.getUserByUsername(username, function(err, user) {
+  		if (err) throw err;
+  		if (!user) {
+  			return done(null, false, {message: 'Unknown user'});
+  		}
+  		User.comparePassword(password, user.password, function(err, isMatch) {
+  			if (err) throw err;
+  			if(isMatch) {
+  				return done(null, user);
+  			} else {
+  				return done(null, false, {message: 'Invalid password'});
+  			}
+  		})
+  	})
+  }
+));
+
+passport.serializeUser(function(user, done) {
+  done(null, user.id);
+});
+
+passport.deserializeUser(function(id, done) {
+  User.getUserById(id, function(err, user) {
+    done(err, user);
+  });
+});
+
+router.post('/login', passport.authenticate('local', {
+  	successRedirect: '/home',
+  	failureRedirect: '/login',
+  	failureFlash: true,
+}));
 
 function ensureAuthenticated(req, res, next){
 	if(req.isAuthenticated()){
@@ -25,7 +61,8 @@ router.get('/', function(req, res, next) {
 		return res.redirect('/home');
 		next();
 	} else {
-		res.render('home')
+		res.redirect('/login')
+		// res.render('home')
 	}
 });
 
@@ -62,24 +99,36 @@ router.get('/register', function(req, res, next) {
   res.render('register')
 });
 
-router.get('/user/:username', ensureAuthenticated, function(req, res, next) {
-	console.log("User that's logged in:", req.user)
-	User.findOne({ username: req.params.username }, function(err, user) {
-		console.log("User being viewed:", user)
-		if (err) throw err
-		else {
-			if (req.user.username == user.username) {
-				res.render('user_profile', {
-					user: req.user
-				})
-			} else {
-				res.render('member_profile', {
-					user: user
-				})
-			}
-		}
-	})
-});
+// router.get('/user/:username', ensureAuthenticated, function(req, res, next) {
+// 	User.findOne({ username: req.params.username }, function(err, user) {
+// 		if (err) throw err
+// 		else {
+// 			if (req.user.username == user.username) {
+// 				Message.find(function(err, message) {
+// 					if(message) {
+// 						res.render('user_profile', {
+// 							user: req.user,
+// 							messages: message
+// 						})
+// 					} else {
+// 						console.log("No messages")
+// 					}
+// 				})
+// 			} else {
+// 				Message.find(function(err, message) {
+// 					if(message) {
+// 						res.render('member_profile', {
+// 							user: user,
+// 							messages: message
+// 						})
+// 					} else {
+// 						console.log("No messages")
+// 					}
+// 				})
+// 			}
+// 		}
+// 	})
+// });
 
 router.get('/login', function(req, res, next) {
   res.render('login')
@@ -118,7 +167,9 @@ router.post('/register', function(req, res) {
 				last_name: last_name,
 				username: username,
 				email: email,
-				password: password
+				password: password,
+				inbox: null,
+				sent: null
 			})
 
 			User.createUser(newUser, function(err, user) {})
@@ -131,41 +182,6 @@ router.post('/register', function(req, res) {
 		}
 	}
 })
-
-passport.use(new LocalStrategy(
-  function(username, password, done) {
-  	User.getUserByUsername(username, function(err, user) {
-  		if (err) throw err;
-  		if (!user) {
-  			return done(null, false, {message: 'Unknown user'});
-  		}
-  		User.comparePassword(password, user.password, function(err, isMatch) {
-  			if (err) throw err;
-  			if(isMatch) {
-  				return done(null, user);
-  			} else {
-  				return done(null, false, {message: 'Invalid password'});
-  			}
-  		})
-  	})
-  }
-));
-
-passport.serializeUser(function(user, done) {
-  done(null, user.id);
-});
-
-passport.deserializeUser(function(id, done) {
-  User.getUserById(id, function(err, user) {
-    done(err, user);
-  });
-});
-
-router.post('/login', passport.authenticate('local', {
-  	successRedirect: '/home',
-  	failureRedirect: '/login',
-  	failureFlash: true,
-}));
 
 // router.post('/login', function(req, res) {
 // 	// Password is not encrypted here

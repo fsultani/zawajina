@@ -2,6 +2,10 @@ $(document).ready(function() {
 	edit = () => {
 		alert("Edit clicked")
 	}
+
+	sendMessage = () => {
+		
+	}
 	// if (Cookies.get('username')) {
 	// 	$("#loggedIn").show()
 	// 	$("#loggedOut").remove()
