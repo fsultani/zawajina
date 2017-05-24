@@ -38,11 +38,10 @@ router.get('/:username', ensureAuthenticated, function(req, res, next) {
 
 					user_messages_array.map((index) => {
 						distinct_to.map((person) => {
-							console.log(person)
+							if(index.username_to == distinct_to[1]) {
+								sent_messages_array.push(index)
+							}
 						})
-						if(index.username_to == distinct_to[1]) {
-							sent_messages_array.push(index)
-						}
 					})
 					console.log(sent_messages_array)
 
