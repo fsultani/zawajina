@@ -13,15 +13,42 @@ function ensureAuthenticated(req, res, next){
 	}
 }
 
+router.get('/profile', ensureAuthenticated, function(req, res, next) {
+	res.redirect('/users/' + req.user.username)
+});
+
 router.get('/:username', ensureAuthenticated, function(req, res, next) {
 	User.findOne({ username: req.params.username }, function(err, user) {
 		if (err) throw err
 		else {
 			if (req.user.username == user.username) {
+				user_messages_array = []
+				sent_messages_array = []
 				Message.find(function(err, message) {
+					let logged_in_user = [...new Set(message.map(item => item.username_from))]
+					// console.log(logged_in_user)
+					message.map((index) => {
+						if (req.user.username == index.username_from) {
+							user_messages_array.push(index)
+						}
+					})
+					// console.log(user_messages_array)
+
+					let distinct_to = [...new Set(user_messages_array.map(item => item.username_to))]
+
+					user_messages_array.map((index) => {
+						distinct_to.map((person) => {
+							console.log(person)
+						})
+						if(index.username_to == distinct_to[1]) {
+							sent_messages_array.push(index)
+						}
+					})
+					console.log(sent_messages_array)
+
 					res.render('user_profile', {
 						user: req.user,
-						messages: message
+						messages: user_messages_array
 					})
 				})
 			} else {
@@ -34,12 +61,7 @@ router.get('/:username', ensureAuthenticated, function(req, res, next) {
 });
 
 router.post('/messages/:user_id', ensureAuthenticated, function(req, res, next) {
-	console.log("The user that's logged in:")
-	console.log(req.user)
 	User.findById({ _id: req.params.user_id }, function(err, user) {
-		console.log("The user being messaged:")
-		console.log(user)
-
 		var newMessage = new Message ({
 			from: req.user.first_name,
 			to: user.first_name,
