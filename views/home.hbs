@@ -6,13 +6,15 @@
 	<h3>All members on this site:</h3>
 
 	{{#each allUsers }}
-	<a href="/users/{{this.username}}">
-		<div class="col-md-6 col-md-offset-3">
-			<div class="well">
-			{{ this.first_name }}
+	<div>
+		<a href="/users/{{this.username}}" style="text-decoration: none">
+			<div class="col-md-4">
+				<div class="thumbnail" style="border-radius: 12px">
+					<h3 style="margin: 20px 0px">{{this.first_name}}</h3>
+				</div>
 			</div>
-		</div>
-	</a>
+		</a>
+	</div>
 	{{/each}}
 
 	{{else}}

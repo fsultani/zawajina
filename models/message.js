@@ -10,15 +10,7 @@ var Message = mongoose.Schema({
 		type: String,
 		required: true
 	},
-	to: {
-		type: String,
-		required: true
-	},
-	username_from: {
-		type: String,
-		required: true
-	},
-	username_to: {
+	userId: {
 		type: String,
 		required: true
 	}

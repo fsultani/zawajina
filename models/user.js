@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var bcrypt = require('bcryptjs');
+var Message = require('./message')
 
 var UserSchema = mongoose.Schema({
 	first_name: {
@@ -21,12 +22,7 @@ var UserSchema = mongoose.Schema({
 	password: {
 		type: String
 	},
-	inbox: {
-		type: String
-	},
-	sent: {
-		type: String
-	}
+	messages: [Message.schema]
 });
 
 var User = module.exports = mongoose.model('User', UserSchema);

@@ -168,8 +168,7 @@ router.post('/register', function(req, res) {
 				username: username,
 				email: email,
 				password: password,
-				inbox: null,
-				sent: null
+				messages: []
 			})
 
 			User.createUser(newUser, function(err, user) {})
@@ -182,28 +181,5 @@ router.post('/register', function(req, res) {
 		}
 	}
 })
-
-// router.post('/login', function(req, res) {
-// 	// Password is not encrypted here
-// 	// console.log('req.body')
-// 	// console.log(req.body)
-	
-// 	User.findOne({ username: req.body.username }, function(err, user) {
-// 		// Password is encrypted here
-// 		if (err) throw err
-// 		// console.log('user')
-// 		// console.log(user)
-
-// 		bcrypt.compare(req.body.password, user.password, function(err, result) {
-// 			if (result) {
-// 				var token = jwt.encode(user, JWT_SECRET)
-// 				// return res.status(200).send({ user: user, token: token })
-// 				return res.redirect('/user/' + user.username)
-// 			} else {
-// 				return res.status(401).send({error: "Something is wrong."})
-// 			}
-// 		})
-// 	})
-// })
 
 module.exports = router
