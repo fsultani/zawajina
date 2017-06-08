@@ -12,8 +12,8 @@ var flash = require('connect-flash');
 var mongo = require('mongodb')
 var mongoose = require('mongoose')
 
-mongoose.connect('mongodb://farid:farid@ds129641.mlab.com:29641/the_other_half')
-// mongoose.connect('mongodb://localhost/the_other_half')
+mongoose.connect('mongodb://farid:farid@ds161901.mlab.com:61901/my_match')
+// mongoose.connect('mongodb://localhost/my_match')
 
 var app = express();
 

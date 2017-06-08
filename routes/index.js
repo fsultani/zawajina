@@ -42,7 +42,7 @@ passport.deserializeUser(function(id, done) {
 });
 
 router.post('/login', passport.authenticate('local', {
-  	successRedirect: '/users/profile',
+  	successRedirect: '/',
   	failureRedirect: '/login',
   	failureFlash: true,
 }));
@@ -62,24 +62,35 @@ router.get('/', function(req, res, next) {
 		next();
 	} else {
 		res.redirect('/login')
-		// res.render('home')
 	}
 });
 
 /* GET home page. */
 router.get('/home', ensureAuthenticated, function(req, res, next) {
-	User.findOne({ username: req.user.username }, function(err, user) {
+	User.findOne({ username: req.user.username }, function(err, loggedInUser) {
 		if (err) throw err
 		else {
-			User.find(function(err, all) {
-				if (err) throw err
-				else {
-					res.render('home', {
-						user: user,
-						allUsers: all
-					})
-				}
-			})
+			if (loggedInUser.gender == 'male') {
+				User.find({gender: 'female'}, function(err, all) {
+					if (err) return next(err)
+					else {
+						res.render('home', {
+							user: loggedInUser,
+							all: all
+						})
+					}
+				})
+			} else {
+				User.find({gender: 'male'}, function(err, all) {
+					if (err) return next(err)
+					else {
+						res.render('home', {
+							user: loggedInUser,
+							all: all
+						})
+					}
+				})
+			}
 		}
 	})
 });
@@ -99,37 +110,6 @@ router.get('/register', function(req, res, next) {
   res.render('register')
 });
 
-// router.get('/user/:username', ensureAuthenticated, function(req, res, next) {
-// 	User.findOne({ username: req.params.username }, function(err, user) {
-// 		if (err) throw err
-// 		else {
-// 			if (req.user.username == user.username) {
-// 				Message.find(function(err, message) {
-// 					if(message) {
-// 						res.render('user_profile', {
-// 							user: req.user,
-// 							messages: message
-// 						})
-// 					} else {
-// 						console.log("No messages")
-// 					}
-// 				})
-// 			} else {
-// 				Message.find(function(err, message) {
-// 					if(message) {
-// 						res.render('member_profile', {
-// 							user: user,
-// 							messages: message
-// 						})
-// 					} else {
-// 						console.log("No messages")
-// 					}
-// 				})
-// 			}
-// 		}
-// 	})
-// });
-
 router.get('/login', function(req, res, next) {
   res.render('login')
 });
@@ -140,12 +120,14 @@ router.get('/logout', function(req, res, next) {
 });
 
 router.post('/register', function(req, res) {
+	console.log(req.body);
 	var first_name = req.body.first_name
 	var last_name = req.body.last_name
 	var username = req.body.username
 	var email = req.body.email
 	var password = req.body.password
 	var confirm_password = req.body.confirm_password
+	var gender = req.body.gender
 	
 	req.checkBody('first_name', 'First name is required').notEmpty()
 	req.checkBody('last_name', 'Last name is required').notEmpty()
@@ -153,6 +135,7 @@ router.post('/register', function(req, res) {
 	req.checkBody('email', 'Email is required').notEmpty()
 	req.checkBody('password', 'Password is required').notEmpty()
 	req.checkBody('confirm_password', 'Password confirmation is required').notEmpty()
+	req.checkBody('gender', 'Please select your gender').notEmpty()
 	
 	var errors = req.validationErrors()
 
@@ -168,7 +151,7 @@ router.post('/register', function(req, res) {
 				username: username,
 				email: email,
 				password: password,
-				messages: []
+				gender: gender
 			})
 
 			User.createUser(newUser, function(err, user) {})

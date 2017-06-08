@@ -1,35 +1,45 @@
 <center>
 <h2 class="dashboard-text">Welcome, {{user.first_name}}</h2>
 
-<h3>You may edit your profile using the button below.</h3>
+<h3>This is your profile</h3>
 
-<button onclick="edit()" class="btn btn-warning">Edit</button>
 <br><br>
 
+{{!-- {{#each user.messages}}
+<p>{{this}}</p>
+{{/each}}
+ --}}
+{{#each messages}}
+<p>{{this}}</p>
+{{/each}}
+
 {{#if user.messages}}
-<h4>Messages</h4>
-{{#each user.messages }}
-<div class="col-md-6 col-md-offset-3">
-	<div class="well">
-		<div class="row">
-			<div style="text-align: left; padding-left: 10px">
-				<span style="font-weight: 500">{{this.from}}:</span>
-				<span style="font-weight: 400"> {{this.message}}</span>
+	<h4>Messages</h4>
+
+	{{#each user.messages}}
+	<div class="col-md-8 col-md-offset-2 messages-container">
+		<div class="well messages-well">
+			<div class="row">
+				<div class="messages-body">
+					<span style="font-weight: 500">{{this.from}}:</span>
+					<span style="font-weight: 400"> {{this.message}}</span>
+				</div>
 			</div>
 		</div>
 	</div>
-</div>
+	{{/each}}
 
-<form method="post" action="/users/messages/reply/{{this.userId}}">
-  <div class="form-group col-md-6 col-md-offset-3">
-    <textarea class="form-control" name="message" rows="5" cols="10"></textarea>
-    <br>
-    <center>
-    	<button type="submit" class="btn btn-primary">Reply</button>
-    </center>
-  </div>
-</form>
+	<div class="col-md-8 col-md-offset-2 messages-container">
+		<form method="post" action="/users/messages/reply/{{user.messages.from_user_id}}">
+		  <div class="form-group">
+		    <textarea class="form-control" name="message" rows="5" cols="10"></textarea>
+		    <br>
+		    <center>
+		    	<button type="submit" class="btn btn-primary">Send</button>
+		    </center>
+		  </div>
+		</form>
+	</div>
 
-{{/each}}
 {{/if}}
 </center>

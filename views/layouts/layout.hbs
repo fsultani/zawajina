@@ -13,6 +13,8 @@
   <script type="text/javascript" src="/javascripts/home.js"></script>
   <script type="text/javascript" src="/javascripts/js.cookie.js"></script>
 
+  <link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
+
   <!-- Latest compiled and minified CSS -->
   <link
   rel="stylesheet"
@@ -49,7 +51,7 @@
           {{#if user }}
             <li role="presentation"><a href="/dashboard">Dashboard</a></li>
             <li role="presentation"><a href="/logout">Log Out</a></li>
-            <li role="presentation"><a href="/users/{{user.username}}">Profile</a></li>
+            <li role="presentation"><a href="/users/member">Profile</a></li>
           {{else}}
             <li role="presentation"><a href="/login">Login</a></li>
             <li role="presentation"><a href="/register">Register</a></li>

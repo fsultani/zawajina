@@ -1,6 +1,5 @@
 var mongoose = require('mongoose');
 var bcrypt = require('bcryptjs');
-var Message = require('./message')
 
 var UserSchema = mongoose.Schema({
 	first_name: {
@@ -19,10 +18,19 @@ var UserSchema = mongoose.Schema({
 		type: String,
 		required: true
 	},
+	gender: {
+		type: String,
+		required: true
+	},
 	password: {
 		type: String
 	},
-	messages: [Message.schema]
+	messages: [
+		{
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'Messages'
+		}
+	]
 });
 
 var User = module.exports = mongoose.model('User', UserSchema);

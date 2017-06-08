@@ -10,12 +10,24 @@ var Message = mongoose.Schema({
 		type: String,
 		required: true
 	},
-	userId: {
+	to: {
 		type: String,
 		required: true
+	},
+	from_user_id: {
+		type: String,
+		required: true
+	},
+	to_user_id: {
+		type: String,
+		required: true
+	},
+	created_at: {
+		type: Date
 	}
 });
 
 // Create the model for the database
 // In the database, the collection is named 'messages'
-var Message = module.exports = mongoose.model('Messages', Message);
+module.exports = mongoose.model('Messages', Message);
+// var Message = module.exports = mongoose.model('Messages', Message);
