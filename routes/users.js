@@ -28,7 +28,6 @@ router.get('/member', ensureAuthenticated, function(req, res, next) {
 			if (!senders.includes(message)) { senders.push(message)}
 		})
 
-		// Message.find({ from_user_id: {"$in": senders}}, (err, msg) => {})
 		Message.find({ from_user_id: {"$in": senders}}).exec((err, msg) => { console.log(msg)})
 		res.render('user_profile', { user: user })
 	})
