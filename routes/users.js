@@ -19,16 +19,36 @@ router.get('/profile', ensureAuthenticated, function(req, res, next) {
 
 router.get('/member', ensureAuthenticated, function(req, res, next) {
 	User.findOne({ username: req.user.username }).populate('messages').exec((err, user) => {
-		let messages_array = []
-		user.messages.map((index) => {
-			messages_array.push(index.from_user_id)
-		})
-		let senders = []
-		messages_array.map((message) => {
-			if (!senders.includes(message)) { senders.push(message)}
-		})
+		console.log(user)
+		const all_messages = []
+		user.messages.map((message_obj) => { all_messages.push(message_obj) })
+		
+		const message_sent_by = []
+		all_messages.map((message_obj) => { message_sent_by.push(message_obj.from_user_id) }).sort()
 
-		Message.find({ from_user_id: {"$in": senders}}).exec((err, msg) => { console.log(msg)})
+		let user_id_count = message_sent_by.reduce(function(allIds, id) {
+			id in allIds ? allIds[id]++ : allIds[id] = 1
+			return allIds
+		}, {})
+
+		const distinct_user_ids = Object.keys(user_id_count)
+
+		// console.log("All user IDs\n", message_sent_by)
+		// console.log("\nDistinct IDs\n", distinct_user_ids)
+
+		function message_object(sent_by, message_body) {
+			this.sent_by = sent_by
+			this.message_body = message_body
+		}
+
+		// console.log(all_messages)
+		// all_messages.map((message) => { console.log(message) })
+
+		// distinct_user_ids.map((id) => {
+		// 	const new_message = new message_object(id, )
+		// })
+
+		// const myMessage = new message_object("Farid", "Hi there")
 		res.render('user_profile', { user: user })
 	})
 });

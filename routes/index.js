@@ -42,7 +42,7 @@ passport.deserializeUser(function(id, done) {
 });
 
 router.post('/login', passport.authenticate('local', {
-  	successRedirect: '/',
+  	successRedirect: '/users/member',
   	failureRedirect: '/login',
   	failureFlash: true,
 }));
