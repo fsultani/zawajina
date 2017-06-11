@@ -19,37 +19,54 @@ router.get('/profile', ensureAuthenticated, function(req, res, next) {
 
 router.get('/member', ensureAuthenticated, function(req, res, next) {
 	User.findOne({ username: req.user.username }).populate('messages').exec((err, user) => {
-		console.log(user)
 		const all_messages = []
 		user.messages.map((message_obj) => { all_messages.push(message_obj) })
+
+		const groups = Object.create(null)
+
+		// all_messages.forEach((message, index) => {
+		// 	groups[message.from_user_id] = groups[message.from_user_id] || []
+		// 	groups[message.from_user_id].push(message)
+		// })
 		
-		const message_sent_by = []
-		all_messages.map((message_obj) => { message_sent_by.push(message_obj.from_user_id) }).sort()
+		all_messages.forEach((message, index) => {
+			groups["message_object " + index] = "This is an object at index " + index
+		})
 
-		let user_id_count = message_sent_by.reduce(function(allIds, id) {
-			id in allIds ? allIds[id]++ : allIds[id] = 1
-			return allIds
-		}, {})
+		console.log(groups)
 
-		const distinct_user_ids = Object.keys(user_id_count)
+		const result = Object.keys(groups).map((k) => {
+			console.log(groups[k])
+			const temp = {}
+			temp[k] = groups[k]
+			return temp
+		})
+		// console.log("result\n", result)
+		// console.log("\nuser.messages\n", user)
 
-		// console.log("All user IDs\n", message_sent_by)
-		// console.log("\nDistinct IDs\n", distinct_user_ids)
+		// const all_messages = []
+		// user.messages.map((message_obj) => { all_messages.push(message_obj) })
 
-		function message_object(sent_by, message_body) {
-			this.sent_by = sent_by
-			this.message_body = message_body
-		}
+		// const result = all_messages.reduce(function(groups) {
+		// 	return function(r, a) {
+		// 		const temp = {}
+		// 		if (!groups[a.from_user_id]) {
+		// 			groups[a.from_user_id] = []
+		// 			temp[a.from_user_id] = groups[a.from_user_id]
+		// 			r.push(temp)
+		// 		}
+		// 		groups[a.from_user_id].push(a)
+		// 		return r
+		// 	}
+		// }(Object.create(null)), [])
 
-		// console.log(all_messages)
-		// all_messages.map((message) => { console.log(message) })
+		// console.log(result)
 
-		// distinct_user_ids.map((id) => {
-		// 	const new_message = new message_object(id, )
+		// result.map((element) => {
+		// 	console.log(element)
 		// })
 
-		// const myMessage = new message_object("Farid", "Hi there")
-		res.render('user_profile', { user: user })
+		res.render('user_profile', { user: user, messages: result })
 	})
 });
 

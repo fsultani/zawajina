@@ -5,15 +5,40 @@
 
 <br><br>
 
-{{!-- {{#each user.messages}}
-<p>{{this}}</p>
-{{/each}}
- --}}
-{{#each messages}}
-<p>{{this}}</p>
+{{!-- {{#each messages}}
+	<div>
+		{{#each this}}
+			<p>
+				{{#each this}}
+					<b>{{this.from}}:</b>
+					<p> {{this.message}}</p>
+				{{/each}}
+			</p>
+		{{/each}}
+	</div>
+{{/each}} --}}
+
+{{#each user.messages}}
+	<div class="col-md-8 col-md-offset-2 messages-container">
+		<div class="well messages-well">
+			<div class="row">
+				<div class="messages-body">
+					<p>{{this}}:</p>
+				</div>
+			</div>
+		</div>
+		{{!-- <div class="well messages-well">
+			<div class="row">
+				<div class="messages-body">
+					<p>{{this.5938ecc505335007317bf1ce}}:</p>
+				</div>
+			</div>
+		</div> --}}
+	</div>
 {{/each}}
 
-{{#if user.messages}}
+
+{{!-- {{#if user.messages}}
 	<h4>Messages</h4>
 
 	{{#each user.messages}}
@@ -41,5 +66,5 @@
 		</form>
 	</div>
 
-{{/if}}
+{{/if}} --}}
 </center>
