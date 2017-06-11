@@ -24,47 +24,23 @@ router.get('/member', ensureAuthenticated, function(req, res, next) {
 
 		const groups = Object.create(null)
 
-		// all_messages.forEach((message, index) => {
-		// 	groups[message.from_user_id] = groups[message.from_user_id] || []
-		// 	groups[message.from_user_id].push(message)
-		// })
-		
 		all_messages.forEach((message, index) => {
-			groups["message_object " + index] = "This is an object at index " + index
+			groups[message.from_user_id] = groups[message.from_user_id] || []
+			groups[message.from_user_id].push(message)
 		})
-
-		console.log(groups)
+		
+		// all_messages.forEach((message, index) => {
+		// 	groups["message_object " + index] = "This is an object at index " + index
+		// })
 
 		const result = Object.keys(groups).map((k) => {
-			console.log(groups[k])
 			const temp = {}
 			temp[k] = groups[k]
 			return temp
 		})
-		// console.log("result\n", result)
-		// console.log("\nuser.messages\n", user)
 
-		// const all_messages = []
-		// user.messages.map((message_obj) => { all_messages.push(message_obj) })
-
-		// const result = all_messages.reduce(function(groups) {
-		// 	return function(r, a) {
-		// 		const temp = {}
-		// 		if (!groups[a.from_user_id]) {
-		// 			groups[a.from_user_id] = []
-		// 			temp[a.from_user_id] = groups[a.from_user_id]
-		// 			r.push(temp)
-		// 		}
-		// 		groups[a.from_user_id].push(a)
-		// 		return r
-		// 	}
-		// }(Object.create(null)), [])
-
-		// console.log(result)
-
-		// result.map((element) => {
-		// 	console.log(element)
-		// })
+		console.log(result)
+		console.log(groups)
 
 		res.render('user_profile', { user: user, messages: result })
 	})

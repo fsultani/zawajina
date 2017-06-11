@@ -18,12 +18,24 @@
 	</div>
 {{/each}} --}}
 
-{{#each user.messages}}
+
+
+
+
+
+
+{{#each messages}}
 	<div class="col-md-8 col-md-offset-2 messages-container">
 		<div class="well messages-well">
 			<div class="row">
 				<div class="messages-body">
-					<p>{{this}}:</p>
+
+				{{#each this.5934fd84d6ba4c241259bed1}}
+					<p>
+						{{this}}
+					</p>
+				{{/each}}
+
 				</div>
 			</div>
 		</div>
