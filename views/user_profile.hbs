@@ -1,82 +1,41 @@
 <center>
 <h2 class="dashboard-text">Welcome, {{user.first_name}}</h2>
-
 <h3>This is your profile</h3>
 
-<br><br>
-
-{{!-- {{#each messages}}
-	<div>
+{{#if user.messages}}
+	{{#each messages }}
 		{{#each this}}
-			<p>
-				{{#each this}}
-					<b>{{this.from}}:</b>
-					<p> {{this.message}}</p>
-				{{/each}}
-			</p>
+			{{#each this}}
+					<div class="col-md-12 messages-container">
+						{{#if_eq ../../../user._id this.from_user_id }}
+							<h5>Conversation with {{this.to}}</h5>
+							<div class="well messages-well">
+								<div class="row">
+									<div class="messages-body">
+											<div>
+												<span style="font-weight: 500">You:</span>
+												<span style="font-weight: 400"> {{this.message}}</span>
+											</div>
+									</div>
+								</div>
+							</div>
+						{{else}}
+							<h5>Conversation with {{this.from}}</h5>
+							<div class="well messages-well">
+								<div class="row">
+									<div class="messages-body">
+											<div>
+												<span style="font-weight: 500">{{this.from}}:</span>
+												<span style="font-weight: 400"> {{this.message}}</span>
+											</div>
+									</div>
+								</div>
+							</div>
+						{{/if_eq}}
+					</div>
+			{{/each}}
 		{{/each}}
-	</div>
-{{/each}} --}}
-
-
-
-
-
-
-
-{{#each messages}}
-	<div class="col-md-8 col-md-offset-2 messages-container">
-		<div class="well messages-well">
-			<div class="row">
-				<div class="messages-body">
-
-				{{#each this.5934fd84d6ba4c241259bed1}}
-					<p>
-						{{this}}
-					</p>
-				{{/each}}
-
-				</div>
-			</div>
-		</div>
-		{{!-- <div class="well messages-well">
-			<div class="row">
-				<div class="messages-body">
-					<p>{{this.5938ecc505335007317bf1ce}}:</p>
-				</div>
-			</div>
-		</div> --}}
-	</div>
-{{/each}}
-
-
-{{!-- {{#if user.messages}}
-	<h4>Messages</h4>
-
-	{{#each user.messages}}
-	<div class="col-md-8 col-md-offset-2 messages-container">
-		<div class="well messages-well">
-			<div class="row">
-				<div class="messages-body">
-					<span style="font-weight: 500">{{this.from}}:</span>
-					<span style="font-weight: 400"> {{this.message}}</span>
-				</div>
-			</div>
-		</div>
-	</div>
 	{{/each}}
+{{/if}}
 
-	<div class="col-md-8 col-md-offset-2 messages-container">
-		<form method="post" action="/users/messages/reply/{{user.messages.from_user_id}}">
-		  <div class="form-group">
-		    <textarea class="form-control" name="message" rows="5" cols="10"></textarea>
-		    <br>
-		    <center>
-		    	<button type="submit" class="btn btn-primary">Send</button>
-		    </center>
-		  </div>
-		</form>
-	</div>
-
-{{/if}} --}}
 </center>

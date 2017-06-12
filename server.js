@@ -12,11 +12,6 @@ var flash = require('connect-flash');
 var mongo = require('mongodb')
 var mongoose = require('mongoose')
 
-var handlebars = require('handlebars'),
-    groupBy = require('handlebars-group-by');
-
-handlebars.registerHelper(groupBy(handlebars));
-
 mongoose.connect('mongodb://farid:farid@ds161901.mlab.com:61901/my_match')
 // mongoose.connect('mongodb://localhost/my_match')
 
