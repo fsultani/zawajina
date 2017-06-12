@@ -25,10 +25,10 @@ var UserSchema = mongoose.Schema({
 	password: {
 		type: String
 	},
-	messages: [
+	conversations: [
 		{
 			type: mongoose.Schema.Types.ObjectId,
-			ref: 'Messages'
+			ref: 'Conversations'
 		}
 	]
 });

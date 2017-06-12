@@ -4,6 +4,7 @@ var mongoose = require('mongoose');
 
 var User = require('../models/user')
 var Message = require('../models/message')
+var Conversation = require('../models/conversation')
 
 function ensureAuthenticated(req, res, next){
 	if(req.isAuthenticated()){
@@ -18,12 +19,12 @@ router.get('/profile', ensureAuthenticated, function(req, res, next) {
 });
 
 router.get('/member', ensureAuthenticated, function(req, res, next) {
-	User.findOne({ username: req.user.username }).populate('messages').exec((err, user) => {
+	User.findOne({ username: req.user.username }).populate('conversations').exec((err, user) => {
 		// Currently logged in user
 		// console.log("\nuser\n", user)
 
 		const all_messages = []
-		user.messages.map((message_obj) => { all_messages.push(message_obj) })
+		user.conversations.map((message_obj) => { all_messages.push(message_obj) })
 		// console.log("all_messages\n", all_messages)
 		
 		const groups = Object.create(null)
@@ -95,12 +96,19 @@ router.post('/messages/:user_id', ensureAuthenticated, function(req, res, next) 
 			if (err) {
 				console.log(err)
 			} else {
-				const all_messages = []
-				user.messages.map((message_obj) => { all_messages.push(message_obj) })
+				Conversation.create({
+					from: req.user.first_name,
+					to: user.first_name,
+					from_user_id: req.user._id,
+					to_user_id: user._id,
+					created_at: Date.now()
+				})
+				// const all_messages = []
+				// user.messages.map((message_obj) => { all_messages.push(message_obj) })
 
-				console.log("all_messages\n")
-				user.messages.push(message)
-				req.user.messages.push(message)
+				// console.log("all_messages\n")
+				user.conversations.push(message)
+				req.user.conversations.push(message)
 				user.save((err, final) => {})
 				req.user.save((err, final) => {})
 				res.redirect('/users/member')
