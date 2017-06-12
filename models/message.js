@@ -24,7 +24,13 @@ var Message = mongoose.Schema({
 	},
 	created_at: {
 		type: Date
-	}
+	},
+	conversations: [
+		{
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'Conversations'
+		}
+	]
 });
 
 // Create the model for the database

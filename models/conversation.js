@@ -26,6 +26,12 @@ var Conversation = mongoose.Schema({
 			type: mongoose.Schema.Types.ObjectId,
 			ref: 'Messages'
 		}
+	],
+	users: [
+		{
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'User'
+		}
 	]
 });
 

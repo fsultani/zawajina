@@ -28,6 +28,12 @@ var UserSchema = mongoose.Schema({
 	conversations: [
 		{
 			type: mongoose.Schema.Types.ObjectId,
+			ref: 'Messages'
+		}
+	],
+	messages: [
+		{
+			type: mongoose.Schema.Types.ObjectId,
 			ref: 'Conversations'
 		}
 	]
