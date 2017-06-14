@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var bcrypt = require('bcryptjs');
 
-var UserSchema = mongoose.Schema({
+var User = mongoose.Schema({
 	first_name: {
 		type: String,
 		required: true
@@ -39,7 +39,7 @@ var UserSchema = mongoose.Schema({
 	]
 });
 
-var User = module.exports = mongoose.model('User', UserSchema);
+var User = module.exports = mongoose.model('Users', User);
 
 module.exports.createUser = function(newUser, callback){
 	bcrypt.genSalt(10, function(err, salt) {

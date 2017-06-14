@@ -36,6 +36,6 @@ var Conversation = mongoose.Schema({
 });
 
 // Create the model for the database
-// In the database, the collection is named 'messages'
+// In the database, the collection is named 'conversations'
 module.exports = mongoose.model('Conversations', Conversation);
 // var Message = module.exports = mongoose.model('Messages', Message);
