@@ -1,8 +1,21 @@
 <center>
 <h2 class="dashboard-text">Welcome, {{user.first_name}}</h2>
-<h3>This is your profile</h3>
 
-{{#if user.messages}}
+{{#if conversations }}
+	<h3>Your Messages</h3>
+	{{#each conversations}}
+	<p><a href="/users/conversations/{{this._id}}">{{this.first_name}}</a></p>
+	{{/each}}
+{{/if}}
+
+{{#if user_messages }}
+	{{#each user_messages}}
+		<h4>Conversation with {{this.to}}</h4>
+		<b>You:</b> {{this.message}}
+	{{/each}}
+{{/if}}
+
+{{!-- {{#if user.messages}}
 	{{#each messages }}
 		{{#each this}}
 			{{#each this}}
@@ -36,6 +49,6 @@
 			{{/each}}
 		{{/each}}
 	{{/each}}
-{{/if}}
+{{/if}} --}}
 
 </center>

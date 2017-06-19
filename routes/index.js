@@ -72,7 +72,6 @@ router.get('/home', ensureAuthenticated, function(req, res, next) {
 		else {
 			if (loggedInUser.gender == 'male') {
 				User.find({gender: 'female'}, function(err, all) {
-					console.log(all)
 					if (err) return next(err)
 					else {
 						res.render('home', {
@@ -83,7 +82,6 @@ router.get('/home', ensureAuthenticated, function(req, res, next) {
 				})
 			} else {
 				User.find({gender: 'male'}, function(err, all) {
-					console.log(all)
 					if (err) return next(err)
 					else {
 						res.render('home', {

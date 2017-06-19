@@ -28,13 +28,13 @@ var User = mongoose.Schema({
 	conversations: [
 		{
 			type: mongoose.Schema.Types.ObjectId,
-			ref: 'Messages'
+			ref: 'Conversations'
 		}
 	],
 	messages: [
 		{
 			type: mongoose.Schema.Types.ObjectId,
-			ref: 'Conversations'
+			ref: 'Messages'
 		}
 	]
 });
