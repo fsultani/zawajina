@@ -12,11 +12,7 @@ var flash = require('connect-flash');
 var mongo = require('mongodb')
 var mongoose = require('mongoose')
 
-mongoose.connect('mongodb://' + process.env.username + ':' + process.env.password + '@ds161901.mlab.com:61901/my_match')
-
-// mongoose.connect('mongodb://farid:farid@ds161901.mlab.com:61901/my_match')
-
-// mongoose.connect('mongodb://localhost/my_match')
+mongoose.connect(process.env.db)
 
 var app = express();
 
