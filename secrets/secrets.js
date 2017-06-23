@@ -1,1 +1,0 @@
-process.env['MONGO_DB'] = "mongodb://farid:farid@ds161901.mlab.com:61901/my_match"
