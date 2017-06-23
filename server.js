@@ -11,7 +11,7 @@ var expressValidator = require('express-validator')
 var flash = require('connect-flash');
 var mongo = require('mongodb')
 var mongoose = require('mongoose')
-require('./secrets')
+// require('./secrets')
 
 mongoose.connect(process.env.MONGO_DB)
 
