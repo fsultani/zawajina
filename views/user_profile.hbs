@@ -33,11 +33,15 @@
 
 		<div class="well messages-well">
 			{{#if_eq this.from_user_id ../user._id}}
-			<b>You:</b> {{this.message}}
+			<h4>
+				<b>You:</b> {{this.message}}
+			</h4>
 			{{/if_eq}}
 
 			{{#if_eq this.to_user_id ../user._id}}
-			<b>{{this.from}}:</b> {{this.message}}
+			<h4>
+				<b>{{this.from}}:</b> {{this.message}}
+				</h4>
 			{{/if_eq}}
 		</div>
 		{{/each}}
