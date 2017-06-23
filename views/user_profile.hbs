@@ -2,53 +2,56 @@
 <h2 class="dashboard-text">Welcome, {{user.first_name}}</h2>
 
 {{#if conversations }}
-	<h3>Your Messages</h3>
+	<h3>Conversations</h3>
 	{{#each conversations}}
-	<p><a href="/users/conversations/{{this._id}}">{{this.first_name}}</a></p>
+
+		{{#if_eq this.created_by_user_id ../user._id }}
+			<a href="/users/conversations/{{this._id}}">
+			<div class="col-md-12">
+				<div class="well">
+					{{this.sent_to_user_name}}
+				</div>
+			</div>
+			</a>
+		{{/if_eq}}
+
+		{{#if_eq this.sent_to_user_id ../user._id }}
+			<a href="/users/conversations/{{this._id}}">
+				<div class="col-md-12">
+					<div class="well">
+						{{this.created_by_user_name}}
+					</div>
+				</div>
+			</a>
+		{{/if_eq}}
 	{{/each}}
 {{/if}}
 
 {{#if user_messages }}
-	{{#each user_messages}}
-		<h4>Conversation with {{this.to}}</h4>
-		<b>You:</b> {{this.message}}
-	{{/each}}
-{{/if}}
+	<div class="col-md-12 messages-container">
+		{{#each user_messages}}
 
-{{!-- {{#if user.messages}}
-	{{#each messages }}
-		{{#each this}}
-			{{#each this}}
-					<div class="col-md-12 messages-container">
-						{{#if_eq ../../../user._id this.from_user_id }}
-							<h5>Conversation with {{this.to}}</h5>
-							<div class="well messages-well">
-								<div class="row">
-									<div class="messages-body">
-											<div>
-												<span style="font-weight: 500">You:</span>
-												<span style="font-weight: 400"> {{this.message}}</span>
-											</div>
-									</div>
-								</div>
-							</div>
-						{{else}}
-							<h5>Conversation with {{this.from}}</h5>
-							<div class="well messages-well">
-								<div class="row">
-									<div class="messages-body">
-											<div>
-												<span style="font-weight: 500">{{this.from}}:</span>
-												<span style="font-weight: 400"> {{this.message}}</span>
-											</div>
-									</div>
-								</div>
-							</div>
-						{{/if_eq}}
-					</div>
-			{{/each}}
+		<div class="well messages-well">
+			{{#if_eq this.from_user_id ../user._id}}
+			<b>You:</b> {{this.message}}
+			{{/if_eq}}
+
+			{{#if_eq this.to_user_id ../user._id}}
+			<b>{{this.from}}:</b> {{this.message}}
+			{{/if_eq}}
+		</div>
 		{{/each}}
-	{{/each}}
-{{/if}} --}}
+	</div>
+
+	<form method="post" action="/users/messages/reply/{{conversation_id}}">
+		<div class="form-group col-md-6 col-md-offset-3">
+			<textarea class="form-control" name="message" rows="5" cols="10"></textarea>
+			<br>
+			<center>
+				<button type="submit" class="btn btn-primary">Send</button>
+			</center>
+		</div>
+	</form>
+{{/if}}
 
 </center>

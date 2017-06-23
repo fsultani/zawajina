@@ -2,6 +2,10 @@ var mongoose = require('mongoose');
 
 var Conversation = mongoose.Schema({
 	created_at: Date,
+	created_by_user_name: String,
+	created_by_user_id: String,
+	sent_to_user_name: String,
+	sent_to_user_id: String,
 	messages: [
 		{
 			type: mongoose.Schema.Types.ObjectId,
@@ -11,38 +15,10 @@ var Conversation = mongoose.Schema({
 	users: [
 		{
 			type: mongoose.Schema.Types.ObjectId,
-			ref: 'User'
+			ref: 'Users'
 		}
 	]
 
 });
 
 var Conversation = module.exports = mongoose.model('Conversations', Conversation);
-
-// var Conversation = mongoose.Schema({
-// 	from: {
-// 		type: String,
-// 		required: true
-// 	},
-// 	to: {
-// 		type: String,
-// 		required: true
-// 	},
-// 	from_user_id: {
-// 		type: String,
-// 		required: true
-// 	},
-// 	to_user_id: {
-// 		type: String,
-// 		required: true
-// 	},
-// 	created_at: {
-// 		type: Date
-// 	},
-// 	users: [
-// 		{
-// 			type: mongoose.Schema.Types.ObjectId,
-// 			ref: 'User'
-// 		}
-// 	]
-// });

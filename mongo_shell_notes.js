@@ -15,6 +15,7 @@ db.users.update({first_name: {$regex: "^"}}, { $set: { "messages": []}}, {"multi
 
 // Delete a collection
 db.messages.drop()
+db.conversations.drop()
 
 // Remove all usernames that end in a number
 db.users.remove({username: {$regex: "[0-9]$"}})
