@@ -7,9 +7,9 @@
 
 		{{#if_eq this.created_by_user_id ../user._id }}
 			<a href="/users/conversations/{{this._id}}">
-			<div class="col-md-12">
+			<div class="col-md-6 col-md-offset-3">
 				<div class="well">
-					{{this.sent_to_user_name}}
+					<h3>{{this.sent_to_user_name}}</h3>
 				</div>
 			</div>
 			</a>
@@ -17,9 +17,9 @@
 
 		{{#if_eq this.sent_to_user_id ../user._id }}
 			<a href="/users/conversations/{{this._id}}">
-				<div class="col-md-12">
+				<div class="col-md-6 col-md-offset-3">
 					<div class="well">
-						{{this.created_by_user_name}}
+						<h3>{{this.created_by_user_name}}</h3>
 					</div>
 				</div>
 			</a>
