@@ -9,7 +9,7 @@
 			<a href="/users/conversations/{{this._id}}">
 			<div class="col-md-6 col-md-offset-3">
 				<div class="well">
-					<h3>{{this.sent_to_user_name}}</h3>
+					{{this.sent_to_user_name}}
 				</div>
 			</div>
 			</a>
@@ -19,7 +19,7 @@
 			<a href="/users/conversations/{{this._id}}">
 				<div class="col-md-6 col-md-offset-3">
 					<div class="well">
-						<h3>{{this.created_by_user_name}}</h3>
+						{{this.created_by_user_name}}
 					</div>
 				</div>
 			</a>
@@ -28,20 +28,20 @@
 {{/if}}
 
 {{#if user_messages }}
-	<div class="col-md-12 messages-container">
+	<div class="col-md-6 col-md-offset-3 messages-container">
 		{{#each user_messages}}
 
 		<div class="well messages-well">
 			{{#if_eq this.from_user_id ../user._id}}
-			<h4>
+			<div align="left">
 				<b>You:</b> {{this.message}}
-			</h4>
+			</div>
 			{{/if_eq}}
 
 			{{#if_eq this.to_user_id ../user._id}}
-			<h4>
+			<div align="left">
 				<b>{{this.from}}:</b> {{this.message}}
-				</h4>
+			</div>
 			{{/if_eq}}
 		</div>
 		{{/each}}
