@@ -1,2 +1,1 @@
-process.env['DB_USERNAME'] = 'farid'
-process.env['DB_PASSWORD'] = 'farid'
+process.env['MONGO_DB'] = "mongodb://farid:farid@ds161901.mlab.com:61901/my_match"
