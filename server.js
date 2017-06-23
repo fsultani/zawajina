@@ -12,7 +12,7 @@ var flash = require('connect-flash');
 var mongo = require('mongodb')
 var mongoose = require('mongoose')
 
-// mongoose.connect(process.env.MONGO_DB)
+mongoose.connect(process.env.MONGO_DB)
 
 var app = express();
 
