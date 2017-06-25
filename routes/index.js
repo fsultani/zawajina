@@ -120,7 +120,6 @@ router.get('/logout', function(req, res, next) {
 });
 
 router.post('/register', function(req, res) {
-	console.log(req.body);
 	var first_name = req.body.first_name
 	var last_name = req.body.last_name
 	var username = req.body.username
@@ -154,7 +153,7 @@ router.post('/register', function(req, res) {
 				gender: gender
 			})
 
-			User.createUser(newUser, function(err, user) {})
+			User.createUser(newUser, (err, user) => {})
 		
 			req.flash('success_message', 'You are registered and can now log in!');
 			res.redirect('/login');

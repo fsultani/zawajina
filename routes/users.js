@@ -103,9 +103,9 @@ router.post('/messages/:user_id', ensureAuthenticated, (req, res, next) => {
 					} else {
 						conversation.users.push(req.user, user)
 						message.conversations.push(conversation)
-						conversation.save((err, final) => {})
-						message.save((err, final) => {})
-						res.redirect('/users/member')
+						conversation.save()
+						message.save()
+						res.redirect('/users/conversations/' + conversation._id)
 					}
 				})
 			}
@@ -116,8 +116,6 @@ router.post('/messages/:user_id', ensureAuthenticated, (req, res, next) => {
 // Reply to a message
 router.post('/messages/reply/:conversation_id', ensureAuthenticated, (req, res, next) => {
 	Conversation.findById(req.params.conversation_id, (err, conversation) => {
-		console.log("conversation\n", conversation)
-		console.log("req.user\n", req.user)
 		if (req.user._id == conversation.created_by_user_id) {
 			User.findById(conversation.sent_to_user_id, (err, user) => {
 				Message.create({
@@ -132,8 +130,8 @@ router.post('/messages/reply/:conversation_id', ensureAuthenticated, (req, res, 
 						console.log(err)
 					} else {
 						message.conversations.push(conversation._id)
-						message.save((err, final) => {})
-						res.redirect('/users/member')
+						message.save()
+						res.redirect('/users/conversations/' + conversation._id)
 					}
 				})
 			})
@@ -151,8 +149,8 @@ router.post('/messages/reply/:conversation_id', ensureAuthenticated, (req, res, 
 						console.log(err)
 					} else {
 						message.conversations.push(conversation._id)
-						message.save((err, final) => {})
-						res.redirect('/users/member')
+						message.save()
+						res.redirect('/users/conversations/' + conversation._id)
 					}
 				})
 			})

@@ -6,12 +6,6 @@ var Conversation = mongoose.Schema({
 	created_by_user_id: String,
 	sent_to_user_name: String,
 	sent_to_user_id: String,
-	messages: [
-		{
-			type: mongoose.Schema.Types.ObjectId,
-			ref: 'Messages'
-		}
-	],
 	users: [
 		{
 			type: mongoose.Schema.Types.ObjectId,

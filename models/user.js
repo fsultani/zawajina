@@ -24,19 +24,7 @@ var User = mongoose.Schema({
 	},
 	password: {
 		type: String
-	},
-	conversations: [
-		{
-			type: mongoose.Schema.Types.ObjectId,
-			ref: 'Conversations'
-		}
-	],
-	messages: [
-		{
-			type: mongoose.Schema.Types.ObjectId,
-			ref: 'Messages'
-		}
-	]
+	}
 });
 
 var User = module.exports = mongoose.model('Users', User);
