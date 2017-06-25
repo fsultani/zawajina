@@ -48,6 +48,19 @@ router.get('/member', ensureAuthenticated, (req, res, next) => {
 	})
 })
 
+// Get a member's profile
+router.get('/:username', ensureAuthenticated, (req, res, next) => {
+	User.findOne({ username: req.params.username }, (err, user) => {
+		Conversation.find({ $and: [{ users: req.user._id }, { users: user._id }] }, (err, conversation) => {
+			if (conversation.length === 0) {
+				res.render('member_profile', { user: user })
+			} else {
+				res.redirect('/users/conversations/' + conversation[0]._id)
+			}
+		})
+	})
+});
+
 // Get the conversation with the selected member
 router.get('/conversations/:id', ensureAuthenticated, (req, res, next) => {
 	User.findOne({ _id: req.user._id }, (err, user) => {
@@ -70,44 +83,43 @@ router.get('/conversations/:id', ensureAuthenticated, (req, res, next) => {
 	})
 })
 
-// Get a member's profile
-router.get('/:username', ensureAuthenticated, (req, res, next) => {
-	User.findOne({ username: req.params.username }, (err, user) => {
-		res.render('member_profile', { user: user })
-	})
-});
-
 // Send a new message to another user
 router.post('/messages/:user_id', ensureAuthenticated, (req, res, next) => {
 	User.findById({ _id: req.params.user_id }, (err, user) => {
-		Conversation.create({
-			created_at: Date.now(),
-			created_by_user_name: req.user.first_name,
-			created_by_user_id: req.user._id,
-			sent_to_user_name: user.first_name,
-			sent_to_user_id: user._id
-		}, (err, conversation) => {
-			if (err) {
-				console.log(err)
-			} else {
-				Message.create({
-					message: req.body.message,
-					from: req.user.first_name,
-					to: user.first_name,
-					from_user_id: req.user._id,
-					to_user_id: user._id,
-					created_at: Date.now()
-				}, (err, message) => {
+		Conversation.find({ users: req.params.user_id }, (err, conversation) => {
+			if (conversation.length === 0) {
+				Conversation.create({
+					created_at: Date.now(),
+					created_by_user_name: req.user.first_name,
+					created_by_user_id: req.user._id,
+					sent_to_user_name: user.first_name,
+					sent_to_user_id: user._id
+				}, (err, conversation) => {
 					if (err) {
 						console.log(err)
 					} else {
-						conversation.users.push(req.user, user)
-						message.conversations.push(conversation)
-						conversation.save()
-						message.save()
-						res.redirect('/users/conversations/' + conversation._id)
+						Message.create({
+							message: req.body.message,
+							from: req.user.first_name,
+							to: user.first_name,
+							from_user_id: req.user._id,
+							to_user_id: user._id,
+							created_at: Date.now()
+						}, (err, message) => {
+							if (err) {
+								console.log(err)
+							} else {
+								conversation.users.push(req.user, user)
+								message.conversations.push(conversation)
+								conversation.save()
+								message.save()
+								res.redirect('/users/conversations/' + conversation._id)
+							}
+						})
 					}
 				})
+			} else {
+				res.redirect('/users/conversations/' + conversation[0]._id)
 			}
 		})
 	})
