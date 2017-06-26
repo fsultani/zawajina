@@ -1,0 +1,59 @@
+<center>
+{{#if conversations }}
+	<h3>Messages</h3>
+	{{#each conversations}}
+
+		{{#if_eq this.created_by_user_id ../user._id }}
+			<a href="/conversations/{{this._id}}">
+			<div class="col-md-6 col-md-offset-3">
+				<div class="well">
+					{{this.sent_to_user_name}}
+				</div>
+			</div>
+			</a>
+		{{/if_eq}}
+
+		{{#if_eq this.sent_to_user_id ../user._id }}
+			<a href="/conversations/{{this._id}}">
+				<div class="col-md-6 col-md-offset-3">
+					<div class="well">
+						{{this.created_by_user_name}}
+					</div>
+				</div>
+			</a>
+		{{/if_eq}}
+	{{/each}}
+{{/if}}
+
+{{#if user_messages }}
+	<div class="col-md-6 col-md-offset-3 messages-container">
+		{{#each user_messages}}
+
+		<div class="well messages-well">
+			{{#if_eq this.from_user_id ../user._id}}
+			<div align="left">
+				<b>You:</b> {{this.message}}
+			</div>
+			{{/if_eq}}
+
+			{{#if_eq this.to_user_id ../user._id}}
+			<div align="left">
+				<b>{{this.from}}:</b> {{this.message}}
+			</div>
+			{{/if_eq}}
+		</div>
+		{{/each}}
+	</div>
+
+	<form method="post" action="/messages/reply/{{conversation_id}}">
+		<div class="form-group col-md-6 col-md-offset-3">
+			<textarea class="form-control" name="message" rows="5" cols="10"></textarea>
+			<br>
+			<center>
+				<button type="submit" class="btn btn-primary">Send</button>
+			</center>
+		</div>
+	</form>
+{{/if}}
+
+</center>

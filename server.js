@@ -18,6 +18,8 @@ var app = express();
 
 var index = require('./routes/index');
 var users = require('./routes/users');
+var conversations = require('./routes/conversations');
+var messages = require('./routes/messages');
 
 // view engine setup
 // Make the 'views' folder the starting point for any route that uses res.render
@@ -80,6 +82,9 @@ app.use('/', index);
 
 // Any routes that being with '/users' use the 'users.js' route file
 app.use('/users', users);
+
+app.use('/conversations', conversations);
+app.use('/messages', messages);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
