@@ -1,31 +1,31 @@
 <center>
-{{#if conversations }}
+	{{#if conversations }}
 	<h3>Messages</h3>
 	{{#each conversations}}
 
-		{{#if_eq this.created_by_user_id ../user._id }}
-			<a href="/conversations/{{this._id}}">
-			<div class="col-md-6 col-md-offset-3">
-				<div class="well">
-					{{this.sent_to_user_name}}
-				</div>
+	{{#if_eq this.created_by_user_id ../user._id }}
+	<a href="/conversations/{{this._id}}">
+		<div class="col-md-6 col-md-offset-3">
+			<div class="well">
+				{{this.sent_to_user_name}}
 			</div>
-			</a>
-		{{/if_eq}}
+		</div>
+	</a>
+	{{/if_eq}}
 
-		{{#if_eq this.sent_to_user_id ../user._id }}
-			<a href="/conversations/{{this._id}}">
-				<div class="col-md-6 col-md-offset-3">
-					<div class="well">
-						{{this.created_by_user_name}}
-					</div>
-				</div>
-			</a>
-		{{/if_eq}}
+	{{#if_eq this.sent_to_user_id ../user._id }}
+	<a href="/conversations/{{this._id}}">
+		<div class="col-md-6 col-md-offset-3">
+			<div class="well">
+				{{this.created_by_user_name}}
+			</div>
+		</div>
+	</a>
+	{{/if_eq}}
 	{{/each}}
-{{/if}}
+	{{/if}}
 
-{{#if user_messages }}
+	{{#if user_messages }}
 	<div class="col-md-6 col-md-offset-3 messages-container">
 		{{#each user_messages}}
 
@@ -54,6 +54,6 @@
 			</center>
 		</div>
 	</form>
-{{/if}}
+	{{/if}}
 
 </center>
