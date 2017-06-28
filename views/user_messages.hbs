@@ -32,7 +32,9 @@
       <div class="well messages-well">
         {{#if_eq this.from_user_id ../user._id}}
         <div align="left">
-          {{this.message}}
+          {{#if this.unread}}
+            <b>{{this.message}}</b>
+          {{/if}}
         </div>
         {{/if_eq}}
 

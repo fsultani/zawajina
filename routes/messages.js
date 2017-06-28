@@ -70,7 +70,8 @@ router.post('/:user_id', ensureAuthenticated, (req, res, next) => {
 							to: user.first_name,
 							from_user_id: req.user._id,
 							to_user_id: user._id,
-							created_at: Date.now()
+							created_at: Date.now(),
+							unread: true
 						}, (err, message) => {
 							if (err) {
 								console.log(err)
@@ -102,7 +103,8 @@ router.post('/reply/:conversation_id', ensureAuthenticated, (req, res, next) => 
 					to: user.first_name,
 					from_user_id: req.user._id,
 					to_user_id: user._id,
-					created_at: Date.now()
+					created_at: Date.now(),
+					unread: true
 				}, (err, message) => {
 					if (err) {
 						console.log(err)

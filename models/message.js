@@ -22,6 +22,7 @@ var Message = mongoose.Schema({
 		required: true
 	},
 	created_at: Date,
+	unread: Boolean,
 	conversations: [
 		{
 			type: mongoose.Schema.Types.ObjectId,

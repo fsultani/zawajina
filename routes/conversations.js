@@ -17,6 +17,7 @@ function ensureAuthenticated(req, res, next){
 router.get('/:id', ensureAuthenticated, (req, res, next) => {
 	User.findOne({ _id: req.user._id }, (err, user) => {
 		Message.find({conversations: req.params.id}, (err, messages) => {
+			console.log("before messages\n", messages)
 			res.render('user_messages', {
 				user: user,
 				user_messages: messages,
@@ -30,6 +31,10 @@ router.get('/:id', ensureAuthenticated, (req, res, next) => {
 		        }
 		      }
 		    }
+			})
+			Message.findByIdAndUpdate({ conversations: req.params.id }, { $set: { unread: false}}, (err, message) => {})
+			Message.find({ conversations: req.params.id }, (err, messages) => {
+				console.log("after messages\n", messages)
 			})
 		})
 	})
