@@ -39,7 +39,7 @@ router.get('/', ensureAuthenticated, (req, res, next) => {
 router.get('/:user_id', ensureAuthenticated, (req, res, next) => {
 	User.findOne({ _id: req.params.user_id }, (err, user) => {
 		Conversation.find({ $and: [{ users: req.user._id }, { users: user._id }] }, (err, conversation) => {
-			console.log("conversation\n", conversation.length)
+			console.log("conversation.length\n", conversation.length)
 			if (conversation.length === 0) {
 				res.render('contact_member', { user: user })
 			} else {
