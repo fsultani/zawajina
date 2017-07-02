@@ -39,7 +39,6 @@ router.get('/', ensureAuthenticated, (req, res, next) => {
 router.get('/:user_id', ensureAuthenticated, (req, res, next) => {
 	User.findOne({ _id: req.params.user_id }, (err, user) => {
 		Conversation.find({ $and: [{ users: req.user._id }, { users: user._id }] }, (err, conversation) => {
-			console.log("conversation.length\n", conversation.length)
 			if (conversation.length === 0) {
 				res.render('contact_member', { user: user })
 			} else {
@@ -52,7 +51,7 @@ router.get('/:user_id', ensureAuthenticated, (req, res, next) => {
 // Send a new message to another user
 router.post('/:user_id', ensureAuthenticated, (req, res, next) => {
 	User.findById({ _id: req.params.user_id }, (err, user) => {
-		Conversation.find({ users: req.params.user_id }, (err, conversation) => {
+		Conversation.find({ $and: [{ users: req.user._id }, { users: user._id }] }, (err, conversation) => {
 			if (conversation.length === 0) {
 				Conversation.create({
 					created_at: Date.now(),
