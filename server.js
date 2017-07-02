@@ -13,7 +13,7 @@ var mongo = require('mongodb')
 var mongoose = require('mongoose')
 
 if (process.env.NODE_ENV === 'development') {
-  require('./secrets')
+  require('./db_credentials')
   mongoose.connect(process.env.MONGO_DB)
 } else {
   mongoose.connect(process.env.MONGO_DB)
