@@ -12,7 +12,12 @@ var flash = require('connect-flash');
 var mongo = require('mongodb')
 var mongoose = require('mongoose')
 
-mongoose.connect(process.env.MONGO_DB)
+if (process.env.NODE_ENV === 'development') {
+  require('./db_credentials')
+  mongoose.connect(process.env.MONGO_DB)
+} else {
+  mongoose.connect(process.env.MONGO_DB)
+}
 
 var app = express();
 
@@ -73,7 +78,7 @@ app.use(flash());
 app.use(function (req, res, next) {
   res.locals.success_message = req.flash('success_message');
   res.locals.error_message = req.flash('error_message');
-  res.locals.error = req.flash('error');
+  // res.locals.error = req.flash('error');
   next();
 });
 
@@ -94,15 +99,15 @@ app.use(function(req, res, next) {
 });
 
 // error handler
-// app.use(function(err, req, res, next) {
-//   set locals, only providing error in development
-//   res.locals.message = err.message;
-//   res.locals.error = req.app.get('env') === 'development' ? err : {};
+app.use(function(err, req, res, next) {
+  // set locals, only providing error in development
+  res.locals.message = err.message;
+  res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-//   render the error page
-//   res.status(err.status || 500);
-//   // res.render('error');
-// });
+  // render the error page
+  res.status(err.status || 500);
+  // res.render('error');
+});
 
 var port = process.env.PORT || 3000;
 

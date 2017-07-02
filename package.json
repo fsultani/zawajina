@@ -4,6 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
+    "start": "if [[ ${NODE_ENV} == \"development\" ]]; then browser-refresh server.js; else node server.js; fi",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
