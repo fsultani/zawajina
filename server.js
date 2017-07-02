@@ -12,7 +12,12 @@ var flash = require('connect-flash');
 var mongo = require('mongodb')
 var mongoose = require('mongoose')
 
-mongoose.connect(process.env.MONGO_DB)
+if (process.env.NODE_ENV === 'development') {
+  require('./secrets')
+  mongoose.connect(process.env.MONGO_DB)
+} else {
+  mongoose.connect(process.env.MONGO_DB)
+}
 
 var app = express();
 
