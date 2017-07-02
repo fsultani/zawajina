@@ -48,19 +48,6 @@ router.get('/member', ensureAuthenticated, (req, res, next) => {
 	})
 })
 
-// Get a member's profile
-// router.get('/:username', ensureAuthenticated, (req, res, next) => {
-// 	User.findOne({ username: req.params.username }, (err, user) => {
-// 		Conversation.find({ $and: [{ users: req.user._id }, { users: user._id }] }, (err, conversation) => {
-// 			if (conversation.length === 0) {
-// 				res.render('member_profile', { user: user })
-// 			} else {
-// 				res.redirect('/conversations/' + conversation[0]._id)
-// 			}
-// 		})
-// 	})
-// });
-
 router.get('/:username', ensureAuthenticated, (req, res, next) => {
 	User.findOne({ username: req.params.username }, (err, user) => {
 		res.render('member_profile', { user: user })
