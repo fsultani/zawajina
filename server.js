@@ -78,7 +78,6 @@ app.use(flash());
 app.use(function (req, res, next) {
   res.locals.success_message = req.flash('success_message');
   res.locals.error_message = req.flash('error_message');
-  // res.locals.error = req.flash('error');
   next();
 });
 
@@ -106,7 +105,6 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  // res.render('error');
 });
 
 var port = process.env.PORT || 3000;

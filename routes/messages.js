@@ -36,6 +36,8 @@ router.get('/', ensureAuthenticated, (req, res, next) => {
 })
 
 // Get the contact page to contact another member
+// If no conversations with the user exist, create a new conversation
+// Else, redirect to the existing conversation
 router.get('/:user_id', ensureAuthenticated, (req, res, next) => {
 	User.findOne({ _id: req.params.user_id }, (err, user) => {
 		Conversation.find({ $and: [{ users: req.user._id }, { users: user._id }] }, (err, conversation) => {
@@ -70,7 +72,8 @@ router.post('/:user_id', ensureAuthenticated, (req, res, next) => {
 							from_user_id: req.user._id,
 							to_user_id: user._id,
 							created_at: Date.now(),
-							unread: true
+							unread: true,
+							view_count: 0
 						}, (err, message) => {
 							if (err) {
 								console.log(err)
@@ -103,7 +106,8 @@ router.post('/reply/:conversation_id', ensureAuthenticated, (req, res, next) => 
 					from_user_id: req.user._id,
 					to_user_id: user._id,
 					created_at: Date.now(),
-					unread: true
+					unread: true,
+					view_count: 0
 				}, (err, message) => {
 					if (err) {
 						console.log(err)
@@ -122,7 +126,9 @@ router.post('/reply/:conversation_id', ensureAuthenticated, (req, res, next) => 
 					to: user.first_name,
 					from_user_id: req.user._id,
 					to_user_id: user._id,
-					created_at: Date.now()
+					created_at: Date.now(),
+					unread: true,
+					view_count: 0
 				}, (err, message) => {
 					if (err) {
 						console.log(err)
