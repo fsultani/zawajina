@@ -42,7 +42,6 @@ passport.deserializeUser(function(id, done) {
 });
 
 router.post('/login', passport.authenticate('local', {
-    // successRedirect: '/users/member',
   	successRedirect: '/',
   	failureRedirect: '/login',
   	failureFlash: true,
