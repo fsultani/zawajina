@@ -20,7 +20,6 @@ router.get('/:id', ensureAuthenticated, (req, res, next) => {
 	User.findOne({ _id: req.user._id }, (err, user) => {
 		Message.find({conversations: req.params.id}, (err, messages) => {
 			res.render('user_messages', {
-				user: user,
 				user_messages: messages,
 				conversation_id: req.params.id,
 				helpers: {

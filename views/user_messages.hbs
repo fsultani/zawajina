@@ -1,9 +1,10 @@
 <center>
+<h3>Welcome to your message center, {{logged_in_user.first_name}}</h3>
   {{#if conversations }}
     <h3>Messages</h3>
     {{#each conversations}}
 
-      {{#if_eq this.created_by_user_id ../user._id }}
+      {{#if_eq this.created_by_user_id ../logged_in_user._id }}
         <a href="/conversations/{{this._id}}">
           <div class="col-md-6 col-md-offset-3">
             <div class="well">
@@ -13,7 +14,7 @@
         </a>
       {{/if_eq}}
 
-      {{#if_eq this.sent_to_user_id ../user._id }}
+      {{#if_eq this.sent_to_user_id ../logged_in_user._id }}
         <a href="/conversations/{{this._id}}">
           <div class="col-md-6 col-md-offset-3">
             <div class="well">
@@ -30,7 +31,7 @@
       {{#each user_messages}}
 
       <div class="well messages-well">
-        {{#if_eq this.from_user_id ../user._id}}
+        {{#if_eq this.from_user_id ../logged_in_user._id}}
         {{!-- This shows the currently logged in user --}}
         <div align="left">
           {{#if this.unread}}
@@ -45,7 +46,7 @@
         </div>
         {{/if_eq}}
 
-        {{#if_eq this.to_user_id ../user._id}}
+        {{#if_eq this.to_user_id ../logged_in_user._id}}
         <div align="left">
           {{#if this.unread}}
             <b>{{this.from}}: {{this.message}}</b>

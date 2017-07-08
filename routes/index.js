@@ -4,7 +4,6 @@ var LocalStrategy = require('passport-local').Strategy;
 var bcrypt = require('bcryptjs')
 var jwt = require('jwt-simple')
 
-// var JWT_SECRET = 'fsultani'
 var JWT_SECRET = Buffer.from('fe1a1915a379f3be5394b64d14794932', 'hex')
 
 var router = express.Router()
@@ -67,41 +66,32 @@ router.get('/', function(req, res, next) {
 
 /* GET home page. */
 router.get('/home', ensureAuthenticated, function(req, res, next) {
-	User.findOne({ username: req.user.username }, function(err, loggedInUser) {
-		if (err) throw err
-		else {
-			if (loggedInUser.gender == 'male') {
-				User.find({gender: 'female'}, function(err, all) {
-					if (err) return next(err)
-					else {
-						res.render('home', {
-							user: loggedInUser,
-							all: all
-						})
-					}
-				})
-			} else {
-				User.find({gender: 'male'}, function(err, all) {
-					if (err) return next(err)
-					else {
-						res.render('home', {
-							user: loggedInUser,
-							all: all
-						})
-					}
-				})
-			}
-		}
-	})
+ if (req.user.gender == 'male') {
+  User.find({gender: 'female'}, function(err, all) {
+   if (err) return next(err)
+     else {
+      res.render('home', {
+       all: all
+     })
+    }
+  })
+} else {
+  User.find({gender: 'male'}, function(err, all) {
+   if (err) return next(err)
+     else {
+      res.render('home', {
+       all: all
+     })
+    }
+  })
+}
 });
 
 router.get('/dashboard', ensureAuthenticated, function(req, res, next) {
 	User.findOne({ username: req.user.username }, function(err, user) {
 		if (err) throw err
 		else {
-			res.render('dashboard', {
-				user: user
-			})
+			res.render('dashboard')
 		}
 	})
 });

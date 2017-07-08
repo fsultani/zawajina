@@ -1,12 +1,3 @@
-// The sender
-// console.log("\nreq.user\n", req.user)
-
-// The user the message is being sent to
-// console.log("\nuser\n", user)
-
-// The message
-// console.log("\nreq.body\n", req.body)
-
 var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
@@ -32,7 +23,6 @@ router.get('/member', ensureAuthenticated, (req, res, next) => {
 	Conversation.find({ users: req.user._id }, (err, conversations) => {
 		User.findOne({ _id: req.user._id }, (err, user) => {
 			res.render('user_profile', {
-				user: user,
 				conversations: conversations,
 				helpers: {
 		      if_eq: function(a, b, options) {
@@ -49,8 +39,8 @@ router.get('/member', ensureAuthenticated, (req, res, next) => {
 })
 
 router.get('/:username', ensureAuthenticated, (req, res, next) => {
-	User.findOne({ username: req.params.username }, (err, user) => {
-		res.render('member_profile', { user: user })
+	User.findOne({ username: req.params.username }, (err, member) => {
+		res.render('member_profile', { member: member })
 	})
 });
 

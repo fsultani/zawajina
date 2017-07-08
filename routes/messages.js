@@ -19,7 +19,6 @@ router.get('/', ensureAuthenticated, (req, res, next) => {
 	Conversation.find({ users: req.user._id }, (err, conversations) => {
 		User.findOne({ _id: req.user._id }, (err, user) => {
 			res.render('user_messages', {
-				user: user,
 				conversations: conversations,
 				helpers: {
 		      if_eq: function(a, b, options) {
@@ -39,10 +38,10 @@ router.get('/', ensureAuthenticated, (req, res, next) => {
 // If no conversations with the user exist, create a new conversation
 // Else, redirect to the existing conversation
 router.get('/:user_id', ensureAuthenticated, (req, res, next) => {
-	User.findOne({ _id: req.params.user_id }, (err, user) => {
-		Conversation.find({ $and: [{ users: req.user._id }, { users: user._id }] }, (err, conversation) => {
+	User.findOne({ _id: req.params.user_id }, (err, member) => {
+		Conversation.find({ $and: [{ users: req.user._id }, { users: member._id }] }, (err, conversation) => {
 			if (conversation.length === 0) {
-				res.render('contact_member', { user: user })
+				res.render('contact_member', { member: member })
 			} else {
 				res.redirect('/conversations/' + conversation[0]._id)
 			}
