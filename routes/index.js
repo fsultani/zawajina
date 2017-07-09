@@ -10,23 +10,24 @@ var router = express.Router()
 
 var User = require('../models/user')
 var Message = require('../models/message')
+var Conversation = require('../models/conversation')
 
 passport.use(new LocalStrategy(
   function(username, password, done) {
-  	User.getUserByUsername(username, function(err, user) {
-  		if (err) throw err;
-  		if (!user) {
-  			return done(null, false, {message: 'Unknown user'});
-  		}
-  		User.comparePassword(password, user.password, function(err, isMatch) {
-  			if (err) throw err;
-  			if(isMatch) {
-  				return done(null, user);
-  			} else {
-  				return done(null, false, {message: 'Invalid password'});
-  			}
-  		})
-  	})
+    User.getUserByUsername(username, function(err, user) {
+      if (err) throw err;
+      if (!user) {
+        return done(null, false, {message: 'Unknown user'});
+      }
+      User.comparePassword(password, user.password, function(err, isMatch) {
+        if (err) throw err;
+        if(isMatch) {
+          return done(null, user);
+        } else {
+          return done(null, false, {message: 'Invalid password'});
+        }
+      })
+    })
   }
 ));
 
@@ -41,59 +42,68 @@ passport.deserializeUser(function(id, done) {
 });
 
 router.post('/login', passport.authenticate('local', {
-  	successRedirect: '/',
-  	failureRedirect: '/login',
-  	failureFlash: true,
+    successRedirect: '/',
+    failureRedirect: '/login',
+    failureFlash: true,
 }));
 
 function ensureAuthenticated(req, res, next){
-	if(req.isAuthenticated()){
-		return next();
-	} else {
-		res.redirect('/');
-	}
+  if(req.isAuthenticated()){
+    return next();
+  } else {
+    res.redirect('/');
+  }
 }
 
 /* GET root page. */
 router.get('/', function(req, res, next) {
-	if(req.isAuthenticated()){
-		return res.redirect('/home');
-		next();
-	} else {
-		res.redirect('/login')
-	}
+  if(req.isAuthenticated()){
+    return res.redirect('/home');
+    next();
+  } else {
+    res.redirect('/login')
+  }
 });
 
 /* GET home page. */
 router.get('/home', ensureAuthenticated, function(req, res, next) {
- if (req.user.gender == 'male') {
-  User.find({gender: 'female'}, function(err, all) {
-   if (err) return next(err)
-     else {
-      res.render('home', {
-       all: all
-     })
-    }
-  })
-} else {
-  User.find({gender: 'male'}, function(err, all) {
-   if (err) return next(err)
-     else {
-      res.render('home', {
-       all: all
-     })
-    }
-  })
-}
-});
-
-router.get('/dashboard', ensureAuthenticated, function(req, res, next) {
-	User.findOne({ username: req.user.username }, function(err, user) {
-		if (err) throw err
-		else {
-			res.render('dashboard')
-		}
-	})
+  if (req.user.gender == 'male') {
+    User.find({gender: 'female'}, function(err, all) {
+      if (err) return next(err)
+      else {
+        Conversation.find({ users: req.user._id }, (err, conversations) => {
+          var conversations_count = 0
+          conversations.map((conversation) => {
+            if (req.user._id.toString() === conversation.sent_to_user_id) {
+              conversations_count += 1
+            }
+          })
+          res.render('home', {
+            conversations_count: conversations_count,
+            all: all
+          })
+        })
+      }
+    })
+  } else {
+    User.find({gender: 'male'}, function(err, all) {
+      if (err) return next(err)
+      else {
+        Conversation.find({ users: req.user._id }, (err, conversations) => {
+          var conversations_count = 0
+          conversations.map((conversation) => {
+            if (req.user._id.toString() === conversation.sent_to_user_id) {
+              conversations_count += 1
+            }
+          })
+          res.render('home', {
+            conversations_count: conversations_count,
+            all: all
+          })
+        })
+      }
+    })
+  }
 });
 
 router.get('/register', function(req, res, next) {
@@ -105,54 +115,54 @@ router.get('/login', function(req, res, next) {
 });
 
 router.get('/logout', function(req, res, next) {
-	req.logout()
+  req.logout()
   req.flash('logged_out_message', 'You have successfully logged out.');
   res.redirect('/login')
 });
 
 router.post('/register', function(req, res) {
-	var first_name = req.body.first_name
-	var last_name = req.body.last_name
-	var username = req.body.username
-	var email = req.body.email
-	var password = req.body.password
-	var confirm_password = req.body.confirm_password
-	var gender = req.body.gender
-	
-	req.checkBody('first_name', 'First name is required').notEmpty()
-	req.checkBody('last_name', 'Last name is required').notEmpty()
-	req.checkBody('username', 'Username is required').notEmpty()
-	req.checkBody('email', 'Email is required').notEmpty()
-	req.checkBody('password', 'Password is required').notEmpty()
-	req.checkBody('confirm_password', 'Password confirmation is required').notEmpty()
-	req.checkBody('gender', 'Please select your gender').notEmpty()
-	
-	var errors = req.validationErrors()
+  var first_name = req.body.first_name
+  var last_name = req.body.last_name
+  var username = req.body.username
+  var email = req.body.email
+  var password = req.body.password
+  var confirm_password = req.body.confirm_password
+  var gender = req.body.gender
+  
+  req.checkBody('first_name', 'First name is required').notEmpty()
+  req.checkBody('last_name', 'Last name is required').notEmpty()
+  req.checkBody('username', 'Username is required').notEmpty()
+  req.checkBody('email', 'Email is required').notEmpty()
+  req.checkBody('password', 'Password is required').notEmpty()
+  req.checkBody('confirm_password', 'Password confirmation is required').notEmpty()
+  req.checkBody('gender', 'Please select your gender').notEmpty()
+  
+  var errors = req.validationErrors()
 
-	if (errors) {
-		res.render('register', {
-			errors: errors
-		})
-	} else {
-		if (password === confirm_password) {
-			var newUser = new User ({
-				first_name: first_name,
-				last_name: last_name,
-				username: username,
-				email: email,
-				password: password,
-				gender: gender
-			})
+  if (errors) {
+    res.render('register', {
+      errors: errors
+    })
+  } else {
+    if (password === confirm_password) {
+      var newUser = new User ({
+        first_name: first_name,
+        last_name: last_name,
+        username: username,
+        email: email,
+        password: password,
+        gender: gender
+      })
 
-			User.createUser(newUser, (err, user) => {})
-		
-			req.flash('success_message', 'You are registered and can now log in!');
-			res.redirect('/login');
-		} else {
-			req.flash('error_message', 'Your passwords did not match.  Please try again.');
-			res.redirect('/register')
-		}
-	}
+      User.createUser(newUser, (err, user) => {})
+    
+      req.flash('success_message', 'You are registered and can now log in!');
+      res.redirect('/login');
+    } else {
+      req.flash('error_message', 'Your passwords did not match.  Please try again.');
+      res.redirect('/register')
+    }
+  }
 })
 
 module.exports = router

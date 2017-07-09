@@ -53,9 +53,12 @@
           </ul>
           <ul class="nav nav-pills pull-right">
           {{#if logged_in_user }}
-            <li role="presentation"><a href="/dashboard">Dashboard</a></li>
             <li role="presentation"><a href="/logout">Log Out</a></li>
-            <li role="presentation"><a href="/messages">Messages</a></li>
+            {{#if conversations_count }}
+              <li role="presentation"><a href="/messages">Messages ({{conversations_count}})</a></li>
+            {{else}}
+              <li role="presentation"><a href="/messages">Messages</a></li>
+            {{/if}}
             <li role="presentation"><a href="/users/member">Profile</a></li>
           {{else}}
             <li role="presentation"><a href="/login">Login</a></li>

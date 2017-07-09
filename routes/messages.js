@@ -1,6 +1,7 @@
-var express = require('express');
-var router = express.Router();
-var mongoose = require('mongoose');
+var express = require('express')
+var router = express.Router()
+var mongoose = require('mongoose')
+var bodyParser = require('body-parser')
 
 var User = require('../models/user')
 var Message = require('../models/message')
@@ -13,6 +14,20 @@ function ensureAuthenticated(req, res, next){
 		res.redirect('/');
 	}
 }
+
+router.use(function(req, res, next) {
+	Conversation.find({ users: req.user._id }, (err, conversations) => {
+		var conversations_count = 0
+		conversations.map((conversation) => {
+			console.log('conversation\n', conversation)
+			if (req.user._id.toString() === conversation.sent_to_user_id) {
+				conversations_count += 1
+			}
+		})
+		res.locals.conversations_count = conversations_count
+	})
+	next()
+})
 
 // Get the logged in user's messages
 router.get('/', ensureAuthenticated, (req, res, next) => {
@@ -41,7 +56,9 @@ router.get('/:user_id', ensureAuthenticated, (req, res, next) => {
 	User.findOne({ _id: req.params.user_id }, (err, member) => {
 		Conversation.find({ $and: [{ users: req.user._id }, { users: member._id }] }, (err, conversation) => {
 			if (conversation.length === 0) {
-				res.render('contact_member', { member: member })
+				res.render('contact_member', {
+					member: member
+				})
 			} else {
 				res.redirect('/conversations/' + conversation[0]._id)
 			}

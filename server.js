@@ -26,6 +26,8 @@ var users = require('./routes/users');
 var conversations = require('./routes/conversations');
 var messages = require('./routes/messages');
 
+var Conversation = require('./models/conversation')
+
 // view engine setup
 // Make the 'views' folder the starting point for any route that uses res.render
 app.set('views', path.join(__dirname, 'views'));
@@ -83,6 +85,22 @@ app.use(function (req, res, next) {
   res.locals.logged_in_user = req.user
   next();
 });
+
+// app.use(function (req, res, next) {
+//   Conversation.find({ users: res.locals.logged_in_user }, (err, conversations) => {
+//     if (res.locals.logged_in_user != null) {
+//       var conversations_count = 0
+//       conversations.map((conversation) => {
+//         if (res.locals.logged_in_user._id.toString() === conversation.sent_to_user_id) {
+//           conversations_count += 1
+//         }
+//       })
+//     }
+//     console.log('conversations_count\n', conversations_count)
+//     res.locals.conversation_length = conversations_count
+//   })
+//   next();
+// });
 
 // Any routes that being with root ('/') use the 'index.js' route file
 app.use('/', index);

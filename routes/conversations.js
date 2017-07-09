@@ -1,11 +1,10 @@
-// console.log("user\n", user) is the currently logged in user
-
 var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
 
 var User = require('../models/user')
 var Message = require('../models/message')
+var Conversation = require('../models/conversation')
 
 function ensureAuthenticated(req, res, next){
 	if(req.isAuthenticated()){
@@ -14,6 +13,19 @@ function ensureAuthenticated(req, res, next){
 		res.redirect('/');
 	}
 }
+
+router.use(function(req, res, next) {
+	Conversation.find({ users: req.user._id }, (err, conversations) => {
+		var conversations_count = 0
+		conversations.map((conversation) => {
+			if (req.user._id.toString() === conversation.sent_to_user_id) {
+				conversations_count += 1
+			}
+		})
+		res.locals.conversations_count = conversations_count
+	})
+	next()
+})
 
 // Get the conversation with the selected member
 router.get('/:id', ensureAuthenticated, (req, res, next) => {
