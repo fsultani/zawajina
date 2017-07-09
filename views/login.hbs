@@ -1,3 +1,9 @@
+<div class="row">
+  {{#if logout_message}}
+  <div class="alert alert-success">{{logout_message}}</div>
+  {{/if}}
+</div>
+
 <div align="center">
 <h2 class="page-header">Account Login</h2>
 <form method="post" action="/login">

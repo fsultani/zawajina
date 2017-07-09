@@ -106,7 +106,8 @@ router.get('/login', function(req, res, next) {
 
 router.get('/logout', function(req, res, next) {
 	req.logout()
-  res.redirect('/')
+  req.flash('logout_message', 'You have successfully logged out.');
+  res.redirect('/login')
 });
 
 router.post('/register', function(req, res) {
