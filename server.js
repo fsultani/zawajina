@@ -79,7 +79,7 @@ app.use(function (req, res, next) {
   res.locals.success_message = req.flash('success_message');
   res.locals.error_message = req.flash('error_message');
   res.locals.error = req.flash('error');
-  res.locals.logout_message = req.flash('logout_message');
+  res.locals.logged_out_message = req.flash('logged_out_message');
   res.locals.logged_in_user = req.user
   next();
 });
