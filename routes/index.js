@@ -106,7 +106,8 @@ router.get('/login', function(req, res, next) {
 
 router.get('/logout', function(req, res, next) {
 	req.logout()
-	res.render('logout')
+	// res.render('logout')
+  res.redirect('/')
 });
 
 router.post('/register', function(req, res) {
