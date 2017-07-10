@@ -15,25 +15,32 @@ function ensureAuthenticated(req, res, next){
 	}
 }
 
-router.use(function(req, res, next) {
-	Conversation.find({ users: req.user._id }, (err, conversations) => {
-		var conversations_count = 0
-		conversations.map((conversation) => {
-			console.log('conversation\n', conversation)
-			if (req.user._id.toString() === conversation.sent_to_user_id) {
-				conversations_count += 1
-			}
-		})
-		res.locals.conversations_count = conversations_count
-	})
-	next()
-})
+// router.use(function(req, res, next) {
+// 	Conversation.find({ users: req.user._id }, (err, conversations) => {
+// 		var conversations_count = 0
+// 		conversations.map((conversation) => {
+// 			console.log('conversation\n', conversation)
+// 			if (req.user._id.toString() === conversation.sent_to_user_id) {
+// 				conversations_count += 1
+// 			}
+// 		})
+// 		res.locals.conversations_count = conversations_count
+// 	})
+// 	next()
+// })
 
 // Get the logged in user's messages
 router.get('/', ensureAuthenticated, (req, res, next) => {
 	Conversation.find({ users: req.user._id }, (err, conversations) => {
 		User.findOne({ _id: req.user._id }, (err, user) => {
+			var conversations_count = 0
+			conversations.map((conversation) => {
+				if (req.user._id.toString() === conversation.sent_to_user_id && conversation.unread) {
+					conversations_count += 1
+				}
+			})
 			res.render('user_messages', {
+				conversations_count: conversations_count,
 				conversations: conversations,
 				helpers: {
 		      if_eq: function(a, b, options) {
@@ -56,8 +63,17 @@ router.get('/:user_id', ensureAuthenticated, (req, res, next) => {
 	User.findOne({ _id: req.params.user_id }, (err, member) => {
 		Conversation.find({ $and: [{ users: req.user._id }, { users: member._id }] }, (err, conversation) => {
 			if (conversation.length === 0) {
-				res.render('contact_member', {
-					member: member
+				Conversation.find({ users: req.user._id }, (err, conversations) => {
+					var conversations_count = 0
+					conversations.map((conversation) => {
+						if (req.user._id.toString() === conversation.sent_to_user_id && conversation.unread) {
+							conversations_count += 1
+						}
+					})
+					res.render('contact_member', {
+						conversations_count: conversations_count,
+						member: member
+					})
 				})
 			} else {
 				res.redirect('/conversations/' + conversation[0]._id)
@@ -76,7 +92,8 @@ router.post('/:user_id', ensureAuthenticated, (req, res, next) => {
 					created_by_user_name: req.user.first_name,
 					created_by_user_id: req.user._id,
 					sent_to_user_name: user.first_name,
-					sent_to_user_id: user._id
+					sent_to_user_id: user._id,
+					unread: true
 				}, (err, conversation) => {
 					if (err) {
 						console.log(err)

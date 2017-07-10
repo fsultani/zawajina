@@ -74,7 +74,7 @@ router.get('/home', ensureAuthenticated, function(req, res, next) {
         Conversation.find({ users: req.user._id }, (err, conversations) => {
           var conversations_count = 0
           conversations.map((conversation) => {
-            if (req.user._id.toString() === conversation.sent_to_user_id) {
+            if (req.user._id.toString() === conversation.sent_to_user_id && conversation.unread) {
               conversations_count += 1
             }
           })
@@ -92,7 +92,7 @@ router.get('/home', ensureAuthenticated, function(req, res, next) {
         Conversation.find({ users: req.user._id }, (err, conversations) => {
           var conversations_count = 0
           conversations.map((conversation) => {
-            if (req.user._id.toString() === conversation.sent_to_user_id) {
+            if (req.user._id.toString() === conversation.sent_to_user_id && conversation.unread) {
               conversations_count += 1
             }
           })
