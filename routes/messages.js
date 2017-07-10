@@ -15,20 +15,6 @@ function ensureAuthenticated(req, res, next){
 	}
 }
 
-// router.use(function(req, res, next) {
-// 	Conversation.find({ users: req.user._id }, (err, conversations) => {
-// 		var conversations_count = 0
-// 		conversations.map((conversation) => {
-// 			console.log('conversation\n', conversation)
-// 			if (req.user._id.toString() === conversation.sent_to_user_id) {
-// 				conversations_count += 1
-// 			}
-// 		})
-// 		res.locals.conversations_count = conversations_count
-// 	})
-// 	next()
-// })
-
 // Get the logged in user's messages
 router.get('/', ensureAuthenticated, (req, res, next) => {
 	Conversation.find({ users: req.user._id }, (err, conversations) => {

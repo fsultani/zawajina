@@ -14,19 +14,6 @@ function ensureAuthenticated(req, res, next){
 	}
 }
 
-// router.use(function(req, res, next) {
-// 	Conversation.find({ users: req.user._id }, (err, conversations) => {
-// 		var conversations_count = 0
-// 		conversations.map((conversation) => {
-// 			if (req.user._id.toString() === conversation.sent_to_user_id) {
-// 				conversations_count += 1
-// 			}
-// 		})
-// 		res.locals.conversations_count = conversations_count
-// 	})
-// 	next()
-// })
-
 // Get the conversation with the selected member
 router.get('/:id', ensureAuthenticated, (req, res, next) => {
 	User.findOne({ _id: req.user._id }, (err, user) => {
