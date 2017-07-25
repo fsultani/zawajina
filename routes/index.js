@@ -86,7 +86,6 @@ router.get('/home', ensureAuthenticated, function(req, res, next) {
               var conversations_count = 0
               total_conversations_count.map((each_conversation) => {
                 if ((req.user._id.toString() === each_conversation.sent_to_user_id) || (req.user._id.toString() === each_conversation.created_by_user_id) && each_conversation.unread) {
-                  console.log('COUNT')
                   conversations_count += 1
                 }
               })
