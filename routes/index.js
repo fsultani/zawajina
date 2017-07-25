@@ -71,34 +71,70 @@ router.get('/home', ensureAuthenticated, function(req, res, next) {
     User.find({gender: 'female'}, function(err, all) {
       if (err) return next(err)
       else {
-        Conversation.find({ users: req.user._id }, (err, conversations) => {
-          var conversations_count = 0
-          conversations.map((conversation) => {
-            if (req.user._id.toString() === conversation.sent_to_user_id && conversation.unread) {
-              conversations_count += 1
+        Conversation.find({ users: req.user._id }, (err, total_conversations_count) => {
+
+          Message.find({to_user_id: req.user._id}, (err, messages) => {
+            console.log('messages\n', messages)
+
+            function find_unread_messages_2(message) {
+              return ((req.user._id.toString() === message.to_user_id ) && message.unread)
             }
-          })
-          res.render('home', {
-            conversations_count: conversations_count,
-            all: all
+
+            if (messages.some(find_unread_messages_2)) {
+              console.log("find_unread_messages_2 is true")
+
+              var conversations_count = 0
+              total_conversations_count.map((each_conversation) => {
+                if ((req.user._id.toString() === each_conversation.sent_to_user_id) || (req.user._id.toString() === each_conversation.created_by_user_id) && each_conversation.unread) {
+                  console.log('COUNT')
+                  conversations_count += 1
+                }
+              })
+              res.render('home', {
+                conversations_count: conversations_count,
+                all: all
+              })
+            } else {
+              console.log("Both are false")
+              res.render('home', {
+                all: all
+              })
+            }
           })
         })
       }
     })
   } else {
-    User.find({gender: 'male'}, function(err, all) {
+    User.find({gender: 'female'}, function(err, all) {
       if (err) return next(err)
       else {
-        Conversation.find({ users: req.user._id }, (err, conversations) => {
-          var conversations_count = 0
-          conversations.map((conversation) => {
-            if (req.user._id.toString() === conversation.sent_to_user_id && conversation.unread) {
-              conversations_count += 1
+        Conversation.find({ users: req.user._id }, (err, total_conversations_count) => {
+
+          Message.find({to_user_id: req.user._id}, (err, messages) => {
+            console.log('messages\n', messages)
+
+            function find_unread_messages_2(message) {
+              return ((req.user._id.toString() === message.to_user_id ) && message.unread)
             }
-          })
-          res.render('home', {
-            conversations_count: conversations_count,
-            all: all
+
+            if (messages.some(find_unread_messages_2)) {
+              console.log("find_unread_messages_2 is true")
+
+              var conversations_count = 0
+              total_conversations_count.map((each_conversation) => {
+                if ((req.user._id.toString() === each_conversation.sent_to_user_id) || (req.user._id.toString() === each_conversation.created_by_user_id) && each_conversation.unread) {
+                  conversations_count += 1
+                }
+              })
+              res.render('home', {
+                conversations_count: conversations_count,
+                all: all
+              })
+            } else {
+              res.render('home', {
+                all: all
+              })
+            }
           })
         })
       }

@@ -46,10 +46,15 @@
       <div class="header clearfix">
         <nav style="padding-top: 10px">
           <ul class="nav nav-pills pull-left">
-            <li role="presentation">
-              <a href="/"><h3 class="text-muted" class="destinations">My Match</h3>
-              </a>
-            </li>
+            {{#if logged_in_user }}
+              <li role="presentation">
+                <a href="/"><h3>My Match <span><h5>({{ logged_in_user.first_name }})</h5></span></h3></a>
+              </li>
+            {{else}}
+              <li role="presentation">
+                <a href="/"><h3>My Match</h3></a>
+              </li>
+            {{/if}}
           </ul>
           <ul class="nav nav-pills pull-right">
           {{#if logged_in_user }}
