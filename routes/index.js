@@ -75,12 +75,12 @@ router.get('/home', ensureAuthenticated, function(req, res, next) {
 
           Message.find({to_user_id: req.user._id}, (err, messages) => {
 
-            function find_unread_messages_2(message) {
+            function find_unread_messages(message) {
               return ((req.user._id.toString() === message.to_user_id ) && message.unread)
             }
 
-            if (messages.some(find_unread_messages_2)) {
-              // console.log("find_unread_messages_2 is true")
+            if (messages.some(find_unread_messages)) {
+              // console.log("find_unread_messages is true")
 
               var conversations_count = 0
               total_conversations_count.map((each_conversation) => {
@@ -111,12 +111,12 @@ router.get('/home', ensureAuthenticated, function(req, res, next) {
           Message.find({to_user_id: req.user._id}, (err, messages) => {
             // console.log('messages\n', messages)
 
-            function find_unread_messages_2(message) {
+            function find_unread_messages(message) {
               return ((req.user._id.toString() === message.to_user_id ) && message.unread)
             }
 
-            if (messages.some(find_unread_messages_2)) {
-              console.log("find_unread_messages_2 is true")
+            if (messages.some(find_unread_messages)) {
+              console.log("find_unread_messages is true")
 
               var conversations_count = 0
               total_conversations_count.map((each_conversation) => {

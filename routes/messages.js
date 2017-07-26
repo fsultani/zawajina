@@ -18,29 +18,45 @@ function ensureAuthenticated(req, res, next){
 // Get the logged in user's messages
 router.get('/', ensureAuthenticated, (req, res, next) => {
   Conversation.find({ users: req.user._id }, (err, conversations) => {
-
     Message.find({to_user_id: req.user._id}, (err, messages) => {
-      function find_unread_messages_2(message) {
+      function find_unread_messages(message) {
         return ((req.user._id.toString() === message.to_user_id ) && message.unread)
       }
-    })
-    var conversations_count = 0
-    conversations.map((conversation) => {
-      if (req.user._id.toString() === conversation.sent_to_user_id && conversation.unread) {
-        conversations_count += 1
-      }
-    })
-    res.render('user_messages', {
-      conversations_count: conversations_count,
-      conversations: conversations,
-      helpers: {
-        if_eq: function(a, b, options) {
-          if (a == b) {
-            return options.fn(this);
-          } else {
-            return options.inverse(this)
+
+      if (messages.some(find_unread_messages)) {
+        var conversations_count = 0
+        conversations.map((each_conversation) => {
+          if ((req.user._id.toString() === each_conversation.sent_to_user_id) || (req.user._id.toString() === each_conversation.created_by_user_id) && each_conversation.unread) {
+            conversations_count += 1
           }
-        }
+        })
+        res.render('user_messages', {
+          conversations_count: conversations_count,
+          conversations: conversations,
+          helpers: {
+            if_eq: function(a, b, options) {
+              if (a == b) {
+                return options.fn(this);
+              } else {
+                return options.inverse(this)
+              }
+            }
+          }
+        })
+      } else {
+        // console.log("Both are false")
+        res.render('user_messages', {
+          conversations: conversations,
+          helpers: {
+            if_eq: function(a, b, options) {
+              if (a == b) {
+                return options.fn(this);
+              } else {
+                return options.inverse(this)
+              }
+            }
+          }
+        })
       }
     })
   })
