@@ -42,7 +42,7 @@ passport.deserializeUser(function(id, done) {
 });
 
 router.post('/login', passport.authenticate('local', {
-    successRedirect: '/',
+    successRedirect: '/messages',
     failureRedirect: '/login',
     failureFlash: true,
 }));
@@ -103,7 +103,7 @@ router.get('/home', ensureAuthenticated, function(req, res, next) {
       }
     })
   } else {
-    User.find({gender: 'female'}, function(err, all) {
+    User.find({gender: 'male'}, function(err, all) {
       if (err) return next(err)
       else {
         Conversation.find({ users: req.user._id }, (err, total_conversations_count) => {

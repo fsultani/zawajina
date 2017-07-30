@@ -7,7 +7,11 @@
       <a href="/conversations/{{this._id}}">
         <div class="col-md-6 col-md-offset-3">
           <div class="well">
-            {{this.sent_to_user_name}}
+          {{#if this.unread }}
+            <b>{{this.created_by_user_name}}</b>
+          {{else}}
+            {{this.created_by_user_name}}
+          {{/if}}
           </div>
         </div>
       </a>
@@ -17,7 +21,11 @@
       <a href="/conversations/{{this._id}}">
         <div class="col-md-6 col-md-offset-3">
           <div class="well">
+          {{#if this.unread }}
+            <b>{{this.created_by_user_name}}</b>
+          {{else}}
             {{this.created_by_user_name}}
+          {{/if}}
           </div>
         </div>
       </a>
