@@ -27,7 +27,7 @@ router.get('/:id', ensureAuthenticated, (req, res, next) => {
       // Find the specific conversation with the selected user to label it as 'read' (false)
       Conversation.findById(req.params.id, (err, current_conversation) => {
         function find_unread_messages_1(message) {
-          console.log('message\n', message)
+          // console.log('message\n', message)
           return ((req.user._id.toString() === message.from_user_id) && (message.conversations[0].toString() === current_conversation._id.toString()) && message.unread)
         }
 
@@ -36,11 +36,11 @@ router.get('/:id', ensureAuthenticated, (req, res, next) => {
         }
 
         if(messages.some(find_unread_messages_1)) {
-          console.log("\nfind_unread_messages_1 is true\n")
+          // console.log("\nfind_unread_messages_1 is true\n")
           // console.log('current_conversation\n', current_conversation)
           var conversations_count = 0
           total_conversations_count.map((each_conversation) => {
-            console.log('each_conversation\n', each_conversation)
+            // console.log('each_conversation\n', each_conversation)
             if ((req.user._id.toString() === each_conversation.sent_to_user_id) && (req.user._id.toString() != messages[messages.length - 1].from_user_id) && each_conversation.unread) {
               conversations_count += 1
             }
@@ -52,7 +52,7 @@ router.get('/:id', ensureAuthenticated, (req, res, next) => {
           } else {
             all_conversations_count = conversations_count
           }
-          console.log('all_conversations_count\n', all_conversations_count)
+          // console.log('all_conversations_count\n', all_conversations_count)
           res.render('user_messages', {
             conversations_count: all_conversations_count,
             user_messages: messages,

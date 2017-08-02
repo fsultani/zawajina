@@ -1,9 +1,7 @@
 <center>
-	<h1>Home page</h1>
 	{{#if logged_in_user }}
-	{{logged_in_user.first_name}}, you are on the home page.
-
-	<h3>All members on this site:</h3>
+	<h1>Welcome home, {{logged_in_user.first_name}}!</h1>
+	<h3>All members on this site</h3>
 
 
 	<div class="col-md-8 col-md-offset-2">
@@ -21,6 +19,6 @@
 	</div>
 
 	{{else}}
-	Welcome to the site.
+	Welcome to the My Match.  Please create a free account, then log in.
 	{{/if}}
 </center>
