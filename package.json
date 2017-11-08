@@ -4,8 +4,9 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "if [[ ${NODE_ENV} == \"development\" ]]; then browser-refresh server.js; else node server.js; fi",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "local": "NODE_ENV=local browser-refresh server.js",
+    "dev": "NODE_ENV=mlab-dev browser-refresh server.js",
+    "start": "node server.js"
   },
   "author": "",
   "license": "ISC",
