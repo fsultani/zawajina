@@ -11,12 +11,13 @@ var expressValidator = require('express-validator')
 var flash = require('connect-flash');
 var mongo = require('mongodb')
 var mongoose = require('mongoose')
-require('./db_credentials')
 
 if (process.env.NODE_ENV === 'mlab-dev') {
+  require('./db_credentials')
   mongoose.connect(process.env.MONGO_DB_MLAB_DEV)
   console.log("Using mlab")
 } else if (process.env.NODE_ENV === 'local') {
+  require('./db_credentials')
   mongoose.connect(process.env.LOCAL)
   console.log("Using local db")
 } else {
