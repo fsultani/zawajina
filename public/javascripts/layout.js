@@ -22,7 +22,5 @@ const layout = `
 this.layout = layout;
 
 window.addEventListener('load', () => {
-  if (window.location.pathname === '/') {
-    window.location.pathname = '/login'
-  }
+  // console.log("Cookies.get('token')\n", Cookies.get('token'))
 })

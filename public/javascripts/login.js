@@ -26,7 +26,7 @@ function login() {
     if (JSON.parse(this.responseText).token) {
       var token = JSON.parse(this.responseText).token
       Cookies.set('token', token)
-      window.location.pathname = '/home'
+      window.location.pathname = '/home'  
     }
   }
 }
