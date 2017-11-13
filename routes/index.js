@@ -6,6 +6,7 @@ var bcrypt = require('bcryptjs')
 var jwt = require('jwt-simple')
 var path = require('path');
 var Cookies = require('js-cookie');
+var path = require('path');
 
 var JWT_SECRET = Buffer.from('fe1a1915a379f3be5394b64d14794932', 'hex')
 
@@ -33,6 +34,21 @@ passport.use(new LocalStrategy(
     })
   }
 ));
+
+router.get('/login', (req, res, next) => {
+  res.sendFile(path.join(__dirname, '../public/index.html'))
+})
+
+router.get('/home', (req, res, next) => {
+  res.sendFile(path.join(__dirname, '../public/index.html'))
+})
+
+router.get('/all-members', (req, res, next) => {
+  console.log("all-members")
+  User.find({gender: 'female'}, (err, all) => {
+    res.json({all: all})
+  })
+})
 
 router.post('/login', (req, res, next) => {
   console.log("Got the login request")
@@ -119,13 +135,6 @@ function ensureAuthenticated(req, res, next){
 /****************************************************************************************************
 // GET home page.
 ****************************************************************************************************/
-router.get('/home-test', (req, res, next) => {
-  console.log("home test")
-  // User.find({gender: 'female'}, (err, all) => {
-  //   res.json({all: all})
-  // })
-})
-
 router.get('/home', passport.authenticate('jwt', { session: false}), function(req, res, next) {
   if (req.user.gender == 'male') {
     User.find({gender: 'female'}, function(err, all) {

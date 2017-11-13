@@ -97,9 +97,9 @@ app.use(function (req, res, next) {
 });
 
 // Catch all 'get' requests, and respond with public/index.html
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public/index.html'))
-})
+// app.get('*', (req, res) => {
+//   res.sendFile(path.join(__dirname, 'public/index.html'))
+// })
 
 // Use index.js for any routes beginning with '/'
 app.use('/', index);
