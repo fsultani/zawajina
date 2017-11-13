@@ -18,7 +18,10 @@ router.get('/profile', ensureAuthenticated, (req, res, next) => {
   res.redirect('/users/' + req.user.username)
 })
 
+/****************************************************************************************************
 // Get the logged in user's profile
+****************************************************************************************************/
+
 router.get('/member', ensureAuthenticated, (req, res, next) => {
   Conversation.find({ users: req.user._id }, (err, conversations) => {
     User.findOne({ _id: req.user._id }, (err, user) => {

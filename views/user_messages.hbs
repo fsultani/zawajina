@@ -1,20 +1,72 @@
 <center>
+{{!
+------------------------------------------------------------------------------------------------------
+Display a list of active conversations 
+--------------------------------------------------------------------------------------------------------
+}}
 {{#if conversations }}
   <h3>Messages</h3>
   {{#each conversations}}
 
+    {{!-- The user that's logged in is viewing his own messages --}}
     {{#if_eq this.created_by_user_id ../logged_in_user._id }}
       <a href="/conversations/{{this._id}}">
         <div class="col-md-6 col-md-offset-3">
           <div class="well">
-          {{!-- <p>{{this}}</p> --}}
-            {{this.sent_to_user_name}}
+            <div style="float: left">{{this.sent_to_user_name}}</div>
+
+            {{#if this.unread }}
+              {{#each ../last_message }}
+                {{#each this }}
+                  {{#if_eq ../../this._id ../this._id}}
+                    <b style="color: green">{{this.message}}</b>
+                  {{/if_eq}}
+                {{/each}}
+              {{/each}}
+            {{else}}
+              {{#each ../last_message }}
+                {{#each this }}
+                  {{#if_eq ../../this._id ../this._id}}
+                    <p>{{this.message}}</p>
+                  {{/if_eq}}
+                {{/each}}
+              {{/each}}
+            {{/if}}
+
           </div>
         </div>
       </a>
     {{/if_eq}}
 
+    {{!-- The user that's logged in is viewing messages sent to her --}}
     {{#if_eq this.sent_to_user_id ../logged_in_user._id }}
+      <a href="/conversations/{{this._id}}">
+        <div class="col-md-6 col-md-offset-3">
+          <div class="well">
+          <div style="float: left">{{this.created_by_user_name}}</div>
+          {{#if this.unread }}  
+            {{#each ../last_message }}
+              {{#each this }}
+                {{#if_eq ../../this._id ../this._id}}
+                  <b style="color: green">{{this.message}}</b>
+                {{/if_eq}}
+              {{/each}}
+            {{/each}}
+          {{else}}
+            {{#each ../last_message }}
+              {{#each this }}
+                {{#if_eq ../../this._id ../this._id}}
+                  <p>{{this.message}}</p>
+                {{/if_eq}}
+              {{/each}}
+            {{/each}}
+          {{/if}}
+          </div>
+        </div>
+      </a>
+    {{/if_eq}}
+
+    {{!-- {{#if_eq this.created_by_user_id ../logged_in_user._id }}
       <a href="/conversations/{{this._id}}">
         <div class="col-md-6 col-md-offset-3">
           <div class="well">
@@ -23,12 +75,26 @@
           {{else}}
             {{this.created_by_user_name}}
           {{/if}}
+          {{#each ../last_message }}
+            {{#each this }}
+              {{#if_eq ../../this._id ../this._id}}
+                <p>{{this.message}}</p>
+              {{/if_eq}}
+            {{/each}}
+          {{/each}}
           </div>
         </div>
       </a>
-    {{/if_eq}}
+    {{/if_eq}} --}}
+
   {{/each}}
 {{/if}}
+
+{{!
+------------------------------------------------------------------------------------------------------
+Display a single conversation
+--------------------------------------------------------------------------------------------------------
+}}
 
 {{#if user_messages }}
   <div class="col-md-6 col-md-offset-3 messages-container">

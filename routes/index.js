@@ -3,6 +3,7 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var bcrypt = require('bcryptjs')
 var jwt = require('jwt-simple')
+var path = require('path');
 
 var JWT_SECRET = Buffer.from('fe1a1915a379f3be5394b64d14794932', 'hex')
 
@@ -12,21 +13,37 @@ var User = require('../models/user')
 var Message = require('../models/message')
 var Conversation = require('../models/conversation')
 
+// passport.use(new LocalStrategy(
+//   function(username, password, done) {
+//     User.getUserByUsername(username, function(err, user) {
+//       if (err) throw err;
+//       if (!user) {
+//         return done(null, false, {message: 'Unknown user'});
+//       }
+//       User.comparePassword(password, user.password, function(err, isMatch) {
+//         if (err) throw err;
+//         if(isMatch) {
+//           // var token = jwt.encode(user, config.secret);
+//           // return the information including token as JSON
+//           // res.json({success: true, token: 'JWT ' + token});
+//           return done(null, user);
+//         } else {
+//           return done(null, false, {message: 'Invalid password'});
+//         }
+//       })
+//     })
+//   }
+// ));
+
 passport.use(new LocalStrategy(
-  function(username, password, done) {
+  function(username, done) {
     User.getUserByUsername(username, function(err, user) {
       if (err) throw err;
       if (!user) {
         return done(null, false, {message: 'Unknown user'});
+      } else {
+        done(null, user);
       }
-      User.comparePassword(password, user.password, function(err, isMatch) {
-        if (err) throw err;
-        if(isMatch) {
-          return done(null, user);
-        } else {
-          return done(null, false, {message: 'Invalid password'});
-        }
-      })
     })
   }
 ));
@@ -41,34 +58,63 @@ passport.deserializeUser(function(id, done) {
   });
 });
 
-router.post('/login', passport.authenticate('local', {
-    successRedirect: '/',
-    failureRedirect: '/login',
-    failureFlash: true,
-}));
+router.post('/login', (req, res) => {
+  User.find({username: req.body.username}, (err, user) => {
+    if (err) return next(err)
+    if (!user) {
+      res.send({ success: false, msg: 'Authentication failed.  User not found.'})
+    } else {
+      User.comparePassword(req.body.password, user[0].password, (err, isMatch) => {
+        if (isMatch && !err) {
+          var token = jwt.encode(user, JWT_SECRET)
+          res.json({ success: true, token: `JWT: ${token}`})
+        } else {
+          res.send({ success: false, msg: 'Authentication failed.  Wrong password.'})
+        }
+      })
+    }
+  })
+})
 
-function ensureAuthenticated(req, res, next){
-  if(req.isAuthenticated()){
-    return next();
-  } else {
-    res.redirect('/');
-  }
-}
+// router.post('/login', passport.authenticate('local', {
+//     successRedirect: '/',
+//     failureRedirect: '/login',
+//     failureFlash: true,
+// }));
+
+// function ensureAuthenticated(req, res, next){
+//   if(req.isAuthenticated()){
+//     return next();
+//   } else {
+//     res.redirect('/');
+//   }
+// }
 
 /* GET root page. */
-router.get('/', function(req, res, next) {
-  if(req.isAuthenticated()){
-    return res.redirect('/home');
-    next();
-  } else {
-    res.redirect('/login')
-  }
-});
+// router.get('/', function(req, res, next) {
+//   console.log("authenticating")
+//   if(req.isAuthenticated()){
+//     return res.redirect('/home');
+//     next();
+//   } else {
+//     res.redirect('/login')
+//   }
+// });
 
-/* GET home page. */
-router.get('/home', ensureAuthenticated, function(req, res, next) {
+/****************************************************************************************************
+// GET home page.
+****************************************************************************************************/
+router.get('/home-test', passport.authenticate('local', (req, res, next) => {
+  console.log("req\n", req.headers)
+  User.find({gender: 'female'}, (err, all) => {
+    res.json({all: all})
+  })
+}))
+
+router.get('/home', passport.authenticate('jwt', { session: false}), function(req, res, next) {
   if (req.user.gender == 'male') {
     User.find({gender: 'female'}, function(err, all) {
+      // console.log("all\n", all)
       if (err) return next(err)
       else {
         Conversation.find({ users: req.user._id }, (err, total_conversations_count) => {
@@ -140,13 +186,13 @@ router.get('/home', ensureAuthenticated, function(req, res, next) {
   }
 });
 
-router.get('/register', function(req, res, next) {
-  res.render('register')
-});
+// router.get('/register', function(req, res, next) {
+//   res.render('register')
+// });
 
-router.get('/login', function(req, res, next) {
-  res.render('login')
-});
+// router.get('/login', function(req, res, next) {
+//   res.render('login')
+// });
 
 router.get('/logout', function(req, res, next) {
   req.logout()

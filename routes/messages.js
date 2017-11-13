@@ -15,63 +15,106 @@ function ensureAuthenticated(req, res, next){
   }
 }
 
+/****************************************************************************************************
 // Get the logged in user's messages
-router.get('/', ensureAuthenticated, (req, res, next) => {
-  Conversation.find({ users: req.user._id }, (err, conversations) => {
-    Message.find({to_user_id: req.user._id}, (err, messages) => {
-      function find_unread_messages(message) {
-        return ((req.user._id.toString() === message.to_user_id ) && message.unread)
-      }
+****************************************************************************************************/
 
-      if (messages.some(find_unread_messages)) {
-        var conversations_count = 0
-        conversations.map((each_conversation) => {
-          if ((req.user._id.toString() === each_conversation.sent_to_user_id) || (req.user._id.toString() === each_conversation.created_by_user_id) && each_conversation.unread) {
-            conversations_count += 1
-          }
-        })
-        res.render('user_messages', {
-          conversations_count: conversations_count,
-          conversations: conversations,
-          helpers: {
-            if_eq: function(a, b, options) {
-              if (a == b) {
-                return options.fn(this);
-              } else {
-                return options.inverse(this)
-              }
+router.get('/', ensureAuthenticated, (req, res, next) => {
+  Conversation.find({ users: req.user._id }).sort({ updated_at: -1 }).exec((err, conversations) => {
+    // console.log('conversations\n', conversations)
+
+    /* Find all conversations with unread messages to update the conversations count */
+    Message.find({ to_user_id: req.user._id }, (err, messages) => {
+
+      /* Find all messages to extract most recent message */
+      Message.find({}).sort({ created_at: -1 }).exec((err, msg) => {
+        // console.log('msg\n', msg[0])
+
+        /* Find all unread messages sent to the logged in user */
+        function find_unread_messages(message) {
+          return ((req.user._id.toString() === message.to_user_id ) && message.unread)
+        }
+
+        if (messages.some(find_unread_messages)) {
+          var conversations_count = 0
+          conversations.forEach((each_conversation) => {
+            if ((req.user._id.toString() === each_conversation.sent_to_user_id) || (req.user._id.toString() === each_conversation.created_by_user_id) && each_conversation.unread) {
+              conversations_count += 1
             }
-          }
-        })
-      } else {
-        // console.log("Both are false")
-        res.render('user_messages', {
-          conversations: conversations,
-          helpers: {
-            if_eq: function(a, b, options) {
-              if (a == b) {
-                return options.fn(this);
-              } else {
-                return options.inverse(this)
+          })
+
+          Message.aggregate([
+            { "$unwind": "$conversations"},
+            { "$sort": { "conversations": 1, "created_at": -1 }},
+            { "$group": {
+              "_id": "$conversations",
+              "doc": { "$first": "$$ROOT" }
+            }},
+            { "$sort": { "doc.created_at": -1 } }
+          ], (err, messages) => {  
+            res.render('user_messages', {
+              conversations_count: conversations_count,
+              conversations: conversations,
+              last_message: messages,
+              helpers: {
+                if_eq: function(a, b, options) {
+                  var a_string = a.toString()
+                  var b_string = b.toString()
+                  if (a_string === b_string) {
+                    return options.fn(this);
+                  } else {
+                    return options.inverse(this)
+                  }
+                }
               }
-            }
-          }
-        })
-      }
+            })
+          })
+        } else {
+          Message.aggregate([
+            { "$unwind": "$conversations"},
+            { "$sort": { "conversations": 1, "created_at": -1 }},
+            { "$group": {
+              "_id": "$conversations",
+              "doc": { "$first": "$$ROOT" }
+            }},
+            { "$sort": { "doc.created_at": -1 } }
+          ], (err, messages) => {
+            // console.log('messages\n', messages)
+            res.render('user_messages', {
+              conversations: conversations,
+              last_message: messages,
+              helpers: {
+                if_eq: function(a, b, options) {
+                  var a_string = a.toString()
+                  var b_string = b.toString()
+                  if (a_string === b_string) {
+                    return options.fn(this);
+                  } else {
+                    return options.inverse(this)
+                  }
+                }
+              }
+            })
+          })
+        }
+      })
     })
   })
 })
 
+/****************************************************************************************************
 // Get the contact page to contact another member
 // If no conversations with the user exist, create a new conversation
 // Else, redirect to the existing conversation
+****************************************************************************************************/
+
 router.get('/:user_id', ensureAuthenticated, (req, res, next) => {
   User.findOne({ _id: req.params.user_id }, (err, member) => {
     Conversation.find({ $and: [{ users: req.user._id }, { users: member._id }] }, (err, conversation) => {
       if (conversation.length === 0) {
         Conversation.find({ users: req.user._id }, (err, conversations) => {
           var conversations_count = 0
-          conversations.map((conversation) => {
+          conversations.forEach((conversation) => {
             if (req.user._id.toString() === conversation.sent_to_user_id && conversation.unread) {
               conversations_count += 1
             }
@@ -88,13 +131,17 @@ router.get('/:user_id', ensureAuthenticated, (req, res, next) => {
   })
 });
 
+/****************************************************************************************************
 // Send a new message to another user
+****************************************************************************************************/
+
 router.post('/:user_id', ensureAuthenticated, (req, res, next) => {
   User.findById({ _id: req.params.user_id }, (err, user) => {
     Conversation.find({ $and: [{ users: req.user._id }, { users: user._id }] }, (err, conversation) => {
       if (conversation.length === 0) {
         Conversation.create({
           created_at: Date.now(),
+          updated_at: Date.now(),
           created_by_user_name: req.user.first_name,
           created_by_user_id: req.user._id,
           sent_to_user_name: user.first_name,
@@ -132,7 +179,10 @@ router.post('/:user_id', ensureAuthenticated, (req, res, next) => {
   })
 })
 
+/****************************************************************************************************
 // Reply to a message
+****************************************************************************************************/
+
 router.post('/reply/:conversation_id', ensureAuthenticated, (req, res, next) => {
   Conversation.findById(req.params.conversation_id, (err, conversation) => {
     if (req.user._id.toString() === conversation.created_by_user_id) {
@@ -150,6 +200,7 @@ router.post('/reply/:conversation_id', ensureAuthenticated, (req, res, next) => 
             console.log(err)
           } else {
             message.conversations.push(conversation._id)
+            conversation.updated_at = Date.now()
             conversation.unread = true
             conversation.save()
             message.save()
@@ -172,6 +223,7 @@ router.post('/reply/:conversation_id', ensureAuthenticated, (req, res, next) => 
             console.log(err)
           } else {
             message.conversations.push(conversation._id)
+            conversation.updated_at = Date.now()
             conversation.unread = true
             conversation.save()
             message.save()

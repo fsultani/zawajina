@@ -1,3 +1,4 @@
+var http = require('http')
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -11,17 +12,16 @@ var expressValidator = require('express-validator')
 var flash = require('connect-flash');
 var mongo = require('mongodb')
 var mongoose = require('mongoose')
+require('./db_credentials')
 
 if (process.env.NODE_ENV === 'mlab-dev') {
-  require('./db_credentials')
   mongoose.connect(process.env.MONGO_DB_MLAB_DEV)
-  console.log("Using mlab")
+  console.log("Using mlab:", process.env.NODE_ENV)
 } else if (process.env.NODE_ENV === 'local') {
-  require('./db_credentials')
   mongoose.connect(process.env.LOCAL)
-  console.log("Using local db")
+  console.log("Using local db - mongodb://localhost/my_match_local_dev")
 } else {
-  // Heroku deployment
+  console.log("Heroku deployment")
   mongoose.connect(process.env.MONGO_DB)
 }
 
@@ -34,20 +34,24 @@ var messages = require('./routes/messages');
 
 var Conversation = require('./models/conversation')
 
-// view engine setup
+// View engine setup
 // Make the 'views' folder the starting point for any route that uses res.render
-app.set('views', path.join(__dirname, 'views'));
-app.engine('.hbs', exphbs({defaultLayout:'layout', extname: '.hbs'}));
-app.set('view engine', '.hbs');
+// app.set('views', path.join(__dirname, 'views'));
+// app.set('view engine', '.hbs');
+// app.engine('.hbs', exphbs({defaultLayout:'index', extname: '.hbs'}));
+
+// Set static folder
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Body Parser Middleware
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
 
 // uncomment after placing your favicon in /public
 // app.use(favicon(path.join(__dirname, 'public', 'crescent.png')));
 // app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 // app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
 
 // Express Session
 // app.set('trust proxy', 1) // trust first proxy 
@@ -92,28 +96,15 @@ app.use(function (req, res, next) {
   next();
 });
 
-// app.use(function (req, res, next) {
-//   Conversation.find({ users: res.locals.logged_in_user }, (err, conversations) => {
-//     if (res.locals.logged_in_user != null) {
-//       var conversations_count = 0
-//       conversations.map((conversation) => {
-//         if (res.locals.logged_in_user._id.toString() === conversation.sent_to_user_id) {
-//           conversations_count += 1
-//         }
-//       })
-//     }
-//     console.log('conversations_count\n', conversations_count)
-//     res.locals.conversation_length = conversations_count
-//   })
-//   next();
-// });
+// Catch all 'get' requests, and respond with public/index.html
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public/index.html'))
+})
 
-// Any routes that being with root ('/') use the 'index.js' route file
+// Use index.js for any routes beginning with '/'
 app.use('/', index);
 
-// Any routes that being with '/users' use the 'users.js' route file
 app.use('/users', users);
-
 app.use('/conversations', conversations);
 app.use('/messages', messages);
 
@@ -137,10 +128,10 @@ app.use(function(err, req, res, next) {
 var port = process.env.PORT || 3000;
 
 app.listen(port, function() {
-	console.log("Listening on port " + port)
-	if (process.send) {
-		process.send({ event:'online', url:'http://localhost:' + port})
-	}
+  console.log("Listening on port " + port)
+  if (process.send) {
+    process.send({ event:'online', url:'http://localhost:' + port})
+  }
 })
 
 module.exports = app;
