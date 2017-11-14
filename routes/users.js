@@ -1,10 +1,11 @@
-var express = require('express');
-var router = express.Router();
-var mongoose = require('mongoose');
+const express = require('express');
+const router = express.Router();
+const mongoose = require('mongoose');
+const path = require('path');
 
-var User = require('../models/user')
-var Message = require('../models/message')
-var Conversation = require('../models/conversation')
+const User = require('../models/user')
+const Message = require('../models/message')
+const Conversation = require('../models/conversation')
 
 function ensureAuthenticated(req, res, next){
   if(req.isAuthenticated()){
@@ -48,9 +49,11 @@ router.get('/member', ensureAuthenticated, (req, res, next) => {
   })
 })
 
-router.get('/:username', ensureAuthenticated, (req, res, next) => {
-  User.findOne({ username: req.params.username }, (err, member) => {
-    res.render('member_profile', { member: member })
+router.get('/:member', (req, res, next) => {
+  console.log("req.params\n", req.params)
+  User.findOne({ username: req.params.member }, (err, member) => {
+    // res.send({member: member})
+    res.json({ member: member })
   })
 });
 

@@ -1,17 +1,17 @@
-var http = require('http')
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-var exphbs = require('express-handlebars');
-var session = require('express-session')
-var passport = require('passport');
-var LocalStrategy = require('passport-local').Strategy;
-var expressValidator = require('express-validator')
-var flash = require('connect-flash');
-var mongo = require('mongodb')
-var mongoose = require('mongoose')
+const http = require('http')
+const express = require('express');
+const path = require('path');
+const favicon = require('serve-favicon');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+const exphbs = require('express-handlebars');
+const session = require('express-session')
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
+const expressValidator = require('express-validator')
+const flash = require('connect-flash');
+const mongo = require('mongodb')
+const mongoose = require('mongoose')
 require('./db_credentials')
 
 if (process.env.NODE_ENV === 'mlab-dev') {
@@ -25,14 +25,14 @@ if (process.env.NODE_ENV === 'mlab-dev') {
   mongoose.connect(process.env.MONGO_DB)
 }
 
-var app = express();
+const app = express();
 
-var index = require('./routes/index');
-var users = require('./routes/users');
-var conversations = require('./routes/conversations');
-var messages = require('./routes/messages');
+const index = require('./routes/index');
+const users = require('./routes/users');
+const conversations = require('./routes/conversations');
+const messages = require('./routes/messages');
 
-var Conversation = require('./models/conversation')
+const Conversation = require('./models/conversation')
 
 // View engine setup
 // Make the 'views' folder the starting point for any route that uses res.render
@@ -69,7 +69,7 @@ app.use(passport.session());
 // Express Validator
 app.use(expressValidator({
   errorFormatter: function(param, error_message, value) {
-      var namespace = param.split('.')
+      const namespace = param.split('.')
       , root    = namespace.shift()
       , formParam = root;
  
@@ -110,7 +110,7 @@ app.use('/messages', messages);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  var err = new Error('Not Found');
+  const err = new Error('Not Found');
   err.status = 404;
   next(err);
 });
@@ -125,7 +125,7 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
 });
 
-var port = process.env.PORT || 3000;
+const port = process.env.PORT || 3000;
 
 app.listen(port, function() {
   console.log("Listening on port " + port)
