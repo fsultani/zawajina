@@ -64,11 +64,15 @@ router.get('/all-members', (req, res, next) => {
   })
 })
 
-router.get('/users/info', (req, res, next) => {
-  console.log("User info")
-  console.log("req.body\n", req.body)
-  User.findOne({ username: req.params.member }, (err, member) => {
-    res.send({member: member})
+router.get('/users/:member', (req, res, next) => {
+  res.sendFile(path.join(__dirname, '../public/index.html'))
+});
+
+router.get('/member/:username', (req, res, next) => {
+  console.log('req.params\n', req.params)
+  User.findOne({ username: req.params.username }, (err, member) => {
+    console.log('member\n', member)
+    res.json({member: member})
   })
 })
 

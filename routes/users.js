@@ -7,13 +7,15 @@ const User = require('../models/user')
 const Message = require('../models/message')
 const Conversation = require('../models/conversation')
 
-function ensureAuthenticated(req, res, next){
-  if(req.isAuthenticated()){
-    return next();
-  } else {
-    res.redirect('/');
-  }
-}
+router.get('/:member', (req, res, next) => {
+  res.sendFile(path.join(__dirname, '../public/index.html'))
+});
+
+router.get('/info', (req, res, next) => {
+  // User.findOne({ username: req.params.member }, (err, member) => {
+  //   res.send({member: member})
+  // })
+});
 
 // router.get('/profile', ensureAuthenticated, (req, res, next) => {
 //   res.redirect('/users/' + req.user.username)
@@ -48,17 +50,5 @@ function ensureAuthenticated(req, res, next){
 //     })
 //   })
 // })
-
-router.get('/:member', (req, res, next) => {
-  console.log("Member info page")
-  res.sendFile(path.join(__dirname, '../public/index.html'))
-});
-
-router.get('/info', (req, res, next) => {
-  console.log("Member info")
-  User.findOne({ username: req.params.member }, (err, member) => {
-    res.send({member: member})
-  })
-});
 
 module.exports = router;
