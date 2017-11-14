@@ -64,6 +64,14 @@ router.get('/all-members', (req, res, next) => {
   })
 })
 
+router.get('/users/info', (req, res, next) => {
+  console.log("User info")
+  console.log("req.body\n", req.body)
+  User.findOne({ username: req.params.member }, (err, member) => {
+    res.send({member: member})
+  })
+})
+
 router.post('/login', (req, res, next) => {
   passport.authenticate('local', (err, user, info) => {
     if (err) return next(err)
@@ -89,80 +97,80 @@ function ensureAuthenticated(req, res, next){
 /****************************************************************************************************
 // GET home page.
 ****************************************************************************************************/
-router.get('/home', passport.authenticate('jwt', { session: false}), function(req, res, next) {
-  if (req.user.gender == 'male') {
-    User.find({gender: 'female'}, function(err, all) {
-      // console.log("all\n", all)
-      if (err) return next(err)
-      else {
-        Conversation.find({ users: req.user._id }, (err, total_conversations_count) => {
+// router.get('/home', passport.authenticate('jwt', { session: false}), function(req, res, next) {
+//   if (req.user.gender == 'male') {
+//     User.find({gender: 'female'}, function(err, all) {
+//       // console.log("all\n", all)
+//       if (err) return next(err)
+//       else {
+//         Conversation.find({ users: req.user._id }, (err, total_conversations_count) => {
 
-          Message.find({to_user_id: req.user._id}, (err, messages) => {
+//           Message.find({to_user_id: req.user._id}, (err, messages) => {
 
-            function find_unread_messages(message) {
-              return ((req.user._id.toString() === message.to_user_id ) && message.unread)
-            }
+//             function find_unread_messages(message) {
+//               return ((req.user._id.toString() === message.to_user_id ) && message.unread)
+//             }
 
-            if (messages.some(find_unread_messages)) {
-              // console.log("find_unread_messages is true")
+//             if (messages.some(find_unread_messages)) {
+//               // console.log("find_unread_messages is true")
 
-              var conversations_count = 0
-              total_conversations_count.map((each_conversation) => {
-                if ((req.user._id.toString() === each_conversation.sent_to_user_id) || (req.user._id.toString() === each_conversation.created_by_user_id) && each_conversation.unread) {
-                  conversations_count += 1
-                }
-              })
-              res.render('home', {
-                conversations_count: conversations_count,
-                all: all
-              })
-            } else {
-              // console.log("Both are false")
-              res.render('home', {
-                all: all
-              })
-            }
-          })
-        })
-      }
-    })
-  } else {
-    User.find({gender: 'male'}, function(err, all) {
-      if (err) return next(err)
-      else {
-        Conversation.find({ users: req.user._id }, (err, total_conversations_count) => {
+//               var conversations_count = 0
+//               total_conversations_count.map((each_conversation) => {
+//                 if ((req.user._id.toString() === each_conversation.sent_to_user_id) || (req.user._id.toString() === each_conversation.created_by_user_id) && each_conversation.unread) {
+//                   conversations_count += 1
+//                 }
+//               })
+//               res.render('home', {
+//                 conversations_count: conversations_count,
+//                 all: all
+//               })
+//             } else {
+//               // console.log("Both are false")
+//               res.render('home', {
+//                 all: all
+//               })
+//             }
+//           })
+//         })
+//       }
+//     })
+//   } else {
+//     User.find({gender: 'male'}, function(err, all) {
+//       if (err) return next(err)
+//       else {
+//         Conversation.find({ users: req.user._id }, (err, total_conversations_count) => {
 
-          Message.find({to_user_id: req.user._id}, (err, messages) => {
-            // console.log('messages\n', messages)
+//           Message.find({to_user_id: req.user._id}, (err, messages) => {
+//             // console.log('messages\n', messages)
 
-            function find_unread_messages(message) {
-              return ((req.user._id.toString() === message.to_user_id ) && message.unread)
-            }
+//             function find_unread_messages(message) {
+//               return ((req.user._id.toString() === message.to_user_id ) && message.unread)
+//             }
 
-            if (messages.some(find_unread_messages)) {
-              console.log("find_unread_messages is true")
+//             if (messages.some(find_unread_messages)) {
+//               console.log("find_unread_messages is true")
 
-              var conversations_count = 0
-              total_conversations_count.map((each_conversation) => {
-                if ((req.user._id.toString() === each_conversation.sent_to_user_id) || (req.user._id.toString() === each_conversation.created_by_user_id) && each_conversation.unread) {
-                  conversations_count += 1
-                }
-              })
-              res.render('home', {
-                conversations_count: conversations_count,
-                all: all
-              })
-            } else {
-              res.render('home', {
-                all: all
-              })
-            }
-          })
-        })
-      }
-    })
-  }
-});
+//               var conversations_count = 0
+//               total_conversations_count.map((each_conversation) => {
+//                 if ((req.user._id.toString() === each_conversation.sent_to_user_id) || (req.user._id.toString() === each_conversation.created_by_user_id) && each_conversation.unread) {
+//                   conversations_count += 1
+//                 }
+//               })
+//               res.render('home', {
+//                 conversations_count: conversations_count,
+//                 all: all
+//               })
+//             } else {
+//               res.render('home', {
+//                 all: all
+//               })
+//             }
+//           })
+//         })
+//       }
+//     })
+//   }
+// });
 
 router.get('/logout', function(req, res, next) {
   req.logout()
