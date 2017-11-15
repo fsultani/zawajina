@@ -38,7 +38,7 @@ const Conversation = require('./models/conversation')
 // Make the 'views' folder the starting point for any route that uses res.render
 // app.set('views', path.join(__dirname, 'views'));
 // app.set('view engine', '.hbs');
-// app.engine('.hbs', exphbs({defaultLayout:'index', extname: '.hbs'}));
+app.engine('.hbs', exphbs({defaultLayout:'index', extname: '.hbs'}));
 
 // Set static folder
 app.use(express.static(path.join(__dirname, 'public')));

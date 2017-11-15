@@ -16,14 +16,12 @@ const userPageLayout = `
           `;
 
 window.addEventListener('load', () => {
-  if (window.location.pathname.match(/^\/users\/*/)) {
-  // if (window.location.pathname.includes('users')) {
+  if (window.location.pathname.split('/')[3] === 'about') {
     const userPath = window.location.pathname.split('/')[2]
     var xhr = new XMLHttpRequest();
     xhr.onload = function() {
       if (this.status == 200) {
         const response = JSON.parse(this.responseText);
-        console.log('response\n', response.member)
         const welcome = `
           <center>
             <h2 class="dashboard-text">${response.member.first_name}'s profile page</h2>
@@ -39,8 +37,8 @@ window.addEventListener('load', () => {
         document.getElementById('my-app').innerHTML = htmlOutput;
       }
     }
-    xhr.open('GET', '/member/'+userPath, true)
-    // xhr.setRequestHeader('user-cookie', Cookies.get('token'))
+    xhr.open('GET', '/users/info/' + userPath, true)
+    xhr.setRequestHeader('user-cookie', Cookies.get('token'))
     xhr.send(null);
   }
 })

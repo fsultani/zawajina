@@ -55,6 +55,7 @@ router.get('/all-members', (req, res, next) => {
   const decodedToken = jwt.decode(token, JWT_SECRET)
   User.findOne({username: decodedToken.username}, (err, user) => {
     if (!user) {
+      console.log("Authentication failed. User not found.")
       return res.status(403).send("Authentication failed. User not found.")
     } else {
       User.find({gender: 'female'}, (err, all) => {
@@ -64,17 +65,15 @@ router.get('/all-members', (req, res, next) => {
   })
 })
 
-router.get('/users/:member', (req, res, next) => {
-  res.sendFile(path.join(__dirname, '../public/index.html'))
-});
+// router.get('/users/:member', (req, res, next) => {
+//   res.sendFile(path.join(__dirname, '../public/index.html'))
+// });
 
-router.get('/member/:username', (req, res, next) => {
-  console.log('req.params\n', req.params)
-  User.findOne({ username: req.params.username }, (err, member) => {
-    console.log('member\n', member)
-    res.json({member: member})
-  })
-})
+// router.get('/member/:username', (req, res, next) => {
+//   User.findOne({ username: req.params.username }, (err, member) => {
+//     res.json({member: member})
+//   })
+// })
 
 router.post('/login', (req, res, next) => {
   passport.authenticate('local', (err, user, info) => {

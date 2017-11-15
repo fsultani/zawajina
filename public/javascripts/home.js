@@ -45,7 +45,7 @@ window.addEventListener('load', () => {
 
         response.all.map((user) => {
           output += `
-            <a href="/users/${user.username}" style="text-decoration: none">
+            <a href="/users/${user.username}/about" style="text-decoration: none">
               <div class="col-md-6">
                 <div class="thumbnail" style="border-radius: 12px">
                   <h3 style="margin: 20px 0px">${user.first_name}</h3>

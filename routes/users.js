@@ -6,49 +6,21 @@ const path = require('path');
 const User = require('../models/user')
 const Message = require('../models/message')
 const Conversation = require('../models/conversation')
+const jwt = require('jwt-simple')
+const JWT_SECRET = Buffer.from('fe1a1915a379f3be5394b64d14794932', 'hex')
 
-router.get('/:member', (req, res, next) => {
+// Display the index.html file for a user
+router.get('/:username/about', (req, res, next) => {
   res.sendFile(path.join(__dirname, '../public/index.html'))
 });
 
-router.get('/info', (req, res, next) => {
-  // User.findOne({ username: req.params.member }, (err, member) => {
-  //   res.send({member: member})
-  // })
+// Grab the user from the db
+router.get('/info/:member', (req, res, next) => {
+  const token = req.headers['user-cookie']
+  const decodedToken = jwt.decode(token, JWT_SECRET)
+  User.findOne({ username: req.params.member }, (err, member) => {
+    member ? res.json({ member: member }) : res.send(err)
+  })
 });
-
-// router.get('/profile', ensureAuthenticated, (req, res, next) => {
-//   res.redirect('/users/' + req.user.username)
-// })
-
-/****************************************************************************************************
-// Get the logged in user's profile
-****************************************************************************************************/
-
-// router.get('/member', ensureAuthenticated, (req, res, next) => {
-//   Conversation.find({ users: req.user._id }, (err, conversations) => {
-//     User.findOne({ _id: req.user._id }, (err, user) => {
-//       var conversations_count = 0
-//       conversations.map((conversation) => {
-//         if (req.user._id.toString() === conversation.sent_to_user_id && conversation.unread) {
-//           conversations_count += 1
-//         }
-//       })
-//       res.render('user_profile', {
-//         conversations_count: conversations_count,
-//         conversations: conversations,
-//         helpers: {
-//           if_eq: function(a, b, options) {
-//             if (a == b) {
-//               return options.fn(this);
-//             } else {
-//               return options.inverse(this)
-//             }
-//           }
-//         }
-//       })
-//     })
-//   })
-// })
 
 module.exports = router;
