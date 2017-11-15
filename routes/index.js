@@ -34,10 +34,6 @@ passport.use(new LocalStrategy(
   }
 ));
 
-// router.get('*', (req, res) => {
-//   res.sendFile(path.join(__dirname, '../public/index.html'))
-// })
-
 router.get('/register', function(req, res, next) {
   res.sendFile(path.join(__dirname, '../public/index.html'))
 });
@@ -48,6 +44,18 @@ router.get('/login', (req, res, next) => {
 
 router.get('/home', (req, res, next) => {
   res.sendFile(path.join(__dirname, '../public/index.html'))
+})
+
+router.get('/profile', (req, res, next) => {
+  res.sendFile(path.join(__dirname, '../public/index.html'))
+})
+
+router.get('/profile-info', (req, res, next) => {
+  const token = req.headers['user-cookie']
+  const decodedToken = jwt.decode(token, JWT_SECRET)
+  User.find({ username: decodedToken.username}, (err, member) => {
+    res.json({ member: member[0] })
+  })
 })
 
 router.get('/all-members', (req, res, next) => {
@@ -64,16 +72,6 @@ router.get('/all-members', (req, res, next) => {
     }
   })
 })
-
-// router.get('/users/:member', (req, res, next) => {
-//   res.sendFile(path.join(__dirname, '../public/index.html'))
-// });
-
-// router.get('/member/:username', (req, res, next) => {
-//   User.findOne({ username: req.params.username }, (err, member) => {
-//     res.json({member: member})
-//   })
-// })
 
 router.post('/login', (req, res, next) => {
   passport.authenticate('local', (err, user, info) => {
@@ -174,12 +172,6 @@ function ensureAuthenticated(req, res, next){
 //     })
 //   }
 // });
-
-router.get('/logout', function(req, res, next) {
-  req.logout()
-  req.flash('logged_out_message', 'You have successfully logged out.');
-  res.redirect('/login')
-});
 
 router.post('/register', function(req, res) {
   var first_name = req.body.first_name

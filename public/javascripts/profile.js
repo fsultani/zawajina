@@ -1,4 +1,4 @@
-const userPageLayout = `
+const profilePageLayout = `
   <div class="container">
     <div class="row">
       <div class="header clearfix">
@@ -16,28 +16,32 @@ const userPageLayout = `
           `;
 
 window.addEventListener('load', () => {
-  if (window.location.pathname.split('/')[3] === 'about') {
-    const userPath = window.location.pathname.split('/')[2]
+  if (window.location.pathname === '/profile' && Cookies.get('token')) {
     var xhr = new XMLHttpRequest();
     xhr.onload = function() {
       if (this.status == 200) {
         const response = JSON.parse(this.responseText);
-        const welcome = `
+        const memberInfo = `
           <center>
-            <h2 class="dashboard-text">${response.member.first_name}'s profile page</h2>
+          <h2 class="dashboard-text">Welcome, ${response.member.first_name}!</h2>
 
-            <p>It's currently blank, but we plan on fixing that.</p>
+          <h4>Here is your basic info:</h4>
+          <div style="margin: 0 auto; width: 20%">
+          <div style="margin: 0 auto; text-align: left">
+          <p>Name: ${response.member.first_name} ${response.member.last_name}</p>
+          <p>email: ${response.member.email}</p>
+          <p>username: ${response.member.username}</p>
+          <p>gender: ${response.member.gender}</p>
+          </div>
+          </div>
 
-            <p>In the meantime, you may contact ${response.member.first_name} using the button below.</p>
-
-            <a href="/messages/{{member._id}}" class="btn btn-primary">Message</a>
           </center>
         `;
-        const htmlOutput = userPageLayout + welcome
-        document.getElementById('my-app').innerHTML = htmlOutput;
+        const htmlOutput = profilePageLayout + memberInfo
+        document.getElementById('my-app').innerHTML = htmlOutput
       }
     }
-    xhr.open('GET', '/users/info/' + userPath, true)
+    xhr.open('GET', '/profile-info', true)
     xhr.setRequestHeader('user-cookie', Cookies.get('token'))
     xhr.send(null);
   }
