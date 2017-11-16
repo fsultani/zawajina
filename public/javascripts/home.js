@@ -60,7 +60,7 @@ window.addEventListener('load', () => {
         document.getElementById('my-app').innerHTML = htmlOutput;
       }
     }
-    xhr.open('GET', '/all-members', true)
+    xhr.open('GET', '/api/all-members', true)
     xhr.setRequestHeader('user-cookie', Cookies.get('token'))
     xhr.send(null);
   } else if (window.location.pathname === '/home') {

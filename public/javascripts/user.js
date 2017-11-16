@@ -1,4 +1,4 @@
-const userPageLayout = `
+const beginUserPageLayout = `
   <div class="container">
     <div class="row">
       <div class="header clearfix">
@@ -9,14 +9,24 @@ const userPageLayout = `
             </li>
           </ul>
           <ul class="nav nav-pills pull-right">
-          <li role="presentation"><a onclick="logout()" style="cursor: pointer">Log Out</a></li>
-          <li role="presentation"><a href="/messages">Messages</a></li>
-          <li role="presentation"><a href="/profile">Profile</a></li>
-          </ul></nav></div></div></div></div>
           `;
 
+const authenticated = `
+<li role="presentation"><a onclick="logout()" style="cursor: pointer">Log Out</a></li>
+<li role="presentation"><a href="/messages">Messages</a></li>
+<li role="presentation"><a href="/profile">Profile</a></li>
+`;
+
+const notAuthenticated = `
+<li role="presentation"><a href="/login">Login</a></li>
+<li role="presentation"><a href="/register">Register</a></li>
+`;
+
+const endUserPageLayout = `</ul></nav></div></div></div></div>`;
+
 window.addEventListener('load', () => {
-  if (window.location.pathname.split('/')[3] === 'about') {
+  const url = window.location.pathname.split('/')
+  if (url[1] === 'users' && url[3] === 'about' && Cookies.get('token')) {
     const userPath = window.location.pathname.split('/')[2]
     var xhr = new XMLHttpRequest();
     xhr.onload = function() {
@@ -33,12 +43,29 @@ window.addEventListener('load', () => {
             <a href="/messages/{{member._id}}" class="btn btn-primary">Message</a>
           </center>
         `;
-        const htmlOutput = userPageLayout + welcome
+        const htmlOutput = beginUserPageLayout + authenticated + endUserPageLayout + welcome
         document.getElementById('my-app').innerHTML = htmlOutput;
       }
     }
-    xhr.open('GET', '/users/info/' + userPath, true)
+    xhr.open('GET', '/users/api/info/' + userPath, true)
     xhr.setRequestHeader('user-cookie', Cookies.get('token'))
+    xhr.send(null);
+  } else if (url[1] === 'users' && url[3] === 'about') {
+    const userPath = window.location.pathname.split('/')[2]
+    var xhr = new XMLHttpRequest();
+    xhr.onload = function() {
+      if (this.status == 200) {
+        const response = this.responseText;
+        const welcome = `
+          <center>
+            ${response}
+          </center>
+        `;
+        const htmlOutput = beginUserPageLayout + notAuthenticated + endUserPageLayout + welcome
+        document.getElementById('my-app').innerHTML = htmlOutput;
+      }
+    }
+    xhr.open('GET', '/users/api/info/' + userPath, true)
     xhr.send(null);
   }
 })

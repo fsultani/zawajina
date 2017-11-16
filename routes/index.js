@@ -34,23 +34,7 @@ passport.use(new LocalStrategy(
   }
 ));
 
-router.get('/register', function(req, res, next) {
-  res.sendFile(path.join(__dirname, '../public/index.html'))
-});
-
-router.get('/login', (req, res, next) => {
-  res.sendFile(path.join(__dirname, '../public/index.html'))
-})
-
-router.get('/home', (req, res, next) => {
-  res.sendFile(path.join(__dirname, '../public/index.html'))
-})
-
-router.get('/profile', (req, res, next) => {
-  res.sendFile(path.join(__dirname, '../public/index.html'))
-})
-
-router.get('/profile-info', (req, res, next) => {
+router.get('/api/profile-info', (req, res, next) => {
   const token = req.headers['user-cookie']
   const decodedToken = jwt.decode(token, JWT_SECRET)
   User.find({ username: decodedToken.username}, (err, member) => {
@@ -58,7 +42,7 @@ router.get('/profile-info', (req, res, next) => {
   })
 })
 
-router.get('/all-members', (req, res, next) => {
+router.get('/api/all-members', (req, res, next) => {
   const token = req.headers['user-cookie']
   const decodedToken = jwt.decode(token, JWT_SECRET)
   User.findOne({username: decodedToken.username}, (err, user) => {
@@ -94,84 +78,6 @@ function ensureAuthenticated(req, res, next){
     res.redirect('/');
   }
 }
-
-/****************************************************************************************************
-// GET home page.
-****************************************************************************************************/
-// router.get('/home', passport.authenticate('jwt', { session: false}), function(req, res, next) {
-//   if (req.user.gender == 'male') {
-//     User.find({gender: 'female'}, function(err, all) {
-//       // console.log("all\n", all)
-//       if (err) return next(err)
-//       else {
-//         Conversation.find({ users: req.user._id }, (err, total_conversations_count) => {
-
-//           Message.find({to_user_id: req.user._id}, (err, messages) => {
-
-//             function find_unread_messages(message) {
-//               return ((req.user._id.toString() === message.to_user_id ) && message.unread)
-//             }
-
-//             if (messages.some(find_unread_messages)) {
-//               // console.log("find_unread_messages is true")
-
-//               var conversations_count = 0
-//               total_conversations_count.map((each_conversation) => {
-//                 if ((req.user._id.toString() === each_conversation.sent_to_user_id) || (req.user._id.toString() === each_conversation.created_by_user_id) && each_conversation.unread) {
-//                   conversations_count += 1
-//                 }
-//               })
-//               res.render('home', {
-//                 conversations_count: conversations_count,
-//                 all: all
-//               })
-//             } else {
-//               // console.log("Both are false")
-//               res.render('home', {
-//                 all: all
-//               })
-//             }
-//           })
-//         })
-//       }
-//     })
-//   } else {
-//     User.find({gender: 'male'}, function(err, all) {
-//       if (err) return next(err)
-//       else {
-//         Conversation.find({ users: req.user._id }, (err, total_conversations_count) => {
-
-//           Message.find({to_user_id: req.user._id}, (err, messages) => {
-//             // console.log('messages\n', messages)
-
-//             function find_unread_messages(message) {
-//               return ((req.user._id.toString() === message.to_user_id ) && message.unread)
-//             }
-
-//             if (messages.some(find_unread_messages)) {
-//               console.log("find_unread_messages is true")
-
-//               var conversations_count = 0
-//               total_conversations_count.map((each_conversation) => {
-//                 if ((req.user._id.toString() === each_conversation.sent_to_user_id) || (req.user._id.toString() === each_conversation.created_by_user_id) && each_conversation.unread) {
-//                   conversations_count += 1
-//                 }
-//               })
-//               res.render('home', {
-//                 conversations_count: conversations_count,
-//                 all: all
-//               })
-//             } else {
-//               res.render('home', {
-//                 all: all
-//               })
-//             }
-//           })
-//         })
-//       }
-//     })
-//   }
-// });
 
 router.post('/register', function(req, res) {
   var first_name = req.body.first_name
@@ -219,61 +125,3 @@ router.post('/register', function(req, res) {
 })
 
 module.exports = router
-
-/* GET root page. */
-// router.get('/', function(req, res, next) {
-//   console.log("authenticating")
-//   if(req.isAuthenticated()){
-//     return res.redirect('/home');
-//     next();
-//   } else {
-//     res.redirect('/login')
-//   }
-// });
-
-// router.post('/login', passport.authenticate('local', {
-//     successRedirect: '/',
-//     failureRedirect: '/login',
-//     failureFlash: true,
-// }));
-
-// passport.use(new LocalStrategy(
-//   function(username, done) {
-//     User.getUserByUsername(username, function(err, user) {
-//       if (err) throw err;
-//       if (!user) {
-//         return done(null, false, {message: 'Unknown user'});
-//       } else {
-//         done(null, user);
-//       }
-//     })
-//   }
-// ));
-
-// passport.serializeUser(function(user, done) {
-//   done(null, user.id);
-// });
-
-// passport.deserializeUser(function(id, done) {
-//   User.getUserById(id, function(err, user) {
-//     done(err, user);
-//   });
-// });
-
-// router.post('/login', (req, res) => {
-//   User.find({username: req.body.username}, (err, user) => {
-//     if (err) return next(err)
-//     if (!user) {
-//       res.send({ success: false, msg: 'Authentication failed.  User not found.'})
-//     } else {
-//       User.comparePassword(req.body.password, user[0].password, (err, isMatch) => {
-//         if (isMatch && !err) {
-//           var token = jwt.encode(user, JWT_SECRET)
-//           res.json({ success: true, token: token })
-//         } else {
-//           res.send({ success: false, msg: 'Authentication failed.  Wrong password.'})
-//         }
-//       })
-//     }
-//   })
-// })
