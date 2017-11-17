@@ -34,12 +34,6 @@ const messages = require('./routes/messages');
 
 const Conversation = require('./models/conversation')
 
-// View engine setup
-// Make the 'views' folder the starting point for any route that uses res.render
-// app.set('views', path.join(__dirname, 'views'));
-// app.set('view engine', '.hbs');
-app.engine('.hbs', exphbs({defaultLayout:'index', extname: '.hbs'}));
-
 // Set static folder
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -47,11 +41,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-
-// uncomment after placing your favicon in /public
-// app.use(favicon(path.join(__dirname, 'public', 'crescent.png')));
-// app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-// app.use(logger('dev'));
 
 // Express Session
 // app.set('trust proxy', 1) // trust first proxy 
