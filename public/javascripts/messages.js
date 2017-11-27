@@ -1,4 +1,4 @@
-const profilePageLayout = `
+const messagesLayout = `
   <div class="container">
     <div class="row">
       <div class="header clearfix">
@@ -16,34 +16,26 @@ const profilePageLayout = `
           `;
 
 window.addEventListener('load', () => {
-  if (window.location.pathname === '/profile' && Cookies.get('token')) {
+  if (window.location.pathname === '/messages' && Cookies.get('token')) {
     var xhr = new XMLHttpRequest();
     xhr.onload = function() {
       if (this.status == 200) {
         const response = JSON.parse(this.responseText);
-        const memberInfo = `
+
+        let memberInfo = `
           <center>
-          <h2 class="dashboard-text">Welcome, ${response.member.first_name}!</h2>
-
-          <h4>Here is your basic info</h4>
-          <div class="col-md-8 col-md-offset-4">
-            <div class="col-md-6">
-              <div class="thumbnail" style="border-radius: 12px">
-                <p>Name: ${response.member.first_name} ${response.member.last_name}</p>
-                <p>email: ${response.member.email}</p>
-                <p>username: ${response.member.username}</p>
-                <p>gender: ${response.member.gender}</p>
-              </div>
-            </div>
-          </div>
-
-          </center>
+            <h2 class="dashboard-text">Your messages</h2>
         `;
+        response.conversations.map((c) => {
+          memberInfo += `<p>${c.sent_to_user_name}</p>`
+        })
+        memberInfo += `</center>`
+
         const htmlOutput = profilePageLayout + memberInfo
         document.getElementById('my-app').innerHTML = htmlOutput
       }
     }
-    xhr.open('GET', '/api/profile-info', true)
+    xhr.open('GET', '/messages/api/all-messages', true)
     xhr.setRequestHeader('user-cookie', Cookies.get('token'))
     xhr.send(null);
   }

@@ -36,16 +36,16 @@ passport.use(new LocalStrategy(
 
 router.get('/api/profile-info', (req, res, next) => {
   const token = req.headers['user-cookie']
-  const decodedToken = jwt.decode(token, JWT_SECRET)
-  User.find({ username: decodedToken.username}, (err, member) => {
+  const decodedUser = jwt.decode(token, JWT_SECRET)
+  User.find({ username: decodedUser.username}, (err, member) => {
     res.json({ member: member[0] })
   })
 })
 
 router.get('/api/all-members', (req, res, next) => {
   const token = req.headers['user-cookie']
-  const decodedToken = jwt.decode(token, JWT_SECRET)
-  User.findOne({username: decodedToken.username}, (err, user) => {
+  const decodedUser = jwt.decode(token, JWT_SECRET)
+  User.findOne({username: decodedUser.username}, (err, user) => {
     if (!user) {
       console.log("Authentication failed. User not found.")
       return res.status(403).send("Authentication failed. User not found.")

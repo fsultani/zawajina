@@ -1,141 +1,33 @@
-var express = require('express')
-var router = express.Router()
-var mongoose = require('mongoose')
-var bodyParser = require('body-parser')
+const express = require('express')
+const router = express.Router()
+const mongoose = require('mongoose')
+const bodyParser = require('body-parser')
+const jwt = require('jwt-simple')
+const JWT_SECRET = Buffer.from('fe1a1915a379f3be5394b64d14794932', 'hex')
 
-var User = require('../models/user')
-var Message = require('../models/message')
-var Conversation = require('../models/conversation')
-
-function ensureAuthenticated(req, res, next){
-  if(req.isAuthenticated()){
-    return next();
-  } else {
-    res.redirect('/');
-  }
-}
+const User = require('../models/user')
+const Message = require('../models/message')
+const Conversation = require('../models/conversation')
 
 /****************************************************************************************************
 // Get the logged in user's messages
 ****************************************************************************************************/
 
-router.get('/', ensureAuthenticated, (req, res, next) => {
-  Conversation.find({ users: req.user._id }).sort({ updated_at: -1 }).exec((err, conversations) => {
-    // console.log('conversations\n', conversations)
-
-    /* Find all conversations with unread messages to update the conversations count */
-    Message.find({ to_user_id: req.user._id }, (err, messages) => {
-
-      /* Find all messages to extract most recent message */
-      Message.find({}).sort({ created_at: -1 }).exec((err, msg) => {
-        // console.log('msg\n', msg[0])
-
-        /* Find all unread messages sent to the logged in user */
-        function find_unread_messages(message) {
-          return ((req.user._id.toString() === message.to_user_id ) && message.unread)
-        }
-
-        if (messages.some(find_unread_messages)) {
-          var conversations_count = 0
-          conversations.forEach((each_conversation) => {
-            if ((req.user._id.toString() === each_conversation.sent_to_user_id) || (req.user._id.toString() === each_conversation.created_by_user_id) && each_conversation.unread) {
-              conversations_count += 1
-            }
-          })
-
-          Message.aggregate([
-            { "$unwind": "$conversations"},
-            { "$sort": { "conversations": 1, "created_at": -1 }},
-            { "$group": {
-              "_id": "$conversations",
-              "doc": { "$first": "$$ROOT" }
-            }},
-            { "$sort": { "doc.created_at": -1 } }
-          ], (err, messages) => {  
-            res.render('user_messages', {
-              conversations_count: conversations_count,
-              conversations: conversations,
-              last_message: messages,
-              helpers: {
-                if_eq: function(a, b, options) {
-                  var a_string = a.toString()
-                  var b_string = b.toString()
-                  if (a_string === b_string) {
-                    return options.fn(this);
-                  } else {
-                    return options.inverse(this)
-                  }
-                }
-              }
-            })
-          })
-        } else {
-          Message.aggregate([
-            { "$unwind": "$conversations"},
-            { "$sort": { "conversations": 1, "created_at": -1 }},
-            { "$group": {
-              "_id": "$conversations",
-              "doc": { "$first": "$$ROOT" }
-            }},
-            { "$sort": { "doc.created_at": -1 } }
-          ], (err, messages) => {
-            // console.log('messages\n', messages)
-            res.render('user_messages', {
-              conversations: conversations,
-              last_message: messages,
-              helpers: {
-                if_eq: function(a, b, options) {
-                  var a_string = a.toString()
-                  var b_string = b.toString()
-                  if (a_string === b_string) {
-                    return options.fn(this);
-                  } else {
-                    return options.inverse(this)
-                  }
-                }
-              }
-            })
-          })
-        }
-      })
+router.get('/api/all-messages', (req, res, next) => {
+  const token = req.headers['user-cookie']
+  const decodedUser = jwt.decode(token, JWT_SECRET)
+  User.find({ username: decodedUser.username}, (err, user) => {
+    Conversation.find({ users: user[0]._id}).sort({ updated_at: -1 }).exec((err, conversations) => {
+      res.json({ conversations: conversations })
     })
   })
 })
 
 /****************************************************************************************************
-// Get the contact page to contact another member
-// If no conversations with the user exist, create a new conversation
-// Else, redirect to the existing conversation
-****************************************************************************************************/
-
-router.get('/:user_id', ensureAuthenticated, (req, res, next) => {
-  User.findOne({ _id: req.params.user_id }, (err, member) => {
-    Conversation.find({ $and: [{ users: req.user._id }, { users: member._id }] }, (err, conversation) => {
-      if (conversation.length === 0) {
-        Conversation.find({ users: req.user._id }, (err, conversations) => {
-          var conversations_count = 0
-          conversations.forEach((conversation) => {
-            if (req.user._id.toString() === conversation.sent_to_user_id && conversation.unread) {
-              conversations_count += 1
-            }
-          })
-          res.render('contact_member', {
-            conversations_count: conversations_count,
-            member: member
-          })
-        })
-      } else {
-        res.redirect('/conversations/' + conversation[0]._id)
-      }
-    })
-  })
-});
-
-/****************************************************************************************************
 // Send a new message to another user
 ****************************************************************************************************/
 
-router.post('/:user_id', ensureAuthenticated, (req, res, next) => {
+router.post('/:user_id', (req, res, next) => {
   User.findById({ _id: req.params.user_id }, (err, user) => {
     Conversation.find({ $and: [{ users: req.user._id }, { users: user._id }] }, (err, conversation) => {
       if (conversation.length === 0) {
@@ -178,61 +70,5 @@ router.post('/:user_id', ensureAuthenticated, (req, res, next) => {
     })
   })
 })
-
-/****************************************************************************************************
-// Reply to a message
-****************************************************************************************************/
-
-router.post('/reply/:conversation_id', ensureAuthenticated, (req, res, next) => {
-  Conversation.findById(req.params.conversation_id, (err, conversation) => {
-    if (req.user._id.toString() === conversation.created_by_user_id) {
-      User.findById(conversation.sent_to_user_id, (err, user) => {
-        Message.create({
-          message: req.body.message,
-          from: req.user.first_name,
-          to: user.first_name,
-          from_user_id: req.user._id,
-          to_user_id: user._id,
-          created_at: Date.now(),
-          unread: true
-        }, (err, message) => {
-          if (err) {
-            console.log(err)
-          } else {
-            message.conversations.push(conversation._id)
-            conversation.updated_at = Date.now()
-            conversation.unread = true
-            conversation.save()
-            message.save()
-            res.redirect('/conversations/' + conversation._id)
-          }
-        })
-      })
-    } else {
-      User.findById(conversation.created_by_user_id, (err, user) => {
-        Message.create({
-          message: req.body.message,
-          from: req.user.first_name,
-          to: user.first_name,
-          from_user_id: req.user._id,
-          to_user_id: user._id,
-          created_at: Date.now(),
-          unread: true
-        }, (err, message) => {
-          if (err) {
-            console.log(err)
-          } else {
-            message.conversations.push(conversation._id)
-            conversation.updated_at = Date.now()
-            conversation.unread = true
-            conversation.save()
-            message.save()
-            res.redirect('/conversations/' + conversation._id)
-          }
-        })
-      })
-    }
-  })
-});
 
 module.exports = router;
