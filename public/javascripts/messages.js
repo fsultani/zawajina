@@ -22,17 +22,27 @@ window.addEventListener('load', () => {
       if (this.status == 200) {
         const response = JSON.parse(this.responseText);
 
-        let memberInfo = `
-          <center>
-            <h2 class="dashboard-text">Your messages</h2>
-        `;
-        response.conversations.map((c) => {
-          memberInfo += `<p>${c.sent_to_user_name}</p>`
-        })
-        memberInfo += `</center>`
+        if (response.conversations.length !== 0) {
+          let memberInfo = `
+            <center>
+              <h2 class="dashboard-text">Your messages</h2>
+          `;
+          response.conversations.map((c) => {
+            memberInfo += `<p>${c.sent_to_user_name}</p>`
+          })
+          memberInfo += `</center>`
 
-        const htmlOutput = profilePageLayout + memberInfo
-        document.getElementById('my-app').innerHTML = htmlOutput
+          const htmlOutput = profilePageLayout + memberInfo
+          document.getElementById('my-app').innerHTML = htmlOutput
+        } else {
+          let memberInfo = `
+            <center>
+              <h2 class="dashboard-text">No messages</h2>
+            </center>
+          `;
+          const htmlOutput = profilePageLayout + memberInfo
+          document.getElementById('my-app').innerHTML = htmlOutput
+        }
       }
     }
     xhr.open('GET', '/messages/api/all-messages', true)

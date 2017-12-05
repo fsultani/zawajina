@@ -1,3 +1,7 @@
+const openMessageComposer = () => {
+  console.log("Yes!")
+}
+
 const beginUserPageLayout = `
   <div class="container">
     <div class="row">
@@ -32,6 +36,7 @@ window.addEventListener('load', () => {
     xhr.onload = function() {
       if (this.status == 200) {
         const response = JSON.parse(this.responseText);
+
         const welcome = `
           <center>
             <h2 class="dashboard-text">${response.member.first_name}'s profile page</h2>
@@ -40,16 +45,17 @@ window.addEventListener('load', () => {
 
             <p>In the meantime, you may contact ${response.member.first_name} using the button below.</p>
 
-            <a href="/messages/{{member._id}}" class="btn btn-primary">Message</a>
+            <button class="btn btn-primary" onclick="openMessageComposer()">Message</button>
           </center>
         `;
+
         const htmlOutput = beginUserPageLayout + authenticated + endUserPageLayout + welcome
         document.getElementById('my-app').innerHTML = htmlOutput;
       }
     }
     xhr.open('GET', '/users/api/info/' + userPath, true)
     xhr.setRequestHeader('user-cookie', Cookies.get('token'))
-    xhr.send(null);
+    xhr.send();
   } else if (url[1] === 'users' && url[3] === 'about') {
     const userPath = window.location.pathname.split('/')[2]
     var xhr = new XMLHttpRequest();
