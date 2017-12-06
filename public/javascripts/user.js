@@ -1,5 +1,6 @@
 const openMessageComposer = () => {
-  console.log("Yes!")
+  document.getElementById('contactForm').style.display = "block";
+  document.getElementById('messageCta').style.display = "none";
 }
 
 const beginUserPageLayout = `
@@ -36,6 +37,8 @@ window.addEventListener('load', () => {
     xhr.onload = function() {
       if (this.status == 200) {
         const response = JSON.parse(this.responseText);
+        let displayContactForm = document.getElementById('contactForm');
+        // displayContactForm.style.display = "none";
 
         const welcome = `
           <center>
@@ -45,12 +48,31 @@ window.addEventListener('load', () => {
 
             <p>In the meantime, you may contact ${response.member.first_name} using the button below.</p>
 
-            <button class="btn btn-primary" onclick="openMessageComposer()">Message</button>
+            <button class="btn btn-primary" onclick="openMessageComposer()" id="messageCta">Message</button>
+
+            <div id="contactForm">
+              <center>
+                <form>
+                  <div class="form-group col-md-6 col-md-offset-3">
+                    <center>
+                      <label for="exampleTextarea">Contact ${response.member.first_name}</label>
+                    </center>
+                    <textarea class="form-control" name="message" rows="5" cols="10"></textarea>
+                    <br>
+                    <center>
+                      <button type="submit" class="btn btn-danger">Cancel</button>
+                      <button type="submit" class="btn btn-primary">Send</button>
+                    </center>
+                  </div>
+                </form>
+              </center>
+            </div>
           </center>
         `;
 
         const htmlOutput = beginUserPageLayout + authenticated + endUserPageLayout + welcome
         document.getElementById('my-app').innerHTML = htmlOutput;
+        document.getElementById('contactForm').style.display = "none";
       }
     }
     xhr.open('GET', '/users/api/info/' + userPath, true)
