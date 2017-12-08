@@ -1,6 +1,19 @@
 const openMessageComposer = () => {
-  document.getElementById('contactForm').style.display = "block";
-  document.getElementById('messageCta').style.display = "none";
+  // document.getElementById('contactForm').style.display = "block";
+  // document.getElementById('messageCta').style.display = "none";
+  $("#messageCta").hide()
+  $("#contactForm").fadeTo("medium", 1, () => {})
+}
+
+const sendMessage = () => {
+  console.log(document.getElementById("composeMessage").value)
+}
+
+const cancelSend = () => {
+  // document.getElementById('contactForm').style.display = "none";
+  // document.getElementById('messageCta').style.display = "block";
+  $("#contactForm").fadeOut("medium", () => {})
+  $("#messageCta").show()
 }
 
 const beginUserPageLayout = `
@@ -51,21 +64,15 @@ window.addEventListener('load', () => {
             <button class="btn btn-primary" onclick="openMessageComposer()" id="messageCta">Message</button>
 
             <div id="contactForm">
-              <center>
-                <form>
-                  <div class="form-group col-md-6 col-md-offset-3">
-                    <center>
-                      <label for="exampleTextarea">Contact ${response.member.first_name}</label>
-                    </center>
-                    <textarea class="form-control" name="message" rows="5" cols="10"></textarea>
-                    <br>
-                    <center>
-                      <button type="submit" class="btn btn-danger">Cancel</button>
-                      <button type="submit" class="btn btn-primary">Send</button>
-                    </center>
-                  </div>
-                </form>
-              </center>
+              <div class="form-group col-md-6 col-md-offset-3">
+                <center>
+                  <label for="exampleTextarea">Contact ${response.member.first_name}</label>
+                  <textarea class="form-control" id="composeMessage" rows="5" cols="10"></textarea>
+                  <br />
+                  <button class="btn btn-danger" onclick="cancelSend()">Cancel</button>
+                  <button class="btn btn-primary" onclick="sendMessage()">Send</button>
+                </center>
+              </div>
             </div>
           </center>
         `;
