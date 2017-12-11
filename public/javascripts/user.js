@@ -1,17 +1,26 @@
+const userPath = window.location.pathname.split('/')[2]
+
 const openMessageComposer = () => {
-  // document.getElementById('contactForm').style.display = "block";
-  // document.getElementById('messageCta').style.display = "none";
   $("#messageCta").hide()
   $("#contactForm").fadeTo("medium", 1, () => {})
 }
 
-const sendMessage = () => {
-  console.log(document.getElementById("composeMessage").value)
+const sendMessage = (event) => {
+  const message = document.getElementById("composeMessage").value
+  // const messageTest = "This is a test."
+  var xhr = new XMLHttpRequest();
+    xhr.open('POST', '/messages/api/new-message/', true)
+    xhr.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
+    xhr.setRequestHeader('user-cookie', Cookies.get('token'))
+    xhr.onload = function() {
+      if (this.status == 200) {
+        const response = JSON.parse(this.responseText);
+      }
+    }
+    xhr.send(JSON.stringify({userId: userPath, message: message}))
 }
 
 const cancelSend = () => {
-  // document.getElementById('contactForm').style.display = "none";
-  // document.getElementById('messageCta').style.display = "block";
   $("#contactForm").fadeOut("medium", () => {})
   $("#messageCta").show()
 }
@@ -45,13 +54,11 @@ const endUserPageLayout = `</ul></nav></div></div></div></div>`;
 window.addEventListener('load', () => {
   const url = window.location.pathname.split('/')
   if (url[1] === 'users' && url[3] === 'about' && Cookies.get('token')) {
-    const userPath = window.location.pathname.split('/')[2]
     var xhr = new XMLHttpRequest();
     xhr.onload = function() {
       if (this.status == 200) {
         const response = JSON.parse(this.responseText);
         let displayContactForm = document.getElementById('contactForm');
-        // displayContactForm.style.display = "none";
 
         const welcome = `
           <center>
