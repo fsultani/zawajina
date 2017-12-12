@@ -30,13 +30,19 @@ router.get('/api/all-messages', (req, res, next) => {
 router.post('/api/new-message', (req, res, next) => {
   const token = req.headers['user-cookie']
   const decodedUser = jwt.decode(token, JWT_SECRET)
+  Promise.all([
+    User.find({ _id: req.body.userId }),
+    User.find({ username: decodedUser.username }),
+  ]).then(([ user, member ]) => {
+    console.log('user\n', user)
+    console.log('member\n', member)
+  })
 
-  const contactedUser = (person, cb) => {
-    User.findOne({ _id: person }).exec((err, user) => {
-      console.log("user\n", user)
-      cb(user)
-    })
-  }
+  // const contactedUser = (person, cb) => {
+  //   User.findOne({ _id: person }).exec((err, user) => {
+  //     cb(user)
+  //   })
+  // }
 
   // const member = (member, cb) => {
   //   User.find({ username: member }).exec((err, member) => {
@@ -44,21 +50,13 @@ router.post('/api/new-message', (req, res, next) => {
   //   })
   // }
 
-  contactedUser(req.body.userId, (err, user) => {
-    console.log("user\n", user)
-  })
+  // contactedUser(req.body.userId, (err, user) => {
+  //   console.log("user\n", user)
+  // })
 
-  // member(decodedUser.username, (err, member) => { return member._id })
-
-  Conversation.find({
-    $and:
-      [
-        { users: contactedUser() },
-        { users: member() }
-      ]
-    }, (err, conversation) => {
-    console.log("conversation\n", conversation)
-  })
+  // member(decodedUser.username, (err, member) => {
+  //   console.log('member._id\n', member._id)
+  // })
 
   // User.findOne({ _id: req.body.userId }, (err, user) => {
   //   console.log("user\n", user)
