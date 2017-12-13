@@ -28,14 +28,13 @@ router.get('/api/all-messages', (req, res, next) => {
 ****************************************************************************************************/
 
 router.post('/api/new-message', (req, res, next) => {
-  const token = req.headers['user-cookie']
+  const token = req.headers['authorization']
   const decodedUser = jwt.decode(token, JWT_SECRET)
   Promise.all([
     User.find({ _id: req.body.userId }),
     User.find({ username: decodedUser.username }),
   ]).then(([ user, member ]) => {
-    console.log('user\n', user)
-    console.log('member\n', member)
+    res.json({ user: user, member: member })
   })
 
   // const contactedUser = (person, cb) => {

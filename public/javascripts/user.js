@@ -5,19 +5,16 @@ const openMessageComposer = () => {
   $("#contactForm").fadeTo("medium", 1, () => {})
 }
 
-const sendMessage = (event) => {
+const sendMessage = () => {
   const message = document.getElementById("composeMessage").value
-  // const messageTest = "This is a test."
-  var xhr = new XMLHttpRequest();
-    xhr.open('POST', '/messages/api/new-message/', true)
-    xhr.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
-    xhr.setRequestHeader('user-cookie', Cookies.get('token'))
-    xhr.onload = function() {
-      if (this.status == 200) {
-        const response = JSON.parse(this.responseText);
-      }
-    }
-    xhr.send(JSON.stringify({userId: userPath, message: message}))
+  axios.post('/messages/api/new-message', {
+    userId: userPath,
+    message: message
+  })
+  .then(function(res) {
+    console.log("res.data.member\n", res.data.member[0])
+    console.log("res.data.user\n", res.data.user[0])
+  })
 }
 
 const cancelSend = () => {
