@@ -22,7 +22,7 @@ const layout = `
 this.layout = layout;
 
 window.addEventListener('load', () => {
-  axios.defaults.headers.common['Authorization'] = Cookies.get('token')
+  axios.defaults.headers.common['authorization'] = Cookies.get('token')
   if (window.location.pathname === '/') {
     window.location.pathname = '/home'
   }
