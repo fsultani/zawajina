@@ -1,4 +1,4 @@
-const userPath = window.location.pathname.split('/')[2]
+const userId = window.location.pathname.split('/')[2]
 
 const openMessageComposer = () => {
   $("#messageCta").hide()
@@ -8,12 +8,11 @@ const openMessageComposer = () => {
 const sendMessage = () => {
   const message = document.getElementById("composeMessage").value
   axios.post('/messages/api/new-message', {
-    userId: userPath,
+    userId: userId,
     message: message
   })
   .then(function(res) {
-    console.log("res.data.member\n", res.data.member[0])
-    console.log("res.data.user\n", res.data.user[0])
+    window.location.pathname = `/conversations/${res.data.conversation._id}`
   })
 }
 
@@ -51,7 +50,7 @@ const endUserPageLayout = `</ul></nav></div></div></div></div>`;
 window.addEventListener('load', () => {
   const url = window.location.pathname.split('/')
   if (url[1] === 'users' && url[3] === 'about' && Cookies.get('token')) {
-    axios.get(`/users/api/info/${userPath}`).then((res) => {
+    axios.get(`/users/api/info/${userId}`).then((res) => {
       let displayContactForm = document.getElementById('contactForm');
 
       const welcome = `
@@ -83,7 +82,7 @@ window.addEventListener('load', () => {
       document.getElementById('contactForm').style.display = "none";
     })
   } else if (url[1] === 'users' && url[3] === 'about') {
-    axios.get(`/users/api/info/${userPath}`).then((res) => {
+    axios.get(`/users/api/info/${userId}`).then((res) => {
       console.log("res\n", res)
       const welcome = `
         <center>
