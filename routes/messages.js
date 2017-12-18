@@ -14,7 +14,7 @@ const Conversation = require('../models/conversation')
 ****************************************************************************************************/
 
 router.get('/api/all-messages', (req, res, next) => {
-  const token = req.headers['user-cookie']
+  const token = req.headers['authorization']
   const decodedUser = jwt.decode(token, JWT_SECRET)
   User.find({ username: decodedUser.username}, (err, user) => {
     Conversation.find({ users: user[0]._id}).sort({ updated_at: -1 }).exec((err, conversations) => {
@@ -44,6 +44,7 @@ router.post('/api/new-message', (req, res, next) => {
       }]
     }, (err, conversation) => {
       if (conversation) {
+        console.log("conversation\n", conversation)
         // Conversation exists, so redirect to the conversation screen
       } else {
         Conversation.create({

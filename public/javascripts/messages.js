@@ -17,36 +17,36 @@ const messagesLayout = `
 
 window.addEventListener('load', () => {
   if (window.location.pathname === '/messages' && Cookies.get('token')) {
-    var xhr = new XMLHttpRequest();
-    xhr.onload = function() {
-      if (this.status == 200) {
-        const response = JSON.parse(this.responseText);
-
-        if (response.conversations.length !== 0) {
-          let memberInfo = `
-            <center>
-              <h2 class="dashboard-text">Your messages</h2>
+    axios.get('/messages/api/all-messages').then(res => {
+      const conversations = res.data.conversations
+      if (conversations) {
+        let memberInfo = `
+          <center>
+            <h2 class="dashboard-text">Your messages</h2>
+            <a href="#">
+        `;
+        conversations.map((conversation) => {
+          console.log("conversation\n", conversation)
+          memberInfo += `
+            <div class="col-md-6 col-md-offset-3">
+              <div class="well">
+                <div>${conversation.sent_to_user_first_name}</div>
+              </div>
+            </div>
           `;
-          response.conversations.map((c) => {
-            memberInfo += `<p>${c.sent_to_user_name}</p>`
-          })
-          memberInfo += `</center>`
-
-          const htmlOutput = profilePageLayout + memberInfo
-          document.getElementById('my-app').innerHTML = htmlOutput
-        } else {
-          let memberInfo = `
-            <center>
-              <h2 class="dashboard-text">No messages</h2>
-            </center>
-          `;
-          const htmlOutput = profilePageLayout + memberInfo
-          document.getElementById('my-app').innerHTML = htmlOutput
-        }
+        })
+        memberInfo += `</a></center>`
+        const htmlOutput = messagesLayout + memberInfo
+        document.getElementById('my-app').innerHTML = htmlOutput
+      } else {
+        let memberInfo = `
+          <center>
+            <h2 class="dashboard-text">No messages</h2>
+          </center>
+        `;
+        const htmlOutput = profilePageLayout + memberInfo
+        document.getElementById('my-app').innerHTML = htmlOutput
       }
-    }
-    xhr.open('GET', '/messages/api/all-messages', true)
-    xhr.setRequestHeader('user-cookie', Cookies.get('token'))
-    xhr.send(null);
+    })
   }
 })

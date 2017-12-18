@@ -29,7 +29,7 @@ const endConversationPageLayout = `</ul></nav></div></div></div></div>`;
 window.addEventListener('load', () => {
   const url = window.location.pathname.split('/')
   if (url[1] === 'conversations' && url[2] === conversationId) {
-    axios.get(`/users/api/info/${userPath}`).then((res) => {
+    axios.get(`/users/api/info/${conversationId}`).then((res) => {
       let displayContactForm = document.getElementById('contactForm');
 
       const welcome = `
@@ -40,7 +40,7 @@ window.addEventListener('load', () => {
       document.getElementById('my-app').innerHTML = htmlOutput;
     })
   } else if (url[1] === 'users' && url[3] === 'about') {
-    // axios.get(`/users/api/info/${userPath}`).then((res) => {
+    // axios.get(`/users/api/info/${conversationId}`).then((res) => {
     //   console.log("res\n", res)
     //   const welcome = `
     //     <center>
