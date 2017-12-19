@@ -23,16 +23,16 @@ window.addEventListener('load', () => {
         let memberInfo = `
           <center>
             <h2 class="dashboard-text">Your messages</h2>
-            <a href="#">
         `;
         conversations.map((conversation) => {
-          console.log("conversation\n", conversation)
           memberInfo += `
-            <div class="col-md-6 col-md-offset-3">
-              <div class="well">
-                <div>${conversation.sent_to_user_first_name}</div>
+            <a href="/conversations/${conversation._id}">
+              <div class="col-md-6 col-md-offset-3">
+                <div class="well">
+                  <div>${conversation.sent_to_user_first_name}</div>
+                </div>
               </div>
-            </div>
+            </a>
           `;
         })
         memberInfo += `</a></center>`
