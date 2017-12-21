@@ -89,6 +89,7 @@ app.use(function (req, res, next) {
 app.get('*', (req, res, next) => {
   if (req.url.indexOf('/api/') === -1) {
     res.sendFile(path.join(__dirname, 'public/index.html'))
+    // res.sendFile(path.join(__dirname, 'public/index-no-network.html'))
   } else {
     return next();
   }
