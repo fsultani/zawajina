@@ -50,9 +50,15 @@ router.get('/api/all-members', (req, res, next) => {
       console.log("Authentication failed. User not found.")
       return res.status(403).send("Authentication failed. User not found.")
     } else {
-      User.find({gender: 'female'}, (err, all) => {
-        res.json({all: all})
-      })
+      user.gender === 'male' ? (
+        User.find({gender: 'female'}, (err, all) => {
+          res.json({all: all})
+        })
+      ) : (
+        User.find({gender: 'male'}, (err, all) => {
+          res.json({all: all})
+        })
+      )
     }
   })
 })
