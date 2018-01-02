@@ -12,7 +12,7 @@ const sendMessage = () => {
     message: message
   })
   .then(function(res) {
-    window.location.pathname = `/conversations/${res.data.conversation._id}`
+    window.location.pathname = `/conversation/${res.data.conversation._id}`
   })
 }
 

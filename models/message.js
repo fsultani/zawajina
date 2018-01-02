@@ -23,10 +23,10 @@ var Message = mongoose.Schema({
   },
   created_at: Date,
   unread: Boolean,
-  conversations: [
+  conversation: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Conversations'
+      ref: 'Conversation'
     }
   ]
 });

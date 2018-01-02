@@ -7,7 +7,7 @@ var Message = require('../models/message')
 var Conversation = require('../models/conversation')
 
 router.get('/api/:id', (req, res) => {
-  Message.find({ conversations: req.params.id}, (err, messages) => {
+  Message.find({ conversation: req.params.id}, (err, messages) => {
     res.json({ messages: messages })
   })
 })

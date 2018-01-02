@@ -18,4 +18,4 @@ var Conversation = mongoose.Schema({
 
 });
 
-var Conversation = module.exports = mongoose.model('Conversations', Conversation);
+var Conversation = module.exports = mongoose.model('Conversation', Conversation);

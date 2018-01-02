@@ -4,8 +4,8 @@ const endConversationPageLayout = `</ul></nav></div></div></div></div>`;
 
 window.addEventListener('load', () => {
   const url = window.location.pathname.split('/')
-  if (url[1] === 'conversations' && url[2] === conversationId) {
-    axios.get(`/conversations/api/${conversationId}`).then((res) => {
+  if (url[1] === 'conversation' && url[2] === conversationId) {
+    axios.get(`/conversation/api/${conversationId}`).then((res) => {
       const messages = res.data.messages
 
       let messageList = `<center>`;

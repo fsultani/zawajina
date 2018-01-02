@@ -29,7 +29,7 @@ const app = express();
 
 const index = require('./routes/index');
 const users = require('./routes/users');
-const conversations = require('./routes/conversations');
+const conversation = require('./routes/conversation');
 const messages = require('./routes/messages');
 
 const Conversation = require('./models/conversation')
@@ -88,8 +88,8 @@ app.use(function (req, res, next) {
 // Catch all 'get' requests, and respond with public/index.html
 app.get('*', (req, res, next) => {
   if (req.url.indexOf('/api/') === -1) {
-    // res.sendFile(path.join(__dirname, 'public/index.html'))
-    res.sendFile(path.join(__dirname, 'public/index-no-network.html'))
+    res.sendFile(path.join(__dirname, 'public/index.html'))
+    // res.sendFile(path.join(__dirname, 'public/index-no-network.html'))
   } else {
     return next();
   }
@@ -99,7 +99,7 @@ app.get('*', (req, res, next) => {
 app.use('/', index);
 
 app.use('/users', users);
-app.use('/conversations', conversations);
+app.use('/conversation', conversation);
 app.use('/messages', messages);
 
 // catch 404 and forward to error handler

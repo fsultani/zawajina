@@ -48,7 +48,6 @@ router.post('/api/new-message', (req, res, next) => {
       }]
     }, (err, conversation) => {
       if (conversation) {
-        console.log("conversation\n", conversation)
         // Conversation exists, so redirect to the conversation screen
       } else {
         Conversation.create({
@@ -58,7 +57,8 @@ router.post('/api/new-message', (req, res, next) => {
           created_by_user_id: member._id,
           sent_to_user_first_name: user.first_name,
           sent_to_user_id: user._id,
-          unread: true
+          unread: true,
+          users: [member,user]
         }, (err, conversation) => {
           if (err) {
             console.log(err)
@@ -70,15 +70,14 @@ router.post('/api/new-message', (req, res, next) => {
               from_user_id: member._id,
               to_user_id: user._id,
               created_at: Date.now(),
-              unread: true
+              unread: true,
+              conversation: conversation
             }, (err, message) => {
               if (err) {
                 console.log(err)
               } else {
-                conversation.users.push(member, user)
-                message.conversations.push(conversation)
-                conversation.save()
                 message.save()
+                conversation.save()
                 res.json({ conversation: conversation })
               }
             })
