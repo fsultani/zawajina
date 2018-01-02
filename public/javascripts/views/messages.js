@@ -26,7 +26,7 @@ window.addEventListener('load', () => {
         `;
         conversations.map((conversation) => {
           memberInfo += `
-            <a href="/conversations/${conversation._id}">
+            <a href="/conversation/${conversation._id}">
               <div class="col-md-6 col-md-offset-3">
                 <div class="well">
                   <div>${conversation.sent_to_user_first_name}</div>

@@ -17,22 +17,20 @@ const profilePageLayout = `
 
 window.addEventListener('load', () => {
   if (window.location.pathname === '/profile' && Cookies.get('token')) {
-    var xhr = new XMLHttpRequest();
-    xhr.onload = function() {
-      if (this.status == 200) {
-        const response = JSON.parse(this.responseText);
-        const memberInfo = `
+    axios.get('/api/profile-info').then(res => {
+      const member = res.data.member
+      const memberInfo = `
           <center>
-          <h2 class="dashboard-text">Welcome, ${response.member.first_name}!</h2>
+          <h2 class="dashboard-text">Welcome, ${member.first_name}!</h2>
 
           <h4>Here is your basic info</h4>
           <div class="col-md-8 col-md-offset-4">
             <div class="col-md-6">
               <div class="thumbnail" style="border-radius: 12px">
-                <p>Name: ${response.member.first_name} ${response.member.last_name}</p>
-                <p>email: ${response.member.email}</p>
-                <p>username: ${response.member.username}</p>
-                <p>gender: ${response.member.gender}</p>
+                <p>Name: ${member.first_name} ${member.last_name}</p>
+                <p>email: ${member.email}</p>
+                <p>username: ${member.username}</p>
+                <p>gender: ${member.gender}</p>
               </div>
             </div>
           </div>
@@ -41,10 +39,6 @@ window.addEventListener('load', () => {
         `;
         const htmlOutput = profilePageLayout + memberInfo
         document.getElementById('my-app').innerHTML = htmlOutput
-      }
-    }
-    xhr.open('GET', '/api/profile-info', true)
-    xhr.setRequestHeader('user-cookie', Cookies.get('token'))
-    xhr.send(null);
+    })
   }
 })

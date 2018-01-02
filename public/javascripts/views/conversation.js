@@ -1,6 +1,15 @@
 const conversationId = window.location.pathname.split('/')[2]
 
-const endConversationPageLayout = `</ul></nav></div></div></div></div>`;
+const sendReply = () => {
+  const message = document.getElementById("replyMessage").value
+  axios.post('/messages/api/reply', {
+    conversationId: conversationId,
+    message: message
+  })
+  .then(function(res) {
+    window.location.pathname = `/conversation/${res.data.conversation._id}`
+  })
+}
 
 window.addEventListener('load', () => {
   const url = window.location.pathname.split('/')
@@ -31,9 +40,21 @@ window.addEventListener('load', () => {
           messageList += `</div></div></div>`;
       })
 
+      const reply = `
+        <div id="contactForm">
+            <div class="form-group col-md-6 col-md-offset-3">
+              <center>
+                <textarea class="form-control" id="replyMessage" rows="5" cols="10"></textarea>
+                <br />
+                <button class="btn btn-primary" onclick="sendReply()">Send</button>
+              </center>
+            </div>
+          </div>
+        `;
+
       messageList += `</center>`;
 
-      const htmlOutput = beginUserPageLayout + authenticated + endUserPageLayout + messageList
+      const htmlOutput = beginUserPageLayout + authenticated + endUserPageLayout + messageList + reply
       document.getElementById('my-app').innerHTML = htmlOutput;
     })
   } else if (url[1] === 'users' && url[3] === 'about') {

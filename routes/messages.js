@@ -88,4 +88,32 @@ router.post('/api/new-message', (req, res, next) => {
   })
 })
 
+/****************************************************************************************************
+// Reply to a message
+****************************************************************************************************/
+
+router.post('/api/reply', (req, res, next) => {
+  const token = req.headers['authorization']
+  const decodedUser = jwt.decode(token, JWT_SECRET)
+  console.log("decodedUser\n", decodedUser)
+  // Message.create({
+  //   message: req.body.message,
+  //   from: member.first_name,
+  //   to: user.first_name,
+  //   from_user_id: member._id,
+  //   to_user_id: user._id,
+  //   created_at: Date.now(),
+  //   unread: true,
+  //   conversation: conversation
+  // }, (err, message) => {
+  //   if (err) {
+  //     console.log(err)
+  //   } else {
+  //     message.save()
+  //     conversation.save()
+  //     res.json({ conversation: conversation })
+  //   }
+  // })
+})
+
 module.exports = router;

@@ -17,18 +17,14 @@ loginPage = `
 function login() {
   const username = document.loginForm.username.value
   const password = document.loginForm.password.value
-  var xhr = new XMLHttpRequest();
 
-  xhr.open('POST', '/login', true)
-  xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-  xhr.send(`username=${username}&password=${password}`)
-  xhr.onload = function() {
-    if (JSON.parse(this.responseText).token) {
-      var token = JSON.parse(this.responseText).token
-      Cookies.set('token', token)
-      window.location.pathname = '/home'  
-    }
-  }
+  axios.post('/login', {
+    username: username,
+    password: password
+  }).then(res => {
+    Cookies.set('token', res.data.token)
+    window.location.pathname = '/home'
+  })
 }
 
 const output = this.layout + loginPage;

@@ -30,12 +30,9 @@ function logout() {
 
 window.addEventListener('load', () => {
   if (window.location.pathname === '/home' && Cookies.get('token')) {
-    var xhr = new XMLHttpRequest();
-    xhr.onload = function() {
-      if (this.status == 200) {
-        const response = JSON.parse(this.responseText);
-
-        const welcome = `
+    axios.get('/api/all-members').then((res) => {
+      const allMembers = res.data.all
+      const welcome = `
           <center>
             <h1>Welcome home!</h1>
             <h3>All members on this site</h3>
@@ -43,7 +40,7 @@ window.addEventListener('load', () => {
 
         let output = `<div class="col-md-8 col-md-offset-2">`;
 
-        response.all.map((user) => {
+        allMembers.map((user) => {
           output += `
             <a href="/users/${user._id}/about" style="text-decoration: none">
               <div class="col-md-6">
@@ -58,11 +55,7 @@ window.addEventListener('load', () => {
         output += `</div></center>`;
         const htmlOutput = beginLayout + loggedIn + endLayout + welcome + output;
         document.getElementById('my-app').innerHTML = htmlOutput;
-      }
-    }
-    xhr.open('GET', '/api/all-members', true)
-    xhr.setRequestHeader('user-cookie', Cookies.get('token'))
-    xhr.send(null);
+    })
   } else if (window.location.pathname === '/home') {
     const welcome = `
       <center>
