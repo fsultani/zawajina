@@ -18,10 +18,6 @@ router.get('/api/all-messages', (req, res, next) => {
   const decodedUser = jwt.decode(token, JWT_SECRET)
   User.find({ username: decodedUser.username}, (err, user) => {
     Conversation.find({ users: user[0]._id}).sort({ updated_at: -1 }).exec((err, conversations) => {
-      // console.log("conversations\n", conversations)
-      Message.find({}, (err, message) => {
-        // console.log("message\n", message)
-      })
       res.json({ conversations: conversations })
     })
   })

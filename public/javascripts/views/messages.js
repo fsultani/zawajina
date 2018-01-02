@@ -5,7 +5,11 @@ const messagesLayout = `
         <nav style="padding-top: 10px">
           <ul class="nav nav-pills pull-left">
             <li role="presentation">
-              <a href="/home"><h3>My App</h3></a>
+              <a href="/home">
+                <h3>My App <br>
+                <h5>(${Cookies.get('first_name')})</h5>
+                </h3>
+              </a>
             </li>
           </ul>
           <ul class="nav nav-pills pull-right">
@@ -25,15 +29,27 @@ window.addEventListener('load', () => {
             <h2 class="dashboard-text">Your messages</h2>
         `;
         conversations.map((conversation) => {
-          memberInfo += `
-            <a href="/conversation/${conversation._id}">
-              <div class="col-md-6 col-md-offset-3">
-                <div class="well">
-                  <div>${conversation.sent_to_user_first_name}</div>
+          if (conversation.sent_to_user_id !== Cookies.get('id')) {
+            memberInfo += `
+              <a href="/conversation/${conversation._id}">
+                <div class="col-md-6 col-md-offset-3">
+                  <div class="well">
+                    <div>${conversation.sent_to_user_first_name}</div>
+                  </div>
                 </div>
-              </div>
-            </a>
-          `;
+              </a>
+            `;
+          } else {
+            memberInfo += `
+              <a href="/conversation/${conversation._id}">
+                <div class="col-md-6 col-md-offset-3">
+                  <div class="well">
+                    <div>${conversation.created_by_user_first_name}</div>
+                  </div>
+                </div>
+              </a>
+            `;
+          }
         })
         memberInfo += `</a></center>`
         const htmlOutput = messagesLayout + memberInfo
