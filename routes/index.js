@@ -69,10 +69,13 @@ router.post('/login', (req, res, next) => {
     if (!user) {
       return res.json(401, { error: 'message' })
     } else {
-      const token = jwt.encode({ username: user.username}, JWT_SECRET)
       // Return a token to the client once the user is authenticated
+      const token = jwt.encode({ username: user.username}, JWT_SECRET)
+      const decodedUser = jwt.decode(token, JWT_SECRET)
       Cookies.set('token', token)
-      res.json({ token: token })
+      User.findOne({ username: decodedUser.username }, (err, member) => {
+        res.json({ token: token, member: member })
+      })
     }
   })(req, res, next)
 })

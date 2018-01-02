@@ -23,6 +23,7 @@ function login() {
     password: password
   }).then(res => {
     Cookies.set('token', res.data.token)
+    Cookies.set('member', res.data.member.first_name)
     window.location.pathname = '/home'
   })
 }
