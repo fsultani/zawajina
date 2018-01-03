@@ -54,7 +54,7 @@ window.addEventListener('load', () => {
 
       messageList += `</center>`;
 
-      const htmlOutput = beginUserPageLayout + authenticated + endUserPageLayout + messageList + reply
+      const htmlOutput = beginLayout + authenticated + endLayout + messageList + reply
       document.getElementById('my-app').innerHTML = htmlOutput;
     })
   } else if (url[1] === 'users' && url[3] === 'about') {
