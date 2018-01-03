@@ -1,33 +1,3 @@
-const beginLayout = `
-  <div class="container">
-    <div class="row">
-      <div class="header clearfix">
-        <nav style="padding-top: 10px">
-          <ul class="nav nav-pills pull-left">
-            <li role="presentation">
-              <a href="/home"><h3>My App</h3></a>
-            </li>
-          </ul>
-          <ul class="nav nav-pills pull-right">`
-
-const loggedIn = `
-<li role="presentation"><a onclick="logout()" style="cursor: pointer">Log Out</a></li>
-<li role="presentation"><a href="/messages">Messages</a></li>
-<li role="presentation"><a href="/profile">Profile</a></li>
-`;
-
-const notLoggedIn = `
-<li role="presentation"><a href="/login">Login</a></li>
-<li role="presentation"><a href="/register">Register</a></li>
-`;
-
-const endLayout = `</ul></nav></div></div></div></div>`;
-
-function logout() {
-  Cookies.remove('token')
-  window.location.pathname = '/login'
-}
-
 window.addEventListener('load', () => {
   if (window.location.pathname === '/home' && Cookies.get('token')) {
     axios.get('/api/all-members').then((res) => {
@@ -53,7 +23,7 @@ window.addEventListener('load', () => {
         })
 
         output += `</div></center>`;
-        const htmlOutput = beginLayout + loggedIn + endLayout + welcome + output;
+        const htmlOutput = beginLayout + authenticated + endLayout + welcome + output;
         document.getElementById('my-app').innerHTML = htmlOutput;
     })
   } else if (window.location.pathname === '/home') {
@@ -64,7 +34,7 @@ window.addEventListener('load', () => {
       </center>
     `;
 
-    const htmlOutput = beginLayout + notLoggedIn + endLayout + welcome;
+    const htmlOutput = beginLayout + notAuthenticated + endLayout + welcome;
     document.getElementById('my-app').innerHTML = htmlOutput;
     }
 })

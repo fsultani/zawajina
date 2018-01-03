@@ -49,8 +49,9 @@ register = `
       </div>
     </div>
   </form>
-`
-const registrationPage = this.layout + register;
+`;
+
+const registrationPage = layout + register
 
 window.addEventListener('load', () => {
   if (window.location.pathname === '/register') {

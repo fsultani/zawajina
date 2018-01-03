@@ -21,32 +21,6 @@ const cancelSend = () => {
   $("#messageCta").show()
 }
 
-const beginUserPageLayout = `
-  <div class="container">
-    <div class="row">
-      <div class="header clearfix">
-        <nav style="padding-top: 10px">
-          <ul class="nav nav-pills pull-left">
-            <li role="presentation">
-              <a href="/home"><h3>My App</h3></a>
-            </li>
-          </ul>
-          <ul class="nav nav-pills pull-right">
-          `;
-
-const authenticated = `
-<li role="presentation"><a onclick="logout()" style="cursor: pointer">Log Out</a></li>
-<li role="presentation"><a href="/messages">Messages</a></li>
-<li role="presentation"><a href="/profile">Profile</a></li>
-`;
-
-const notAuthenticated = `
-<li role="presentation"><a href="/login">Login</a></li>
-<li role="presentation"><a href="/register">Register</a></li>
-`;
-
-const endUserPageLayout = `</ul></nav></div></div></div></div>`;
-
 window.addEventListener('load', () => {
   const url = window.location.pathname.split('/')
   if (url[1] === 'users' && url[3] === 'about' && Cookies.get('token')) {
@@ -77,7 +51,7 @@ window.addEventListener('load', () => {
         </center>
       `;
 
-      const htmlOutput = beginUserPageLayout + authenticated + endUserPageLayout + welcome
+      const htmlOutput = beginLayout + authenticated + endLayout + welcome
       document.getElementById('my-app').innerHTML = htmlOutput;
       document.getElementById('contactForm').style.display = "none";
     })
@@ -89,7 +63,7 @@ window.addEventListener('load', () => {
           ${res.data}
         </center>
       `;
-      const htmlOutput = beginUserPageLayout + notAuthenticated + endUserPageLayout + welcome
+      const htmlOutput = beginLayout + notAuthenticated + endLayout + welcome
       document.getElementById('my-app').innerHTML = htmlOutput;
     })
   }

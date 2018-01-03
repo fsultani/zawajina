@@ -29,7 +29,7 @@ function login() {
   })
 }
 
-const output = this.layout + loginPage;
+const output = layout + loginPage;
 
 window.addEventListener('load', () => {
   if (window.location.pathname === '/login') {
