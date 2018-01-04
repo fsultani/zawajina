@@ -11,6 +11,13 @@ router.get('/api/:id', (req, res) => {
     res.json({ messages: messages })
   })
 })
+
+router.get('/api/exists/:id', (req, res) => {
+  Conversation.findOne({ users: req.params.id }, (err, conversation) => {
+    conversation ? res.json({ conversation: conversation }) : res.json({ err: err })
+  })
+})
+
 // function ensureAuthenticated(req, res, next){
 //   if(req.isAuthenticated()){
 //     return next();

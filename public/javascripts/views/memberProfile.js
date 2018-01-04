@@ -1,8 +1,14 @@
 const userId = window.location.pathname.split('/')[2]
 
 const openMessageComposer = () => {
-  $("#messageCta").hide()
-  $("#contactForm").fadeTo("medium", 1, () => {})
+  axios.get(`/conversation/api/exists/${userId}`).then(res => {
+    if (res.data.conversation && res.data.conversation.users.includes(userId)) {
+      window.location.pathname = `/conversation/${res.data.conversation._id}`
+    } else {
+      $("#messageCta").hide()
+      $("#contactForm").fadeTo("medium", 1, () => {})
+    }
+  })
 }
 
 const sendMessage = () => {
