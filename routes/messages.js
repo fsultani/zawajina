@@ -91,25 +91,28 @@ router.post('/api/new-message', (req, res, next) => {
 router.post('/api/reply', (req, res, next) => {
   const token = req.headers['authorization']
   const decodedUser = jwt.decode(token, JWT_SECRET)
-  console.log("decodedUser\n", decodedUser)
-  // Message.create({
-  //   message: req.body.message,
-  //   from: member.first_name,
-  //   to: user.first_name,
-  //   from_user_id: member._id,
-  //   to_user_id: user._id,
-  //   created_at: Date.now(),
-  //   unread: true,
-  //   conversation: conversation
-  // }, (err, message) => {
-  //   if (err) {
-  //     console.log(err)
-  //   } else {
-  //     message.save()
-  //     conversation.save()
-  //     res.json({ conversation: conversation })
-  //   }
-  // })
+  Conversation.findOne({ _id: req.body.conversationId }, (err, conversation) => {
+    const to = conversation.sent_to_user_id === req.body.memberId ?
+    conversation.created_by_user_first_name : conversation.sent_to_user_id
+
+    Message.create({
+      message: req.body.reply,
+      from: req.body.memberFirstName,
+      to: to,
+      from_user_id: conversation.created_by_user_id,
+      to_user_id: conversation.sent_to_user_id,
+      created_at: Date.now(),
+      unread: true,
+      conversation: conversation
+    }, (err, message) => {
+      if (err) {
+        console.log(err)
+      } else {
+        message.save()
+        res.status(201).end();
+      }
+    })
+  })
 })
 
 module.exports = router;
