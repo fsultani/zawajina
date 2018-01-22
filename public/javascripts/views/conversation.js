@@ -12,7 +12,7 @@ const sendReply = () => {
   })
   .then(function(res) {
     if (res.status === 201) {
-      window.location.reload(true);      
+      window.location.reload(true)
     }
   })
 }
@@ -64,6 +64,6 @@ window.addEventListener('load', () => {
       document.getElementById('my-app').innerHTML = htmlOutput;
     })
   } else if (url[1] === 'users' && url[3] === 'about') {
-
+    
   }
 })
