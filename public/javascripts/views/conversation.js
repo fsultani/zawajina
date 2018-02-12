@@ -11,9 +11,10 @@ const sendReply = () => {
     reply: reply
   })
   .then(function(res) {
-    if (res.status === 201) {
-      window.location.reload(true)
-    }
+    console.log('res.data.reply\n', res.data.reply)
+    // if (res.status === 201) {
+    //   window.location.reload(true)
+    // }
   })
 }
 

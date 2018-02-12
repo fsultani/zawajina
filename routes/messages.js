@@ -109,7 +109,8 @@ router.post('/api/reply', (req, res, next) => {
         console.log(err)
       } else {
         message.save()
-        res.status(201).end();
+        // res.status(201).end();
+        res.json({ reply: message })
       }
     })
   })
