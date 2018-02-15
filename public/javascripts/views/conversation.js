@@ -1,31 +1,60 @@
 const conversationId = window.location.pathname.split('/')[2]
 
 let htmlOutput = beginLayout + authenticated + endLayout
+let messagesArray = []
+let replySection = undefined
 
 const sendReply = () => {
-  const reply = document.getElementById('replyMessage').value
+  const replyText = document.getElementById('replyMessage').value
   axios.post('/messages/api/reply', {
     memberFirstName: Cookies.get('first_name'),
     memberId: Cookies.get('id'),
     conversationId: conversationId,
-    reply: reply
+    reply: replyText
   })
   .then(function(res) {
-    console.log('res.data.reply\n', res.data.reply)
-    // if (res.status === 201) {
-    //   window.location.reload(true)
-    // }
+    if (res.status === 201) {
+      const reply = res.data.reply
+      messagesArray.push(reply)
+
+      const replyRow = (copy) => {
+        return `
+          <div class="col-md-6 col-md-offset-3" id="messageList">
+            <div class="well">
+              <div align="left">
+                <div style="float: left">${copy.from}: <b>${copy.message}</b></div>
+                <div style="float: right">Unread</div>
+                <div style="clear: both"></div>
+              </div>
+            </div>
+          </div>
+        `
+      }
+
+      if (messagesArray.length === 2) {
+        const copy = messagesArray[1]
+        replySection = replyRow(copy)
+      } else if (messagesArray.length > 2) {
+        const copy = messagesArray[messagesArray.length - 1]
+        replySection += replyRow(copy)
+      }
+      document.getElementById('replyId').innerHTML = replySection
+      document.getElementById('replyMessage').value = ' '
+    } else {
+      window.alert("Error")
+    }
   })
 }
 
 window.addEventListener('load', () => {
   const url = window.location.pathname.split('/')
   if (url[1] === 'conversation' && url[2] === conversationId) {
+
     axios.get(`/conversation/api/${conversationId}`).then((res) => {
-      const messages = res.data.messages
+      messagesArray.push(res.data.messages)
 
       let messageList = `<center>`;
-      messages.map((message) => {
+      messagesArray[0].map((message) => {
         messageList += `
           <div class="col-md-6 col-md-offset-3" id="messageList">
             <div class="well">
@@ -59,6 +88,7 @@ window.addEventListener('load', () => {
         </div>
       `;
 
+      messageList += `<div id="replyId"></div>`;
       messageList += `</center>`;
 
       htmlOutput += messageList + reply
