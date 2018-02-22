@@ -12,8 +12,12 @@ router.get('/api/:id', (req, res) => {
   })
 })
 
-router.get('/api/exists/:id', (req, res) => {
-  Conversation.findOne({ users: req.params.id }, (err, conversation) => {
+router.get('/api/exists/:member_id/:current_user_id', (req, res) => {
+  Conversation.findOne({
+    $and: [
+      { users: req.params.member_id },
+      { users: req.params.current_user_id }
+    ]}, (err, conversation) => {
     conversation ? res.json({ conversation: conversation }) : res.json({ err: err })
   })
 })
