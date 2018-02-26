@@ -62,9 +62,6 @@ window.addEventListener('load', () => {
         document.getElementById('my-app').innerHTML = htmlOutput;
         document.getElementById('contactForm').style.display = "none";
       })
-
-      // const htmlOutput = navArea + welcome
-      // document.getElementById('my-app').innerHTML = htmlOutput;
     })
   } else if (url[1] === 'users' && url[3] === 'about') {
     axios.get(`/users/api/info/${memberId}`).then((res) => {

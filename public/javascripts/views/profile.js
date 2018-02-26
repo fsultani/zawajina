@@ -24,9 +24,6 @@ window.addEventListener('load', () => {
           let htmlOutput = authenticatedNavArea(res.data.conversationTotal) + memberInfo
           document.getElementById('my-app').innerHTML = htmlOutput;
         })
-
-        // const htmlOutput = navArea + memberInfo
-        // document.getElementById('my-app').innerHTML = htmlOutput
     })
   }
 })
