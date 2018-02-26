@@ -1,8 +1,9 @@
 window.addEventListener('load', () => {
   if (window.location.pathname === '/home' && Cookies.get('token')) {
-    axios.get('/api/all-members').then((res) => {
-      const allMembers = res.data.all
-      const welcome = `
+    axios.get('/api/all-members')
+      .then(allMembers => {
+        const getAllMembers = allMembers.data.all
+        const welcome = `
           <center>
             <h1>Welcome home!</h1>
             <h3>All members on this site</h3>
@@ -10,7 +11,7 @@ window.addEventListener('load', () => {
 
         let output = `<div class="col-md-8 col-md-offset-2">`;
 
-        allMembers.map((user) => {
+        getAllMembers.map((user) => {
           output += `
             <a href="/users/${user._id}/about" style="text-decoration: none">
               <div class="col-md-6">
@@ -23,9 +24,12 @@ window.addEventListener('load', () => {
         })
 
         output += `</div></center>`;
-        const htmlOutput = beginLayout + authenticated + endLayout + welcome + output;
-        document.getElementById('my-app').innerHTML = htmlOutput;
-    })
+
+        conversationCount.then(res => {
+          let htmlOutput = authenticatedNavArea(res.data.conversationTotal) + welcome + output;
+          document.getElementById('my-app').innerHTML = htmlOutput;
+        })
+      })
   } else if (window.location.pathname === '/home') {
     const welcome = `
       <center>
@@ -34,7 +38,7 @@ window.addEventListener('load', () => {
       </center>
     `;
 
-    const htmlOutput = beginLayout + notAuthenticated + endLayout + welcome;
+    const htmlOutput = navArea + welcome;
     document.getElementById('my-app').innerHTML = htmlOutput;
     }
 })

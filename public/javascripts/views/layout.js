@@ -1,9 +1,4 @@
-window.addEventListener('load', () => {
-  axios.defaults.headers.common['authorization'] = Cookies.get('token')
-  if (window.location.pathname === '/') {
-    window.location.pathname = '/home'
-  }
-})
+const userId = Cookies.get("id") ? Cookies.get("id") : null
 
 function logout() {
   Cookies.remove('token')
@@ -33,32 +28,45 @@ const layout = `
   </div>
 `;
 
-const beginLayout = `
-  <div class="container">
-    <div class="row">
-      <div class="header clearfix">
-        <nav style="padding-top: 10px">
-          <ul class="nav nav-pills pull-left">
-            <li role="presentation">
-              <a href="/home">
-                <h3>My App <br>
-                <h5>(${Cookies.get('first_name')})</h5>
-                </h3>
-              </a>
-            </li>
-          </ul>
-          <ul class="nav nav-pills pull-right">
-`;
+const conversationCount = Promise.resolve(axios.get(`/conversation/api/totalCount/${userId}`))
 
-const authenticated = `
-<li role="presentation"><a onclick="logout()" style="cursor: pointer">Log Out</a></li>
-<li role="presentation"><a href="/messages">Messages</a></li>
-<li role="presentation"><a href="/profile">Profile</a></li>
-`;
+const authenticatedNavArea = (count) => {
+  const navArea = `
+    <div class="container">
+      <div class="row">
+        <div class="header clearfix">
+          <nav style="padding-top: 10px">
+            <ul class="nav nav-pills pull-left">
+              <li role="presentation">
+                <a href="/home">
+                  <h3>My App<br>
+                  <h5>(${Cookies.get('first_name')})</h5>
+                  </h3>
+                </a>
+              </li>
+            </ul>
+            <ul class="nav nav-pills pull-right">
+              <li role="presentation"><a onclick="logout()" style="cursor: pointer">Log Out</a></li>
+              <li role="presentation"><a href="/messages">Messages (${count})</a></li>
+              <li role="presentation"><a href="/profile">Profile</a></li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+  `
+  return navArea
+}
 
 const notAuthenticated = `
 <li role="presentation"><a href="/login">Login</a></li>
 <li role="presentation"><a href="/register">Register</a></li>
 `;
 
-const endLayout = `</ul></nav></div></div></div></div>`;
+window.addEventListener('load', () => {
+  axios.defaults.headers.common['authorization'] = Cookies.get('token')
+
+  if (window.location.pathname === '/') {
+    window.location.pathname = '/home'
+  }
+})

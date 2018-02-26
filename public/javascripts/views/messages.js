@@ -31,16 +31,28 @@ window.addEventListener('load', () => {
           }
         })
         memberInfo += `</a></center>`
-        const htmlOutput = beginLayout + authenticated + endLayout + memberInfo
-        document.getElementById('my-app').innerHTML = htmlOutput
+
+        conversationCount.then(res => {
+          let htmlOutput = authenticatedNavArea(res.data.conversationTotal) + memberInfo
+          document.getElementById('my-app').innerHTML = htmlOutput;
+        })
+
+        // const htmlOutput = navArea + memberInfo
+        // document.getElementById('my-app').innerHTML = htmlOutput
       } else {
         let memberInfo = `
           <center>
             <h2 class="dashboard-text">No messages</h2>
           </center>
         `;
-        const htmlOutput = beginLayout + authenticated + endLayout + memberInfo
-        document.getElementById('my-app').innerHTML = htmlOutput
+
+        conversationCount.then(res => {
+          let htmlOutput = authenticatedNavArea(res.data.conversationTotal) + memberInfo
+          document.getElementById('my-app').innerHTML = htmlOutput;
+        })
+
+        // const htmlOutput = navArea + authenticated + endLayout + memberInfo
+        // document.getElementById('my-app').innerHTML = htmlOutput
       }
     })
   }

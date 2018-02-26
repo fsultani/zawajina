@@ -31,7 +31,7 @@ router.post('/api/new-message', (req, res, next) => {
   const token = req.headers['authorization']
   const decodedUser = jwt.decode(token, JWT_SECRET)
   Promise.all([
-    User.findOne({ _id: req.body.userId }),
+    User.findOne({ _id: req.body.memberId }),
     User.findOne({ username: decodedUser.username }),
   ]).then(([ user, member ]) => {
     Conversation.findOne({
