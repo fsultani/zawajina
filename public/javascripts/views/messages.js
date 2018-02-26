@@ -36,9 +36,6 @@ window.addEventListener('load', () => {
           let htmlOutput = authenticatedNavArea(res.data.conversationTotal) + memberInfo
           document.getElementById('my-app').innerHTML = htmlOutput;
         })
-
-        // const htmlOutput = navArea + memberInfo
-        // document.getElementById('my-app').innerHTML = htmlOutput
       } else {
         let memberInfo = `
           <center>
@@ -50,9 +47,6 @@ window.addEventListener('load', () => {
           let htmlOutput = authenticatedNavArea(res.data.conversationTotal) + memberInfo
           document.getElementById('my-app').innerHTML = htmlOutput;
         })
-
-        // const htmlOutput = navArea + authenticated + endLayout + memberInfo
-        // document.getElementById('my-app').innerHTML = htmlOutput
       }
     })
   }

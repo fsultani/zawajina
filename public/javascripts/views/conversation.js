@@ -94,9 +94,6 @@ window.addEventListener('load', () => {
         let htmlOutput = authenticatedNavArea(res.data.conversationTotal) + messageList + reply
         document.getElementById('my-app').innerHTML = htmlOutput;
       })
-
-      // htmlOutput += messageList + reply
-      // document.getElementById('my-app').innerHTML = htmlOutput;
     })
   } else if (url[1] === 'users' && url[3] === 'about') {
     
