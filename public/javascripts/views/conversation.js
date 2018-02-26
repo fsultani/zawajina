@@ -1,6 +1,5 @@
 const conversationId = window.location.pathname.split('/')[2]
 
-let htmlOutput = beginLayout + authenticated + endLayout
 let messagesArray = []
 let replySection = undefined
 
@@ -91,8 +90,13 @@ window.addEventListener('load', () => {
       messageList += `<div id="replyId"></div>`;
       messageList += `</center>`;
 
-      htmlOutput += messageList + reply
-      document.getElementById('my-app').innerHTML = htmlOutput;
+      conversationCount.then(res => {
+        let htmlOutput = authenticatedNavArea(res.data.conversationTotal) + messageList + reply
+        document.getElementById('my-app').innerHTML = htmlOutput;
+      })
+
+      // htmlOutput += messageList + reply
+      // document.getElementById('my-app').innerHTML = htmlOutput;
     })
   } else if (url[1] === 'users' && url[3] === 'about') {
     

@@ -1,8 +1,8 @@
-const userId = window.location.pathname.split('/')[2]
+const memberId = window.location.pathname.split('/')[2]
 
 const openMessageComposer = () => {
-  axios.get(`/conversation/api/exists/${userId}/${Cookies.get('id')}`).then(res => {
-    if (res.data.conversation && res.data.conversation.users.includes(userId)) {
+  axios.get(`/conversation/api/exists/${memberId}/${Cookies.get('id')}`).then(res => {
+    if (res.data.conversation && res.data.conversation.users.includes(memberId)) {
       window.location.pathname = `/conversation/${res.data.conversation._id}`
     } else {
       $("#messageCta").hide()
@@ -14,7 +14,7 @@ const openMessageComposer = () => {
 const sendMessage = () => {
   const message = document.getElementById("composeMessage").value
   axios.post('/messages/api/new-message', {
-    userId: userId,
+    memberId: memberId,
     message: message
   })
   .then(function(res) {
@@ -30,7 +30,7 @@ const cancelSend = () => {
 window.addEventListener('load', () => {
   const url = window.location.pathname.split('/')
   if (url[1] === 'users' && url[3] === 'about' && Cookies.get('token')) {
-    axios.get(`/users/api/info/${userId}`).then((res) => {
+    axios.get(`/users/api/info/${memberId}`).then((res) => {
       let displayContactForm = document.getElementById('contactForm');
 
       const welcome = `
@@ -57,19 +57,24 @@ window.addEventListener('load', () => {
         </center>
       `;
 
-      const htmlOutput = beginLayout + authenticated + endLayout + welcome
-      document.getElementById('my-app').innerHTML = htmlOutput;
-      document.getElementById('contactForm').style.display = "none";
+      conversationCount.then(res => {
+        let htmlOutput = authenticatedNavArea(res.data.conversationTotal) + welcome
+        document.getElementById('my-app').innerHTML = htmlOutput;
+        document.getElementById('contactForm').style.display = "none";
+      })
+
+      // const htmlOutput = navArea + welcome
+      // document.getElementById('my-app').innerHTML = htmlOutput;
     })
   } else if (url[1] === 'users' && url[3] === 'about') {
-    axios.get(`/users/api/info/${userId}`).then((res) => {
+    axios.get(`/users/api/info/${memberId}`).then((res) => {
       console.log("res\n", res)
       const welcome = `
         <center>
           ${res.data}
         </center>
       `;
-      const htmlOutput = beginLayout + notAuthenticated + endLayout + welcome
+      let htmlOutput = authenticatedNavArea(0) + welcome
       document.getElementById('my-app').innerHTML = htmlOutput;
     })
   }
