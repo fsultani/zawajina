@@ -23,7 +23,7 @@ window.addEventListener('load', () => {
               <a href="/conversation/${conversation._id}">
                 <div class="col-md-6 col-md-offset-3">
                   <div class="well">
-                    <div>${conversation.created_by_user_first_name}</div>
+                    <div>${conversation.unread ? `<b>${conversation.created_by_user_first_name}</b>` : conversation.created_by_user_first_name}</div>
                   </div>
                 </div>
               </a>
