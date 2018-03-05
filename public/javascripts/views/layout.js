@@ -47,7 +47,7 @@ const authenticatedNavArea = (count) => {
             </ul>
             <ul class="nav nav-pills pull-right">
               <li role="presentation"><a onclick="logout()" style="cursor: pointer">Log Out</a></li>
-              <li role="presentation"><a href="/messages">Messages (${count})</a></li>
+              <li role="presentation"><a href="/messages">${count ? `Messages (${count})` : `Messages`}</a></li>
               <li role="presentation"><a href="/profile">Profile</a></li>
             </ul>
           </nav>

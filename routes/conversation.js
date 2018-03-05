@@ -25,18 +25,11 @@ router.get('/api/exists/:member_id/:current_user_id', (req, res) => {
 })
 
 router.get('/api/totalCount/:current_user_id', (req, res) => {
-  Conversation.find({
-    $or: [
-      { created_by_user_id: req.params.current_user_id },
-      { sent_to_user_id: req.params.current_user_id }
-    ]
+  Message.find({
+    unread: true,
+    to_user_id: req.params.current_user_id
   }).exec((err, messages) => {
-    const conversationTotal = messages.reduce((count, message) => {
-      if (message.unread) {
-        return count + 1
-      }
-    }, 0)
-    res.json({ conversationTotal })
+    res.json({ messages })
   })
 })
 

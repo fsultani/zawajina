@@ -33,7 +33,15 @@ window.addEventListener('load', () => {
         memberInfo += `</a></center>`
 
         conversationCount.then(res => {
-          let htmlOutput = authenticatedNavArea(res.data.conversationTotal) + memberInfo
+          const fromUserId = []
+          res.data.messages.map(message => {
+            if (!fromUserId.includes(message.from_user_id)) {
+              fromUserId.push(message.from_user_id)
+            } else {
+              return
+            }
+          })
+          let htmlOutput = authenticatedNavArea(fromUserId.length) + memberInfo
           document.getElementById('my-app').innerHTML = htmlOutput;
         })
       } else {
@@ -44,7 +52,15 @@ window.addEventListener('load', () => {
         `;
 
         conversationCount.then(res => {
-          let htmlOutput = authenticatedNavArea(res.data.conversationTotal) + memberInfo
+          const fromUserId = []
+          res.data.messages.map(message => {
+            if (!fromUserId.includes(message.from_user_id)) {
+              fromUserId.push(message.from_user_id)
+            } else {
+              return
+            }
+          })
+          let htmlOutput = authenticatedNavArea(fromUserId.length) + memberInfo
           document.getElementById('my-app').innerHTML = htmlOutput;
         })
       }

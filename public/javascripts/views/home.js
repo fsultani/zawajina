@@ -26,7 +26,15 @@ window.addEventListener('load', () => {
         output += `</div></center>`;
 
         conversationCount.then(res => {
-          let htmlOutput = authenticatedNavArea(res.data.conversationTotal) + welcome + output;
+          const fromUserId = []
+          res.data.messages.map(message => {
+            if (!fromUserId.includes(message.from_user_id)) {
+              fromUserId.push(message.from_user_id)
+            } else {
+              return
+            }
+          })
+          let htmlOutput = authenticatedNavArea(fromUserId.length) + welcome + output;
           document.getElementById('my-app').innerHTML = htmlOutput;
         })
       })
@@ -38,7 +46,7 @@ window.addEventListener('load', () => {
       </center>
     `;
 
-    const htmlOutput = navArea + welcome;
+    const htmlOutput = layout + welcome;
     document.getElementById('my-app').innerHTML = htmlOutput;
     }
 })

@@ -21,7 +21,7 @@ const sendReply = () => {
           <div class="col-md-6 col-md-offset-3" id="messageList">
             <div class="well">
               <div align="left">
-                <div style="float: left">${copy.from}: <b>${copy.message}</b></div>
+                <div style="float: left">${copy.from}: ${copy.message}</div>
                 <div style="float: right">Unread</div>
                 <div style="clear: both"></div>
               </div>
@@ -59,19 +59,30 @@ window.addEventListener('load', () => {
             <div class="well">
               <div align="left">`
 
-          message.unread ? (
+          if (message.unread && Cookies.get("id") === message.to_user_id) {
             messageList += `
               <div style="float: left">${message.from}: <b>${message.message}</b></div>
-              <div style="float: right">Unread</div>
               <div style="clear: both"></div>
             `
-            ) : (
+            axios.put(`/messages/api/${conversationId}/${message._id}`, {
+              unread: false
+            }).then(res => {
+              if (res.status === 201) {
+                return
+              }
+            })
+          } else if (!message.unread && Cookies.get("id") === message.to_user_id) {
             messageList += `
               <div style="float: left">${message.from}: ${message.message}</div>
-              <div style="float: right">Read</div>
               <div style="clear: both"></div>
             `
-            )
+          } else if (Cookies.get("id") === message.from_user_id) {
+            messageList += `
+              <div style="float: left">${message.from}: ${message.message}</div>
+              <div style="float: right">${message.unread ? `Unread` : `Read`}</div>
+              <div style="clear: both"></div>
+            `
+          }
           messageList += `</div></div></div>`;
       })
 
@@ -91,7 +102,15 @@ window.addEventListener('load', () => {
       messageList += `</center>`;
 
       conversationCount.then(res => {
-        let htmlOutput = authenticatedNavArea(res.data.conversationTotal) + messageList + reply
+        const fromUserId = []
+        res.data.messages.map(message => {
+          if (!fromUserId.includes(message.from_user_id)) {
+            fromUserId.push(message.from_user_id)
+          } else {
+            return
+          }
+        })
+        let htmlOutput = authenticatedNavArea(fromUserId.length) + messageList + reply
         document.getElementById('my-app').innerHTML = htmlOutput;
       })
     })

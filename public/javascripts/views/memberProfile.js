@@ -58,7 +58,15 @@ window.addEventListener('load', () => {
       `;
 
       conversationCount.then(res => {
-        let htmlOutput = authenticatedNavArea(res.data.conversationTotal) + welcome
+        const fromUserId = []
+        res.data.messages.map(message => {
+          if (!fromUserId.includes(message.from_user_id)) {
+            fromUserId.push(message.from_user_id)
+          } else {
+            return
+          }
+        })
+        let htmlOutput = authenticatedNavArea(fromUserId.length) + welcome
         document.getElementById('my-app').innerHTML = htmlOutput;
         document.getElementById('contactForm').style.display = "none";
       })
