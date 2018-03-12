@@ -1,7 +1,6 @@
 const http = require('http')
 const express = require('express');
 const path = require('path');
-const favicon = require('serve-favicon');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const exphbs = require('express-handlebars');
