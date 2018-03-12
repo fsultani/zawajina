@@ -21,7 +21,7 @@ if (process.env.NODE_ENV === 'mlab-dev') {
   mongoose.connect(process.env.LOCAL)
   console.log("Using local db - mongodb://localhost/my_match_local_dev")
 } else {
-  mongoose.connect(process.env.MONGO_DB)
+  mongoose.connect(process.env.HEROKU)
   console.log("Heroku deployment")
 }
 
