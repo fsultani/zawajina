@@ -1,29 +1,41 @@
 window.addEventListener('load', () => {
   if (window.location.pathname === '/messages' && Cookies.get('token')) {
     axios.get('/messages/api/all-messages').then(res => {
-      const conversations = res.data.conversations
-      if (conversations) {
+      const lastMessage = res.data.lastMessage
+      if (lastMessage) {
         let memberInfo = `
           <center>
             <h2 class="dashboard-text">Your messages</h2>
         `;
-        conversations.map((conversation) => {
-          if (conversation.sent_to_user_id !== Cookies.get('id')) {
+        lastMessage.map((message) => {
+          const truncatedMessage = message.lastMessage.message.length <+ 150 ?
+            `${message.lastMessage.message}`
+            : `${message.lastMessage.message.substring(0, 150)}...`
+
+          if (message.lastMessage.to_user_id !== Cookies.get('id')) {
             memberInfo += `
-              <a href="/conversation/${conversation._id}">
-                <div class="col-md-6 col-md-offset-3">
-                  <div class="well">
-                    <div>${conversation.sent_to_user_first_name}</div>
+              <a href="/conversation/${message._id}">
+                <div class="col-md-6 col-md-offset-3" style="padding: 10px">
+                  <div class="messageContainer">
+                    <div><p>${message.lastMessage.to}</p></div>
+                    <div>
+                      <p>You: ${truncatedMessage}</p>
+                    </div>
                   </div>
                 </div>
               </a>
             `;
           } else {
             memberInfo += `
-              <a href="/conversation/${conversation._id}">
-                <div class="col-md-6 col-md-offset-3">
-                  <div class="well">
-                    <div>${conversation.unread ? `<b>${conversation.created_by_user_first_name}</b>` : conversation.created_by_user_first_name}</div>
+              <a href="/conversation/${message._id}">
+                <div class="col-md-6 col-md-offset-3" style="padding: 10px">
+                  <div class="messageContainer">
+                    <div><p>${message.lastMessage.from}</p></div>
+                    <div>
+                      ${message.lastMessage.unread ?
+                      `<p style="font-weight: 700">${truncatedMessage}</p>` :
+                      `<p>${truncatedMessage}</p>`}
+                    </div>
                   </div>
                 </div>
               </a>

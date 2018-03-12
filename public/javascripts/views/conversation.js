@@ -21,9 +21,10 @@ const sendReply = () => {
           <div class="col-md-6 col-md-offset-3" id="messageList">
             <div class="well">
               <div align="left">
-                <div style="float: left">${copy.from}: ${copy.message}</div>
-                <div style="float: right">Unread</div>
+                <div style="float: left"><p>You</p></div>
+                <div style="float: right"><p>Unread</p></div>
                 <div style="clear: both"></div>
+                <div><p>${copy.message}</p></div>
               </div>
             </div>
           </div>
@@ -61,8 +62,8 @@ window.addEventListener('load', () => {
 
           if (message.unread && Cookies.get("id") === message.to_user_id) {
             messageList += `
-              <div style="float: left">${message.from}: <b>${message.message}</b></div>
-              <div style="clear: both"></div>
+              <div><p>${message.from}</p></div>
+              <div><b>${message.message}</b></div>
             `
             axios.put(`/messages/api/${conversationId}/${message._id}`, {
               unread: false
@@ -73,14 +74,15 @@ window.addEventListener('load', () => {
             })
           } else if (!message.unread && Cookies.get("id") === message.to_user_id) {
             messageList += `
-              <div style="float: left">${message.from}: ${message.message}</div>
-              <div style="clear: both"></div>
+              <div><p>${message.from}</p></div>
+              <div><p>${message.message}</p></div>
             `
           } else if (Cookies.get("id") === message.from_user_id) {
             messageList += `
-              <div style="float: left">${message.from}: ${message.message}</div>
+              <div style="float: left"><p>You</p></div>
               <div style="float: right">${message.unread ? `Unread` : `Read`}</div>
               <div style="clear: both"></div>
+              <div><p>${message.message}</p></div>
             `
           }
           messageList += `</div></div></div>`;
