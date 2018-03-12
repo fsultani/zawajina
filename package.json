@@ -9,7 +9,7 @@
   "scripts": {
     "start": "node server.js",
     "dev": "NODE_ENV=mlab-dev browser-refresh server.js",
-    "local": "NODE_ENV=local browser-refresh server.js",
+    "local": "NODE_ENV=local browser-refresh server.js"
   },
   "author": "",
   "license": "ISC",
