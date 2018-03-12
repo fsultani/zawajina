@@ -16,9 +16,30 @@ const Conversation = require('../models/conversation')
 router.get('/api/all-messages', (req, res, next) => {
   const token = req.headers['authorization']
   const decodedUser = jwt.decode(token, JWT_SECRET)
-  User.find({ username: decodedUser.username}, (err, user) => {
-    Conversation.find({ users: user[0]._id}).sort({ updated_at: -1 }).exec((err, conversations) => {
-      res.json({ conversations: conversations })
+  User.findOne({ username: decodedUser.username}, (err, user) => {
+    Message.aggregate(
+      [
+        {
+          $match: {
+            $or: [
+              {
+                from_user_id: user._id.toString()
+              },
+              {
+                to_user_id: user._id.toString()
+              }
+            ]
+          }
+        },
+        {
+          $group: {
+            _id: "$conversation",
+            lastMessage: { $last: "$$ROOT" }
+          }
+        }
+      ]
+    ).exec((err, lastMessage) => {
+      res.json({ lastMessage })
     })
   })
 })
