@@ -11,17 +11,18 @@ const expressValidator = require('express-validator')
 const flash = require('connect-flash');
 const mongo = require('mongodb')
 const mongoose = require('mongoose')
-require('./db_credentials')
 
 if (process.env.NODE_ENV === 'mlab-dev') {
+  require('./db_credentials')
   mongoose.connect(process.env.MONGO_DB_MLAB_DEV)
   console.log("Using mlab:", process.env.NODE_ENV)
 } else if (process.env.NODE_ENV === 'local') {
+  require('./db_credentials')
   mongoose.connect(process.env.LOCAL)
   console.log("Using local db - mongodb://localhost/my_match_local_dev")
 } else {
-  console.log("Heroku deployment")
   mongoose.connect(process.env.MONGO_DB)
+  console.log("Heroku deployment")
 }
 
 const app = express();
