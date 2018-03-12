@@ -42,7 +42,7 @@ window.addEventListener('load', () => {
     const welcome = `
       <center>
         <h1>Welcome!</h1>
-        <h4>Please log in or create an account</h4>
+        <h4>Please log in or create an account for free</h4>
       </center>
     `;
 
