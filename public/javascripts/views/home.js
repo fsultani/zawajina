@@ -1,13 +1,13 @@
 window.addEventListener('load', () => {
   if (window.location.pathname === '/home' && Cookies.get('token')) {
+    const welcome = `
+      <center>
+        <h1>Welcome home!===</h1>
+        <h3>All members on this site</h3>
+    `;
     axios.get('/api/all-members')
       .then(allMembers => {
         const getAllMembers = allMembers.data.all
-        const welcome = `
-          <center>
-            <h1>Welcome home!</h1>
-            <h3>All members on this site</h3>
-        `;
 
         let output = `<div class="col-md-8 col-md-offset-2">`;
 
