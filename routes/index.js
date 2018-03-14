@@ -1,13 +1,12 @@
 const express = require('express')
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
-// const JwtStrategy = require('passport-jwt').Strategy;
 const bcrypt = require('bcryptjs')
 const jwt = require('jwt-simple')
 const Cookies = require('js-cookie');
 const path = require('path');
-
 const JWT_SECRET = Buffer.from('fe1a1915a379f3be5394b64d14794932', 'hex')
+const multer = require('multer')
 
 const router = express.Router()
 
@@ -33,6 +32,50 @@ passport.use(new LocalStrategy(
     })
   }
 ));
+
+// Set multer storage engine
+const storageEngine = multer.diskStorage({
+  destination: './public/uploads/',
+  filename: (req, file, cb) => {
+    cb(null, `${file.fieldname} - ${Date.now()} ${path.extname(file.originalname)}`)
+  }
+})
+
+// Initialize upload
+const upload = multer({
+  storage: storageEngine,
+  limits: { fileSize: 1000000 },
+  fileFilter: (req, file, cb) => {
+    checkFileType(file, cb)
+  }
+}).single('faridsImage')
+
+// Check File Type
+const checkFileType = (file, cb) => {
+  // Allowed extensions
+  const filetypes = /jpeg|jpg|png|gif/
+  
+  // Check extension
+  const extname = filetypes.test(path.extname(file.originalname).toLowerCase())
+  
+  // Check mime
+  const mimetype = filetypes.test(file.mimetype)
+
+  mimetype && extname ? cb(null, true) : cb('Error: Images only')
+}
+router.post('/upload', (req, res) => {
+  upload(req, res, err => {
+    if (err) {
+      res.json({ msg: err })
+    } else {
+      if (req.file == undefined) {
+        res.json({ msg: "Error: No File Selected" })
+      } else {
+        res.json({ msg: "File Uploaded Successfully", file: `/uploads/${req.file.filename}` })
+      }
+    }
+  })
+})
 
 router.get('/api/profile-info', (req, res, next) => {
   const token = req.headers['authorization']
