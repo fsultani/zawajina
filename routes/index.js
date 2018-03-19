@@ -33,22 +33,29 @@ passport.use(new LocalStrategy(
   }
 ));
 
+// const upload = multer({
+//   dest: './public/uploads/'
+// })
+
+// router.post('/api/upload', upload.single('image'), (req, res, next) => {
+//   res.json({ path: req.file.path })
+// })
+
 // Set multer storage engine
 const storageEngine = multer.diskStorage({
   destination: './public/uploads/',
   filename: (req, file, cb) => {
-    cb(null, `${file.fieldname} - ${Date.now()} ${path.extname(file.originalname)}`)
+    cb(null, `${file.originalname}`)
   }
 })
 
 // Initialize upload
 const upload = multer({
   storage: storageEngine,
-  limits: { fileSize: 1000000 },
   fileFilter: (req, file, cb) => {
     checkFileType(file, cb)
   }
-}).single('faridsImage')
+}).single('image')
 
 // Check File Type
 const checkFileType = (file, cb) => {
@@ -63,7 +70,8 @@ const checkFileType = (file, cb) => {
 
   mimetype && extname ? cb(null, true) : cb('Error: Images only')
 }
-router.post('/upload', (req, res) => {
+
+router.post('/api/upload', (req, res) => {
   upload(req, res, err => {
     if (err) {
       res.json({ msg: err })
@@ -77,11 +85,20 @@ router.post('/upload', (req, res) => {
   })
 })
 
+router.put('/api/profile-picture/:id', (req, res) => {
+  const token = req.headers['authorization']
+  const decodedUser = jwt.decode(token, JWT_SECRET)
+  User.findByIdAndUpdate(req.params.id, { $set: { profilePicture: req.body.data } }, (err, member) => {
+    console.log('member\n', member)
+    res.json({ member })
+  })
+})
+
 router.get('/api/profile-info', (req, res, next) => {
   const token = req.headers['authorization']
   const decodedUser = jwt.decode(token, JWT_SECRET)
-  User.find({ username: decodedUser.username}, (err, member) => {
-    res.json({ member: member[0] })
+  User.findOne({ username: decodedUser.username}, (err, member) => {
+    res.json({ member })
   })
 })
 
@@ -90,7 +107,6 @@ router.get('/api/all-members', (req, res, next) => {
   const decodedUser = jwt.decode(token, JWT_SECRET)
   User.findOne({username: decodedUser.username}, (err, user) => {
     if (!user) {
-      console.log("Authentication failed. User not found.")
       return res.status(403).send("Authentication failed. User not found.")
     } else {
       user.gender === 'male' ? (
