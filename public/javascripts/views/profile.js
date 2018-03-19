@@ -9,7 +9,7 @@ const onclickUploadPicture = () => {
   }).then(function(res) {
     return res.json()
   }).then(function(myJson) {
-    axios.put(`/api/profile-picture/${Cookies.get('id')}`, {
+    axios.post(`/api/profile-picture/${Cookies.get('id')}`, {
       data: myJson.file
     }).then(res => {
       console.log('res\n', res)
