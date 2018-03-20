@@ -9,7 +9,7 @@ const onclickUploadPicture = () => {
   }).then(function(res) {
     return res.json()
   }).then(function(myJson) {
-    axios.post(`/api/profile-picture/${Cookies.get('id')}`, {
+    axios.put('/api/profile-info', {
       data: myJson.file
     }).then(res => {
       console.log('res\n', res)
@@ -24,6 +24,7 @@ window.addEventListener('load', () => {
   if (window.location.pathname === '/profile' && Cookies.get('token')) {
     axios.get('/api/profile-info').then(res => {
       const member = res.data.member
+      console.log('member.profilePicture\n', member.profilePicture)
       const memberInfo = `
         <div class="container" align="center">
           <h2 class="dashboard-text">Welcome, ${member.first_name}!</h2>
@@ -43,6 +44,7 @@ window.addEventListener('load', () => {
                 Submit
               </button>
             </div>
+            ${member.profilePicture ? `<div class="col-sm-6"><img src='${member.profilePicture}'</div>` : `<div class="col-sm-6">Placeholder</div>`}
             <div class="col-sm-6" id="profilePicture"></div>
           </div>
         </div>
