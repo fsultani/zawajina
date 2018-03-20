@@ -33,14 +33,6 @@ passport.use(new LocalStrategy(
   }
 ));
 
-// const upload = multer({
-//   dest: './public/uploads/'
-// })
-
-// router.post('/api/upload', upload.single('image'), (req, res, next) => {
-//   res.json({ path: req.file.path })
-// })
-
 // Set multer storage engine
 const storageEngine = multer.diskStorage({
   destination: './public/uploads/',
@@ -85,13 +77,11 @@ router.post('/api/upload', (req, res) => {
   })
 })
 
-router.post('/api/profile-picture/:id', (req, res) => {
-  console.log('req.params\n', req.params)
-  console.log('req.body\n', req.body)
+router.put('/api/profile-info', (req, res) => {
   const token = req.headers['authorization']
   const decodedUser = jwt.decode(token, JWT_SECRET)
-  User.findByIdAndUpdate(req.params.id, { $set: { profilePicture: req.body.data } }, (err, member) => {
-    console.log('member\n', member)
+  User.findOneAndUpdate({ username: decodedUser.username}, { profilePicture: req.body.data }, (err, member) => {
+    console.log('The member is\n', member)
     res.json({ member })
   })
 })
