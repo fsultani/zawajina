@@ -64,26 +64,3 @@ window.addEventListener('load', () => {
     })
   }
 })
-
-// const data = FD.entries().next()
-
-// myFormData.append('action', 'ADD')
-// myFormData.append('param', 0)
-// myFormData.append('secondParam', 0)
-// myFormData.append('file', new Blob({ type: 'text/csv' }))
-
-// const onChangeUploadPicture = () => {
-//   console.log("Got it")
-//   const myFormData = new FormData()
-//   myFormData.append('faridsImage', document.getElementById('fileUpload').files[0])
-
-//   var xhr = new XMLHttpRequest()
-//   xhr.open('POST', '/api/upload', true)
-//   xhr.setRequestHeader('Content-Type', 'multipart/form-data')
-//   xhr.onload = function () {
-//     if (xhr.readyState === xhr.DONE && xhr.status === 200) {
-//       console.log('xhr.responseText\n', xhr.responseText)
-//     }
-//   };
-//   xhr.send(myFormData);
-// }
