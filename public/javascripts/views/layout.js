@@ -23,7 +23,6 @@ const layout = `
           </ul>
         </nav>
       </div>
-      </div>
     </div>
   </div>
 `;
