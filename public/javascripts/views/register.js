@@ -29,18 +29,16 @@ register = `
         <div style="width: 25%">
           I'm a
         </div>
-        <div class="form-group" style="width: 50%">
-          <center>
-            <div class="gender-male">
-              <label for="male">Male</label>
-              <input id="male" type="radio" name="gender" value="male">
-            </div>
+        <div class="form-group gender-container">
+          <div class="gender-male">
+            <label for="male">Male</label>
+            <input id="male" type="radio" name="gender" value="male">
+          </div>
 
-            <div class="gender-female">
-              <label for="female">Female</label>
-              <input id="female" type="radio" name="gender" value="female">
-            </div>
-          </center>
+          <div class="gender-female">
+            <label for="female">Female</label>
+            <input id="female" type="radio" name="gender" value="female">
+          </div>
         </div>
       </div>
 
