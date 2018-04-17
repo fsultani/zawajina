@@ -25,20 +25,13 @@ register = `
         <input type="password" class="form-control" placeholder="Password" name="password">
       </div>
 
-      <div style="display: flex">
-        <div style="width: 25%">
-          I'm a
-        </div>
-        <div class="form-group gender-container">
-          <div class="gender-male">
-            <label for="male">Male</label>
-            <input id="male" type="radio" name="gender" value="male">
-          </div>
-
-          <div class="gender-female">
-            <label for="female">Female</label>
-            <input id="female" type="radio" name="gender" value="female">
-          </div>
+      <div class="col-half">
+        <h5>Gender</h5>
+        <div class="gender-input-group">
+          <input id="male" type="radio" name="gender" value="male">
+          <label for="male">Male</label>
+          <input id="female" type="radio" name="gender" value="female">
+          <label for="female">Female</label>
         </div>
       </div>
 
