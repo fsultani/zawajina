@@ -10,9 +10,23 @@ const year = () => {
   return yearOptions.reverse()
 }
 
+const handleSignUp = event => {
+  event.preventDefault()
+  const registrationForm = document.forms.registration
+  const registrationFormObject = {
+    firstName: registrationForm.elements.first_name.value,
+    email: registrationForm.elements.email.value,
+    password: registrationForm.elements.password.value,
+    gender: registrationForm.elements.gender.value,
+    selectMonth: registrationForm.elements.selectMonth.value,
+    selectDay: registrationForm.elements.selectDay.value,
+    selectYear: registrationForm.elements.selectYear.value,
+  }
+}
+
 register = `
   <div class="registrationContainer centerContainer">
-    <form method="post" action="/register">
+    <form name="registration">
       <div class="form-group">
         <input type="text" class="form-control" placeholder="First Name" name="first_name">
       </div>
@@ -38,7 +52,7 @@ register = `
       <div>
         <div>Date of Birth</div>
         <div class="form-group col-md-4" style="padding-left: 0">
-          <select id="selectMonth" class="form-control">
+          <select name="selectMonth" class="form-control">
             <option>Month</option>
             <option>January</option>
             <option>February</option>
@@ -55,13 +69,13 @@ register = `
           </select>
         </div>
         <div class="form-group col-md-4">
-          <select id="selectDay" class="form-control">
+          <select name="selectDay" class="form-control">
             <option>Day</option>
             ${day()}
           </select>
         </div>
         <div class="form-group col-md-4">
-          <select id="selectYear" class="form-control">
+          <select name="selectYear" class="form-control">
             <option>Year</option>
             ${year()}
           </select>
@@ -70,7 +84,7 @@ register = `
 
       <div class="row">
         <div class="col-md-4 col-md-offset-4 text-center">
-          <button type="submit" class="btn btn-success">Sign Up</button>
+          <button onclick="handleSignUp(event)" class="btn btn-success">Sign Up</button>
         </div>
       </div>
     </form>
