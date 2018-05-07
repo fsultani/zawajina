@@ -13,30 +13,61 @@ const year = () => {
 const handleSignUp = event => {
   event.preventDefault()
   const registrationForm = document.forms.registration
-  const registrationFormObject = {
-    firstName: registrationForm.elements.first_name.value,
+  for (let i = 0; i < registrationForm.length; i++) {
+    console.log("registrationForm[i].checkValidity()\n", registrationForm[i].checkValidity())
+  }
+
+  // if (!registrationForm.elements.first_name.checkValidity()) {
+  //   document.getElementById('first_name').style.border = '2px solid red'
+  // }
+  const userRegistrationForm = {
+    first_name: registrationForm.elements.first_name.value,
     email: registrationForm.elements.email.value,
     password: registrationForm.elements.password.value,
     gender: registrationForm.elements.gender.value,
-    selectMonth: registrationForm.elements.selectMonth.value,
-    selectDay: registrationForm.elements.selectDay.value,
-    selectYear: registrationForm.elements.selectYear.value,
+    birthMonth: registrationForm.elements.birthMonth.value,
+    birthDate: registrationForm.elements.birthDate.value,
+    birthYear: registrationForm.elements.birthYear.value,
   }
+  console.log("registrationForm\n", registrationForm)
+  axios.post('/register', {
+    userRegistrationForm
+  })
+  .then(res => {
+    console.log("res\n", res)
+  })
 }
 
 register = `
   <div class="registrationContainer centerContainer">
     <form name="registration">
       <div class="form-group">
-        <input type="text" class="form-control" placeholder="First Name" name="first_name">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="First Name"
+          name="first_name"
+          required
+        >
       </div>
 
        <div class="form-group">
-        <input type="email" class="form-control" placeholder="Email" name="email">
+        <input
+          type="email"
+          class="form-control"
+          placeholder="Email"
+          name="email"
+          required
+        >
       </div>
 
       <div class="form-group">
-        <input type="password" class="form-control" placeholder="Password" name="password">
+        <input
+          type="password"
+          class="form-control"
+          placeholder="Password"
+          name="password"
+        >
       </div>
 
       <div class="col-half">
@@ -52,7 +83,7 @@ register = `
       <div>
         <div>Date of Birth</div>
         <div class="form-group col-md-4" style="padding-left: 0">
-          <select name="selectMonth" class="form-control">
+          <select name="birthMonth" class="form-control">
             <option>Month</option>
             <option>January</option>
             <option>February</option>
@@ -69,13 +100,13 @@ register = `
           </select>
         </div>
         <div class="form-group col-md-4">
-          <select name="selectDay" class="form-control">
+          <select name="birthDate" class="form-control">
             <option>Day</option>
             ${day()}
           </select>
         </div>
         <div class="form-group col-md-4">
-          <select name="selectYear" class="form-control">
+          <select name="birthYear" class="form-control">
             <option>Year</option>
             ${year()}
           </select>
@@ -84,7 +115,9 @@ register = `
 
       <div class="row">
         <div class="col-md-4 col-md-offset-4 text-center">
-          <button onclick="handleSignUp(event)" class="btn btn-success">Sign Up</button>
+          <button onclick="handleSignUp(event)" class="btn btn-success">
+            Sign Up
+          </button>
         </div>
       </div>
     </form>
