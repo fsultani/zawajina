@@ -10,16 +10,17 @@ const year = () => {
   return yearOptions.reverse()
 }
 
+const blurOut = () => {
+  console.log("You left!")
+  document.forms.registration.elements.first_name.style.border = '2px solid red'
+  document.body.insertAdjacentHTML('afterbegin', '<h5 align="center">Enter your name</h5>')
+}
+
 const handleSignUp = event => {
   event.preventDefault()
-  const registrationForm = document.forms.registration
-  for (let i = 0; i < registrationForm.length; i++) {
-    console.log("registrationForm[i].checkValidity()\n", registrationForm[i].checkValidity())
+  if (!registrationForm.elements.first_name.checkValidity()) {
+    registrationForm.elements.first_name.style.border = '2px solid red'
   }
-
-  // if (!registrationForm.elements.first_name.checkValidity()) {
-  //   document.getElementById('first_name').style.border = '2px solid red'
-  // }
   const userRegistrationForm = {
     first_name: registrationForm.elements.first_name.value,
     email: registrationForm.elements.email.value,
@@ -29,7 +30,6 @@ const handleSignUp = event => {
     birthDate: registrationForm.elements.birthDate.value,
     birthYear: registrationForm.elements.birthYear.value,
   }
-  console.log("registrationForm\n", registrationForm)
   axios.post('/register', {
     userRegistrationForm
   })
@@ -49,6 +49,7 @@ register = `
           name="first_name"
           required
         >
+        <label align="center">Enter your name</label>
       </div>
 
        <div class="form-group">
@@ -129,5 +130,6 @@ const registrationPage = layout + register
 window.addEventListener('load', () => {
   if (window.location.pathname === '/register') {
     document.getElementById('my-app').innerHTML = registrationPage;
+    document.forms.registration.elements.first_name.addEventListener("blur", blurOut)
   }
 })
