@@ -1,3 +1,65 @@
+const handleFirstNameError = () => {
+  if (!document.forms.registration.elements.first_name.checkValidity()) {
+    document.forms.registration.elements.first_name.style.border = '2px solid red'
+    const firstNameError = document.createElement('div')
+    firstNameError.setAttribute('id', 'firstNameError')
+    firstNameError.textContent = 'Please enter your name';
+    firstNameError.style.color = 'red';
+    firstNameError.style.width = '100%';
+    firstNameError.style.height = 'auto';
+    firstNameError.style.textAlign = 'center';
+    const container = document.getElementById('first_name')
+    if (!document.getElementById('firstNameError')) {
+      container.appendChild(firstNameError)
+    }
+  } else if (document.getElementById('firstNameError')) {
+    document.getElementById('firstNameError').remove()
+    document.forms.registration.elements.first_name.style.border = '1px solid #ccc'
+  }
+}
+
+const handleEmailError = () => {
+  if (!document.forms.registration.elements.email.checkValidity()) {  
+    document.forms.registration.elements.email.style.border = '2px solid red'
+    const emailError = document.createElement('div')
+    emailError.setAttribute('id', 'emailError')
+    emailError.textContent = 'Please a valid email address';
+    emailError.style.color = 'red';
+    emailError.style.width = '100%';
+    emailError.style.height = 'auto';
+    emailError.style.textAlign = 'center';
+    const container = document.getElementById('email')
+    if (!document.getElementById('emailError')) {
+      container.appendChild(emailError)
+    }
+  } else if (document.getElementById('emailError')) {
+    document.getElementById('emailError').remove()
+    document.forms.registration.elements.email.style.border = '1px solid #ccc'
+  }
+}
+
+const handlePasswordError = () => {
+  if (!document.forms.registration.elements.password.checkValidity()) {
+    console.log("invalid password")
+    // document.forms.registration.elements.email.style.border = '2px solid red'
+    // const emailError = document.createElement('div')
+    // emailError.setAttribute('id', 'emailError')
+    // emailError.textContent = 'Please a valid email address';
+    // emailError.style.color = 'red';
+    // emailError.style.width = '100%';
+    // emailError.style.height = 'auto';
+    // emailError.style.textAlign = 'center';
+    // const container = document.getElementById('email')
+    // if (!document.getElementById('emailError')) {
+    //   container.appendChild(emailError)
+    // }
+  } else {
+    console.log("valid password")
+    // document.getElementById('emailError').remove()
+    // document.forms.registration.elements.email.style.border = '1px solid #ccc'
+  }
+}
+
 const day = () => {
   const dayOptions = []
   const res = [...Array(32)].map((_, i) => dayOptions.push(`<option>${i+1}</option>`))
@@ -8,12 +70,6 @@ const year = () => {
   let yearOptions = []
   const res = [...Array(61)].map((_, i) => yearOptions.push(`<option>${1940+i}</option>`))
   return yearOptions.reverse()
-}
-
-const blurOut = () => {
-  console.log("You left!")
-  document.forms.registration.elements.first_name.style.border = '2px solid red'
-  document.body.insertAdjacentHTML('afterbegin', '<h5 align="center">Enter your name</h5>')
 }
 
 const handleSignUp = event => {
@@ -41,7 +97,7 @@ const handleSignUp = event => {
 register = `
   <div class="registrationContainer centerContainer">
     <form name="registration">
-      <div class="form-group">
+      <div class="form-group" id="first_name">
         <input
           type="text"
           class="form-control"
@@ -49,10 +105,9 @@ register = `
           name="first_name"
           required
         >
-        <label align="center">Enter your name</label>
       </div>
 
-       <div class="form-group">
+       <div class="form-group" id="email">
         <input
           type="email"
           class="form-control"
@@ -68,6 +123,7 @@ register = `
           class="form-control"
           placeholder="Password"
           name="password"
+          required
         >
       </div>
 
@@ -130,6 +186,8 @@ const registrationPage = layout + register
 window.addEventListener('load', () => {
   if (window.location.pathname === '/register') {
     document.getElementById('my-app').innerHTML = registrationPage;
-    document.forms.registration.elements.first_name.addEventListener("blur", blurOut)
+    // document.forms.registration.elements.first_name.addEventListener("blur", handleFirstNameError)
+    // document.forms.registration.elements.email.addEventListener("blur", handleEmailError)
+    document.forms.registration.elements.password.addEventListener("blur", handlePasswordError)
   }
 })
