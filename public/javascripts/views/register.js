@@ -43,7 +43,7 @@ const handlePasswordError = () => {
     document.forms.registration.elements.password.style.border = '2px solid red'
     const passwordError = document.createElement('div')
     passwordError.setAttribute('id', 'passwordError')
-    passwordError.textContent = 'Password must be at least 8 characters long';
+    passwordError.textContent = 'Password must be at least 8 characters';
     passwordError.style.color = 'red';
     passwordError.style.width = '100%';
     passwordError.style.height = 'auto';
@@ -99,7 +99,7 @@ register = `
         <input
           type="text"
           class="form-control"
-          placeholder="First Name"
+          placeholder="John Doe"
           name="first_name"
           required
         >
@@ -109,7 +109,7 @@ register = `
         <input
           type="email"
           class="form-control"
-          placeholder="Email"
+          placeholder="john@example.com"
           name="email"
           required
         >
@@ -119,7 +119,7 @@ register = `
         <input
           type="password"
           class="form-control"
-          placeholder="Password"
+          placeholder="********"
           name="password"
           required
         >
