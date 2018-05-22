@@ -41,22 +41,22 @@ const handleEmailError = () => {
 const handlePasswordError = () => {
   if (!document.forms.registration.elements.password.checkValidity()) {
     console.log("invalid password")
-    // document.forms.registration.elements.email.style.border = '2px solid red'
-    // const emailError = document.createElement('div')
-    // emailError.setAttribute('id', 'emailError')
-    // emailError.textContent = 'Please a valid email address';
-    // emailError.style.color = 'red';
-    // emailError.style.width = '100%';
-    // emailError.style.height = 'auto';
-    // emailError.style.textAlign = 'center';
-    // const container = document.getElementById('email')
-    // if (!document.getElementById('emailError')) {
-    //   container.appendChild(emailError)
-    // }
+    document.forms.registration.elements.password.style.border = '2px solid red'
+    const passwordError = document.createElement('div')
+    passwordError.setAttribute('id', 'passwordError')
+    passwordError.textContent = 'Password must be at least 8 characters long';
+    passwordError.style.color = 'red';
+    passwordError.style.width = '100%';
+    passwordError.style.height = 'auto';
+    passwordError.style.textAlign = 'center';
+    const container = document.getElementById('password')
+    if (!document.getElementById('passwordError')) {
+      container.appendChild(passwordError)
+    }
   } else {
     console.log("valid password")
-    // document.getElementById('emailError').remove()
-    // document.forms.registration.elements.email.style.border = '1px solid #ccc'
+    document.getElementById('passwordError').remove()
+    document.forms.registration.elements.password.style.border = '1px solid #ccc'
   }
 }
 
@@ -117,7 +117,7 @@ register = `
         >
       </div>
 
-      <div class="form-group">
+      <div class="form-group" id="password">
         <input
           type="password"
           class="form-control"
@@ -186,8 +186,8 @@ const registrationPage = layout + register
 window.addEventListener('load', () => {
   if (window.location.pathname === '/register') {
     document.getElementById('my-app').innerHTML = registrationPage;
-    // document.forms.registration.elements.first_name.addEventListener("blur", handleFirstNameError)
-    // document.forms.registration.elements.email.addEventListener("blur", handleEmailError)
+    document.forms.registration.elements.first_name.addEventListener("blur", handleFirstNameError)
+    document.forms.registration.elements.email.addEventListener("blur", handleEmailError)
     document.forms.registration.elements.password.addEventListener("blur", handlePasswordError)
   }
 })
