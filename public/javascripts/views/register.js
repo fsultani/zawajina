@@ -52,7 +52,7 @@ const handlePasswordError = () => {
     if (!document.getElementById('passwordError')) {
       container.appendChild(passwordError)
     }
-  } else {
+  } else if (document.getElementById('passwordError')) {
     document.getElementById('passwordError').remove()
     document.forms.registration.elements.password.style.border = '1px solid #ccc'
   }
@@ -72,9 +72,11 @@ const year = () => {
 
 const handleSignUp = event => {
   event.preventDefault()
-  if (!registrationForm.elements.first_name.checkValidity()) {
-    registrationForm.elements.first_name.style.border = '2px solid red'
-  }
+  handleFirstNameError()
+  handleEmailError()
+  handlePasswordError()
+
+  const registrationForm = document.forms.registration
   const userRegistrationForm = {
     first_name: registrationForm.elements.first_name.value,
     email: registrationForm.elements.email.value,
@@ -184,7 +186,7 @@ const registrationPage = layout + register
 window.addEventListener('load', () => {
   if (window.location.pathname === '/register') {
     document.getElementById('my-app').innerHTML = registrationPage;
-    document.forms.registration.elements.first_name.addEventListener("blur", handleFirstNameError)
+    // document.forms.registration.elements.first_name.addEventListener("blur", handleFirstNameError)
     document.forms.registration.elements.email.addEventListener("blur", handleEmailError)
     document.forms.registration.elements.password.addEventListener("blur", handlePasswordError)
   }
