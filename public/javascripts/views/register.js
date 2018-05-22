@@ -1,3 +1,5 @@
+let isHandleSignUpDisabled = true
+
 const handleFirstNameError = () => {
   if (!document.forms.registration.elements.first_name.checkValidity()) {
     document.forms.registration.elements.first_name.style.border = '2px solid red'
@@ -172,7 +174,7 @@ register = `
 
       <div class="row">
         <div class="col-md-4 col-md-offset-4 text-center">
-          <button onclick="handleSignUp(event)" class="btn btn-success">
+          <button onclick="handleSignUp(event)" class="btn btn-success" id="handleSignUp">
             Sign Up
           </button>
         </div>
@@ -186,7 +188,8 @@ const registrationPage = layout + register
 window.addEventListener('load', () => {
   if (window.location.pathname === '/register') {
     document.getElementById('my-app').innerHTML = registrationPage;
-    // document.forms.registration.elements.first_name.addEventListener("blur", handleFirstNameError)
+    document.forms.registration.elements.handleSignUp.disabled = isHandleSignUpDisabled
+    document.forms.registration.elements.first_name.addEventListener("blur", handleFirstNameError)
     document.forms.registration.elements.email.addEventListener("blur", handleEmailError)
     document.forms.registration.elements.password.addEventListener("blur", handlePasswordError)
   }
