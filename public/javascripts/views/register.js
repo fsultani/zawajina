@@ -40,7 +40,6 @@ const handleEmailError = () => {
 
 const handlePasswordError = () => {
   if (!document.forms.registration.elements.password.checkValidity()) {
-    console.log("invalid password")
     document.forms.registration.elements.password.style.border = '2px solid red'
     const passwordError = document.createElement('div')
     passwordError.setAttribute('id', 'passwordError')
@@ -54,7 +53,6 @@ const handlePasswordError = () => {
       container.appendChild(passwordError)
     }
   } else {
-    console.log("valid password")
     document.getElementById('passwordError').remove()
     document.forms.registration.elements.password.style.border = '1px solid #ccc'
   }
