@@ -1,8 +1,11 @@
-let isHandleSignUpDisabled = true
+// let isHandleSignUpDisabled = true
+let isFirstNameComplete = false
+let isEmailComplete = false
+let isPasswordComplete = false
 
 const handleFirstNameError = () => {
-  if (!document.forms.registration.elements.first_name.checkValidity()) {
-    document.forms.registration.elements.first_name.style.border = '2px solid red'
+  if (!document.forms.registration.elements.name.checkValidity()) {
+    document.forms.registration.elements.name.style.border = '2px solid red'
     const firstNameError = document.createElement('div')
     firstNameError.setAttribute('id', 'firstNameError')
     firstNameError.textContent = 'Please enter your name';
@@ -10,18 +13,19 @@ const handleFirstNameError = () => {
     firstNameError.style.width = '100%';
     firstNameError.style.height = 'auto';
     firstNameError.style.textAlign = 'center';
-    const container = document.getElementById('first_name')
+    const container = document.getElementById('name')
     if (!document.getElementById('firstNameError')) {
       container.appendChild(firstNameError)
     }
   } else if (document.getElementById('firstNameError')) {
     document.getElementById('firstNameError').remove()
-    document.forms.registration.elements.first_name.style.border = '1px solid #ccc'
+    document.forms.registration.elements.name.style.border = '1px solid #ccc'
+    isFirstNameComplete = true
   }
 }
 
 const handleEmailError = () => {
-  if (!document.forms.registration.elements.email.checkValidity()) {  
+  if (!document.forms.registration.elements.email.checkValidity()) {
     document.forms.registration.elements.email.style.border = '2px solid red'
     const emailError = document.createElement('div')
     emailError.setAttribute('id', 'emailError')
@@ -37,6 +41,7 @@ const handleEmailError = () => {
   } else if (document.getElementById('emailError')) {
     document.getElementById('emailError').remove()
     document.forms.registration.elements.email.style.border = '1px solid #ccc'
+    isEmailComplete = true
   }
 }
 
@@ -57,6 +62,7 @@ const handlePasswordError = () => {
   } else if (document.getElementById('passwordError')) {
     document.getElementById('passwordError').remove()
     document.forms.registration.elements.password.style.border = '1px solid #ccc'
+    isPasswordComplete = true
   }
 }
 
@@ -80,7 +86,7 @@ const handleSignUp = event => {
 
   const registrationForm = document.forms.registration
   const userRegistrationForm = {
-    first_name: registrationForm.elements.first_name.value,
+    name: registrationForm.elements.name.value,
     email: registrationForm.elements.email.value,
     password: registrationForm.elements.password.value,
     gender: registrationForm.elements.gender.value,
@@ -99,12 +105,12 @@ const handleSignUp = event => {
 register = `
   <div class="registrationContainer centerContainer">
     <form name="registration">
-      <div class="form-group" id="first_name">
+      <div class="form-group" id="name">
         <input
           type="text"
           class="form-control"
           placeholder="John Doe"
-          name="first_name"
+          name="name"
           required
         >
       </div>
@@ -188,8 +194,20 @@ const registrationPage = layout + register
 window.addEventListener('load', () => {
   if (window.location.pathname === '/register') {
     document.getElementById('my-app').innerHTML = registrationPage;
-    document.forms.registration.elements.handleSignUp.disabled = isHandleSignUpDisabled
-    document.forms.registration.elements.first_name.addEventListener("blur", handleFirstNameError)
+    document.forms.registration.elements.handleSignUp.disabled = true
+
+    let elements = document.querySelectorAll("[name='name'], [name='email'], [name='password']")
+    for (let i = 0; i < elements.length; i++) {
+      elements[i].onchange = function() {
+        if (document.forms.registration.elements.name.checkValidity() && document.forms.registration.elements.email.checkValidity() && document.forms.registration.elements.password.checkValidity()) {
+          document.forms.registration.elements.handleSignUp.disabled = false
+        } else {
+          document.forms.registration.elements.handleSignUp.disabled = true
+        }
+      }
+    }
+
+    document.forms.registration.elements.name.addEventListener("blur", handleFirstNameError)
     document.forms.registration.elements.email.addEventListener("blur", handleEmailError)
     document.forms.registration.elements.password.addEventListener("blur", handlePasswordError)
   }
