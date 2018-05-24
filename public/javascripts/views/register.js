@@ -127,7 +127,6 @@ register = `
           class="form-control"
           placeholder="********"
           name="password"
-          minlength="8"
           required
         >
       </div>
@@ -135,9 +134,19 @@ register = `
       <div class="col-half">
         <h5>Gender</h5>
         <div class="gender-input-group">
-          <input id="male" type="radio" name="gender" value="male">
+          <input
+            id="male"
+            type="radio"
+            name="gender"
+            value="male"
+          >
           <label for="male">Male</label>
-          <input id="female" type="radio" name="gender" value="female">
+          <input
+            id="female"
+            type="radio"
+            name="gender"
+            value="female"
+          >
           <label for="female">Female</label>
         </div>
       </div>
@@ -145,7 +154,7 @@ register = `
       <div>
         <div>Date of Birth</div>
         <div class="form-group col-md-4" style="padding-left: 0">
-          <select name="birthMonth" class="form-control">
+          <select name="birthMonth" class="form-control" required>
             <option>Month</option>
             <option>January</option>
             <option>February</option>
@@ -162,13 +171,13 @@ register = `
           </select>
         </div>
         <div class="form-group col-md-4">
-          <select name="birthDate" class="form-control">
+          <select name="birthDate" class="form-control" required>
             <option>Day</option>
             ${day()}
           </select>
         </div>
         <div class="form-group col-md-4">
-          <select name="birthYear" class="form-control">
+          <select name="birthYear" class="form-control" required>
             <option>Year</option>
             ${year()}
           </select>
@@ -189,26 +198,45 @@ register = `
 const registrationPage = layout + register
 
 window.addEventListener('load', () => {
-  if (window.location.pathname === '/register') {
-    document.getElementById('my-app').innerHTML = registrationPage;
-    const myDoc = document.forms.registration.elements
-    myDoc.handleSignUp.disabled = true
+if (window.location.pathname === '/register') {
+  document.getElementById('my-app').innerHTML = registrationPage;
+  const registrationFormElement = document.forms.registration.elements
+  registrationFormElement.handleSignUp.disabled = true
 
-    let elements = document.querySelectorAll("[name='name'], [name='email'], [name='password']")
-
-    for (let i = 0; i < elements.length; i++) {
-      elements[i].onkeyup = () => {
-        if (myDoc.name.checkValidity() && myDoc.email.checkValidity() && isPasswordLengthValid()) {
-          myDoc.handleSignUp.disabled = false
+  let nameEmailPassword = document.querySelectorAll("[name='name'], [name='email'], [name='password']")
+  let genderButtons = document.querySelectorAll("input[type='radio']")
+  let DOB = document.querySelectorAll("[name='birthMonth'], [name='birthDate'], [name='birthYear']")
+  for (let i = 0; i < nameEmailPassword.length; i++) {
+    nameEmailPassword[i].onkeyup = () => {
+      if (registrationFormElement.name.checkValidity() && registrationFormElement.email.checkValidity() && isPasswordLengthValid()) {
+        if (registrationFormElement.male.checked || registrationFormElement.female.checked) {
+          registrationFormElement.handleSignUp.disabled = false
         } else {
-          myDoc.handleSignUp.disabled = true
+          for (let i = 0; i < genderButtons.length; i++) {
+            genderButtons[i].onchange = () => {
+              if (registrationFormElement.male.checked || registrationFormElement.female.checked) {
+                for (let i = 0; i < DOB.length; i++) {
+                  DOB[i].onchange = () => {
+                    if (registrationFormElement.birthMonth.value !== 'Month' && registrationFormElement.birthDate.value !== 'Day' && registrationFormElement.birthYear.value !== 'Year') {
+                      registrationFormElement.handleSignUp.disabled = false
+                    } else {
+                      registrationFormElement.handleSignUp.disabled = true
+                    }
+                  }
+                }
+              }
+            }
+          }
         }
+      } else {
+        registrationFormElement.handleSignUp.disabled = true
       }
     }
-
-    myDoc.name.addEventListener("blur", handleFirstNameError)
-    myDoc.email.addEventListener("blur", handleEmailError)
-    myDoc.password.addEventListener("blur", handlePasswordError)
-    myDoc.password.addEventListener("keyup", isPasswordLengthValid)
   }
+
+  registrationFormElement.name.addEventListener("blur", handleFirstNameError)
+  registrationFormElement.email.addEventListener("blur", handleEmailError)
+  registrationFormElement.password.addEventListener("blur", handlePasswordError)
+  registrationFormElement.password.addEventListener("keyup", isPasswordLengthValid)
+}
 })
