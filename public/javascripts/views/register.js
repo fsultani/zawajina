@@ -1,8 +1,3 @@
-// let isHandleSignUpDisabled = true
-let isFirstNameComplete = false
-let isEmailComplete = false
-let isPasswordComplete = false
-
 const handleFirstNameError = () => {
   if (!document.forms.registration.elements.name.checkValidity()) {
     document.forms.registration.elements.name.style.border = '2px solid red'
@@ -20,7 +15,6 @@ const handleFirstNameError = () => {
   } else if (document.getElementById('firstNameError')) {
     document.getElementById('firstNameError').remove()
     document.forms.registration.elements.name.style.border = '1px solid #ccc'
-    isFirstNameComplete = true
   }
 }
 
@@ -41,7 +35,6 @@ const handleEmailError = () => {
   } else if (document.getElementById('emailError')) {
     document.getElementById('emailError').remove()
     document.forms.registration.elements.email.style.border = '1px solid #ccc'
-    isEmailComplete = true
   }
 }
 
@@ -62,8 +55,11 @@ const handlePasswordError = () => {
   } else if (document.getElementById('passwordError')) {
     document.getElementById('passwordError').remove()
     document.forms.registration.elements.password.style.border = '1px solid #ccc'
-    isPasswordComplete = true
   }
+}
+
+const isPasswordLengthValid = () => {
+  return document.forms.registration.elements.password.value.length >= 8
 }
 
 const day = () => {
@@ -131,6 +127,7 @@ register = `
           class="form-control"
           placeholder="********"
           name="password"
+          minlength="8"
           required
         >
       </div>
@@ -194,21 +191,24 @@ const registrationPage = layout + register
 window.addEventListener('load', () => {
   if (window.location.pathname === '/register') {
     document.getElementById('my-app').innerHTML = registrationPage;
-    document.forms.registration.elements.handleSignUp.disabled = true
+    const myDoc = document.forms.registration.elements
+    myDoc.handleSignUp.disabled = true
 
     let elements = document.querySelectorAll("[name='name'], [name='email'], [name='password']")
+
     for (let i = 0; i < elements.length; i++) {
-      elements[i].onchange = function() {
-        if (document.forms.registration.elements.name.checkValidity() && document.forms.registration.elements.email.checkValidity() && document.forms.registration.elements.password.checkValidity()) {
-          document.forms.registration.elements.handleSignUp.disabled = false
+      elements[i].onkeyup = () => {
+        if (myDoc.name.checkValidity() && myDoc.email.checkValidity() && isPasswordLengthValid()) {
+          myDoc.handleSignUp.disabled = false
         } else {
-          document.forms.registration.elements.handleSignUp.disabled = true
+          myDoc.handleSignUp.disabled = true
         }
       }
     }
 
-    document.forms.registration.elements.name.addEventListener("blur", handleFirstNameError)
-    document.forms.registration.elements.email.addEventListener("blur", handleEmailError)
-    document.forms.registration.elements.password.addEventListener("blur", handlePasswordError)
+    myDoc.name.addEventListener("blur", handleFirstNameError)
+    myDoc.email.addEventListener("blur", handleEmailError)
+    myDoc.password.addEventListener("blur", handlePasswordError)
+    myDoc.password.addEventListener("keyup", isPasswordLengthValid)
   }
 })
