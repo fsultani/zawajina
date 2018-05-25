@@ -39,44 +39,30 @@ const handleEmailError = () => {
 }
 
 const handlePasswordErrorOnBlur = () => {
-  if (!document.forms.registration.elements.password.checkValidity()) {
-    document.forms.registration.elements.password.style.border = '2px solid red'
-    const passwordError = document.createElement('div')
-    passwordError.setAttribute('id', 'passwordError')
-    passwordError.textContent = 'Password enter a password';
-    passwordError.style.color = 'red';
-    passwordError.style.width = '100%';
-    passwordError.style.height = 'auto';
-    passwordError.style.textAlign = 'center';
-    const container = document.getElementById('password')
-    container.appendChild(passwordError)
-  } else if (
-    document.forms.registration.elements.password.checkValidity() &&
-    document.forms.registration.elements.password.value.length < 8 &&
-    !document.getElementById('passwordError')
+  if (
+    !document.forms.registration.elements.password.checkValidity() &&
+    document.forms.registration.elements.password.style.border !== '2px solid red'
   ) {
     document.forms.registration.elements.password.style.border = '2px solid red'
-    const passwordError = document.createElement('div')
-    passwordError.setAttribute('id', 'passwordError')
-    passwordError.textContent = 'Password must be at least 8 characters';
-    passwordError.style.color = 'red';
-    passwordError.style.width = '100%';
-    passwordError.style.height = 'auto';
-    passwordError.style.textAlign = 'center';
-    const container = document.getElementById('password')
-    container.appendChild(passwordError)
   } else if (
-    document.forms.registration.elements.password.checkValidity() &&
-    document.forms.registration.elements.password.value.length < 8 &&
-    document.getElementById('passwordError')
+    !document.forms.registration.elements.password.checkValidity() &&
+    document.forms.registration.elements.password.style.border === '2px solid red'
   ) {
-    passwordError.textContent = 'Password must be at least 8 characters';
+    document.getElementById('greenCheckMark').style.display = 'none'
+  }
+  else if (
+    document.forms.registration.elements.password.checkValidity() &&
+    document.forms.registration.elements.password.value.length < 8
+  ) {
+    document.getElementById('greenCheckMark').style.display = 'none'
+    document.forms.registration.elements.password.style.border = '2px solid red'
   } else if (
     document.forms.registration.elements.password.checkValidity() &&
     document.forms.registration.elements.password.value.length >= 8 &&
-    document.getElementById('passwordError')
+    document.forms.registration.elements.password.style.border === '2px solid red' &&
+    document.getElementById('greenCheckMark').style.display === 'none'
   ) {
-    document.getElementById('passwordError').remove()
+    document.getElementById('greenCheckMark').style.display = 'inline-block'
     document.forms.registration.elements.password.style.border = '1px solid #ccc'
   }
 }
@@ -84,11 +70,20 @@ const handlePasswordErrorOnBlur = () => {
 const handlePasswordErrorOnKeyUp = () => {
   if (
     document.forms.registration.elements.password.checkValidity() &&
-    document.forms.registration.elements.password.value.length >= 8 &&
-    document.getElementById('passwordError')
+    document.forms.registration.elements.password.value.length >= 8
   ) {
-    document.getElementById('passwordError').remove()
+    document.getElementById('greenCheckMark').style.display = 'inline-block'
     document.forms.registration.elements.password.style.border = '1px solid #ccc'
+  } else if (
+    document.forms.registration.elements.password.checkValidity() &&
+    document.forms.registration.elements.password.value.length < 8 &&
+    document.forms.registration.elements.password.style.border !== '2px solid red'
+  ) {
+    document.getElementById('greenCheckMark').style.display = 'none'
+  } else if (
+    !document.forms.registration.elements.password.checkValidity()
+  ) {
+    document.getElementById('greenCheckMark').style.display = 'none'
   }
 }
 
@@ -155,7 +150,7 @@ register = `
         >
       </div>
 
-      <div class="form-group" id="password">
+      <div class="form-group" style="position: relative" id="password">
         <input
           type="password"
           class="form-control"
@@ -163,6 +158,12 @@ register = `
           name="password"
           required
         >
+        <div id="greenCheckMark" style="position: absolute; top: 7px; right: 10px">
+          <i class="fa fa-check" style="color: #22dd22; font-size: 14px"></i>
+        </div>
+        <div id="passwordInfo" style="font-size: 12px; margin-top: 5px;">
+          Your password needs at least 8 characters
+        </div>
       </div>
 
       <div class="col-half">
@@ -236,6 +237,7 @@ if (window.location.pathname === '/register') {
   document.getElementById('my-app').innerHTML = registrationPage;
   const registrationFormElement = document.forms.registration.elements
   registrationFormElement.handleSignUp.disabled = true
+  document.getElementById('greenCheckMark').style.display = 'none'
 
   let nameEmailPassword = document.querySelectorAll("[name='name'], [name='email'], [name='password']")
   let genderButtons = document.querySelectorAll("input[type='radio']")
