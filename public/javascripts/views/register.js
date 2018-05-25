@@ -1,20 +1,23 @@
 const handleNameError = () => {
   if (!document.forms.registration.elements.name.checkValidity()) {
     document.forms.registration.elements.name.style.border = '2px solid red'
-    const firstNameError = document.createElement('div')
-    firstNameError.setAttribute('id', 'firstNameError')
-    firstNameError.textContent = 'Please enter your name';
-    firstNameError.style.color = 'red';
-    firstNameError.style.width = '100%';
-    firstNameError.style.height = 'auto';
-    firstNameError.style.textAlign = 'center';
+    const nameError = document.createElement('div')
+    nameError.setAttribute('id', 'nameError')
+    nameError.textContent = 'Please enter your name';
+    nameError.style.color = 'red';
+    nameError.style.width = '100%';
+    nameError.style.height = 'auto';
+    nameError.style.textAlign = 'center';
     const container = document.getElementById('name')
-    if (!document.getElementById('firstNameError')) {
-      container.appendChild(firstNameError)
+    if (!document.getElementById('nameError')) {
+      container.appendChild(nameError)
     }
-  } else if (document.getElementById('firstNameError')) {
-    document.getElementById('firstNameError').remove()
+  } else if (document.getElementById('nameError')) {
+    document.getElementById('nameIsValid').style.display = 'inline-block'
+    document.getElementById('nameError').remove()
     document.forms.registration.elements.name.style.border = '1px solid #ccc'
+  } else if (document.forms.registration.elements.name.checkValidity()){
+    document.getElementById('nameIsValid').style.display = 'inline-block'
   }
 }
 
@@ -23,7 +26,7 @@ const handleEmailError = () => {
     document.forms.registration.elements.email.style.border = '2px solid red'
     const emailError = document.createElement('div')
     emailError.setAttribute('id', 'emailError')
-    emailError.textContent = 'Please a valid email address';
+    emailError.textContent = 'Please enter a valid email address';
     emailError.style.color = 'red';
     emailError.style.width = '100%';
     emailError.style.height = 'auto';
@@ -33,8 +36,11 @@ const handleEmailError = () => {
       container.appendChild(emailError)
     }
   } else if (document.getElementById('emailError')) {
+    document.getElementById('emailIsValid').style.display = 'inline-block'
     document.getElementById('emailError').remove()
     document.forms.registration.elements.email.style.border = '1px solid #ccc'
+  } else if (document.forms.registration.elements.email.checkValidity()) {
+    document.getElementById('emailIsValid').style.display = 'inline-block'
   }
 }
 
@@ -56,18 +62,18 @@ const handlePasswordErrorOnKeyUp = () => {
     document.forms.registration.elements.password.checkValidity() &&
     document.forms.registration.elements.password.value.length >= 8
   ) {
-    document.getElementById('greenCheckMark').style.display = 'inline-block'
+    document.getElementById('passwordIsValid').style.display = 'inline-block'
     document.forms.registration.elements.password.style.border = '1px solid #ccc'
   } else if (
     document.forms.registration.elements.password.checkValidity() &&
     document.forms.registration.elements.password.value.length < 8 &&
     document.forms.registration.elements.password.style.border !== '2px solid red'
   ) {
-    document.getElementById('greenCheckMark').style.display = 'none'
+    document.getElementById('passwordIsValid').style.display = 'none'
   } else if (
     !document.forms.registration.elements.password.checkValidity()
   ) {
-    document.getElementById('greenCheckMark').style.display = 'none'
+    document.getElementById('passwordIsValid').style.display = 'none'
   }
 }
 
@@ -114,7 +120,7 @@ const handleSignUp = event => {
 register = `
   <div class="registrationContainer centerContainer">
     <form name="registration">
-      <div class="form-group" id="name">
+      <div class="form-group" style="position: relative" id="name">
         <input
           type="text"
           class="form-control"
@@ -122,9 +128,12 @@ register = `
           name="name"
           required
         >
+        <div id="nameIsValid" style="position: absolute; top: 7px; right: 10px">
+          <i class="fa fa-check" style="color: #22dd22; font-size: 14px"></i>
+        </div>
       </div>
 
-       <div class="form-group" id="email">
+      <div class="form-group" style="position: relative" id="email">
         <input
           type="email"
           class="form-control"
@@ -132,6 +141,9 @@ register = `
           name="email"
           required
         >
+        <div id="emailIsValid" style="position: absolute; top: 7px; right: 10px">
+          <i class="fa fa-check" style="color: #22dd22; font-size: 14px"></i>
+        </div>
       </div>
 
       <div class="form-group" style="position: relative" id="password">
@@ -142,7 +154,7 @@ register = `
           name="password"
           required
         >
-        <div id="greenCheckMark" style="position: absolute; top: 7px; right: 10px">
+        <div id="passwordIsValid" style="position: absolute; top: 7px; right: 10px">
           <i class="fa fa-check" style="color: #22dd22; font-size: 14px"></i>
         </div>
         <div id="passwordInfo" style="font-size: 12px; margin-top: 5px;">
@@ -221,7 +233,9 @@ if (window.location.pathname === '/register') {
   document.getElementById('my-app').innerHTML = registrationPage;
   const registrationFormElement = document.forms.registration.elements
   registrationFormElement.handleSignUp.disabled = true
-  document.getElementById('greenCheckMark').style.display = 'none'
+  document.getElementById('passwordIsValid').style.display = 'none'
+  document.getElementById('nameIsValid').style.display = 'none'
+  document.getElementById('emailIsValid').style.display = 'none'
 
   let nameEmailPassword = document.querySelectorAll("[name='name'], [name='email'], [name='password']")
   let genderButtons = document.querySelectorAll("input[type='radio']")
