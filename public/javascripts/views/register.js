@@ -71,7 +71,7 @@ const handlePasswordErrorOnKeyUp = () => {
   }
 }
 
-const isPasswordLengthValid = () => {
+const isPasswordValid = () => {
   return document.forms.registration.elements.password.value.length >= 8
 }
 
@@ -231,7 +231,7 @@ if (window.location.pathname === '/register') {
       if (
         registrationFormElement.name.checkValidity() &&
         registrationFormElement.email.checkValidity() &&
-        isPasswordLengthValid()
+        isPasswordValid()
       ) {
         if (
           registrationFormElement.male.checked ||
@@ -272,6 +272,6 @@ if (window.location.pathname === '/register') {
   registrationFormElement.email.addEventListener("blur", handleEmailError)
   registrationFormElement.password.addEventListener("blur", handlePasswordErrorOnBlur)
   registrationFormElement.password.addEventListener("keyup", handlePasswordErrorOnKeyUp)
-  registrationFormElement.password.addEventListener("keyup", isPasswordLengthValid)
+  registrationFormElement.password.addEventListener("keyup", isPasswordValid)
 }
 })
