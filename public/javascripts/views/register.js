@@ -1,4 +1,4 @@
-const handleFirstNameError = () => {
+const handleNameError = () => {
   if (!document.forms.registration.elements.name.checkValidity()) {
     document.forms.registration.elements.name.style.border = '2px solid red'
     const firstNameError = document.createElement('div')
@@ -38,8 +38,23 @@ const handleEmailError = () => {
   }
 }
 
-const handlePasswordError = () => {
+const handlePasswordErrorOnBlur = () => {
   if (!document.forms.registration.elements.password.checkValidity()) {
+    document.forms.registration.elements.password.style.border = '2px solid red'
+    const passwordError = document.createElement('div')
+    passwordError.setAttribute('id', 'passwordError')
+    passwordError.textContent = 'Password enter a password';
+    passwordError.style.color = 'red';
+    passwordError.style.width = '100%';
+    passwordError.style.height = 'auto';
+    passwordError.style.textAlign = 'center';
+    const container = document.getElementById('password')
+    container.appendChild(passwordError)
+  } else if (
+    document.forms.registration.elements.password.checkValidity() &&
+    document.forms.registration.elements.password.value.length < 8 &&
+    !document.getElementById('passwordError')
+  ) {
     document.forms.registration.elements.password.style.border = '2px solid red'
     const passwordError = document.createElement('div')
     passwordError.setAttribute('id', 'passwordError')
@@ -49,10 +64,29 @@ const handlePasswordError = () => {
     passwordError.style.height = 'auto';
     passwordError.style.textAlign = 'center';
     const container = document.getElementById('password')
-    if (!document.getElementById('passwordError')) {
-      container.appendChild(passwordError)
-    }
-  } else if (document.getElementById('passwordError')) {
+    container.appendChild(passwordError)
+  } else if (
+    document.forms.registration.elements.password.checkValidity() &&
+    document.forms.registration.elements.password.value.length < 8 &&
+    document.getElementById('passwordError')
+  ) {
+    passwordError.textContent = 'Password must be at least 8 characters';
+  } else if (
+    document.forms.registration.elements.password.checkValidity() &&
+    document.forms.registration.elements.password.value.length >= 8 &&
+    document.getElementById('passwordError')
+  ) {
+    document.getElementById('passwordError').remove()
+    document.forms.registration.elements.password.style.border = '1px solid #ccc'
+  }
+}
+
+const handlePasswordErrorOnKeyUp = () => {
+  if (
+    document.forms.registration.elements.password.checkValidity() &&
+    document.forms.registration.elements.password.value.length >= 8 &&
+    document.getElementById('passwordError')
+  ) {
     document.getElementById('passwordError').remove()
     document.forms.registration.elements.password.style.border = '1px solid #ccc'
   }
@@ -76,9 +110,9 @@ const year = () => {
 
 const handleSignUp = event => {
   event.preventDefault()
-  handleFirstNameError()
+  handleNameError()
   handleEmailError()
-  handlePasswordError()
+  handlePasswordErrorOnBlur()
 
   const registrationForm = document.forms.registration
   const userRegistrationForm = {
@@ -208,16 +242,30 @@ if (window.location.pathname === '/register') {
   let DOB = document.querySelectorAll("[name='birthMonth'], [name='birthDate'], [name='birthYear']")
   for (let i = 0; i < nameEmailPassword.length; i++) {
     nameEmailPassword[i].onkeyup = () => {
-      if (registrationFormElement.name.checkValidity() && registrationFormElement.email.checkValidity() && isPasswordLengthValid()) {
-        if (registrationFormElement.male.checked || registrationFormElement.female.checked) {
+      if (
+        registrationFormElement.name.checkValidity() &&
+        registrationFormElement.email.checkValidity() &&
+        isPasswordLengthValid()
+      ) {
+        if (
+          registrationFormElement.male.checked ||
+          registrationFormElement.female.checked
+        ) {
           registrationFormElement.handleSignUp.disabled = false
         } else {
           for (let i = 0; i < genderButtons.length; i++) {
             genderButtons[i].onchange = () => {
-              if (registrationFormElement.male.checked || registrationFormElement.female.checked) {
+              if (
+                registrationFormElement.male.checked ||
+                registrationFormElement.female.checked
+              ) {
                 for (let i = 0; i < DOB.length; i++) {
                   DOB[i].onchange = () => {
-                    if (registrationFormElement.birthMonth.value !== 'Month' && registrationFormElement.birthDate.value !== 'Day' && registrationFormElement.birthYear.value !== 'Year') {
+                    if (
+                      registrationFormElement.birthMonth.value !== 'Month' &&
+                      registrationFormElement.birthDate.value !== 'Day' &&
+                      registrationFormElement.birthYear.value !== 'Year'
+                    ) {
                       registrationFormElement.handleSignUp.disabled = false
                     } else {
                       registrationFormElement.handleSignUp.disabled = true
@@ -234,9 +282,10 @@ if (window.location.pathname === '/register') {
     }
   }
 
-  registrationFormElement.name.addEventListener("blur", handleFirstNameError)
+  registrationFormElement.name.addEventListener("blur", handleNameError)
   registrationFormElement.email.addEventListener("blur", handleEmailError)
-  registrationFormElement.password.addEventListener("blur", handlePasswordError)
+  registrationFormElement.password.addEventListener("blur", handlePasswordErrorOnBlur)
+  registrationFormElement.password.addEventListener("keyup", handlePasswordErrorOnKeyUp)
   registrationFormElement.password.addEventListener("keyup", isPasswordLengthValid)
 }
 })
