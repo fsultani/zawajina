@@ -40,30 +40,14 @@ const handleEmailError = () => {
 
 const handlePasswordErrorOnBlur = () => {
   if (
-    !document.forms.registration.elements.password.checkValidity() &&
-    document.forms.registration.elements.password.style.border !== '2px solid red'
+    !document.forms.registration.elements.password.checkValidity()
   ) {
     document.forms.registration.elements.password.style.border = '2px solid red'
   } else if (
-    !document.forms.registration.elements.password.checkValidity() &&
-    document.forms.registration.elements.password.style.border === '2px solid red'
-  ) {
-    document.getElementById('greenCheckMark').style.display = 'none'
-  }
-  else if (
     document.forms.registration.elements.password.checkValidity() &&
     document.forms.registration.elements.password.value.length < 8
   ) {
-    document.getElementById('greenCheckMark').style.display = 'none'
     document.forms.registration.elements.password.style.border = '2px solid red'
-  } else if (
-    document.forms.registration.elements.password.checkValidity() &&
-    document.forms.registration.elements.password.value.length >= 8 &&
-    document.forms.registration.elements.password.style.border === '2px solid red' &&
-    document.getElementById('greenCheckMark').style.display === 'none'
-  ) {
-    document.getElementById('greenCheckMark').style.display = 'inline-block'
-    document.forms.registration.elements.password.style.border = '1px solid #ccc'
   }
 }
 
