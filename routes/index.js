@@ -140,8 +140,7 @@ function ensureAuthenticated(req, res, next){
 }
 
 router.post('/register', function(req, res) {
-  console.log("req.body\n", req.body)
-  const first_name = req.body.userRegistrationForm.first_name
+  const name = req.body.userRegistrationForm.name
   const email = req.body.userRegistrationForm.email
   const password = req.body.userRegistrationForm.password
   const gender = req.body.userRegistrationForm.gender
@@ -149,40 +148,48 @@ router.post('/register', function(req, res) {
   const birthDate = req.body.userRegistrationForm.birthDate
   const birthYear = req.body.userRegistrationForm.birthYear
 
-  // req.checkBody('first_name', 'First name is required').notEmpty()
-  // req.checkBody('last_name', 'Last name is required').notEmpty()
-  // req.checkBody('username', 'Username is required').notEmpty()
-  // req.checkBody('email', 'Email is required').notEmpty()
-  // req.checkBody('password', 'Password is required').notEmpty()
-  // req.checkBody('confirm_password', 'Password confirmation is required').notEmpty()
-  // req.checkBody('gender', 'Please select your gender').notEmpty()
+  req.checkBody('name', 'Name is required').notEmpty()
+  req.checkBody('email', 'Email is required').notEmpty()
+  req.checkBody('password', 'Password is required').notEmpty()
+  req.checkBody('gender', 'Please select your gender').notEmpty()
+  req.checkBody('birthMonth', 'Please select your birth month').notEmpty()
+  req.checkBody('birthDate', 'Please select your birth date').notEmpty()
+  req.checkBody('birthYear', 'Please select your birth year').notEmpty()
   
   // const errors = req.validationErrors()
+  const errors = req.getValidationResult().then(res => {
+    if (!res.isEmpty()) {
+      const errors = res.array().map(err => {
+        console.log("err\n", err)
+      })
+    }
+  })
 
-  // if (errors) {
-  //   res.render('register', {
-  //     errors: errors
-  //   })
-  // } else {
-  //   if (password === confirm_password) {
-  //     const newUser = new User ({
-  //       first_name: first_name,
-  //       last_name: last_name,
-  //       username: username,
-  //       email: email,
-  //       password: password,
-  //       gender: gender
-  //     })
+  if (errors) {
+    // console.log("errors\n", errors)
+    res.render('register', {
+      errors: errors
+    })
+  } else {
+    // if (password === confirm_password) {
+    //   const newUser = new User ({
+    //     name: name,
+    //     last_name: last_name,
+    //     username: username,
+    //     email: email,
+    //     password: password,
+    //     gender: gender
+    //   })
 
-  //     User.createUser(newUser, (err, user) => {})
+    //   User.createUser(newUser, (err, user) => {})
     
-  //     req.flash('success_message', 'You are registered and can now log in!');
-  //     res.redirect('/login');
-  //   } else {
-  //     req.flash('error_message', 'Your passwords did not match.  Please try again.');
-  //     res.redirect('/register')
-  //   }
-  // }
+    //   req.flash('success_message', 'You are registered and can now log in!');
+    //   res.redirect('/login');
+    // } else {
+    //   req.flash('error_message', 'Your passwords did not match.  Please try again.');
+    //   res.redirect('/register')
+    // }
+  }
 })
 
 module.exports = router
