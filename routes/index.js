@@ -140,6 +140,7 @@ function ensureAuthenticated(req, res, next){
 }
 
 router.post('/register', function(req, res) {
+  console.log("req.body\n", req.body)
   const name = req.body.userRegistrationForm.name
   const email = req.body.userRegistrationForm.email
   const password = req.body.userRegistrationForm.password
@@ -156,17 +157,17 @@ router.post('/register', function(req, res) {
   req.checkBody('birthDate', 'Please select your birth date').notEmpty()
   req.checkBody('birthYear', 'Please select your birth year').notEmpty()
   
-  // const errors = req.validationErrors()
-  const errors = req.getValidationResult().then(res => {
-    if (!res.isEmpty()) {
-      const errors = res.array().map(err => {
-        console.log("err\n", err)
-      })
-    }
-  })
+  const errors = req.validationErrors()
+  // const errors = req.getValidationResult().then(res => {
+  //   if (!res.isEmpty()) {
+  //     const errors = res.array().map(err => {
+  //       console.log("err\n", err)
+  //     })
+  //   }
+  // })
 
   if (errors) {
-    // console.log("errors\n", errors)
+    console.log("errors\n", errors)
     res.render('register', {
       errors: errors
     })

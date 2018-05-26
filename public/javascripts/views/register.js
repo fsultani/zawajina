@@ -217,7 +217,7 @@ register = `
 
       <div class="row">
         <div class="col-md-4 col-md-offset-4 text-center">
-          <button onclick="handleSignUp(event)" class="btn btn-success" id="handleSignUp">
+          <button onclick="handleSignUp(event)" class="btn btn-success" name="signUpButton">
             Sign Up
           </button>
         </div>
@@ -232,7 +232,8 @@ window.addEventListener('load', () => {
 if (window.location.pathname === '/register') {
   document.getElementById('my-app').innerHTML = registrationPage;
   const registrationFormElement = document.forms.registration.elements
-  registrationFormElement.handleSignUp.disabled = true
+
+  registrationFormElement.signUpButton.disabled = true
   document.getElementById('passwordIsValid').style.display = 'none'
   document.getElementById('nameIsValid').style.display = 'none'
   document.getElementById('emailIsValid').style.display = 'none'
@@ -251,7 +252,7 @@ if (window.location.pathname === '/register') {
           registrationFormElement.male.checked ||
           registrationFormElement.female.checked
         ) {
-          registrationFormElement.handleSignUp.disabled = false
+          registrationFormElement.signUpButton.disabled = false
         } else {
           for (let i = 0; i < genderButtons.length; i++) {
             genderButtons[i].onchange = () => {
@@ -266,9 +267,9 @@ if (window.location.pathname === '/register') {
                       registrationFormElement.birthDate.value !== 'Day' &&
                       registrationFormElement.birthYear.value !== 'Year'
                     ) {
-                      registrationFormElement.handleSignUp.disabled = false
+                      registrationFormElement.signUpButton.disabled = false
                     } else {
-                      registrationFormElement.handleSignUp.disabled = true
+                      registrationFormElement.signUpButton.disabled = true
                     }
                   }
                 }
@@ -277,7 +278,7 @@ if (window.location.pathname === '/register') {
           }
         }
       } else {
-        registrationFormElement.handleSignUp.disabled = true
+        registrationFormElement.signUpButton.disabled = true
       }
     }
   }
