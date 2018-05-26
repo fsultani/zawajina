@@ -7,7 +7,7 @@ const exphbs = require('express-handlebars');
 const session = require('express-session')
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
-const expressValidator = require('express-validator')
+
 const flash = require('connect-flash');
 const mongo = require('mongodb')
 const mongoose = require('mongoose')
@@ -39,7 +39,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Body Parser Middleware
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // Express Session
@@ -56,22 +56,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Express Validator
-app.use(expressValidator({
-  errorFormatter: function(param, error_message, value) {
-      const namespace = param.split('.')
-      , root    = namespace.shift()
-      , formParam = root;
- 
-    while(namespace.length) {
-      formParam += '[' + namespace.shift() + ']';
-    }
-    return {
-      param: formParam,
-      error_message: error_message,
-      value: value
-    };
-  }
-}));
+// app.use(express.json())
 
 // Connect Flash
 app.use(flash());

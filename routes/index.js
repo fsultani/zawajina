@@ -7,6 +7,7 @@ const Cookies = require('js-cookie');
 const path = require('path');
 const JWT_SECRET = Buffer.from('fe1a1915a379f3be5394b64d14794932', 'hex')
 const multer = require('multer')
+const { check, body, validationResult } = require('express-validator/check')
 
 const router = express.Router()
 
@@ -139,8 +140,15 @@ function ensureAuthenticated(req, res, next){
   }
 }
 
-router.post('/register', function(req, res) {
-  console.log("req.body\n", req.body)
+router.post('/register', [
+  check('userRegistrationForm.name').not().isEmpty().withMessage('Enter your name'),
+  check('userRegistrationForm.email').isEmail().withMessage('Enter a valid email address'),
+  check('userRegistrationForm.password').not().isEmpty().withMessage('Enter a password'),
+  check('userRegistrationForm.gender').not().isEmpty().withMessage('Select your gender'),
+  check('userRegistrationForm.birthMonth').not().equals('Month').withMessage('Select your birth month'),
+  check('userRegistrationForm.birthDate').not().equals('Day').withMessage('Select your birth day'),
+  check('userRegistrationForm.birthYear').not().equals('Year').withMessage('Select your birth year'),
+  ], (req, res) => {
   const name = req.body.userRegistrationForm.name
   const email = req.body.userRegistrationForm.email
   const password = req.body.userRegistrationForm.password
@@ -149,48 +157,43 @@ router.post('/register', function(req, res) {
   const birthDate = req.body.userRegistrationForm.birthDate
   const birthYear = req.body.userRegistrationForm.birthYear
 
-  req.checkBody('name', 'Name is required').notEmpty()
-  req.checkBody('email', 'Email is required').notEmpty()
-  req.checkBody('password', 'Password is required').notEmpty()
-  req.checkBody('gender', 'Please select your gender').notEmpty()
-  req.checkBody('birthMonth', 'Please select your birth month').notEmpty()
-  req.checkBody('birthDate', 'Please select your birth date').notEmpty()
-  req.checkBody('birthYear', 'Please select your birth year').notEmpty()
-  
-  const errors = req.validationErrors()
-  // const errors = req.getValidationResult().then(res => {
-  //   if (!res.isEmpty()) {
-  //     const errors = res.array().map(err => {
-  //       console.log("err\n", err)
-  //     })
-  //   }
-  // })
-
-  if (errors) {
-    console.log("errors\n", errors)
-    res.render('register', {
-      errors: errors
-    })
-  } else {
-    // if (password === confirm_password) {
-    //   const newUser = new User ({
-    //     name: name,
-    //     last_name: last_name,
-    //     username: username,
-    //     email: email,
-    //     password: password,
-    //     gender: gender
-    //   })
-
-    //   User.createUser(newUser, (err, user) => {})
-    
-    //   req.flash('success_message', 'You are registered and can now log in!');
-    //   res.redirect('/login');
-    // } else {
-    //   req.flash('error_message', 'Your passwords did not match.  Please try again.');
-    //   res.redirect('/register')
-    // }
+  const getErrors = validationResult(req)
+  if (!getErrors.isEmpty()) {
+    res.json({ error: getErrors.array() })
   }
+
+  // if (errors) {
+  //   res.render('register', {
+  //     errors: errors
+  //   })
+  // } else {
+  //   if (password === confirm_password) {
+  //     const newUser = new User ({
+  //       name: name,
+  //       last_name: last_name,
+  //       username: username,
+  //       email: email,
+  //       password: password,
+  //       gender: gender
+  //     })
+
+  //     User.createUser(newUser, (err, user) => {})
+    
+  //     req.flash('success_message', 'You are registered and can now log in!');
+  //     res.redirect('/login');
+  //   } else {
+  //     req.flash('error_message', 'Your passwords did not match.  Please try again.');
+  //     res.redirect('/register')
+  //   }
+  // }
 })
+
+// router.post('/register', [ check('name').not().isEmpty() ], function(req, res) {
+//   const getErrors = validationResult(req.body.userRegistrationForm)
+//   console.log("getErrors.array()\n", getErrors.array())
+//   if (!getErrors.isEmpty()) {
+//     // console.log("getErrors.array()\n", getErrors.array())
+//   }
+// })
 
 module.exports = router
