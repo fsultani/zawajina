@@ -27,9 +27,19 @@ const layout = `
   </div>
 `;
 
-const conversationCount = Promise.resolve(axios.get(`/conversation/api/totalCount/${userId}`))
+axios.get(`/conversation/api/totalCount/${userId}`).then(res => {
+  const fromUserId = []
+  res.data.messages.map(message => {
+    if (!fromUserId.includes(message.from_user_id)) {
+      fromUserId.push(message.from_user_id)
+    } else {
+      return
+    }
+  })
+  Cookies.set('conversationCount', fromUserId.length)
+})
 
-const authenticatedNavArea = (count) => {
+const authenticatedNavArea = count => {
   const navArea = `
     <div class="container">
       <div class="row">
@@ -46,7 +56,7 @@ const authenticatedNavArea = (count) => {
             </ul>
             <ul class="nav nav-pills pull-right">
               <li role="presentation"><a onclick="logout()" style="cursor: pointer">Log Out</a></li>
-              <li role="presentation"><a href="/messages">${count ? `Messages (${count})` : `Messages`}</a></li>
+              <li role="presentation"><a href="/messages">${count > 0 ? `Messages (${count})` : `Messages`}</a></li>
               <li role="presentation"><a href="/profile">Profile</a></li>
             </ul>
           </nav>

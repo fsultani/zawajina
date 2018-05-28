@@ -57,19 +57,9 @@ window.addEventListener('load', () => {
         </center>
       `;
 
-      conversationCount.then(res => {
-        const fromUserId = []
-        res.data.messages.map(message => {
-          if (!fromUserId.includes(message.from_user_id)) {
-            fromUserId.push(message.from_user_id)
-          } else {
-            return
-          }
-        })
-        let htmlOutput = authenticatedNavArea(fromUserId.length) + welcome
-        document.getElementById('my-app').innerHTML = htmlOutput;
-        document.getElementById('contactForm').style.display = "none";
-      })
+      const htmlOutput = authenticatedNavArea(Cookies.get('conversationCount')) + welcome
+      document.getElementById('my-app').innerHTML = htmlOutput;
+      document.getElementById('contactForm').style.display = "none";
     })
   } else if (url[1] === 'users' && url[3] === 'about') {
     axios.get(`/users/api/info/${memberId}`).then((res) => {
@@ -79,7 +69,7 @@ window.addEventListener('load', () => {
           ${res.data}
         </center>
       `;
-      let htmlOutput = authenticatedNavArea(0) + welcome
+      let htmlOutput = authenticatedNavArea(Cookies.get('conversationCount')) + welcome
       document.getElementById('my-app').innerHTML = htmlOutput;
     })
   }

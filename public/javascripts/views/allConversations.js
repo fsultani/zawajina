@@ -44,18 +44,8 @@ window.addEventListener('load', () => {
         })
         memberInfo += `</a></center>`
 
-        conversationCount.then(res => {
-          const fromUserId = []
-          res.data.messages.map(message => {
-            if (!fromUserId.includes(message.from_user_id)) {
-              fromUserId.push(message.from_user_id)
-            } else {
-              return
-            }
-          })
-          let htmlOutput = authenticatedNavArea(fromUserId.length) + memberInfo
-          document.getElementById('my-app').innerHTML = htmlOutput;
-        })
+        const htmlOutput = authenticatedNavArea(Cookies.get('conversationCount')) + memberInfo
+        document.getElementById('my-app').innerHTML = htmlOutput;
       } else {
         let memberInfo = `
           <center>
@@ -63,18 +53,8 @@ window.addEventListener('load', () => {
           </center>
         `;
 
-        conversationCount.then(res => {
-          const fromUserId = []
-          res.data.messages.map(message => {
-            if (!fromUserId.includes(message.from_user_id)) {
-              fromUserId.push(message.from_user_id)
-            } else {
-              return
-            }
-          })
-          let htmlOutput = authenticatedNavArea(fromUserId.length) + memberInfo
-          document.getElementById('my-app').innerHTML = htmlOutput;
-        })
+        let htmlOutput = authenticatedNavArea(Cookies.get('conversationCount')) + memberInfo
+        document.getElementById('my-app').innerHTML = htmlOutput;
       }
     })
   }

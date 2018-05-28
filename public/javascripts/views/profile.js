@@ -24,7 +24,6 @@ window.addEventListener('load', () => {
   if (window.location.pathname === '/profile' && Cookies.get('token')) {
     axios.get('/api/profile-info').then(res => {
       const member = res.data.member
-      console.log('member.profilePicture\n', member.profilePicture)
       const memberInfo = `
         <div class="container" align="center">
           <h2 class="dashboard-text">Welcome, ${member.first_name}!</h2>
@@ -49,18 +48,8 @@ window.addEventListener('load', () => {
           </div>
         </div>
       `;
-        conversationCount.then(res => {
-          const fromUserId = []
-          res.data.messages.map(message => {
-            if (!fromUserId.includes(message.from_user_id)) {
-              fromUserId.push(message.from_user_id)
-            } else {
-              return
-            }
-          })
-          let htmlOutput = authenticatedNavArea(fromUserId.length) + memberInfo
-          document.getElementById('my-app').innerHTML = htmlOutput;
-        })
+      const htmlOutput = authenticatedNavArea(Cookies.get('conversationCount')) + memberInfo
+      document.getElementById('my-app').innerHTML = htmlOutput;
     })
   }
 })
