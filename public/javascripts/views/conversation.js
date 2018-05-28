@@ -103,18 +103,8 @@ window.addEventListener('load', () => {
       messageList += `<div id="replyId"></div>`;
       messageList += `</center>`;
 
-      conversationCount.then(res => {
-        const fromUserId = []
-        res.data.messages.map(message => {
-          if (!fromUserId.includes(message.from_user_id)) {
-            fromUserId.push(message.from_user_id)
-          } else {
-            return
-          }
-        })
-        let htmlOutput = authenticatedNavArea(fromUserId.length) + messageList + reply
-        document.getElementById('my-app').innerHTML = htmlOutput;
-      })
+      const htmlOutput = authenticatedNavArea(Cookies.get('conversationCount')) + messageList + reply
+      document.getElementById('my-app').innerHTML = htmlOutput;
     })
   } else if (url[1] === 'users' && url[3] === 'about') {
     

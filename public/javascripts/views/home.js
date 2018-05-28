@@ -24,19 +24,8 @@ window.addEventListener('load', () => {
         })
 
         output += `</div></center>`;
-
-        conversationCount.then(res => {
-          const fromUserId = []
-          res.data.messages.map(message => {
-            if (!fromUserId.includes(message.from_user_id)) {
-              fromUserId.push(message.from_user_id)
-            } else {
-              return
-            }
-          })
-          let htmlOutput = authenticatedNavArea(fromUserId.length) + welcome + output;
-          document.getElementById('my-app').innerHTML = htmlOutput;
-        })
+        const htmlOutput = authenticatedNavArea(Cookies.get('conversationCount')) + welcome + output;
+        document.getElementById('my-app').innerHTML = htmlOutput;
       })
   } else if (window.location.pathname === '/home') {
     const welcome = `
