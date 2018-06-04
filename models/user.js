@@ -2,15 +2,7 @@ var mongoose = require('mongoose');
 var bcrypt = require('bcryptjs');
 
 var User = mongoose.Schema({
-  first_name: {
-    type: String,
-    required: true
-  },
-  last_name: {
-    type: String,
-    required: true
-  },
-  username: {
+  name: {
     type: String,
     required: true
   },
@@ -18,12 +10,24 @@ var User = mongoose.Schema({
     type: String,
     required: true
   },
+  password: {
+    type: String
+  },
   gender: {
     type: String,
     required: true
   },
-  password: {
-    type: String
+  birthMonth: {
+    type: String,
+    required: true
+  },
+  birthDate: {
+    type: Number,
+    required: true
+  },
+  birthYear: {
+    type: Number,
+    required: true
   },
   profilePicture: {
     type: String
