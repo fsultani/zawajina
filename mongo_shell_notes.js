@@ -15,6 +15,9 @@ db.users.update({first_name: {$regex: "^"}}, { $set: { "messages": []}}, {"multi
 // Remove all usernames that end in a number
 db.users.remove({username: {$regex: "[0-9]$"}})
 
+// Remove all users with a specific name
+db.users.remove({ name: "John Doe"})
+
 // Prints each item on a separate line
 db.users.find().forEach(function(u) { print(u.first_name) })
 

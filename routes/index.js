@@ -159,41 +159,21 @@ router.post('/register', [
 
   const getErrors = validationResult(req)
   if (!getErrors.isEmpty()) {
-    res.json({ error: getErrors.array() })
+    return res.status(400).json({ error: getErrors.array() })
+  } else {
+    const newUser = new User ({
+      name: name,
+      email: email,
+      password: password,
+      gender: gender,
+      birthMonth,
+      birthDate,
+      birthYear
+    })
+
+    User.createUser(newUser, (err, user) => {})
+    res.status(201).json({ success: "Registration successful"})
   }
-
-  // if (errors) {
-  //   res.render('register', {
-  //     errors: errors
-  //   })
-  // } else {
-  //   if (password === confirm_password) {
-  //     const newUser = new User ({
-  //       name: name,
-  //       last_name: last_name,
-  //       username: username,
-  //       email: email,
-  //       password: password,
-  //       gender: gender
-  //     })
-
-  //     User.createUser(newUser, (err, user) => {})
-    
-  //     req.flash('success_message', 'You are registered and can now log in!');
-  //     res.redirect('/login');
-  //   } else {
-  //     req.flash('error_message', 'Your passwords did not match.  Please try again.');
-  //     res.redirect('/register')
-  //   }
-  // }
 })
-
-// router.post('/register', [ check('name').not().isEmpty() ], function(req, res) {
-//   const getErrors = validationResult(req.body.userRegistrationForm)
-//   console.log("getErrors.array()\n", getErrors.array())
-//   if (!getErrors.isEmpty()) {
-//     // console.log("getErrors.array()\n", getErrors.array())
-//   }
-// })
 
 module.exports = router

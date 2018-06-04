@@ -95,9 +95,10 @@ const year = () => {
 
 const handleSignUp = event => {
   event.preventDefault()
-  // handleNameError()
-  // handleEmailError()
-  // handlePasswordErrorOnBlur()
+  handleNameError()
+  handleEmailError()
+  handlePasswordErrorOnBlur()
+
 
   const registrationForm = document.forms.registration
   const userRegistrationForm = {
@@ -111,19 +112,39 @@ const handleSignUp = event => {
   }
   axios.post('/register', { userRegistrationForm })
   .then(res => {
-    if (res.data.error) {
-      res.data.error.map(error => {
-        console.log("error\n", error)
-      })
+    if (res.status === 201) {
+      const success = document.createElement('div')
+      success.innerHTML = '<h4>You have successfully registered!  You are now being redirected to the login screen.</h4>'
+      success.style.color = 'green';
+      success.style.width = '100%';
+      success.style.height = 'auto';
+      success.style.textAlign = 'center';
+      const container = document.getElementById('registrationContainerDiv').parentNode
+      container.insertBefore(success, document.getElementById('registrationContainerDiv'))
+      setTimeout(() => {
+        window.location.pathname = '/login'
+      }, 2000)
     }
   })
   .catch(error => {
-    console.log("error\n", error)
+    console.log("error.response\n", error.response)
+    const errors = document.createElement('div')
+    errors.setAttribute('id', 'errors')
+    const errorMessagesArray = error.response.data.error.map(err => {
+      return `<p>${err.msg}</p>`
+    })
+    errors.innerHTML = errorMessagesArray.join('')
+    errors.style.color = 'red';
+    errors.style.width = '100%';
+    errors.style.height = 'auto';
+    errors.style.textAlign = 'center';
+    const container = document.getElementById('registrationContainerDiv').parentNode
+    container.insertBefore(errors, document.getElementById('registrationContainerDiv'))
   })
 }
 
 register = `
-  <div class="registrationContainer centerContainer">
+  <div class="registrationContainer centerContainer" id="registrationContainerDiv">
     <form name="registration">
       <div class="form-group" style="position: relative" id="name">
         <input
@@ -234,64 +255,64 @@ register = `
 const registrationPage = layout + register
 
 window.addEventListener('load', () => {
-if (window.location.pathname === '/register') {
-  document.getElementById('my-app').innerHTML = registrationPage;
-  const registrationFormElement = document.forms.registration.elements
+  if (window.location.pathname === '/register') {
+    document.getElementById('my-app').innerHTML = registrationPage;
+    const registrationFormElement = document.forms.registration.elements
 
-  // registrationFormElement.signUpButton.disabled = true
-  // document.getElementById('passwordIsValid').style.display = 'none'
-  // document.getElementById('nameIsValid').style.display = 'none'
-  // document.getElementById('emailIsValid').style.display = 'none'
+    registrationFormElement.signUpButton.disabled = true
+    document.getElementById('passwordIsValid').style.display = 'none'
+    document.getElementById('nameIsValid').style.display = 'none'
+    document.getElementById('emailIsValid').style.display = 'none'
 
-  // let nameEmailPassword = document.querySelectorAll("[name='name'], [name='email'], [name='password']")
-  // let genderButtons = document.querySelectorAll("input[type='radio']")
-  // let DOB = document.querySelectorAll("[name='birthMonth'], [name='birthDate'], [name='birthYear']")
-  // for (let i = 0; i < nameEmailPassword.length; i++) {
-  //   nameEmailPassword[i].onkeyup = () => {
-  //     if (
-  //       registrationFormElement.name.checkValidity() &&
-  //       registrationFormElement.email.checkValidity() &&
-  //       isPasswordValid()
-  //     ) {
-  //       if (
-  //         registrationFormElement.male.checked ||
-  //         registrationFormElement.female.checked
-  //       ) {
-  //         registrationFormElement.signUpButton.disabled = false
-  //       } else {
-  //         for (let i = 0; i < genderButtons.length; i++) {
-  //           genderButtons[i].onchange = () => {
-  //             if (
-  //               registrationFormElement.male.checked ||
-  //               registrationFormElement.female.checked
-  //             ) {
-  //               for (let i = 0; i < DOB.length; i++) {
-  //                 DOB[i].onchange = () => {
-  //                   if (
-  //                     registrationFormElement.birthMonth.value !== 'Month' &&
-  //                     registrationFormElement.birthDate.value !== 'Day' &&
-  //                     registrationFormElement.birthYear.value !== 'Year'
-  //                   ) {
-  //                     registrationFormElement.signUpButton.disabled = false
-  //                   } else {
-  //                     registrationFormElement.signUpButton.disabled = true
-  //                   }
-  //                 }
-  //               }
-  //             }
-  //           }
-  //         }
-  //       }
-  //     } else {
-  //       registrationFormElement.signUpButton.disabled = true
-  //     }
-  //   }
-  // }
+    let nameEmailPassword = document.querySelectorAll("[name='name'], [name='email'], [name='password']")
+    let genderButtons = document.querySelectorAll("input[type='radio']")
+    let DOB = document.querySelectorAll("[name='birthMonth'], [name='birthDate'], [name='birthYear']")
+    for (let i = 0; i < nameEmailPassword.length; i++) {
+      nameEmailPassword[i].onkeyup = () => {
+        if (
+          registrationFormElement.name.checkValidity() &&
+          registrationFormElement.email.checkValidity() &&
+          isPasswordValid()
+        ) {
+          if (
+            registrationFormElement.male.checked ||
+            registrationFormElement.female.checked
+          ) {
+            registrationFormElement.signUpButton.disabled = false
+          } else {
+            for (let i = 0; i < genderButtons.length; i++) {
+              genderButtons[i].onchange = () => {
+                if (
+                  registrationFormElement.male.checked ||
+                  registrationFormElement.female.checked
+                ) {
+                  for (let i = 0; i < DOB.length; i++) {
+                    DOB[i].onchange = () => {
+                      if (
+                        registrationFormElement.birthMonth.value !== 'Month' &&
+                        registrationFormElement.birthDate.value !== 'Day' &&
+                        registrationFormElement.birthYear.value !== 'Year'
+                      ) {
+                        registrationFormElement.signUpButton.disabled = false
+                      } else {
+                        registrationFormElement.signUpButton.disabled = true
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        } else {
+          registrationFormElement.signUpButton.disabled = true
+        }
+      }
+    }
 
-  // registrationFormElement.name.addEventListener("blur", handleNameError)
-  // registrationFormElement.email.addEventListener("blur", handleEmailError)
-  // registrationFormElement.password.addEventListener("blur", handlePasswordErrorOnBlur)
-  // registrationFormElement.password.addEventListener("keyup", handlePasswordErrorOnKeyUp)
-  // registrationFormElement.password.addEventListener("keyup", isPasswordValid)
-}
+    registrationFormElement.name.addEventListener("blur", handleNameError)
+    registrationFormElement.email.addEventListener("blur", handleEmailError)
+    registrationFormElement.password.addEventListener("blur", handlePasswordErrorOnBlur)
+    registrationFormElement.password.addEventListener("keyup", handlePasswordErrorOnKeyUp)
+    registrationFormElement.password.addEventListener("keyup", isPasswordValid)
+  }
 })
