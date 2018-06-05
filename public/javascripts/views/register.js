@@ -161,7 +161,7 @@ register = `
         <input
           type="text"
           class="form-control"
-          placeholder="John Doe"
+          placeholder="John"
           name="name"
           required
         >
@@ -270,7 +270,7 @@ window.addEventListener('load', () => {
     document.getElementById('my-app').innerHTML = registrationPage;
     const registrationFormElement = document.forms.registration.elements
 
-    registrationFormElement.signUpButton.disabled = true
+    registrationFormElement.signUpButton.disabled = false
     document.getElementById('passwordIsValid').style.display = 'none'
     document.getElementById('nameIsValid').style.display = 'none'
     document.getElementById('emailIsValid').style.display = 'none'

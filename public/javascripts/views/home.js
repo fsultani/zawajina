@@ -2,7 +2,7 @@ window.addEventListener('load', () => {
   if (window.location.pathname === '/home' && Cookies.get('token')) {
     const welcome = `
       <center>
-        <h1>Welcome home, ${Cookies.get('first_name')}!</h1>
+        <h1>Welcome home, ${Cookies.get('name')}!</h1>
         <h3>All members on this site</h3>
     `;
     axios.get('/api/all-members')
@@ -16,7 +16,7 @@ window.addEventListener('load', () => {
             <a href="/users/${user._id}/about" style="text-decoration: none">
               <div class="col-md-6">
                 <div class="thumbnail" style="border-radius: 12px">
-                  <h3 style="margin: 20px 0px">${user.first_name}</h3>
+                  <h3 style="margin: 20px 0px">${user.name}</h3>
                 </div>
               </div>
             </a>
