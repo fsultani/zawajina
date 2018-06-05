@@ -1,4 +1,4 @@
-function login() {
+const login = () => {
   const email = document.loginForm.email.value
   const password = document.loginForm.password.value
 

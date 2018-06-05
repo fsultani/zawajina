@@ -19,13 +19,13 @@ passport.use(new LocalStrategy({
   usernameField: 'email',
   passwordField: 'password'
 },
-  function(usernameField, passwordField, done) {
-    User.getUserByEmail(usernameField, function(err, user) {
+  (usernameField, passwordField, done) => {
+    User.getUserByEmail(usernameField, (err, user) => {
       if (err) throw err;
       if (!user) {
         return done(null, false, {message: 'Unknown user'});
       }
-      User.comparePassword(passwordField, user.password, function(err, isMatch) {
+      User.comparePassword(passwordField, user.password, (err, isMatch) => {
         if (err) throw err;
         if(isMatch) {
           return done(null, user);
@@ -135,7 +135,7 @@ router.post('/login', (req, res, next) => {
   })(req, res, next)
 })
 
-function ensureAuthenticated(req, res, next){
+const ensureAuthenticated = (req, res, next) => {
   if(req.isAuthenticated()){
     return next();
   } else {
