@@ -8,7 +8,7 @@ const authenticatedNavArea = count => {
               <li role="presentation">
                 <a href="/home">
                   <h3>My App<br>
-                  <h5>(${Cookies.get('first_name')})</h5>
+                  <h5>(${Cookies.get('name')})</h5>
                   </h3>
                 </a>
               </li>
