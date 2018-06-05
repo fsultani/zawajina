@@ -28,6 +28,7 @@ if (process.env.NODE_ENV === 'mlab-dev') {
 const app = express();
 
 const index = require('./routes/index');
+const registerRoute = require('./routes/registerRoute');
 const users = require('./routes/users');
 const conversation = require('./routes/conversation');
 const messages = require('./routes/messages');
@@ -82,7 +83,7 @@ app.get('*', (req, res, next) => {
 
 // Use index.js for any routes beginning with '/'
 app.use('/', index);
-
+app.use('/register', registerRoute);
 app.use('/users', users);
 app.use('/conversation', conversation);
 app.use('/messages', messages);
