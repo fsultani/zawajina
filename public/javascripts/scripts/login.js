@@ -1,13 +1,13 @@
-function login() {
-  const username = document.loginForm.username.value
+const login = () => {
+  const email = document.loginForm.email.value
   const password = document.loginForm.password.value
 
   axios.post('/login', {
-    username: username,
-    password: password
+    email,
+    password
   }).then(res => {
     Cookies.set('token', res.data.token)
-    Cookies.set('first_name', res.data.member.first_name)
+    Cookies.set('name', res.data.member.name)
     Cookies.set('id', res.data.member._id)
     window.location.pathname = '/home'
   })
