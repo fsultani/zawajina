@@ -172,7 +172,7 @@ router.post('/register', [
     })
 
     User.createUser(newUser, (err, user) => {})
-    res.status(201).json({ success: "Registration successful"})
+    res.status(201).end()
   }
 })
 

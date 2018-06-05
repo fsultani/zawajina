@@ -124,10 +124,21 @@ const handleSignUp = event => {
       setTimeout(() => {
         window.location.pathname = '/login'
       }, 2000)
+    } else {
+      const error = document.createElement('div')
+      error.innerHTML = '<h4>Unknown error</h4>'
+      error.style.color = 'red';
+      error.style.width = '100%';
+      error.style.height = 'auto';
+      error.style.textAlign = 'center';
+      const container = document.getElementById('registrationContainerDiv').parentNode
+      container.insertBefore(error, document.getElementById('registrationContainerDiv'))
+      setTimeout(() => {
+        window.location.pathname = '/login'
+      }, 2000)
     }
   })
   .catch(error => {
-    console.log("error.response\n", error.response)
     const errors = document.createElement('div')
     errors.setAttribute('id', 'errors')
     const errorMessagesArray = error.response.data.error.map(err => {
