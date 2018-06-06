@@ -6,7 +6,7 @@ let replySection = undefined
 const sendReply = () => {
   const replyText = document.getElementById('replyMessage').value
   axios.post('/messages/api/reply', {
-    memberFirstName: Cookies.get('first_name'),
+    memberFirstName: Cookies.get('name'),
     memberId: Cookies.get('id'),
     conversationId: conversationId,
     reply: replyText

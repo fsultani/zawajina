@@ -6,7 +6,7 @@ const openMessageComposer = () => {
       window.location.pathname = `/conversation/${res.data.conversation._id}`
     } else {
       $("#messageCta").hide()
-      $("#contactForm").fadeTo("medium", 1, () => {})
+      $("#contactForm").fadeTo("medium", 1)
     }
   })
 }
@@ -35,18 +35,18 @@ window.addEventListener('load', () => {
 
       const welcome = `
         <center>
-          <h2 class="dashboard-text">${res.data.member.first_name}'s profile page</h2>
+          <h2 class="dashboard-text">${res.data.member.name}'s profile page</h2>
 
           <p>It's currently blank, but we plan on fixing that.</p>
 
-          <p>In the meantime, you may contact ${res.data.member.first_name} using the button below.</p>
+          <p>In the meantime, you may contact ${res.data.member.name} using the button below.</p>
 
           <button class="btn btn-primary" onclick="openMessageComposer()" id="messageCta">Message</button>
 
           <div id="contactForm">
             <div class="form-group col-md-6 col-md-offset-3">
               <center>
-                <label for="exampleTextarea">Contact ${res.data.member.first_name}</label>
+                <label for="exampleTextarea">Contact ${res.data.member.name}</label>
                 <textarea class="form-control" id="composeMessage" rows="5" cols="10"></textarea>
                 <br />
                 <button class="btn btn-danger" onclick="cancelSend()">Cancel</button>
