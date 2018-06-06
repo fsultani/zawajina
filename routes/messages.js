@@ -70,9 +70,9 @@ router.post('/api/new-message', (req, res, next) => {
         Conversation.create({
           created_at: Date.now(),
           updated_at: Date.now(),
-          created_by_user_first_name: member.first_name,
+          created_by_user_first_name: member.name,
           created_by_user_id: member._id,
-          sent_to_user_first_name: user.first_name,
+          sent_to_user_first_name: user.name,
           sent_to_user_id: user._id,
           unread: true,
           users: [member,user]
@@ -82,8 +82,8 @@ router.post('/api/new-message', (req, res, next) => {
           } else {
             Message.create({
               message: req.body.message,
-              from: member.first_name,
-              to: user.first_name,
+              from: member.name,
+              to: user.name,
               from_user_id: member._id,
               to_user_id: user._id,
               created_at: Date.now(),

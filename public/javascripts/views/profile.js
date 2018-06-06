@@ -26,12 +26,12 @@ window.addEventListener('load', () => {
       const member = res.data.member
       const memberInfo = `
         <div class="container" align="center">
-          <h2 class="dashboard-text">Welcome, ${member.first_name}!</h2>
+          <h2 class="dashboard-text">Welcome, ${member.name}!</h2>
           <div class="row">
             <div class="col-sm-6">
               <h4>Here is your basic info</h4>
               <div class="thumbnail" style="border-radius: 12px">
-                <p>Name: ${member.first_name} ${member.last_name}</p>
+                <p>Name: ${member.name} ${member.last_name}</p>
                 <p>email: ${member.email}</p>
                 <p>username: ${member.username}</p>
                 <p>gender: ${member.gender}</p>
