@@ -98,6 +98,11 @@ const handleSignUp = event => {
   handleNameError()
   handleEmailError()
   handlePasswordErrorOnBlur()
+  if (document.getElementById('registrationError')) {
+    document.getElementById('registrationError').remove()
+  } else if (document.getElementById('errors')) {
+    document.getElementById('errors').remove()
+  }
 
 
   const registrationForm = document.forms.registration
@@ -112,23 +117,37 @@ const handleSignUp = event => {
   }
   axios.post('/register', { userRegistrationForm })
   .then(res => {
-    const success = document.createElement('div')
-    success.classList.add("alert")
-    success.classList.add("alert-success")
-    success.innerHTML = '<h4>You have successfully registered!  You are now being redirected to the login screen.</h4>'
-    success.style.color = 'green';
-    success.style.width = '100%';
-    success.style.height = 'auto';
-    success.style.textAlign = 'center';
-    const container = document.getElementById('my-app')
-    container.before(success)
-    registrationForm.elements.signUpButton.disabled = true
-    for (var element in registrationForm.elements) {
-      registrationForm.elements[element].disabled = true
+    if (!res.data.error) {
+      const success = document.createElement('div')
+      success.setAttribute('id', 'registrationSuccessful')
+      success.classList.add("alert")
+      success.classList.add("alert-success")
+      success.innerHTML = '<h4>You have successfully registered!  You are now being redirected to the login screen.</h4>'
+      success.style.color = 'green';
+      success.style.width = '100%';
+      success.style.height = 'auto';
+      success.style.textAlign = 'center';
+      const container = document.getElementById('my-app')
+      container.before(success)
+      registrationForm.elements.signUpButton.disabled = true
+      for (var element in registrationForm.elements) {
+        registrationForm.elements[element].disabled = true
+      }
+      setTimeout(() => {
+        window.location.pathname = '/login'
+      }, 3000)
+    } else {
+      const error = document.createElement('div')
+      error.setAttribute('id', 'registrationError')
+      error.classList.add("alert")
+      error.classList.add("alert-danger")
+      error.innerHTML = 'Email already exists'
+      error.style.width = '100%';
+      error.style.height = 'auto';
+      error.style.textAlign = 'center';
+      const container = document.getElementById('my-app')
+      container.before(error)
     }
-    setTimeout(() => {
-      window.location.pathname = '/login'
-    }, 3000)
   })
   .catch(error => {
     const errors = document.createElement('div')

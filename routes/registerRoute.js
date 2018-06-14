@@ -24,18 +24,26 @@ router.post('/', [
   if (!getErrors.isEmpty()) {
     return res.status(400).json({ error: getErrors.array() })
   } else {
-    const newUser = new User ({
-      name: name,
-      email: email,
-      password: password,
-      gender: gender,
-      birthMonth,
-      birthDate,
-      birthYear
-    })
+    User.findOne({ email }, (err, userExists) => {
+      if (!userExists) {
+        const newUser = new User ({
+          name,
+          email,
+          password,
+          gender,
+          birthMonth,
+          birthDate,
+          birthYear
+        })
 
-    User.createUser(newUser, (err, user) => {})
-    res.status(201).end()
+        User.createUser(newUser, (err, user) => {})
+        res.status(201).end()
+      } else if (userExists.email) {
+        res.json({ error: "Email already exists"})
+      } else {
+        res.json({ error: "Unknown error" })
+      }
+    })
   }
 })
 
