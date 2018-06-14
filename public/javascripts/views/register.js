@@ -112,31 +112,23 @@ const handleSignUp = event => {
   }
   axios.post('/register', { userRegistrationForm })
   .then(res => {
-    if (res.status === 201) {
-      const success = document.createElement('div')
-      success.innerHTML = '<h4>You have successfully registered!  You are now being redirected to the login screen.</h4>'
-      success.style.color = 'green';
-      success.style.width = '100%';
-      success.style.height = 'auto';
-      success.style.textAlign = 'center';
-      const container = document.getElementById('registrationContainerDiv').parentNode
-      container.insertBefore(success, document.getElementById('registrationContainerDiv'))
-      setTimeout(() => {
-        window.location.pathname = '/login'
-      }, 2000)
-    } else {
-      const error = document.createElement('div')
-      error.innerHTML = '<h4>Unknown error</h4>'
-      error.style.color = 'red';
-      error.style.width = '100%';
-      error.style.height = 'auto';
-      error.style.textAlign = 'center';
-      const container = document.getElementById('registrationContainerDiv').parentNode
-      container.insertBefore(error, document.getElementById('registrationContainerDiv'))
-      setTimeout(() => {
-        window.location.pathname = '/login'
-      }, 2000)
+    const success = document.createElement('div')
+    success.classList.add("alert")
+    success.classList.add("alert-success")
+    success.innerHTML = '<h4>You have successfully registered!  You are now being redirected to the login screen.</h4>'
+    success.style.color = 'green';
+    success.style.width = '100%';
+    success.style.height = 'auto';
+    success.style.textAlign = 'center';
+    const container = document.getElementById('my-app')
+    container.before(success)
+    registrationForm.elements.signUpButton.disabled = true
+    for (var element in registrationForm.elements) {
+      registrationForm.elements[element].disabled = true
     }
+    setTimeout(() => {
+      window.location.pathname = '/login'
+    }, 3000)
   })
   .catch(error => {
     const errors = document.createElement('div')
