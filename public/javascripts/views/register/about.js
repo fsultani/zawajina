@@ -9,13 +9,19 @@ titleStyle = {
 title = `
   <div id="copy">
     <p>
-      To help match you with the right type of people, please answer a few more questions.
+      To help match you with the right type of people, please answer a few questions.
     </p>
     <p>
       We promise it won't take long.
     </p>
   </div>
 `
+
+const countryList = () => {
+  axios.get('/register/api/country-list').then(res => {
+    console.log("res\n", res)
+  })
+}
 
 about = `
   <div class="registrationContainer centerContainer" id="registrationContainerDiv">
@@ -120,5 +126,6 @@ window.addEventListener('load', () => {
   if (window.location.pathname === '/register/about') {
     document.getElementById('my-app').innerHTML = profileAboutPage;
     Object.assign(document.getElementById('copy').style, titleStyle)
+    countryList()
   }
 })

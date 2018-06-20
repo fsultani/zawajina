@@ -115,7 +115,7 @@ const handleSignUp = event => {
     birthDate: registrationForm.elements.birthDate.value,
     birthYear: registrationForm.elements.birthYear.value,
   }
-  axios.post('/register', { userRegistrationForm })
+  axios.post('/register/api/personal-info', { userRegistrationForm })
   .then(res => {
     if (!res.data.error) {
       // const success = document.createElement('div')
