@@ -1,9 +1,16 @@
 const express = require('express')
 const { check, body, validationResult } = require('express-validator/check')
-const router = express.Router()
+const countries = require('country-list')()
 const User = require('../models/user')
 
-router.post('/', [
+const router = express.Router()
+
+router.get('/api/country-list', (req, res) => {
+  const countryList = countries.getNames()
+  res.send(countryList)
+})
+
+router.post('/api/personal-info', [
   check('userRegistrationForm.name').not().isEmpty().withMessage('Enter your name'),
   check('userRegistrationForm.email').isEmail().withMessage('Enter a valid email address'),
   check('userRegistrationForm.password').not().isEmpty().withMessage('Enter a password'),
