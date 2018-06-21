@@ -1,13 +1,19 @@
 const express = require('express')
 const { check, body, validationResult } = require('express-validator/check')
-const countries = require('country-list')()
+const countries = require('country-state-city')
+
 const User = require('../models/user')
 
 const router = express.Router()
 
 router.get('/api/country-list', (req, res) => {
-  const countryList = countries.getNames()
+  const countryList = countries.getAllCountries()
   res.send(countryList)
+})
+
+router.get('/api/state-list', (req, res) => {
+  const stateList = countries.getStatesOfCountry(231)
+  res.send(stateList)
 })
 
 router.post('/api/personal-info', [
