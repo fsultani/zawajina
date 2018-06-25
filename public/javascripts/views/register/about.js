@@ -12,7 +12,7 @@ title = `
       To help match you with the right type of people, please answer a few questions.
     </p>
     <p>
-      We promise it won't take long.
+      We promise it won't take long.===
     </p>
   </div>
 `
@@ -35,7 +35,7 @@ window.addEventListener('load', () => {
       country.data.map(country => {
         countryName += `<option>${country.name}</option>`
       })
-      console.log("state.data\n", state.data)
+      // console.log("state.data\n", state.data)
       countryName += `
         </select>
             </div>
