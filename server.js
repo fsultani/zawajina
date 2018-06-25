@@ -110,8 +110,14 @@ const port = process.env.PORT || 3000;
 app.listen(port, function() {
   console.log("Listening on port " + port)
   if (process.send) {
+    // const url = `http://localhost:${port}`
+    // const start = (process.platform == 'darwin'? 'open': process.platform == 'win32'? 'start': 'xdg-open');
+    // require('child_process').exec(`open ${url}`);
+
+
     process.send({ event:'online', url:'http://localhost:' + port})
   }
 })
 
 module.exports = app;
+
