@@ -1,14 +1,14 @@
 const http = require('http')
-const express = require('express');
-const path = require('path');
-const cookieParser = require('cookie-parser');
-const bodyParser = require('body-parser');
-const exphbs = require('express-handlebars');
+const express = require('express')
+const path = require('path')
+const cookieParser = require('cookie-parser')
+const bodyParser = require('body-parser')
+const exphbs = require('express-handlebars')
 const session = require('express-session')
-const passport = require('passport');
+const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy;
 
-const flash = require('connect-flash');
+const flash = require('connect-flash')
 const mongo = require('mongodb')
 const mongoose = require('mongoose')
 
@@ -25,23 +25,23 @@ if (process.env.NODE_ENV === 'mlab-dev') {
   console.log("Heroku deployment")
 }
 
-const app = express();
+const app = express()
 
-const index = require('./routes/index');
-const registerRoute = require('./routes/registerRoute');
-const users = require('./routes/users');
-const conversation = require('./routes/conversation');
-const messages = require('./routes/messages');
+const index = require('./routes/index')
+const registerRoute = require('./routes/registerRoute')
+const users = require('./routes/users')
+const conversation = require('./routes/conversation')
+const messages = require('./routes/messages')
 
 const Conversation = require('./models/conversation')
 
 // Set static folder
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public')))
 
 // Body Parser Middleware
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cookieParser());
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
+app.use(cookieParser())
 
 // Express Session
 // app.set('trust proxy', 1) // trust first proxy 
@@ -53,23 +53,23 @@ app.use(session({
 }))
 
 // Passport init
-app.use(passport.initialize());
-app.use(passport.session());
+app.use(passport.initialize())
+app.use(passport.session())
 
 // Express Validator
 // app.use(express.json())
 
 // Connect Flash
-app.use(flash());
+app.use(flash())
 
 app.use(function (req, res, next) {
-  res.locals.success_message = req.flash('success_message');
-  res.locals.error_message = req.flash('error_message');
-  res.locals.error = req.flash('error');
-  res.locals.logged_out_message = req.flash('logged_out_message');
+  res.locals.success_message = req.flash('success_message')
+  res.locals.error_message = req.flash('error_message')
+  res.locals.error = req.flash('error')
+  res.locals.logged_out_message = req.flash('logged_out_message')
   res.locals.logged_in_user = req.user
-  next();
-});
+  next()
+})
 
 // Catch all 'get' requests, and respond with public/index.html
 app.get('*', (req, res, next) => {
@@ -77,23 +77,23 @@ app.get('*', (req, res, next) => {
     res.sendFile(path.join(__dirname, 'public/index.html'))
     // res.sendFile(path.join(__dirname, 'public/index-no-network.html'))
   } else {
-    return next();
+    return next()
   }
 })
 
 // Use index.js for any routes beginning with '/'
-app.use('/', index);
-app.use('/register', registerRoute);
-app.use('/users', users);
-app.use('/conversation', conversation);
-app.use('/messages', messages);
+app.use('/', index)
+app.use('/register', registerRoute)
+app.use('/users', users)
+app.use('/conversation', conversation)
+app.use('/messages', messages)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  const err = new Error('Not Found');
+  const err = new Error('Not Found')
   err.status = 404;
-  next(err);
-});
+  next(err)
+})
 
 // error handler
 app.use(function(err, req, res, next) {
@@ -102,8 +102,8 @@ app.use(function(err, req, res, next) {
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
   // render the error page
-  res.status(err.status || 500);
-});
+  res.status(err.status || 500)
+})
 
 const port = process.env.PORT || 3000;
 
