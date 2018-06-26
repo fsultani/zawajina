@@ -12,7 +12,7 @@ title = `
       To help match you with the right type of people, please answer a few questions.
     </p>
     <p>
-      We promise it won't take long.===
+      We promise it won't take long.
     </p>
   </div>
 `
