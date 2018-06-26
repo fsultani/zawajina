@@ -11,25 +11,25 @@ db.messages.drop() && db.conversations.drop()
 db.conversations.find().pretty()
 
 // Update a user's document
-db.users.update({first_name: "Farid"}, { $set: { "messages": []}})
+db.users.update({name: "Farid"}, { $set: { "messages": []}})
 
 // Udate all documents
 db.users.updateMany({}, { $set: { "messages": []}})
 db.users.updateMany({}, { $set: { "conversations": []}})
-db.users.update({first_name: {$regex: "^"}}, { $set: { "messages": []}}, {"multi": true})
+db.users.update({name: {$regex: "^"}}, { $set: { "messages": []}}, {"multi": true})
 
 // Remove all usernames that end in a number
 db.users.remove({username: {$regex: "[0-9]$"}})
 
 
 // Prints each item on a separate line
-db.users.find().forEach(function(u) { print(u.first_name) })
+db.users.find().forEach(function(u) { print(u.name) })
 
 // Returns an array
 db.users.find().map( function(u) { return u.name } )
 
 // Find a single user by first name
-db.users.find({ first_name: "John" }).pretty()
+db.users.find({ name: "John" }).pretty()
 
 // Find all users
 db.users.find().pretty()
