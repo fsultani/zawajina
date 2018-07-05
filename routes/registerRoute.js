@@ -6,14 +6,19 @@ const User = require('../models/user')
 
 const router = express.Router()
 
-router.get('/api/country-list', (req, res) => {
+router.get('/api/all-countries', (req, res) => {
   const countryList = countries.getAllCountries()
   res.send(countryList)
 })
 
 router.get('/api/state-list', (req, res) => {
-  const stateList = countries.getStatesOfCountry(231)
+  const stateList = countries.getStatesOfCountry(req.query.country)
   res.send(stateList)
+})
+
+router.get('/api/city-list', (req, res) => {
+  const cityList = countries.getCitiesOfState(req.query.city)
+  res.send(cityList)
 })
 
 router.post('/api/personal-info', [
