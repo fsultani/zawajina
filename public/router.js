@@ -42,16 +42,18 @@ window.addEventListener('load', () => {
     myApp.appendChild(styles)
     myApp.appendChild(registrationStyles)
     myApp.appendChild(bootStrapThemeCss)
+    myApp.appendChild(axios)
+
     myApp.appendChild(layout)
     myApp.appendChild(personalInfo)
-    myApp.appendChild(axios)
   } else if (window.location.pathname === '/register/about') {
+    console.log("Going to register about")
     const myApp = document.getElementsByTagName('head')[0]
     const bootStrapJs = document.createElement('script')
     const jQueryCookie = document.createElement('script')
     const layout = document.createElement('script')
-    const personalInfo = document.createElement('script')
     const aboutInfo = document.createElement('script')
+    const axios = document.createElement('script')
 
     const bootStrapMinCss = document.createElement('link')
     const bootStrapThemeCss = document.createElement('link')
@@ -79,8 +81,8 @@ window.addEventListener('load', () => {
     jQueryCookie.src = 'https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js'
 
     layout.src = 'javascripts/views/layout.js'
-    personalInfo.src = 'javascripts/views/register/personal-info.js'
     aboutInfo.src = 'javascripts/views/register/about.js'
+    axios.src = 'https://unpkg.com/axios/dist/axios.min.js'
 
     myApp.appendChild(jQueryCookie)
     myApp.appendChild(bootStrapJs)
@@ -88,8 +90,9 @@ window.addEventListener('load', () => {
     myApp.appendChild(styles)
     myApp.appendChild(registrationStyles)
     myApp.appendChild(bootStrapThemeCss)
+    myApp.appendChild(axios)
+
     myApp.appendChild(layout)
-    myApp.appendChild(personalInfo)
     myApp.appendChild(aboutInfo)
   }
 })
