@@ -18,10 +18,4 @@ const layout = `
   </div>
 `;
 
-window.addEventListener('load', () => {
-  axios.defaults.headers.common['authorization'] = Cookies.get('token')
-
-  if (window.location.pathname === '/') {
-    window.location.pathname = '/home'
-  }
-})
+document.getElementById('my-app').innerHTML = layout;
