@@ -120,28 +120,12 @@ const handleSignUp = event => {
   axios.post('/register/api/personal-info', { userRegistrationForm })
   .then(res => {
     if (!res.data.error) {
-      // const success = document.createElement('div')
-      // success.setAttribute('id', 'registrationSuccessful')
-      // success.classList.add("alert")
-      // success.classList.add("alert-success")
-      // success.innerHTML = '<h4>You have successfully registered!  You are now being redirected to the login screen.</h4>'
-      // success.style.color = 'green';
-      // success.style.width = '100%';
-      // success.style.height = 'auto';
-      // success.style.textAlign = 'center';
-      // const container = document.getElementById('my-app')
-      // container.before(success)
-      // registrationForm.elements.signUpButton.disabled = true
       for (let element in registrationForm.elements) {
-        console.log("element\n", element)
-        console.log("typeof element\n", typeof element)
-        console.log("registrationForm.elements[element]\n", registrationForm.elements[element])
-        registrationForm.elements[element].disabled = true
+        if (registrationForm.elements[element].disabled) {
+          registrationForm.elements[element].disabled = true
+        }
       }
       window.location.pathname = '/register/about'
-      // setTimeout(() => {
-      //   window.location.pathname = '/register/about'
-      // }, 3000)
     } else {
       const error = document.createElement('div')
       error.setAttribute('id', 'registrationError')
