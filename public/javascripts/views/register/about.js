@@ -126,16 +126,12 @@ const handleDone = event => {
   console.log("citySelected.value\n", citySelected.value)
 }
 
-window.addEventListener('load', () => {
-  if (window.location.pathname === '/register/about') {
-    const profileAboutPage = layout + almostDone + title + countryList + stateList + cityList + doneButton
-    document.getElementById('my-app').innerHTML = profileAboutPage;
-    Object.assign(document.getElementById('copy').style, titleStyle)
+const profileAboutPage = layout + almostDone + title + countryList + stateList + cityList + doneButton
+document.getElementById('my-app').innerHTML = profileAboutPage;
+Object.assign(document.getElementById('copy').style, titleStyle)
 
-    countrySelected = document.forms.countryForm.elements.countryName
-    stateSelected = document.forms.stateForm.elements.stateName
-    citySelected = document.forms.cityForm.elements.cityName
-    stateSelected.style.display = 'none'
-    getAllCountries()
-  }
-})
+countrySelected = document.forms.countryForm.elements.countryName
+stateSelected = document.forms.stateForm.elements.stateName
+citySelected = document.forms.cityForm.elements.cityName
+stateSelected.style.display = 'none'
+getAllCountries()

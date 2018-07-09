@@ -132,7 +132,10 @@ const handleSignUp = event => {
       // const container = document.getElementById('my-app')
       // container.before(success)
       // registrationForm.elements.signUpButton.disabled = true
-      for (var element in registrationForm.elements) {
+      for (let element in registrationForm.elements) {
+        console.log("element\n", element)
+        console.log("typeof element\n", typeof element)
+        console.log("registrationForm.elements[element]\n", registrationForm.elements[element])
         registrationForm.elements[element].disabled = true
       }
       window.location.pathname = '/register/about'
@@ -153,6 +156,7 @@ const handleSignUp = event => {
     }
   })
   .catch(error => {
+    console.log("error\n", error)
     const errors = document.createElement('div')
     errors.setAttribute('id', 'errors')
     const errorMessagesArray = error.response.data.error.map(err => {
@@ -337,8 +341,3 @@ registrationFormElement.email.addEventListener("blur", handleEmailError)
 registrationFormElement.password.addEventListener("blur", handlePasswordErrorOnBlur)
 registrationFormElement.password.addEventListener("keyup", handlePasswordErrorOnKeyUp)
 registrationFormElement.password.addEventListener("keyup", isPasswordValid)
-
-// window.addEventListener('load', () => {
-//   if (window.location.pathname === '/register') {
-//   }
-// })
