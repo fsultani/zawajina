@@ -60,7 +60,7 @@ const cityList = `
 const doneButton = `
   <div class="row">
     <div class="col-md-4 col-md-offset-4 text-center">
-      <button onclick="handleDone(event)" class="btn btn-success" name="signUpButton">
+      <button onclick="handleDone(event)" class="btn btn-success" id="submitButton">
         Done!  Let's do this!
       </button>
     </div>
@@ -81,6 +81,7 @@ const handleCountrySelection = () => {
   citySelected.options.length = 1
   stateSelected.style.display = 'none'
 
+  // For U.S. states
   if (countrySelected.value === '231') {
     stateSelected.style.display = 'block'
     axios.get('/register/api/state-list?country=231')
@@ -90,6 +91,7 @@ const handleCountrySelection = () => {
       })
     })
   } else {
+    // For non U.S. cities
     axios.get(`/register/api/state-list?country=${countrySelected.value}`)
     .then(state => {
       state.data.map(state => {
@@ -117,13 +119,58 @@ const handleCitySelection = () => {
       citySelected.options[citySelected.options.length] = new Option(city.name, city.id)
     })
   })
+  if (countrySelected.value && stateSelected.value && citySelected.value) {
+    document.getElementById('submitButton').disabled = false
+  }
 }
 
 const handleDone = event => {
   event.preventDefault()
-  console.log("countrySelected.value\n", countrySelected.value)
-  console.log("stateSelected.value\n", stateSelected.value)
-  console.log("citySelected.value\n", citySelected.value)
+  const country = countrySelected.value
+  const state = stateSelected.value === 'State' ? null : stateSelected.value
+  const city = citySelected.value
+
+  const location = {
+    country,
+    state,
+    city,
+  }
+
+  axios.post('/register/api/about', { location })
+  .then(res => {
+    console.log("res.data\n", res.data)
+    // if (!res.data.error) {
+    //   for (var element in registrationForm.elements) {
+    //     registrationForm.elements[element].disabled = true
+    //   }
+    //   window.location.pathname = '/register/about'
+    // } else {
+    //   const error = document.createElement('div')
+    //   error.setAttribute('id', 'registrationError')
+    //   error.classList.add("alert")
+    //   error.classList.add("alert-danger")
+    //   error.innerHTML = 'Email already exists'
+    //   error.style.width = '100%';
+    //   error.style.height = 'auto';
+    //   error.style.textAlign = 'center';
+    //   const container = document.getElementById('my-app')
+    //   container.before(error)
+    // }
+  })
+  .catch(error => {
+    // const errors = document.createElement('div')
+    // errors.setAttribute('id', 'errors')
+    // const errorMessagesArray = error.response.data.error.map(err => {
+    //   return `<p>${err.msg}</p>`
+    // })
+    // errors.innerHTML = errorMessagesArray.join('')
+    // errors.style.color = 'red';
+    // errors.style.width = '100%';
+    // errors.style.height = 'auto';
+    // errors.style.textAlign = 'center';
+    // const container = document.getElementById('registrationContainerDiv').parentNode
+    // container.insertBefore(errors, document.getElementById('registrationContainerDiv'))
+  })
 }
 
 window.addEventListener('load', () => {
@@ -132,10 +179,12 @@ window.addEventListener('load', () => {
     document.getElementById('my-app').innerHTML = profileAboutPage;
     Object.assign(document.getElementById('copy').style, titleStyle)
 
+    document.getElementById('submitButton').disabled = true
     countrySelected = document.forms.countryForm.elements.countryName
     stateSelected = document.forms.stateForm.elements.stateName
     citySelected = document.forms.cityForm.elements.cityName
     stateSelected.style.display = 'none'
     getAllCountries()
+
   }
 })

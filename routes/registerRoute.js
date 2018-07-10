@@ -21,6 +21,10 @@ router.get('/api/city-list', (req, res) => {
   res.send(cityList)
 })
 
+router.post('/api/about', (req, res) => {
+  console.log("req.body.location\n", req.body.location)
+})
+
 router.post('/api/personal-info', [
   check('userRegistrationForm.name').not().isEmpty().withMessage('Enter your name'),
   check('userRegistrationForm.email').isEmail().withMessage('Enter a valid email address'),
