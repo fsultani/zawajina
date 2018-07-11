@@ -10,7 +10,22 @@
 </head>
 <body>
   <div id="my-app"></div>
-  <script src="router.js"></script>
+  <!-- <script src="javascripts/router.js"></script> -->
+  <script type="text/javascript">
+    if (window.location.pathname === '/register/') {
+      console.log("I'm in the register page")
+      document.getElementById('my-app').innerHTML = `
+          <p>This is the register page</p>
+          <a href="/register/about">About page</a>
+      `
+    } else if (window.location.pathname === '/register/about') {
+      console.log("I'm in the about page")
+      document.getElementById('my-app').innerHTML = `
+          <p>This is the about page</p>
+          <a href="/register">Go to register page</a>
+      `
+    }
+  </script>
 </body>
 
 </html>
