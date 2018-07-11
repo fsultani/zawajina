@@ -29,3 +29,22 @@
 </body>
 
 </html>
+
+<!-- <body>
+  <div id="my-app"></div>
+  <script type="text/javascript">
+    if (window.location.pathname === '/register/') {
+      console.log("I'm in the register page")
+      const myApp = document.getElementsByTagName('head')[0]
+      const layout = document.createElement('script')
+      layout.src = 'javascripts/views/layout.js'
+      myApp.appendChild(layout)
+    } else if (window.location.pathname === '/register/about') {
+      console.log("I'm in the about page")
+      document.getElementById('my-app').innerHTML = `
+          <p>This is the about page</p>
+          <a href="/register">Go to register page</a>
+      `
+    }
+  </script>
+</body> -->
