@@ -1,4 +1,5 @@
 window.addEventListener('load', () => {
+  console.log("router")
   if (window.location.pathname === '/register') {
     [
       '/javascripts/views/layout.js',

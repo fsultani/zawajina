@@ -266,7 +266,9 @@ const register = `
 `;
 
 const registrationPage = layout + register
-document.getElementById('my-app').innerHTML = registrationPage;
+
+document.body.innerHTML = registrationPage;
+// document.getElementById('my-app').innerHTML = registrationPage;
 
 const registrationFormElement = document.forms.registration.elements
 

@@ -127,7 +127,8 @@ const handleDone = event => {
 }
 
 const profileAboutPage = layout + almostDone + title + countryList + stateList + cityList + doneButton
-document.getElementById('my-app').innerHTML = profileAboutPage;
+// document.getElementById('my-app').innerHTML = profileAboutPage;
+document.body.innerHTML = profileAboutPage;
 Object.assign(document.getElementById('copy').style, titleStyle)
 
 countrySelected = document.forms.countryForm.elements.countryName

@@ -1,35 +1,9 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>My App</title>
-  <script
+<script
   src="https://code.jquery.com/jquery-3.2.1.min.js"
   integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
   crossorigin="anonymous">
-  </script>
-</head>
-<body>
-  <div id="my-app"></div>
-  <script src="javascripts/router.js"></script>
-</body>
-
-</html>
-
-<!-- <body>
-  <div id="my-app"></div>
-  <script type="text/javascript">
-    if (window.location.pathname === '/register/') {
-      console.log("I'm in the register page")
-      const myApp = document.getElementsByTagName('head')[0]
-      const layout = document.createElement('script')
-      layout.src = 'javascripts/views/layout.js'
-      myApp.appendChild(layout)
-    } else if (window.location.pathname === '/register/about') {
-      console.log("I'm in the about page")
-      document.getElementById('my-app').innerHTML = `
-          <p>This is the about page</p>
-          <a href="/register">Go to register page</a>
-      `
-    }
-  </script>
-</body> -->
+</script>
+<script type="text/javascript">
+  const myLaout = require('/javascripts/views/layout.js',)
+</script>
+<script src="javascripts/router.js"></script>
