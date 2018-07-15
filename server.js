@@ -7,6 +7,7 @@ const exphbs = require('express-handlebars')
 const session = require('express-session')
 const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy;
+const osascript = require('node-osascript');
 
 const flash = require('connect-flash')
 const mongo = require('mongodb')
@@ -107,21 +108,21 @@ app.use(function(err, req, res, next) {
 
 const port = process.env.PORT || 3000;
 
+osascript.execute(
+  `
+  tell application "Google Chrome"
+    reload active tab of (get window 1)
+  end tell
+  `, (err, result, raw) => {
+    if (err) return console.error(err)
+    }
+);
+
 app.listen(port, () => {
   console.log("Listening on port " + port)
   if (process.send) {
-    console.log("process.send")
-    // const url = `http://localhost:${port}`
-    // const start = (process.platform == 'darwin'? 'open': process.platform == 'win32'? 'start': 'xdg-open');
-    // require('child_process').exec('node reload.js', (err, stdout, stderr) => {
-    //   if (err) {
-    //     console.log("err\n", err)
-    //   }
-    // });
-
     process.send({ event:'online', url:'http://localhost:' + port})
   }
 })
 
 module.exports = app;
-
