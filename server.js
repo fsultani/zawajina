@@ -12,35 +12,25 @@ const flash = require('connect-flash');
 const mongo = require('mongodb')
 const mongoose = require('mongoose')
 
-const webpackDevServer = require('webpack-dev-server');
-const webpack = require('webpack');
-const config = require('./webpack.config.js');
+const webpack = require('webpack')
+const webpackConfig = require('./webpack.config.js')
+const compiler = webpack(webpackConfig)
 
 const app = express();
 
-const options = {
-  contentBase: './dist',
-  hot: true,
-  host: 'localhost'
-};
+app.use(require('webpack-dev-middleware')(compiler, {
+  noInfo: true,
+  publicPath: webpackConfig.output.publicPath
+}))
 
-webpackDevServer.addDevServerEntrypoints(config, options);
-const compiler = webpack(config);
-const server = new webpackDevServer(compiler, options);
+app.use(express.static(path.join(__dirname, 'dist')));
+console.log("Here I am, in the server!")
 
-const DIST_DIR = path.join(__dirname, "dist");
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public/index.html'))
+})
 
-//Serving the files on the dist folder
-app.use(express.static(DIST_DIR));
-
-//Send index.html when the user access the web
-app.get("*", function (req, res) {
-  res.sendFile(path.join(DIST_DIR, "index.html"));
-});
-
-// app.listen(PORT);
-
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 4000;
 
 app.listen(port, function() {
   console.log("Listening on port " + port)
