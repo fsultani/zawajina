@@ -5,7 +5,7 @@ module.exports = {
   entry: './src/index.js',
   devServer: {
     contentBase: path.join(__dirname, 'dist'),
-    compress: true,
+    stats: 'minimal',
     port: 3000
   },
   watch: true,
