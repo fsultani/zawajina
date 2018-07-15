@@ -108,6 +108,7 @@ app.use(function(err, req, res, next) {
 
 const port = process.env.PORT || 3000;
 
+// Reload the app on every file change
 osascript.execute(
   `
   tell application "Google Chrome"

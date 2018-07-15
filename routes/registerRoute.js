@@ -22,7 +22,9 @@ router.get('/api/city-list', (req, res) => {
 })
 
 router.post('/api/about', (req, res) => {
-  console.log("req.body.location\n", req.body.location)
+  const countryId = Number(req.body.location.country) - 1
+  const country = countries.getCountryById(countryId)
+  console.log("country.name\n", country.name)
 })
 
 router.post('/api/personal-info', [
