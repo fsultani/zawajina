@@ -107,13 +107,17 @@ app.use(function(err, req, res, next) {
 
 const port = process.env.PORT || 3000;
 
-app.listen(port, function() {
+app.listen(port, () => {
   console.log("Listening on port " + port)
   if (process.send) {
+    console.log("process.send")
     // const url = `http://localhost:${port}`
     // const start = (process.platform == 'darwin'? 'open': process.platform == 'win32'? 'start': 'xdg-open');
-    // require('child_process').exec(`open ${url}`);
-
+    // require('child_process').exec('node reload.js', (err, stdout, stderr) => {
+    //   if (err) {
+    //     console.log("err\n", err)
+    //   }
+    // });
 
     process.send({ event:'online', url:'http://localhost:' + port})
   }
