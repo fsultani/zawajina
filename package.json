@@ -7,9 +7,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "NODE_ENV=mlab-dev browser-refresh server.js",
-    "local": "NODE_ENV=local browser-refresh server.js",
-    "start": "node server.js"
+    "dev": "webpack-dev-server",
+    "start": "npm run dev"
   },
   "author": "",
   "license": "ISC",
@@ -31,7 +30,8 @@
     "npm": "^6.1.0",
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",
-    "passport-local": "^1.0.0"
+    "passport-local": "^1.0.0",
+    "webpack-dev-server": "^3.1.4"
   },
   "devDependencies": {
     "webpack": "^4.16.0",
