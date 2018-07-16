@@ -2,7 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 
 module.exports = {
-  entry: './src/index.js',
+  entry: './src/app.js',
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js',
@@ -15,4 +15,5 @@ module.exports = {
     port: 3000,
   },
   watch: true,
+  devtool: 'source-map',
 };

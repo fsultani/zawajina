@@ -5,10 +5,10 @@
     "node": "8.9.3"
   },
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "dev-server": "browser-refresh server.js",
-    "dev-client": "webpack-dev-server --color --entry ./src/index.js --output-filename ./dist/bundle.js",
+    "dev-client": "webpack-dev-server --color --entry ./src/app.js --output-filename ./dist/bundle.js",
     "start": "npm run dev-server & npm run dev-client"
   },
   "author": "",
