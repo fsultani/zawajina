@@ -1,31 +1,19 @@
-import printMe from './button.js'
+import { layout } from './js/layout'
 
-const component = () => {
-  const element = document.createElement('div');
-  const btn = document.createElement('button');
-  btn.innerHTML = 'Click me please!';
-  btn.onclick = printMe;
-  element.appendChild(btn);
-  return element;
-}
+const bootstrapCss = document.createElement('link')
+bootstrapCss.rel = 'stylesheet'
+bootstrapCss.href = 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css'
 
-let element = component()
-document.body.appendChild(element)
+const bootstrapThemeCss = document.createElement('link')
+bootstrapThemeCss.rel = 'stylesheet'
+bootstrapThemeCss.href = 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css'
 
-if (module.hot) {
-  module.hot.accept('./button.js', function() {
-    document.body.removeChild(element);
-    element = component();
-    document.body.appendChild(element);
-  });
-}
+const bootstrapJs = document.createElement('script')
+bootstrapJs.src = 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'
 
-// function component() {
-//   var element = document.createElement('div');
+document.head.appendChild(bootstrapCss)
+document.head.appendChild(bootstrapThemeCss)
+document.head.appendChild(bootstrapJs)
 
-//   element.innerHTML = "Hi again!"
-
-//   return element;
-// }
-
-// document.body.appendChild(component());
+const display = document.getElementById('my-app')
+display.innerHTML = layout()

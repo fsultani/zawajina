@@ -18,13 +18,11 @@ const compiler = webpack(webpackConfig)
 
 const app = express();
 
-app.use(require('webpack-dev-middleware')(compiler, {
-  noInfo: true,
-  publicPath: webpackConfig.output.publicPath
-}))
+// app.use(require('webpack-dev-middleware')(compiler, {
+//   stats: 'errors-only',
+// }))
 
-app.use(express.static(path.join(__dirname, 'dist')));
-console.log("Here I am, in the server!")
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public/index.html'))
