@@ -1,3 +1,7 @@
+import { bootstrapFiles } from './bootstrap/index'
+
+bootstrapFiles()
+
 const layout = () =>
   `<div class="container">
     <div class="row">
