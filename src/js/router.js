@@ -8,6 +8,7 @@ const app = document.getElementById('app')
 export default (() => {
   window.onload = (() => {
     window.location.hash = ''
+    window.history.pushState({ name: '/' }, '', '/')
     if (!window.location.hash) {
       app.innerHTML = layout() + welcomeMessage()
     }
@@ -33,18 +34,24 @@ export default (() => {
     //   }
     // ])
     window.addEventListener("hashchange", () => {
+      console.log("hashchange\n", window.history.state)
       const CurrentPath = window.location.hash
       const urlPathname = CurrentPath.substr(1)
+      // console.log("CurrentPath\n", CurrentPath)
+      // console.log("urlPathname\n", urlPathname)
       if (!CurrentPath) {
         window.history.pushState({}, '', '/')
         app.innerHTML = layout() + welcomeMessage()
       } else if (CurrentPath === '#login') {
-        window.history.pushState({}, '', urlPathname)
+        window.history.pushState({name: urlPathname}, '', urlPathname)
         app.innerHTML = layout() + loginPage()
-      } else if (CurrentPath === '#register') {
-        window.history.pushState({}, '', urlPathname)
+      } else if (CurrentPath === '#register') {   
+        window.history.pushState({name: urlPathname}, '', urlPathname)
         app.innerHTML = layout() + PersonalInfo()
       }
+    })
+    window.onpopstate = (() => {
+      console.log("onpopstate\n", window.history.state)
     })
   })
 })
