@@ -1,9 +1,33 @@
 const express = require('express')
 const { check, body, validationResult } = require('express-validator/check')
-const router = express.Router()
+const countries = require('country-state-city')
+
 const User = require('../models/user')
 
-router.post('/', [
+const router = express.Router()
+
+router.get('/api/all-countries', (req, res) => {
+  const countryList = countries.getAllCountries()
+  res.send(countryList)
+})
+
+router.get('/api/state-list', (req, res) => {
+  const stateList = countries.getStatesOfCountry(req.query.country)
+  res.send(stateList)
+})
+
+router.get('/api/city-list', (req, res) => {
+  const cityList = countries.getCitiesOfState(req.query.city)
+  res.send(cityList)
+})
+
+router.post('/api/about', (req, res) => {
+  const countryId = Number(req.body.location.country) - 1
+  const country = countries.getCountryById(countryId)
+  console.log("country.name\n", country.name)
+})
+
+router.post('/api/personal-info', [
   check('userRegistrationForm.name').not().isEmpty().withMessage('Enter your name'),
   check('userRegistrationForm.email').isEmail().withMessage('Enter a valid email address'),
   check('userRegistrationForm.password').not().isEmpty().withMessage('Enter a password'),
