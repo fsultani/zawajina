@@ -11,8 +11,6 @@ const flash = require('connect-flash');
 const mongo = require('mongodb')
 const mongoose = require('mongoose')
 
-// Comment
-
 if (process.env.NODE_ENV === 'mlab-dev') {
   require('./db_credentials')
   mongoose.connect(process.env.MONGO_DB_MLAB_DEV)
