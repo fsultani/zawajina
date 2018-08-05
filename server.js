@@ -111,9 +111,7 @@ const port = process.env.PORT || 3000;
 osascript.execute(
   `
   tell application "Google Chrome"
-    set current_site to ""
     set current_site to URL of active tab of front window
-    do shell script "echo URL is " & current_site
     if current_site contains ("http://localhost:3000") then
       reload active tab of front window
     end if
