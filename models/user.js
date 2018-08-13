@@ -29,6 +29,23 @@ var User = mongoose.Schema({
     type: Number,
     required: true
   },
+  country: {
+    type: String,
+    required: function() {
+      return typeof this.country === null || (this.country !== null && typeof this.country !== 'string')
+    }
+  },
+  state: {
+    type: String,
+    default: null,
+    required: false,
+  },
+  city: {
+    type: String,
+    required: function() {
+      return typeof this.city === null || (this.city !== null && typeof this.city !== 'string')
+    }
+  },
   profilePicture: {
     type: String
   }
