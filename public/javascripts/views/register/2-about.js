@@ -129,14 +129,16 @@ const handleDone = event => {
   const country = countrySelected.value
   const state = stateSelected.value === 'State' ? null : stateSelected.value
   const city = citySelected.value
+  const userId = Cookies.get("userId")
 
-  const location = {
+  const data = {
     country,
     state,
     city,
+    userId,
   }
 
-  axios.post('/register/api/about', { location })
+  axios.post('/register/api/about', { data })
   .then(res => {
     console.log("res.data\n", res.data)
     // if (!res.data.error) {

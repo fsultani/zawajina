@@ -104,7 +104,6 @@ const handleSignUp = event => {
     document.getElementById('errors').remove()
   }
 
-
   const registrationForm = document.forms.registration
   const userRegistrationForm = {
     name: registrationForm.elements.name.value,
@@ -121,6 +120,7 @@ const handleSignUp = event => {
       for (var element in registrationForm.elements) {
         registrationForm.elements[element].disabled = true
       }
+      Cookies.set('userId', res.data.userId)
       window.location.pathname = '/register/about'
     } else {
       const error = document.createElement('div')

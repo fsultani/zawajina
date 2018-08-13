@@ -1,6 +1,8 @@
 const express = require('express')
 const { check, body, validationResult } = require('express-validator/check')
 const countries = require('country-state-city')
+const jwt = require('jwt-simple')
+const JWT_SECRET = Buffer.from('fe1a1915a379f3be5394b64d14794932', 'hex')
 
 const User = require('../models/user')
 
@@ -22,9 +24,27 @@ router.get('/api/city-list', (req, res) => {
 })
 
 router.post('/api/about', (req, res) => {
-  const countryId = Number(req.body.location.country) - 1
-  const country = countries.getCountryById(countryId)
-  console.log("country.name\n", country.name)
+  const { country, state, city, userId } = req.body.data
+  const countryId = parseInt(country)
+  const stateId = parseInt(state !== null ? state : null)
+  const cityId = parseInt(city)
+  console.log("stateId\n", stateId)
+
+  const countryName = countries.getCountryById(countryId - 1)
+  const stateName = stateId ? countries.getStateById(stateId - 1) : null
+  const cityName = countries.getCitiesOfState(cityId - 1)
+
+  // console.log("countryName\n", countryName)
+  // console.log("stateName\n", stateName)
+  // console.log("cityName\n", cityName)
+
+  User.update({ _id: userId }, {
+    $set: {
+      country: countryName.name,
+      state: stateName ? stateName : null,
+      city: cityName.name,
+    }
+  }, (err, userFound) => {})
 })
 
 router.post('/api/personal-info', [
@@ -57,11 +77,20 @@ router.post('/api/personal-info', [
           gender,
           birthMonth,
           birthDate,
-          birthYear
+          birthYear,
+          country: null,
+          state: null,
+          city: null,
         })
 
-        User.createUser(newUser, (err, user) => {})
-        res.status(201).end()
+        User.createUser(newUser, (err, user) => {
+          console.log("err\n", err)
+          console.log("user\n", user)
+          const token = jwt.encode({ email: user.email }, JWT_SECRET)
+          const userId = user.id
+          res.status(201).send({ userId })
+        })
+        // res.status(201).end()
       } else if (userExists.email) {
         res.json({ error: "Email already exists"})
       } else {
