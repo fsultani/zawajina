@@ -1,4 +1,4 @@
-const layout = `
+export const layout = `
   <div class="container">
     <div class="row">
       <div class="header clearfix">
@@ -18,10 +18,10 @@ const layout = `
   </div>
 `;
 
-window.addEventListener('load', () => {
-  axios.defaults.headers.common['authorization'] = Cookies.get('token')
+// window.addEventListener('load', () => {
+//   axios.defaults.headers.common['authorization'] = Cookies.get('token')
 
-  if (window.location.pathname === '/') {
-    window.location.pathname = '/home'
-  }
-})
+//   if (window.location.pathname === '/') {
+//     window.location.pathname = '/home'
+//   }
+// })
