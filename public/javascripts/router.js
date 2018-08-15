@@ -1,6 +1,8 @@
+import * as bootstrap from './styles/bootstrap.js';
+
 import { layout } from './views/layout.js';
 import { register } from './views/register/1-personal.js';
-import * as bootstrap from './styles/bootstrap.js';
+import { welcomeHomePage } from './views/home.js';
 
 const addBootstrap = () => {
   document.getElementsByTagName('head')[0].appendChild(bootstrap.bootstrapMinCss())
@@ -13,7 +15,7 @@ window.onload = () => {
     window.location.pathname = '/home'
   } else if (window.location.pathname === '/home') {
     addBootstrap()
-    document.getElementById('my-app').innerHTML = layout;
+    document.getElementById('my-app').innerHTML = layout + welcomeHomePage();
   } else if (window.location.pathname === '/register') {
     addBootstrap()
     document.getElementById('my-app').innerHTML = register;
