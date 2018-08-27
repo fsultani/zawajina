@@ -19,7 +19,7 @@ export const router = () => {
     return homePage
   } else if (window.location.pathname === '/register') {
     addBootstrap()
-    const registerPage = document.getElementById('app').innerHTML = register;
+    const registerPage = document.getElementById('app').innerHTML = layout + register;
     Object.assign(document.getElementById('registrationContainerDiv').style, registrationContainer)
     return registerPage
   }
