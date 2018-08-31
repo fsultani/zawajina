@@ -1,7 +1,11 @@
 import * as bootstrap from './styles/bootstrap.js';
 
 import { layout } from './views/layout.js';
-import { registrationContainer, register } from './views/register/1-personal.js';
+import {
+  registrationContainer,
+  personalInfo,
+  ColHalf
+} from './views/register/personalInfo.js';
 import { welcomeHomePage } from './views/home.js';
 
 const addBootstrap = () => {
@@ -19,7 +23,7 @@ export const router = () => {
     return homePage
   } else if (window.location.pathname === '/register') {
     addBootstrap()
-    const registerPage = document.getElementById('app').innerHTML = layout + register;
+    const registerPage = document.getElementById('app').innerHTML = layout + personalInfo;
     Object.assign(document.getElementById('registrationContainerDiv').style, registrationContainer)
     return registerPage
   }

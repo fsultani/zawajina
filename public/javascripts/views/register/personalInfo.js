@@ -1,4 +1,4 @@
-export const registrationContainer = {
+const registrationContainer = {
   'justify-content': 'center',
   'align-items': 'center',
   'margin': '10rem auto',
@@ -11,7 +11,20 @@ export const registrationContainer = {
   'box-sizing': 'border-box',
 }
 
-export const register = `
+const ColHalf = {
+  'padding-right': 0,
+  'float': 'left',
+  'width': '100%',
+}
+
+const GenderInputGroup = {
+  'margin-bottom': '1em',
+  'padding': 0,
+  'zoom': 1,
+  'width': '100%',
+}
+
+const personalInfo = `
   <div class="registrationContainer centerContainer" id="registrationContainerDiv">
     <form name="registration">
       <div class="form-group" style="position: relative" id="name">
@@ -119,3 +132,9 @@ export const register = `
     </form>
   </div>
 `;
+
+export {
+  registrationContainer,
+  personalInfo,
+  ColHalf
+}
