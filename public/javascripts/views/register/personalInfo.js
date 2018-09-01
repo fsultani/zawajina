@@ -1,29 +1,3 @@
-const registrationContainer = {
-  'justify-content': 'center',
-  'align-items': 'center',
-  'margin': '10rem auto',
-  'background': 'white',
-  'padding': '20px 25px',
-  'border': '5px solid #337ab7',
-  'border-radius': '6px',
-  'width': '550px',
-  'height': 'auto',
-  'box-sizing': 'border-box',
-}
-
-const ColHalf = {
-  'padding-right': 0,
-  'float': 'left',
-  'width': '100%',
-}
-
-const GenderInputGroup = {
-  'margin-bottom': '1em',
-  'padding': 0,
-  'zoom': 1,
-  'width': '100%',
-}
-
 const personalInfo = `
   <div class="registrationContainer centerContainer" id="registrationContainerDiv">
     <form name="registration">
@@ -134,7 +108,5 @@ const personalInfo = `
 `;
 
 export {
-  registrationContainer,
   personalInfo,
-  ColHalf
 }
