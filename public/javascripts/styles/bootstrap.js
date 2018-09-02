@@ -16,11 +16,22 @@ export const bootstrapThemeMinCss = () => {
   return bootstrapThemeMinCssTag
 }
 
-
 export const bootstrapJs = () => {
   const bootstrapJsTag = document.createElement('script')
   bootstrapJsTag.src = 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'
   bootstrapJsTag.integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" 
   bootstrapJsTag.crossOrigin = 'anonymous'
   return bootstrapJsTag
+}
+
+export const jQueryCookie = () => {
+  const jQueryCookieTag = document.createElement('script')
+  jQueryCookieTag.src = 'https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js'
+  return jQueryCookieTag
+}
+
+export const fontAwesome = () => {
+  const fontAwesomeTag = document.createElement('script')
+  fontAwesomeTag.src = 'https://use.fontawesome.com/7973784de3.js'
+  return fontAwesomeTag
 }
