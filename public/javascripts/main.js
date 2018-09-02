@@ -1,5 +1,5 @@
-import { router } from './router.js'
+import Router from './router.js'
 
 window.onload = () => {
-  router()
+  Router()
 }
