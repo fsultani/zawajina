@@ -11,18 +11,23 @@ const addBootstrap = () => {
   document.head.appendChild(bootstrap.fontAwesome())
 }
 
+const personalInfoCss = () => {
+  const css = document.createElement('link')
+  css.rel = "stylesheet"
+  css.href = "javascripts/styles/register/personalInfo.css"
+  css.type = "text/css"
+  document.head.appendChild(css)
+}
+
 export default (() => {
   if (window.location.pathname === '/') {
     window.location.pathname = '/home'
   } else if (window.location.pathname === '/home') {
-    document.getElementById('app').innerHTML = layout + welcomeHomePage();
+    const homePage = document.getElementById('app').innerHTML = layout + welcomeHomePage();
+    return homePage
   } else if (window.location.pathname === '/register') {
     addBootstrap()
-    const css = document.createElement('link')
-    css.rel = "stylesheet"
-    css.href = "javascripts/styles/register/personalInfo.css"
-    css.type = "text/css"
-    document.head.appendChild(css)
+    personalInfoCss()
     document.getElementById('app').innerHTML = layout + personalInfo;
   }
 })
