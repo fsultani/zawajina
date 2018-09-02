@@ -1,35 +1,49 @@
 import * as bootstrap from './styles/bootstrap.js';
 
+// import * as bootstrapMinCss from './styles/register/bootstrap.min.css'
+// import * as bootstrapThemeMinCss from './styles/register/bootstrap-theme.min.css'
+// import * as bootstrapJs from './styles/register/bootstrap-theme.min.css'
+
+// import * as bootstrapJs from './styles/bootstrap.min.js'
+
 import { layout } from './views/layout.js';
-import {
-  personalInfo,
-} from './views/register/personalInfo.js';
+import PersonalInfo from './views/register/personalInfo.js';
 import { welcomeHomePage } from './views/home.js';
 
 const addBootstrap = () => {
   document.getElementsByTagName('head')[0].appendChild(bootstrap.bootstrapMinCss())
   document.getElementsByTagName('head')[0].appendChild(bootstrap.bootstrapThemeMinCss())
   document.getElementsByTagName('head')[0].appendChild(bootstrap.bootstrapJs())
+
+  // const bootstrapJsScript = document.createElement('script')
+  // bootstrapJsScript.src = 'https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js'
+  // bootstrapJsScript.integrity = 'sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy'
+  // bootstrapJsScript.crossorigin = 'anonymous'
+  // document.getElementsByTagName('head')[0].appendChild(bootstrapJsScript)
 }
 
 const personalInfoCss = () => {
-  const css = document.createElement('link')
-  css.rel = "stylesheet"
-  css.href="javascripts/styles/personalInfo.css"
-  document.getElementsByTagName('head')[0].appendChild(css)
+  // const css = document.createElement('link')
+  // css.rel = "stylesheet"
+  // css.href="javascripts/styles/register/personalInfo.css"
+  // document.getElementsByTagName('head')[0].appendChild(css)
 }
 
-export const router = () => {
+export default (() => {
   if (window.location.pathname === '/') {
     window.location.pathname = '/home'
   } else if (window.location.pathname === '/home') {
-    addBootstrap()
+    // addBootstrap()
     const homePage = document.getElementById('app').innerHTML = layout + welcomeHomePage();
     return homePage
   } else if (window.location.pathname === '/register') {
-    addBootstrap()
-    personalInfoCss()
-    const registerPage = document.getElementById('app').innerHTML = layout + personalInfo;
+    const css = document.createElement('link')
+    css.rel = "stylesheet"
+    css.href="javascripts/styles/register/personalInfo.css"
+    document.getElementsByTagName('head')[0].appendChild(css)
+    // addBootstrap()
+    
+    const registerPage = document.getElementById('app').innerHTML = layout + PersonalInfo;
     return registerPage
   }
-}
+})

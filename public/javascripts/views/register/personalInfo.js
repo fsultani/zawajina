@@ -1,4 +1,4 @@
-const personalInfo = `
+const PersonalInfo = `
   <div class="registrationContainer centerContainer" id="registrationContainerDiv">
     <form name="registration">
       <div class="form-group" style="position: relative" id="name">
@@ -107,6 +107,4 @@ const personalInfo = `
   </div>
 `;
 
-export {
-  personalInfo,
-}
+export default PersonalInfo;

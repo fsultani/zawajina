@@ -1,7 +1,7 @@
 export const bootstrapMinCss = () => {
   const bootstrapMinCssTag = document.createElement('link')
   bootstrapMinCssTag.rel = 'stylesheet'
-  bootstrapMinCssTag.href = 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css'
+  bootstrapMinCssTag.href = 'https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css'
   return bootstrapMinCssTag
 }
 
@@ -15,6 +15,6 @@ export const bootstrapThemeMinCss = () => {
 
 export const bootstrapJs = () => {
   const bootstrapJsTag = document.createElement('script')
-  bootstrapJsTag.src = 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'
+  bootstrapJsTag.src = 'https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js'
   return bootstrapJsTag
 }
