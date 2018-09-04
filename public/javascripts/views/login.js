@@ -1,4 +1,4 @@
-loginPage = `
+export default `
   <div align="center">
     <h2 class="page-header">Account Login</h2>
     <form name="loginForm">
@@ -13,11 +13,3 @@ loginPage = `
     </form>
   </div>
 `
-
-const output = layout + loginPage;
-
-window.addEventListener('load', () => {
-  if (window.location.pathname === '/login') {
-    document.getElementById('my-app').innerHTML = output;
-  }
-})

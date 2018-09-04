@@ -1,4 +1,4 @@
-export const welcomeHomePage = () => {
+export default (() => {
   let welcomeHome;
   if (Cookies.get('token')) {
     welcomeHome = `
@@ -17,4 +17,4 @@ export const welcomeHomePage = () => {
   }
 
   return welcomeHome;
-}
+})
