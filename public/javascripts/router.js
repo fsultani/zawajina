@@ -1,4 +1,3 @@
-// import * as bootstrap from './styles/bootstrap.js';
 import { layout } from './views/layout.js';
 import personalInfo from '/javascripts/views/register/personalInfo.js';
 import WelcomeHomePage from './views/home.js';
