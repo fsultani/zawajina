@@ -1,4 +1,27 @@
-export default `
+const handleNameError = () => {
+  if (!document.forms.registration.elements.name.checkValidity()) {
+    document.forms.registration.elements.name.style.border = '2px solid red'
+    const nameError = document.createElement('div')
+    nameError.setAttribute('id', 'nameError')
+    nameError.textContent = 'Please enter your name';
+    nameError.style.color = 'red';
+    nameError.style.width = '100%';
+    nameError.style.height = 'auto';
+    nameError.style.textAlign = 'center';
+    const container = document.getElementById('name')
+    if (!document.getElementById('nameError')) {
+      container.appendChild(nameError)
+    }
+  } else if (document.getElementById('nameError')) {
+    document.getElementById('nameIsValid').style.display = 'inline-block'
+    document.getElementById('nameError').remove()
+    document.forms.registration.elements.name.style.border = '1px solid #ccc'
+  } else if (document.forms.registration.elements.name.checkValidity()){
+    document.getElementById('nameIsValid').style.display = 'inline-block'
+  }
+}
+
+const personalInfo = `
   <div class="registrationContainer centerContainer" id="registrationContainerDiv">
     <form name="registration">
       <div class="form-group" style="position: relative" id="name">
@@ -106,3 +129,8 @@ export default `
     </form>
   </div>
 `;
+
+export {
+  handleNameError,
+  personalInfo
+}
