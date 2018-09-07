@@ -175,18 +175,22 @@ const handleDone = event => {
   })
 }
 
-window.addEventListener('load', () => {
-  if (window.location.pathname === '/register/about') {
-    const profileAboutPage = layout + almostDone + title + countryList + stateList + cityList + doneButton
-    document.getElementById('my-app').innerHTML = profileAboutPage;
-    Object.assign(document.getElementById('copy').style, titleStyle)
+// window.addEventListener('load', () => {
+//   if (window.location.pathname === '/register/about') {
+//     const profileAboutPage = layout + almostDone + title + countryList + stateList + cityList + doneButton
+//     document.getElementById('my-app').innerHTML = profileAboutPage;
+//     Object.assign(document.getElementById('copy').style, titleStyle)
 
-    document.getElementById('submitButton').disabled = true
-    countrySelected = document.forms.countryForm.elements.countryName
-    stateSelected = document.forms.stateForm.elements.stateName
-    citySelected = document.forms.cityForm.elements.cityName
-    stateSelected.style.display = 'none'
-    getAllCountries()
+//     document.getElementById('submitButton').disabled = true
+//     countrySelected = document.forms.countryForm.elements.countryName
+//     stateSelected = document.forms.stateForm.elements.stateName
+//     citySelected = document.forms.cityForm.elements.cityName
+//     stateSelected.style.display = 'none'
+//     getAllCountries()
 
-  }
-})
+//   }
+// })
+
+const profileAbout = almostDone + title + countryList + stateList + cityList + doneButton
+
+export default profileAbout

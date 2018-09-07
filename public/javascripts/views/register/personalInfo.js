@@ -21,6 +21,136 @@ const handleNameError = () => {
   }
 }
 
+const handleEmailError = () => {
+  if (!document.forms.registration.elements.email.checkValidity()) {
+    document.forms.registration.elements.email.style.border = '2px solid red'
+    const emailError = document.createElement('div')
+    emailError.setAttribute('id', 'emailError')
+    emailError.textContent = 'Please enter a valid email address';
+    emailError.style.color = 'red';
+    emailError.style.width = '100%';
+    emailError.style.height = 'auto';
+    emailError.style.textAlign = 'center';
+    const container = document.getElementById('email')
+    if (!document.getElementById('emailError')) {
+      container.appendChild(emailError)
+    }
+  } else if (document.getElementById('emailError')) {
+    document.getElementById('emailIsValid').style.display = 'inline-block'
+    document.getElementById('emailError').remove()
+    document.forms.registration.elements.email.style.border = '1px solid #ccc'
+  } else if (document.forms.registration.elements.email.checkValidity()) {
+    document.getElementById('emailIsValid').style.display = 'inline-block'
+  }
+}
+
+const handlePasswordErrorOnBlur = () => {
+  if (
+    !document.forms.registration.elements.password.checkValidity()
+  ) {
+    document.forms.registration.elements.password.style.border = '2px solid red'
+  } else if (
+    document.forms.registration.elements.password.checkValidity() &&
+    document.forms.registration.elements.password.value.length < 8
+  ) {
+    document.forms.registration.elements.password.style.border = '2px solid red'
+  }
+}
+
+const handlePasswordErrorOnKeyUp = () => {
+  if (
+    document.forms.registration.elements.password.checkValidity() &&
+    document.forms.registration.elements.password.value.length >= 8
+  ) {
+    document.getElementById('passwordIsValid').style.display = 'inline-block'
+    document.forms.registration.elements.password.style.border = '1px solid #ccc'
+  } else if (
+    document.forms.registration.elements.password.checkValidity() &&
+    document.forms.registration.elements.password.value.length < 8 &&
+    document.forms.registration.elements.password.style.border !== '2px solid red'
+  ) {
+    document.getElementById('passwordIsValid').style.display = 'none'
+  } else if (
+    !document.forms.registration.elements.password.checkValidity()
+  ) {
+    document.getElementById('passwordIsValid').style.display = 'none'
+  }
+}
+
+const isPasswordValid = () => {
+  return document.forms.registration.elements.password.value.length >= 8
+}
+
+const day = () => {
+  const dayOptions = []
+  const res = [...Array(32)].map((_, i) => dayOptions.push(`<option>${i+1}</option>`))
+  return dayOptions
+}
+
+const year = () => {
+  let yearOptions = []
+  const res = [...Array(61)].map((_, i) => yearOptions.push(`<option>${1940+i}</option>`))
+  return yearOptions.reverse()
+}
+
+const handleSignUp = event => {
+  event.preventDefault()
+  handleNameError()
+  handleEmailError()
+  handlePasswordErrorOnBlur()
+  if (document.getElementById('registrationError')) {
+    document.getElementById('registrationError').remove()
+  } else if (document.getElementById('errors')) {
+    document.getElementById('errors').remove()
+  }
+
+  const registrationForm = document.forms.registration
+  const userRegistrationForm = {
+    name: registrationForm.elements.name.value,
+    email: registrationForm.elements.email.value,
+    password: registrationForm.elements.password.value,
+    gender: registrationForm.elements.gender.value,
+    birthMonth: registrationForm.elements.birthMonth.value,
+    birthDate: registrationForm.elements.birthDate.value,
+    birthYear: registrationForm.elements.birthYear.value,
+  }
+  axios.post('/register/api/personal-info', { userRegistrationForm })
+  .then(res => {
+    if (!res.data.error) {
+      for (var element in registrationForm.elements) {
+        registrationForm.elements[element].disabled = true
+      }
+      Cookies.set('userId', res.data.userId)
+      window.location.pathname = '/register/about'
+    } else {
+      const error = document.createElement('div')
+      error.setAttribute('id', 'registrationError')
+      error.classList.add("alert")
+      error.classList.add("alert-danger")
+      error.innerHTML = 'Email already exists'
+      error.style.width = '100%';
+      error.style.height = 'auto';
+      error.style.textAlign = 'center';
+      const container = document.getElementById('my-app')
+      container.before(error)
+    }
+  })
+  .catch(error => {
+    const errors = document.createElement('div')
+    errors.setAttribute('id', 'errors')
+    const errorMessagesArray = error.response.data.error.map(err => {
+      return `<p>${err.msg}</p>`
+    })
+    errors.innerHTML = errorMessagesArray.join('')
+    errors.style.color = 'red';
+    errors.style.width = '100%';
+    errors.style.height = 'auto';
+    errors.style.textAlign = 'center';
+    const container = document.getElementById('registrationContainerDiv').parentNode
+    container.insertBefore(errors, document.getElementById('registrationContainerDiv'))
+  })
+}
+
 const personalInfo = `
   <div class="registrationContainer centerContainer" id="registrationContainerDiv">
     <form name="registration">
@@ -108,13 +238,13 @@ const personalInfo = `
         <div class="form-group col-md-4">
           <select name="birthDate" class="form-control" required>
             <option>Day</option>
-            day
+            ${day()}
           </select>
         </div>
         <div class="form-group col-md-4">
           <select name="birthYear" class="form-control" required>
             <option>Year</option>
-            year
+            ${year()}
           </select>
         </div>
       </div>
@@ -132,5 +262,9 @@ const personalInfo = `
 
 export {
   handleNameError,
+  handleEmailError,
+  handlePasswordErrorOnBlur,
+  handlePasswordErrorOnKeyUp,
+  isPasswordValid,
   personalInfo
 }
