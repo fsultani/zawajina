@@ -28,15 +28,10 @@ router.post('/api/about', (req, res) => {
   const countryId = parseInt(country)
   const stateId = parseInt(state !== null ? state : null)
   const cityId = parseInt(city)
-  console.log("stateId\n", stateId)
 
   const countryName = countries.getCountryById(countryId - 1)
   const stateName = stateId ? countries.getStateById(stateId - 1) : null
   const cityName = countries.getCitiesOfState(cityId - 1)
-
-  // console.log("countryName\n", countryName)
-  // console.log("stateName\n", stateName)
-  // console.log("cityName\n", cityName)
 
   User.update({ _id: userId }, {
     $set: {
@@ -84,13 +79,10 @@ router.post('/api/personal-info', [
         })
 
         User.createUser(newUser, (err, user) => {
-          console.log("err\n", err)
-          console.log("user\n", user)
           const token = jwt.encode({ email: user.email }, JWT_SECRET)
           const userId = user.id
           res.status(201).send({ userId })
         })
-        // res.status(201).end()
       } else if (userExists.email) {
         res.json({ error: "Email already exists"})
       } else {
