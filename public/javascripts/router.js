@@ -1,6 +1,6 @@
 import { layout } from './views/layout.js';
-import { personalInfo } from '/javascripts/views/register/personalInfo.js';
-import PersonalInfoValidation from '/javascripts/views/register/personalInfoValidation.js';
+import { personalInfo } from '/javascripts/views/register/personalInfo/personalInfo.js';
+import PersonalInfoValidation from '/javascripts/views/register/personalInfo/personalInfoValidation.js';
 import profileAbout from '/javascripts/views/register/profileAbout.js';
 import WelcomeHomePage from './views/home.js';
 import loginPage from './views/login.js';
