@@ -5,7 +5,7 @@ import {
 } from './index.js';
 
 export default (() => {
-  document.getElementById('signUpButton').addEventListener('click', () => {
+  document.getElementById('signUpButton').addEventListener('click', event => {
     event.preventDefault()
     handleNameError()
     handleEmailError()
@@ -32,10 +32,12 @@ export default (() => {
     .then(res => {
       if (!res.data.error) {
         for (var element in registrationForm.elements) {
-          registrationForm.elements[element].disabled = true
+          if (typeof registrationForm.elements[element] === 'object') {
+            registrationForm.elements[element].disabled = true
+          }
         }
         Cookies.set('userId', res.data.userId)
-        window.location.pathname = '/register/about'
+        window.location.pathname = '/about'
       } else {
         const error = document.createElement('div')
         error.setAttribute('id', 'registrationError')
