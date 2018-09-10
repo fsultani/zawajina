@@ -198,7 +198,7 @@ const personalInfo = `
 
       <div class="row">
         <div class="col-md-4 col-md-offset-4 text-center">
-          <button class="btn btn-success" id="signUpButton">
+          <button class="btn btn-success" name="signUpButton" id="signUpButton">
             Sign Up
           </button>
         </div>

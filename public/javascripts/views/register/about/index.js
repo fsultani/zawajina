@@ -1,5 +1,3 @@
-'use strict';
-
 let countrySelected
 let stateSelected
 let citySelected
@@ -124,56 +122,56 @@ const handleCitySelection = () => {
   }
 }
 
-const handleDone = event => {
-  event.preventDefault()
-  const country = countrySelected.value
-  const state = stateSelected.value === 'State' ? null : stateSelected.value
-  const city = citySelected.value
-  const userId = Cookies.get("userId")
+// const handleDone = event => {
+//   event.preventDefault()
+//   const country = countrySelected.value
+//   const state = stateSelected.value === 'State' ? null : stateSelected.value
+//   const city = citySelected.value
+//   const userId = Cookies.get("userId")
 
-  const data = {
-    country,
-    state,
-    city,
-    userId,
-  }
+//   const data = {
+//     country,
+//     state,
+//     city,
+//     userId,
+//   }
 
-  axios.post('/register/api/about', { data })
-  .then(res => {
-    console.log("res.data\n", res.data)
-    // if (!res.data.error) {
-    //   for (var element in registrationForm.elements) {
-    //     registrationForm.elements[element].disabled = true
-    //   }
-    //   window.location.pathname = '/register/about'
-    // } else {
-    //   const error = document.createElement('div')
-    //   error.setAttribute('id', 'registrationError')
-    //   error.classList.add("alert")
-    //   error.classList.add("alert-danger")
-    //   error.innerHTML = 'Email already exists'
-    //   error.style.width = '100%';
-    //   error.style.height = 'auto';
-    //   error.style.textAlign = 'center';
-    //   const container = document.getElementById('my-app')
-    //   container.before(error)
-    // }
-  })
-  .catch(error => {
-    // const errors = document.createElement('div')
-    // errors.setAttribute('id', 'errors')
-    // const errorMessagesArray = error.response.data.error.map(err => {
-    //   return `<p>${err.msg}</p>`
-    // })
-    // errors.innerHTML = errorMessagesArray.join('')
-    // errors.style.color = 'red';
-    // errors.style.width = '100%';
-    // errors.style.height = 'auto';
-    // errors.style.textAlign = 'center';
-    // const container = document.getElementById('registrationContainerDiv').parentNode
-    // container.insertBefore(errors, document.getElementById('registrationContainerDiv'))
-  })
-}
+//   axios.post('/register/api/about', { data })
+//   .then(res => {
+//     console.log("res.data\n", res.data)
+//     // if (!res.data.error) {
+//     //   for (var element in registrationForm.elements) {
+//     //     registrationForm.elements[element].disabled = true
+//     //   }
+//     //   window.location.pathname = '/register/about'
+//     // } else {
+//     //   const error = document.createElement('div')
+//     //   error.setAttribute('id', 'registrationError')
+//     //   error.classList.add("alert")
+//     //   error.classList.add("alert-danger")
+//     //   error.innerHTML = 'Email already exists'
+//     //   error.style.width = '100%';
+//     //   error.style.height = 'auto';
+//     //   error.style.textAlign = 'center';
+//     //   const container = document.getElementById('my-app')
+//     //   container.before(error)
+//     // }
+//   })
+//   .catch(error => {
+//     // const errors = document.createElement('div')
+//     // errors.setAttribute('id', 'errors')
+//     // const errorMessagesArray = error.response.data.error.map(err => {
+//     //   return `<p>${err.msg}</p>`
+//     // })
+//     // errors.innerHTML = errorMessagesArray.join('')
+//     // errors.style.color = 'red';
+//     // errors.style.width = '100%';
+//     // errors.style.height = 'auto';
+//     // errors.style.textAlign = 'center';
+//     // const container = document.getElementById('registrationContainerDiv').parentNode
+//     // container.insertBefore(errors, document.getElementById('registrationContainerDiv'))
+//   })
+// }
 
 // window.addEventListener('load', () => {
 //   if (window.location.pathname === '/register/about') {
@@ -193,4 +191,4 @@ const handleDone = event => {
 
 const profileAbout = almostDone + title + countryList + stateList + cityList + doneButton
 
-export default profileAbout
+export default profileAbout;

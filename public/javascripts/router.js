@@ -1,8 +1,8 @@
 import { layout } from './views/layout.js';
-import { personalInfo } from '/javascripts/views/register/personalInfo/index.js';
-import PersonalInfoValidation from '/javascripts/views/register/personalInfo/validations.js';
-import HandleSignUp from '/javascripts/views/register/personalInfo/handleSignUp.js';
-import profileAbout from '/javascripts/views/register/profileAbout.js';
+import { personalInfo } from './views/register/personalInfo/index.js';
+import PersonalInfoValidation from './views/register/personalInfo/validations.js';
+import HandleSignUp from './views/register/personalInfo/handleSignUp.js';
+import profileAbout from './views/register/about/index.js';
 import WelcomeHomePage from './views/home.js';
 import loginPage from './views/login.js';
 
@@ -17,7 +17,7 @@ export default (() => {
     document.getElementById('app').innerHTML = layout + personalInfo;
     PersonalInfoValidation()
     HandleSignUp()
-  } else if (window.location.pathname === '/register/about') {
+  } else if (window.location.pathname === '/about') {
     document.getElementById('app').innerHTML = layout + profileAbout;
   }
 })
