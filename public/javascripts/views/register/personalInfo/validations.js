@@ -5,7 +5,7 @@ import {
   handlePasswordErrorOnKeyUp,
   isPasswordValid,
   personalInfo
-} from './personalInfo.js';
+} from './index.js';
 
 export default (() => {
   const registrationFormElement = document.forms.registration.elements
