@@ -107,7 +107,6 @@ const personalInfo = `
           class="form-control"
           placeholder="John"
           name="name"
-          required
         >
         <div id="nameIsValid" style="position: absolute; top: 7px; right: 10px">
           <i class="fa fa-check" style="color: #22dd22; font-size: 14px"></i>
@@ -120,7 +119,6 @@ const personalInfo = `
           class="form-control"
           placeholder="john@example.com"
           name="email"
-          required
         >
         <div id="emailIsValid" style="position: absolute; top: 7px; right: 10px">
           <i class="fa fa-check" style="color: #22dd22; font-size: 14px"></i>
@@ -133,7 +131,6 @@ const personalInfo = `
           class="form-control"
           placeholder="********"
           name="password"
-          required
         >
         <div id="passwordIsValid" style="position: absolute; top: 7px; right: 10px">
           <i class="fa fa-check" style="color: #22dd22; font-size: 14px"></i>
@@ -166,7 +163,7 @@ const personalInfo = `
       <div>
         <div>Date of Birth</div>
         <div class="form-group col-md-4" style="padding-left: 0">
-          <select name="birthMonth" class="form-control" required>
+          <select name="birthMonth" class="form-control">
             <option>Month</option>
             <option>January</option>
             <option>February</option>
@@ -183,13 +180,13 @@ const personalInfo = `
           </select>
         </div>
         <div class="form-group col-md-4">
-          <select name="birthDate" class="form-control" required>
+          <select name="birthDate" class="form-control">
             <option>Day</option>
             ${day()}
           </select>
         </div>
         <div class="form-group col-md-4">
-          <select name="birthYear" class="form-control" required>
+          <select name="birthYear" class="form-control">
             <option>Year</option>
             ${year()}
           </select>
