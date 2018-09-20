@@ -2,9 +2,11 @@ mongo ds139322.mlab.com:39322/my_match_dev -u farid -p farid
 
 // Return a count of all users with a given name
 db.users.find({ name: "John"}).count()
+db.users.find({ name: "Test"}).count()
 
 // Remove all users with a specific name
 db.users.remove({ name: "John"})
+db.users.remove({ name: "Test"})
 
 // Delete a collection
 db.messages.drop() && db.conversations.drop()
