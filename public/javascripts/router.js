@@ -12,44 +12,27 @@ export default (() => {
     window.location.hash = '#home'
   }
 
-  // window.onpopstate = () => {
-  //   console.log("onpopstate")
-  // }
+  window.addEventListener('popstate', (e) => {
+    console.log('e\n', e)
+  })
 
   window.addEventListener('hashchange', () => {
-    if (window.location.hash === '#home') {
-      document.getElementById('app').innerHTML = layout + WelcomeHomePage();
-      window.history.pushState('', '', 'home');
-      console.log("window.location\n", window.location)
-    } else if (window.location.hash === '#login') {
-      document.getElementById('app').innerHTML = layout + loginPage;
-      window.history.pushState('', '', 'login');
-      console.log("window.location\n", window.location)
+    console.log('hash\n', window.location.hash)
+    switch (window.location.hash) {
+      case '#home':
+        document.getElementById('app').innerHTML = layout + WelcomeHomePage();
+        window.history.pushState({page: 'homePage'}, '', 'home');
+        window.history.pushState({page: 'homePage'}, '', 'home');
+        window.location.hash = ''
+        break;
+      case '#login':
+        document.getElementById('app').innerHTML = layout + loginPage;
+        window.history.pushState({page: 'loginPage'}, '', 'login');
+        window.history.pushState({page: 'loginPage'}, '', 'login');
+        window.location.hash = ''
+        break;
+      default:
+        break;
     }
   })
-  // if (!window.location.hash) {
-  //   console.log("empty hash")
-  //   window.location.hash = '#home'
-  //   console.log("Not empty anymore!")
-  //   document.getElementById('app').innerHTML = layout + WelcomeHomePage();
-
-  // } else if (window.location.hash === '#home') {
-  //   console.log("home page")
-  //   document.getElementById('app').innerHTML = layout + WelcomeHomePage();
-  // }
-  // else if (window.location.pathname === '/login') {
-  //   document.getElementById('app').innerHTML = layout + loginPage;
-  // } else if (window.location.pathname === '/register') {
-  //   document.getElementById('app').innerHTML = layout + personalInfo;
-  //   // PersonalInfoValidation()
-  //   HandleSignUp()
-  // } else if (window.location.hash === '#about') {
-  //   document.getElementById('app').innerHTML = layout + profileAbout;
-  // }
 })
-
-// const navigate = () => {
-//   console.log("window.location.hash.substr(1)\n", window.location.hash.substr(1))
-//   console.log("navigate")
-//   window.location.pathname = '/'
-// }
