@@ -4,6 +4,10 @@ let countrySelected
 let stateSelected
 let citySelected
 
+let countrySelection
+let stateSelection
+let citySelection
+
 const almostDone = `<center><h2>Sweet!  Almost done</h2></center>`
 
 const titleStyle = {
@@ -77,8 +81,7 @@ const getAllCountries = () => {
 }
 
 const handleCountrySelection = () => {
-  stateSelected.options.length = 1
-  citySelected.options.length = 1
+  countrySelection = countrySelected.options[countrySelected.selectedIndex].text
   stateSelected.style.display = 'none'
 
   // For U.S. states
@@ -102,7 +105,7 @@ const handleCountrySelection = () => {
 }
 
 const handleStateSelection = () => {
-  citySelected.options.length = 1
+  stateSelection = stateSelected.options[stateSelected.selectedIndex].text
 
   axios.get(`/register/api/city-list?city=${stateSelected.value}`)
   .then(city => {
@@ -113,6 +116,8 @@ const handleStateSelection = () => {
 }
 
 const handleCitySelection = () => {
+  citySelection = citySelected.options[citySelected.selectedIndex].text
+
   axios.get(`/register/api/city-list?city=${stateSelected.value}`)
   .then(city => {
     city.data.map(city => {
@@ -126,16 +131,13 @@ const handleCitySelection = () => {
 
 const handleDone = event => {
   event.preventDefault()
-  const country = countrySelected.value
-  const state = stateSelected.value === 'State' ? null : stateSelected.value
-  const city = citySelected.value
   const userId = Cookies.get("userId")
 
   const data = {
-    country,
-    state,
-    city,
     userId,
+    countrySelection,
+    stateSelection,
+    citySelection,
   }
 
   axios.post('/register/api/about', { data })

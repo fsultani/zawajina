@@ -24,27 +24,46 @@ router.get('/api/city-list', (req, res) => {
 })
 
 router.post('/api/about', (req, res) => {
-  const { country, state, city, userId } = req.body.data
-  const countryId = parseInt(country)
-  const stateId = parseInt(state !== null ? state : null)
-  const cityId = parseInt(city)
-  console.log("stateId\n", stateId)
+  // console.log("req.body.data\n", req.body.data)
+  const { countrySelection, stateSelection, citySelection, userId } = req.body.data
 
-  const countryName = countries.getCountryById(countryId - 1)
-  const stateName = stateId ? countries.getStateById(stateId - 1) : null
-  const cityName = countries.getCitiesOfState(cityId - 1)
+  let stateSelected;
+  let citySelected;
 
-  // console.log("countryName\n", countryName)
-  // console.log("stateName\n", stateName)
-  // console.log("cityName\n", cityName)
+  const countrySelected = countries.getAllCountries()
+    .filter(country => country.name === countrySelection ? countrySelection : null)
+
+  // For U.S. states
+  if (countrySelected.length === 1 && countrySelected[0].id === '231') {
+    stateSelected = countries.getStatesOfCountry(231)
+      .filter(state => state.name === stateSelection ? stateSelected : null)
+    citySelected = countries.getCitiesOfState(231)
+      .filter(city => city.name === citySelection)
+  } else if (countrySelected.length === 1 && countrySelected[0].id !== '231') {
+    // For non U.S. cities
+    stateSelected = null
+    citySelected = countries.getStatesOfCountry(countrySelected[0].id)
+      .filter(city => city.name === citySelection)
+  }
+
+  const usersCountry = countrySelected.length === 1 ? countrySelected[0].name : null
+  const usersState = stateSelected && stateSelected.length === 1 ? stateSelected[0].name : null
+  const usersCity = citySelected.length === 1 ? citySelected[0].name : null
 
   User.update({ _id: userId }, {
     $set: {
-      country: countryName.name,
-      state: stateName ? stateName : null,
-      city: cityName.name,
+      country: usersCountry,
+      state: usersState,
+      city: usersCity,
     }
-  }, (err, userFound) => {})
+  }, (err, userFound) => {
+    if (err) {
+      console.log("err\n", err)
+      res.send("There was an error")
+    } else {
+      res.send("Success")
+    }
+  })
 })
 
 router.post('/api/personal-info', [
@@ -84,13 +103,10 @@ router.post('/api/personal-info', [
         })
 
         User.createUser(newUser, (err, user) => {
-          console.log("err\n", err)
-          console.log("user\n", user)
           const token = jwt.encode({ email: user.email }, JWT_SECRET)
           const userId = user.id
           res.status(201).send({ userId })
         })
-        // res.status(201).end()
       } else if (userExists.email) {
         res.json({ error: "Email already exists"})
       } else {
