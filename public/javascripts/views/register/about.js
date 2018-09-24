@@ -143,25 +143,36 @@ const handleDone = event => {
   axios.post('/register/api/about', { data })
   .then(res => {
     console.log("res.data\n", res.data)
-    // if (!res.data.error) {
-    //   for (var element in registrationForm.elements) {
-    //     registrationForm.elements[element].disabled = true
-    //   }
-    //   window.location.pathname = '/register/about'
-    // } else {
-    //   const error = document.createElement('div')
-    //   error.setAttribute('id', 'registrationError')
-    //   error.classList.add("alert")
-    //   error.classList.add("alert-danger")
-    //   error.innerHTML = 'Email already exists'
-    //   error.style.width = '100%';
-    //   error.style.height = 'auto';
-    //   error.style.textAlign = 'center';
-    //   const container = document.getElementById('my-app')
-    //   container.before(error)
-    // }
+    if (res.status === 201) {
+      const success = document.createElement('div')
+      const container = document.getElementById('my-app')
+      success.setAttribute('id', 'registrationSuccessful')
+      success.classList.add("alert")
+      success.classList.add("alert-success")
+      success.innerHTML = '<h4>You have successfully registered!  You are now being redirected to the login screen.</h4>'
+      success.style.color = 'green';
+      success.style.width = '100%';
+      success.style.height = 'auto';
+      success.style.textAlign = 'center';
+      container.before(success)
+      setTimeout(() => {
+        console.log("Go to login")
+        window.location.pathname = '/login'
+      }, 3000)
+    }
+      // const error = document.createElement('div')
+      // error.setAttribute('id', 'registrationError')
+      // error.classList.add("alert")
+      // error.classList.add("alert-danger")
+      // error.innerHTML = 'Email already exists'
+      // error.style.width = '100%';
+      // error.style.height = 'auto';
+      // error.style.textAlign = 'center';
+      // const container = document.getElementById('my-app')
+      // container.before(error)
   })
   .catch(error => {
+    console.log("error\n", error)
     // const errors = document.createElement('div')
     // errors.setAttribute('id', 'errors')
     // const errorMessagesArray = error.response.data.error.map(err => {

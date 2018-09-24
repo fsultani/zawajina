@@ -35,14 +35,14 @@ router.post('/api/about', (req, res) => {
   // For U.S. states
   if (countrySelected.length === 1 && countrySelected[0].id === '231') {
     stateSelected = countries.getStatesOfCountry(231)
-      .filter(state => state.name === stateSelection ? stateSelected : null)
+      .filter(state => state.name === stateSelection ? stateSelection : null)
     citySelected = countries.getCitiesOfState(231)
-      .filter(city => city.name === citySelection)
+      .filter(city => city.name === citySelection ? citySelection : null)
   } else if (countrySelected.length === 1 && countrySelected[0].id !== '231') {
     // For non U.S. cities
     stateSelected = null
     citySelected = countries.getStatesOfCountry(countrySelected[0].id)
-      .filter(city => city.name === citySelection)
+      .filter(city => city.name === citySelection ? citySelection : null)
   }
 
   const usersCountry = countrySelected.length === 1 ? countrySelected[0].name : null
@@ -57,10 +57,10 @@ router.post('/api/about', (req, res) => {
     }
   }, (err, userFound) => {
     if (err) {
-      console.log("err\n", err)
-      res.send("There was an error")
+      res.send({error: err})
     } else {
-      res.send("Success")
+      console.log("userId\n", userId)
+      res.status(201).send(userId)
     }
   })
 })
