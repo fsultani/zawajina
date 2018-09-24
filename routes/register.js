@@ -24,7 +24,6 @@ router.get('/api/city-list', (req, res) => {
 })
 
 router.post('/api/about', (req, res) => {
-  // console.log("req.body.data\n", req.body.data)
   const { countrySelection, stateSelection, citySelection, userId } = req.body.data
 
   let stateSelected;
