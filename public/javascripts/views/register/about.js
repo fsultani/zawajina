@@ -16,12 +16,6 @@ const titleStyle = {
   'text-align': 'center',
 }
 
-const sectionSeparator = {
-  'padding-bottom': '10px',
-  'margin': '0 25%',
-  'border-bottom': '1px solid #ccc',
-}
-
 const title = `
   <div id="copy">
     <p>
@@ -73,6 +67,8 @@ const doneButton = `
     </div>
   </div>
 `
+
+const lineBreak = `<div><hr style="width: 50%" /></div>`
 
 const getAllCountries = () => {
   axios.get('/register/api/all-countries')
@@ -171,10 +167,9 @@ const handleDone = event => {
 
 window.addEventListener('load', () => {
   if (window.location.pathname === '/register/about') {
-    const profileAboutPage = layout + almostDone + title + countryList + stateList + cityList + doneButton
+    const profileAboutPage = layout + almostDone + title + countryList + stateList + cityList + doneButton + lineBreak
     document.getElementById('my-app').innerHTML = profileAboutPage;
     Object.assign(document.getElementById('copy').style, titleStyle)
-    Object.assign(document.getElementById('sectionSeparator').style, sectionSeparator)
 
     document.getElementById('submitButton').disabled = true
     countrySelected = document.forms.countryForm.elements.countryName
