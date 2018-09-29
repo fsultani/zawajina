@@ -16,13 +16,16 @@ const titleStyle = {
   'text-align': 'center',
 }
 
+const sectionSeparator = {
+  'padding-bottom': '10px',
+  'margin': '0 25%',
+  'border-bottom': '1px solid #ccc',
+}
+
 const title = `
   <div id="copy">
     <p>
-      To help match you with the right type of people, please answer a few questions.
-    </p>
-    <p>
-      We promise it won't take long.
+      To help match you with the right type of people, please answer a few short questions.
     </p>
   </div>
 `
@@ -62,7 +65,7 @@ const cityList = `
 `
 
 const doneButton = `
-  <div class="row">
+  <div class="row" id="sectionSeparator">
     <div class="col-md-4 col-md-offset-4 text-center">
       <button onclick="handleDone(event)" class="btn btn-success" id="submitButton">
         Done!  Let's do this!
@@ -171,6 +174,7 @@ window.addEventListener('load', () => {
     const profileAboutPage = layout + almostDone + title + countryList + stateList + cityList + doneButton
     document.getElementById('my-app').innerHTML = profileAboutPage;
     Object.assign(document.getElementById('copy').style, titleStyle)
+    Object.assign(document.getElementById('sectionSeparator').style, sectionSeparator)
 
     document.getElementById('submitButton').disabled = true
     countrySelected = document.forms.countryForm.elements.countryName
