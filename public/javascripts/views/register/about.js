@@ -24,6 +24,29 @@ const title = `
   </div>
 `
 
+const DOB = `
+  <form name="dob">
+    <div class="form-group col-md-4 col-md-offset-4" style="padding-left: 0">
+      <h5>Gender</h5>
+      <div class="gender-input-group">
+        <input
+          id="male"
+          type="radio"
+          name="gender"
+          value="male"
+        >
+        <label for="male" class="gender-male">Male</label>
+        <input
+          id="female"
+          type="radio"
+          name="gender"
+          value="female"
+        >
+        <label for="female">Female</label>
+      </div>
+    </div>
+  </form>
+`
 const countryList = `
   <div>
     <form name="countryForm">
@@ -167,7 +190,7 @@ const handleDone = event => {
 
 window.addEventListener('load', () => {
   if (window.location.pathname === '/register/about') {
-    const profileAboutPage = layout + almostDone + title + countryList + stateList + cityList + doneButton + lineBreak
+    const profileAboutPage = layout + almostDone + title + DOB + countryList + stateList + cityList + doneButton + lineBreak
     document.getElementById('my-app').innerHTML = profileAboutPage;
     Object.assign(document.getElementById('copy').style, titleStyle)
 

@@ -31,6 +31,7 @@
   padding: 0;
   zoom: 1;
   width: 100%;
+  display: flex;
 }
 
 .gender-input-group:before,
@@ -46,7 +47,7 @@
 input[type="radio"] + label,
 select option,
 select {
-  width: 30%;
+  width: 100%;
   text-align: center;
   padding: 1em;
   line-height: 1.4;
@@ -87,7 +88,9 @@ input[type="radio"] {
   padding: 0;
 }
 
-
+.gender-male {
+  margin-right: 10px;
+}
 
 /*.gender-male, .gender-female {
   display: flex;
@@ -98,9 +101,9 @@ input[type="radio"] {
   background-color: #f9f9f9;
   border: 1px solid #e5e5e5;
   border-radius: 3px;
-}
+}*/
 
-.gender-female {
+/*.gender-female {
   margin-left: 2rem;
 }*/
 

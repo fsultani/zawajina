@@ -196,26 +196,6 @@ register = `
         </div>
       </div>
 
-      <div class="col-half">
-        <h5>Gender</h5>
-        <div class="gender-input-group">
-          <input
-            id="male"
-            type="radio"
-            name="gender"
-            value="male"
-          >
-          <label for="male">Male</label>
-          <input
-            id="female"
-            type="radio"
-            name="gender"
-            value="female"
-          >
-          <label for="female">Female</label>
-        </div>
-      </div>
-
       <div>
         <div>Date of Birth</div>
         <div class="form-group col-md-4" style="padding-left: 0">
