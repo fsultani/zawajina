@@ -26,6 +26,10 @@
   box-sizing: border-box;
 }
 
+.gender-container {
+  margin-bottom: 0;
+}
+
 .gender-input-group {
   margin-bottom: 1em;
   padding: 0;
@@ -126,4 +130,13 @@ input[type="checkbox"] + label:after {
   opacity: 0;
   font-family: FontAwesome;
   content: "\f00c";
+}
+
+.dob-container {
+  display: flex;
+  margin-bottom: 25px;
+}
+
+.birthMonth, .birthDate {
+  margin-right: 10px;
 }

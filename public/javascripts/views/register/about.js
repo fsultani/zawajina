@@ -8,6 +8,18 @@ let countrySelection
 let stateSelection
 let citySelection
 
+const day = () => {
+  const dayOptions = []
+  const res = [...Array(32)].map((_, i) => dayOptions.push(`<option>${i+1}</option>`))
+  return dayOptions
+}
+
+const year = () => {
+  let yearOptions = []
+  const res = [...Array(61)].map((_, i) => yearOptions.push(`<option>${1940+i}</option>`))
+  return yearOptions.reverse()
+}
+
 const almostDone = `<center><h2>Sweet!  Almost done</h2></center>`
 
 const titleStyle = {
@@ -24,9 +36,9 @@ const title = `
   </div>
 `
 
-const DOB = `
-  <form name="dob">
-    <div class="form-group col-md-4 col-md-offset-4" style="padding-left: 0">
+const genderSelection = `
+  <form name="gender">
+    <div class="col-md-4 col-md-offset-4 gender-container" style="padding-left: 0">
       <h5>Gender</h5>
       <div class="gender-input-group">
         <input
@@ -46,6 +58,37 @@ const DOB = `
       </div>
     </div>
   </form>
+`
+
+const dob = `
+  <div class="col-md-4 col-md-offset-4" style="padding-left: 0">
+    <div>Date of Birth</div>
+    <div class="dob-container">
+      <select name="birthMonth" class="form-control birthMonth" required>
+        <option>Month</option>
+        <option>January</option>
+        <option>February</option>
+        <option>March</option>
+        <option>April</option>
+        <option>May</option>
+        <option>June</option>
+        <option>July</option>
+        <option>August</option>
+        <option>September</option>
+        <option>October</option>
+        <option>November</option>
+        <option>December</option>
+      </select>
+      <select name="birthDate" class="form-control birthDate" required>
+        <option>Day</option>
+        ${day()}
+      </select>
+      <select name="birthYear" class="form-control" required>
+        <option>Year</option>
+        ${year()}
+      </select>
+    </div>
+  </div>
 `
 const countryList = `
   <div>
@@ -190,7 +233,7 @@ const handleDone = event => {
 
 window.addEventListener('load', () => {
   if (window.location.pathname === '/register/about') {
-    const profileAboutPage = layout + almostDone + title + DOB + countryList + stateList + cityList + doneButton + lineBreak
+    const profileAboutPage = layout + almostDone + title + genderSelection + dob + countryList + stateList + cityList + doneButton + lineBreak
     document.getElementById('my-app').innerHTML = profileAboutPage;
     Object.assign(document.getElementById('copy').style, titleStyle)
 

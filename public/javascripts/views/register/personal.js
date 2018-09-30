@@ -81,18 +81,6 @@ const isPasswordValid = () => {
   return document.forms.registration.elements.password.value.length >= 8
 }
 
-const day = () => {
-  const dayOptions = []
-  const res = [...Array(32)].map((_, i) => dayOptions.push(`<option>${i+1}</option>`))
-  return dayOptions
-}
-
-const year = () => {
-  let yearOptions = []
-  const res = [...Array(61)].map((_, i) => yearOptions.push(`<option>${1940+i}</option>`))
-  return yearOptions.reverse()
-}
-
 const handleSignUp = event => {
   event.preventDefault()
   handleNameError()
@@ -193,39 +181,6 @@ register = `
         </div>
         <div id="passwordInfo" style="font-size: 12px; margin-top: 5px;">
           Your password needs at least 8 characters
-        </div>
-      </div>
-
-      <div>
-        <div>Date of Birth</div>
-        <div class="form-group col-md-4" style="padding-left: 0">
-          <select name="birthMonth" class="form-control" required>
-            <option>Month</option>
-            <option>January</option>
-            <option>February</option>
-            <option>March</option>
-            <option>April</option>
-            <option>May</option>
-            <option>June</option>
-            <option>July</option>
-            <option>August</option>
-            <option>September</option>
-            <option>October</option>
-            <option>November</option>
-            <option>December</option>
-          </select>
-        </div>
-        <div class="form-group col-md-4">
-          <select name="birthDate" class="form-control" required>
-            <option>Day</option>
-            ${day()}
-          </select>
-        </div>
-        <div class="form-group col-md-4">
-          <select name="birthYear" class="form-control" required>
-            <option>Year</option>
-            ${year()}
-          </select>
         </div>
       </div>
 
