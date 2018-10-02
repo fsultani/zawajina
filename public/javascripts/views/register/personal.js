@@ -97,10 +97,10 @@ const handleSignUp = event => {
     name: registrationForm.elements.name.value,
     email: registrationForm.elements.email.value,
     password: registrationForm.elements.password.value,
-    gender: registrationForm.elements.gender.value,
-    birthMonth: registrationForm.elements.birthMonth.value,
-    birthDate: registrationForm.elements.birthDate.value,
-    birthYear: registrationForm.elements.birthYear.value,
+    // gender: registrationForm.elements.gender.value,
+    // birthMonth: registrationForm.elements.birthMonth.value,
+    // birthDate: registrationForm.elements.birthDate.value,
+    // birthYear: registrationForm.elements.birthYear.value,
   }
   axios.post('/register/api/personal-info', { userRegistrationForm })
   .then(res => {
@@ -202,14 +202,12 @@ window.addEventListener('load', () => {
     document.getElementById('my-app').innerHTML = registrationPage;
     const registrationFormElement = document.forms.registration.elements
 
-    registrationFormElement.signUpButton.disabled = false
+    registrationFormElement.signUpButton.disabled = true
     document.getElementById('passwordIsValid').style.display = 'none'
     document.getElementById('nameIsValid').style.display = 'none'
     document.getElementById('emailIsValid').style.display = 'none'
 
     let nameEmailPassword = document.querySelectorAll("[name='name'], [name='email'], [name='password']")
-    let genderButtons = document.querySelectorAll("input[type='radio']")
-    let DOB = document.querySelectorAll("[name='birthMonth'], [name='birthDate'], [name='birthYear']")
     for (let i = 0; i < nameEmailPassword.length; i++) {
       nameEmailPassword[i].onkeyup = () => {
         if (
@@ -217,35 +215,7 @@ window.addEventListener('load', () => {
           registrationFormElement.email.checkValidity() &&
           isPasswordValid()
         ) {
-          if (
-            registrationFormElement.male.checked ||
-            registrationFormElement.female.checked
-          ) {
-            registrationFormElement.signUpButton.disabled = false
-          } else {
-            for (let i = 0; i < genderButtons.length; i++) {
-              genderButtons[i].onchange = () => {
-                if (
-                  registrationFormElement.male.checked ||
-                  registrationFormElement.female.checked
-                ) {
-                  for (let i = 0; i < DOB.length; i++) {
-                    DOB[i].onchange = () => {
-                      if (
-                        registrationFormElement.birthMonth.value !== 'Month' &&
-                        registrationFormElement.birthDate.value !== 'Day' &&
-                        registrationFormElement.birthYear.value !== 'Year'
-                      ) {
-                        registrationFormElement.signUpButton.disabled = false
-                      } else {
-                        registrationFormElement.signUpButton.disabled = true
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
+          registrationFormElement.signUpButton.disabled = false
         } else {
           registrationFormElement.signUpButton.disabled = true
         }

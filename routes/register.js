@@ -69,18 +69,10 @@ router.post('/api/personal-info', [
   check('userRegistrationForm.name').not().isEmpty().withMessage('Enter your name'),
   check('userRegistrationForm.email').isEmail().withMessage('Enter a valid email address'),
   check('userRegistrationForm.password').not().isEmpty().withMessage('Enter a password'),
-  check('userRegistrationForm.gender').not().isEmpty().withMessage('Select your gender'),
-  check('userRegistrationForm.birthMonth').not().equals('Month').withMessage('Select your birth month'),
-  check('userRegistrationForm.birthDate').not().equals('Day').withMessage('Select your birth day'),
-  check('userRegistrationForm.birthYear').not().equals('Year').withMessage('Select your birth year'),
   ], (req, res) => {
   const name = req.body.userRegistrationForm.name
   const email = req.body.userRegistrationForm.email
   const password = req.body.userRegistrationForm.password
-  const gender = req.body.userRegistrationForm.gender
-  const birthMonth = req.body.userRegistrationForm.birthMonth
-  const birthDate = req.body.userRegistrationForm.birthDate
-  const birthYear = req.body.userRegistrationForm.birthYear
 
   const getErrors = validationResult(req)
   if (!getErrors.isEmpty()) {
@@ -92,10 +84,10 @@ router.post('/api/personal-info', [
           name,
           email,
           password,
-          gender,
-          birthMonth,
-          birthDate,
-          birthYear,
+          gender: null,
+          birthMonth: null,
+          birthDate: null,
+          birthYear: null,
           country: null,
           state: null,
           city: null,

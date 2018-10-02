@@ -15,19 +15,27 @@ var User = mongoose.Schema({
   },
   gender: {
     type: String,
-    required: true
+    required: function() {
+      return typeof this.gender === null || (this.gender !== null && typeof this.gender !== 'string')
+    }
   },
   birthMonth: {
     type: String,
-    required: true
+    required: function() {
+      return typeof this.birthMonth === null || (this.birthMonth !== null && typeof this.birthMonth !== 'string')
+    }
   },
   birthDate: {
     type: Number,
-    required: true
+    required: function() {
+      return typeof this.birthDate === null || (this.birthDate !== null && typeof this.birthDate !== 'string')
+    }
   },
   birthYear: {
     type: Number,
-    required: true
+    required: function() {
+      return typeof this.birthYear === null || (this.birthYear !== null && typeof this.birthYear !== 'string')
+    }
   },
   country: {
     type: String,
