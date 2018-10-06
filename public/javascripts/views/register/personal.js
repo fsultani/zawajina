@@ -97,10 +97,6 @@ const handleSignUp = event => {
     name: registrationForm.elements.name.value,
     email: registrationForm.elements.email.value,
     password: registrationForm.elements.password.value,
-    // gender: registrationForm.elements.gender.value,
-    // birthMonth: registrationForm.elements.birthMonth.value,
-    // birthDate: registrationForm.elements.birthDate.value,
-    // birthYear: registrationForm.elements.birthYear.value,
   }
   axios.post('/register/api/personal-info', { userRegistrationForm })
   .then(res => {

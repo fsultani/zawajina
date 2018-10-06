@@ -195,17 +195,15 @@ const handleDone = event => {
   const userId = Cookies.get("userId")
 
   const usersAboutInfo = document.forms.about
-  // const userRegistrationForm = {
-  //   name: registrationForm.elements.name.value,
-  //   email: registrationForm.elements.email.value,
-  //   password: registrationForm.elements.password.value,
-  //   gender: registrationForm.elements.gender.value,
-  //   birthMonth: registrationForm.elements.birthMonth.value,
-  //   birthDate: registrationForm.elements.birthDate.value,
-  //   birthYear: registrationForm.elements.birthYear.value,
-  // }
+  const usersAboutForm = {
+    gender: usersAboutInfo.elements.gender.value,
+    birthMonth: usersAboutInfo.elements.birthMonth.value,
+    birthDate: usersAboutInfo.elements.birthDate.value,
+    birthYear: usersAboutInfo.elements.birthYear.value,
+  }
 
   const data = {
+    usersAboutForm,
     userId,
     countrySelection,
     stateSelection,

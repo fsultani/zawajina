@@ -24,7 +24,7 @@ router.get('/api/city-list', (req, res) => {
 })
 
 router.post('/api/about', (req, res) => {
-  const { countrySelection, stateSelection, citySelection, userId } = req.body.data
+  const { usersAboutForm, countrySelection, stateSelection, citySelection, userId } = req.body.data
 
   let stateSelected;
   let citySelected;
@@ -52,6 +52,10 @@ router.post('/api/about', (req, res) => {
 
   User.update({ _id: userId }, {
     $set: {
+      gender: usersAboutForm.gender,
+      birthMonth: usersAboutForm.birthMonth,
+      birthDate: usersAboutForm.birthDate,
+      birthYear: usersAboutForm.birthYear,
       country: usersCountry,
       state: usersState,
       city: usersCity,
