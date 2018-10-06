@@ -194,12 +194,7 @@ const handleDone = event => {
   event.preventDefault()
   const userId = Cookies.get("userId")
 
-  console.log("countrySelection\n", countrySelection)
-  console.log("stateSelection\n", stateSelection)
-  console.log("citySelection\n", citySelection)
-
   const usersAboutInfo = document.forms.about
-  console.log("usersAboutInfo\n", usersAboutInfo)
   // const userRegistrationForm = {
   //   name: registrationForm.elements.name.value,
   //   email: registrationForm.elements.email.value,

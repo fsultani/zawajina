@@ -36,7 +36,8 @@ router.post('/api/about', (req, res) => {
   if (countrySelected.length === 1 && countrySelected[0].id === '231') {
     stateSelected = countries.getStatesOfCountry(231)
       .filter(state => state.name === stateSelection ? stateSelection : null)
-    citySelected = countries.getCitiesOfState(231)
+
+    citySelected = countries.getCitiesOfState(stateSelected[0].id)
       .filter(city => city.name === citySelection ? citySelection : null)
   } else if (countrySelected.length === 1 && countrySelected[0].id !== '231') {
     // For non U.S. cities
@@ -59,7 +60,6 @@ router.post('/api/about', (req, res) => {
     if (err) {
       res.send({error: err})
     } else {
-      console.log("userId\n", userId)
       res.status(201).send(userId)
     }
   })
