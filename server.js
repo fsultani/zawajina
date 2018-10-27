@@ -15,7 +15,7 @@ const mongoose = require('mongoose')
 if (process.env.NODE_ENV === 'mlab-dev') {
   require('./db_credentials')
   mongoose.connect(process.env.MONGO_DB_MLAB_DEV)
-  console.log("Using mlab:", process.env.NODE_ENV)
+  console.log("\nUsing mlab\n")
 } else if (process.env.NODE_ENV === 'local') {
   require('./db_credentials')
   mongoose.connect(process.env.LOCAL)
