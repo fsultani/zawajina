@@ -21,7 +21,7 @@ const handleCountrySelection = () => {
   countrySelection = countrySelected.options[countrySelected.selectedIndex].text
   stateSelected.style.display = 'none'
 
-  // For U.S. states
+  // U.S. states
   if (countrySelected.value === '231') {
     stateSelected.style.display = 'block'
     axios.get('/register/api/state-list?country=231')
@@ -31,11 +31,13 @@ const handleCountrySelection = () => {
       })
     })
   } else {
-    // For non U.S. cities
+    // Non U.S. cities
     axios.get(`/register/api/state-list?country=${countrySelected.value}`)
-    .then(state => {
-      state.data.map(state => {
-        citySelected.options[citySelected.options.length] = new Option(state.name, state.id)
+    .then(city => {
+      city.data.map(city => {
+        console.log("city.name\n", city.name)
+        console.log("citySelected.options.length\n", citySelected.options.length)
+        citySelected.options[citySelected.options.length] = new Option(city.name, city.id)
       })
     })
   }
@@ -58,6 +60,7 @@ const handleCitySelection = () => {
   axios.get(`/register/api/city-list?city=${stateSelected.value}`)
   .then(city => {
     city.data.map(city => {
+      console.log("city.name\n", city.name)
       citySelected.options[citySelected.options.length] = new Option(city.name, city.id)
     })
   })
