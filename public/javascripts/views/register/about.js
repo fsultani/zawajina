@@ -70,7 +70,7 @@ const handleCitySelection = () => {
 
 const day = () => {
   const dayOptions = []
-  const res = [...Array(32)].map((_, i) => dayOptions.push(`<option>${i+1}</option>`))
+  const res = [...Array(31)].map((_, i) => dayOptions.push(`<option>${i+1}</option>`))
   return dayOptions
 }
 
@@ -123,7 +123,7 @@ const dob = `
     <div>Date of Birth</div>
     <div class="dob-container">
       <select name="birthMonth" class="form-control birthMonth" required>
-        <option>Month</option>
+        <option selected disabled>Month</option>
         <option>January</option>
         <option>February</option>
         <option>March</option>
@@ -138,11 +138,11 @@ const dob = `
         <option>December</option>
       </select>
       <select name="birthDate" class="form-control birthDate" required>
-        <option>Day</option>
+        <option selected disabled>Day</option>
         ${day()}
       </select>
       <select name="birthYear" class="form-control" required>
-        <option>Year</option>
+        <option selected disabled>Year</option>
         ${year()}
       </select>
     </div>
