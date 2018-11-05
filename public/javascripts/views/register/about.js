@@ -197,7 +197,7 @@ const handleDone = event => {
   const userId = Cookies.get("userId")
 
   const usersAboutInfo = document.forms.about
-  const usersAboutForm = {
+  const userAboutForm = {
     gender: usersAboutInfo.elements.gender.value,
     birthMonth: usersAboutInfo.elements.birthMonth.value,
     birthDate: usersAboutInfo.elements.birthDate.value,
@@ -205,7 +205,7 @@ const handleDone = event => {
   }
 
   const data = {
-    usersAboutForm,
+    userAboutForm,
     userId,
     countrySelection,
     stateSelection,

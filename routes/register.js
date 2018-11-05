@@ -3,10 +3,51 @@ const { check, body, validationResult } = require('express-validator/check')
 const countries = require('country-state-city')
 const jwt = require('jwt-simple')
 const JWT_SECRET = Buffer.from('fe1a1915a379f3be5394b64d14794932', 'hex')
+const moment = require('moment')
 
 const User = require('../models/user')
 
 const router = express.Router()
+
+router.post('/api/personal-info', [
+  check('userRegistrationForm.name').not().isEmpty().withMessage('Enter your name'),
+  check('userRegistrationForm.email').isEmail().withMessage('Enter a valid email address'),
+  check('userRegistrationForm.password').not().isEmpty().withMessage('Enter a password'),
+  ], (req, res) => {
+  const name = req.body.userRegistrationForm.name
+  const email = req.body.userRegistrationForm.email
+  const password = req.body.userRegistrationForm.password
+
+  const getErrors = validationResult(req)
+  if (!getErrors.isEmpty()) {
+    return res.status(400).json({ error: getErrors.array() })
+  } else {
+    User.findOne({ email }, (err, userExists) => {
+      if (!userExists) {
+        const newUser = new User ({
+          name,
+          email,
+          password,
+          gender: null,
+          age: null,
+          country: null,
+          state: null,
+          city: null,
+        })
+
+        User.createUser(newUser, (err, user) => {
+          const token = jwt.encode({ email: user.email }, JWT_SECRET)
+          const userId = user.id
+          res.status(201).send({ userId })
+        })
+      } else if (userExists.email) {
+        res.json({ error: "Email already exists"})
+      } else {
+        res.json({ error: "Unknown error" })
+      }
+    })
+  }
+})
 
 router.get('/api/all-countries', (req, res) => {
   const countryList = countries.getAllCountries()
@@ -24,7 +65,12 @@ router.get('/api/city-list', (req, res) => {
 })
 
 router.post('/api/about', (req, res) => {
-  const { usersAboutForm, countrySelection, stateSelection, citySelection, userId } = req.body.data
+  const { userAboutForm, countrySelection, stateSelection, citySelection, userId } = req.body.data
+
+  const dobMonth = moment().month(userAboutForm.birthMonth).format('MM')
+  const dobDate = moment().date(userAboutForm.birthDate).format('DD')
+  const fullDob = `${userAboutForm.birthYear}-${dobMonth}-${dobDate}`
+  const usersDob = moment().diff(fullDob, 'years')
 
   let stateSelected;
   let citySelected;
@@ -52,10 +98,8 @@ router.post('/api/about', (req, res) => {
 
   User.update({ _id: userId }, {
     $set: {
-      gender: usersAboutForm.gender,
-      birthMonth: usersAboutForm.birthMonth,
-      birthDate: usersAboutForm.birthDate,
-      birthYear: usersAboutForm.birthYear,
+      gender: userAboutForm.gender,
+      age: usersDob,
       country: usersCountry,
       state: usersState,
       city: usersCity,
@@ -67,48 +111,6 @@ router.post('/api/about', (req, res) => {
       res.status(201).send(userId)
     }
   })
-})
-
-router.post('/api/personal-info', [
-  check('userRegistrationForm.name').not().isEmpty().withMessage('Enter your name'),
-  check('userRegistrationForm.email').isEmail().withMessage('Enter a valid email address'),
-  check('userRegistrationForm.password').not().isEmpty().withMessage('Enter a password'),
-  ], (req, res) => {
-  const name = req.body.userRegistrationForm.name
-  const email = req.body.userRegistrationForm.email
-  const password = req.body.userRegistrationForm.password
-
-  const getErrors = validationResult(req)
-  if (!getErrors.isEmpty()) {
-    return res.status(400).json({ error: getErrors.array() })
-  } else {
-    User.findOne({ email }, (err, userExists) => {
-      if (!userExists) {
-        const newUser = new User ({
-          name,
-          email,
-          password,
-          gender: null,
-          birthMonth: null,
-          birthDate: null,
-          birthYear: null,
-          country: null,
-          state: null,
-          city: null,
-        })
-
-        User.createUser(newUser, (err, user) => {
-          const token = jwt.encode({ email: user.email }, JWT_SECRET)
-          const userId = user.id
-          res.status(201).send({ userId })
-        })
-      } else if (userExists.email) {
-        res.json({ error: "Email already exists"})
-      } else {
-        res.json({ error: "Unknown error" })
-      }
-    })
-  }
 })
 
 module.exports = router
