@@ -170,6 +170,23 @@ const cityList = `
   </div>
 `
 
+const ethnicity = `
+  <div class="form-group col-md-4 col-md-offset-4" style="padding-left: 0">
+    <select name="ethnicity" class="form-control" onchange="handleEthnicity()" required>
+      <option selected disabled>Ethnicity</option>
+      <option>Arab</option>
+      <option>Asian</option>
+      <option>Black</option>
+      <option>Hispanic/Latino</option>
+      <option>Persian</option>
+      <option>South Asian</option>
+      <option>White</option>
+      <option>Mixed</option>
+      <option>Other</option>
+    </select>
+  </div>
+`
+
 const doneButton = `
   <div class="row" id="sectionSeparator">
     <div class="col-md-4 col-md-offset-4 text-center">
@@ -187,6 +204,7 @@ const aboutForm = `
     ${countryList}
     ${stateList}
     ${cityList}
+    ${ethnicity}
     ${doneButton}
   </form>
 `
@@ -196,20 +214,20 @@ const handleDone = event => {
   event.preventDefault()
   const userId = Cookies.get("userId")
 
-  const usersAboutInfo = document.forms.about
-  const userAboutForm = {
-    gender: usersAboutInfo.elements.gender.value,
-    birthMonth: usersAboutInfo.elements.birthMonth.value,
-    birthDate: usersAboutInfo.elements.birthDate.value,
-    birthYear: usersAboutInfo.elements.birthYear.value,
+  const userAboutInfo = document.forms.about
+  const usersInfo = {
+    gender: userAboutInfo.elements.gender.value,
+    birthMonth: userAboutInfo.elements.birthMonth.value,
+    birthDate: userAboutInfo.elements.birthDate.value,
+    birthYear: userAboutInfo.elements.birthYear.value,
+    countrySelection,
+    stateSelection,
+    citySelection
   }
 
   const data = {
-    userAboutForm,
+    usersInfo,
     userId,
-    countrySelection,
-    stateSelection,
-    citySelection,
   }
 
   axios.post('/register/api/about', { data })
