@@ -172,7 +172,7 @@ const cityList = `
 
 const ethnicity = `
   <div class="form-group col-md-4 col-md-offset-4" style="padding-left: 0">
-    <select name="ethnicity" class="form-control" onchange="handleEthnicity()" required>
+    <select name="ethnicity" class="form-control" required>
       <option selected disabled>Ethnicity</option>
       <option>Arab</option>
       <option>Asian</option>
@@ -222,7 +222,8 @@ const handleDone = event => {
     birthYear: userAboutInfo.elements.birthYear.value,
     countrySelection,
     stateSelection,
-    citySelection
+    citySelection,
+    ethnicity: userAboutInfo.elements.ethnicity.value
   }
 
   const data = {

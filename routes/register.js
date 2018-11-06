@@ -33,6 +33,7 @@ router.post('/api/personal-info', [
           country: null,
           state: null,
           city: null,
+          ethnicity: null,
         })
 
         User.createUser(newUser, (err, user) => {
@@ -65,8 +66,20 @@ router.get('/api/city-list', (req, res) => {
 })
 
 router.post('/api/about', (req, res) => {
-  const { usersInfo, userId } = req.body.data
-  const { gender, birthMonth, birthDate, birthYear, countrySelection, stateSelection, citySelection } = usersInfo
+  const {
+    usersInfo,
+    userId
+  } = req.body.data
+  const {
+    gender,
+    birthMonth,
+    birthDate,
+    birthYear,
+    countrySelection,
+    stateSelection,
+    citySelection,
+    ethnicity 
+  } = usersInfo
 
   const dobMonth = moment().month(birthMonth).format('MM')
   const dobDate = moment().date(birthDate).format('DD')
@@ -99,11 +112,12 @@ router.post('/api/about', (req, res) => {
 
   User.update({ _id: userId }, {
     $set: {
-      gender: gender,
+      gender,
       age: usersDob,
       country: usersCountry,
       state: usersState,
       city: usersCity,
+      ethnicity,
     }
   }, (err, userFound) => {
     if (err) {
