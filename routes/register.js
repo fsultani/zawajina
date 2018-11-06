@@ -65,12 +65,11 @@ router.get('/api/city-list', (req, res) => {
 })
 
 router.post('/api/about', (req, res) => {
-  const { usersInfo, userId } = req.body.data
-  const { gender, birthMonth, birthDate, birthYear, countrySelection, stateSelection, citySelection } = usersInfo
+  const { userAboutForm, countrySelection, stateSelection, citySelection, userId } = req.body.data
 
-  const dobMonth = moment().month(birthMonth).format('MM')
-  const dobDate = moment().date(birthDate).format('DD')
-  const fullDob = `${birthYear}-${dobMonth}-${dobDate}`
+  const dobMonth = moment().month(userAboutForm.birthMonth).format('MM')
+  const dobDate = moment().date(userAboutForm.birthDate).format('DD')
+  const fullDob = `${userAboutForm.birthYear}-${dobMonth}-${dobDate}`
   const usersDob = moment().diff(fullDob, 'years')
 
   let stateSelected;
@@ -99,7 +98,7 @@ router.post('/api/about', (req, res) => {
 
   User.update({ _id: userId }, {
     $set: {
-      gender: gender,
+      gender: userAboutForm.gender,
       age: usersDob,
       country: usersCountry,
       state: usersState,
