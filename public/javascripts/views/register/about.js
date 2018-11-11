@@ -1,12 +1,12 @@
 'use strict';
 
-let countrySelected
-let stateSelected
-let citySelected
-
-let countrySelection
-let stateSelection
-let citySelection
+let countrySelected;
+let stateSelected;
+let citySelected;
+let countrySelection;
+let stateSelection;
+let citySelection;
+let nationalitiesList;
 
 const getAllCountries = () => {
   axios.get('/register/api/all-countries')
@@ -78,6 +78,15 @@ const year = () => {
   let yearOptions = []
   const res = [...Array(61)].map((_, i) => yearOptions.push(`<option>${1940+i}</option>`))
   return yearOptions.reverse()
+}
+
+const getNationalities = () => {
+  axios.get('/register/api/nationalities')
+  .then(nationality => {
+    nationality.data.map(name => {
+      nationalitiesList.options[nationalitiesList.options.length] = new Option(name.label)
+    })
+  })
 }
 
 const almostDone = `<center><h2>Sweet!  Almost done</h2></center>`
@@ -174,92 +183,6 @@ const ethnicity = `
   <div class="form-group col-md-4 col-md-offset-4" style="padding-left: 0; margin-top: 15px;">
     <select name="ethnicity" class="form-control" required>
       <option selected disabled>Family Background</option>
-        <optgroup label="Central Asian">
-          <option>Afghan</option>
-          <option>Armenian</option>
-          <option>Azerbaijani</option>
-          <option>Georgian</option>
-          <option>Kazakh</option>
-          <option>Mongolian</option>
-          <option>Tajik</option>
-          <option>Turkmen</option>
-          <option>Uzbek</option>
-        </optgroup>
-
-        <optgroup label="East Asian">
-          <option>Chinese</option>
-          <option>Japanese</option>
-          <option>Korean</option>
-          <option>Okinawan</option>
-          <option>Taiwanese</option>
-          <option>Tibetan</option>
-        </optgroup>
-
-        <optgroup label="Native Hawaiian/Pacific Islander">
-          <option>Carolinian</option>
-          <option>Chamorro</option>
-          <option>Chuukese</option>
-          <option>Fijian</option>
-          <option>Guamanian</option>
-          <option>Hawaiian</option>
-          <option>Kosraean</option>
-          <option>Marshallesse</option>
-          <option>Niuean</option>
-          <option>Palauan</option>
-          <option>Pohnpeian</option>
-          <option>Samoan</option>
-          <option>Tokelauan</option>
-          <option>Tongan</option>
-          <option>Yapese</option>
-        </optgroup>
-
-        <optgroup label="Southeast Asian">
-          <option>Bruneian</option>
-          <option>Burmese</option>
-          <option>Cambodian</option>
-          <option>Filipino</option>
-          <option>Hmong</option>
-          <option>Indonesian</option>
-          <option>Laotian</option>
-          <option>Malaysian</option>
-          <option>Mien</option>
-          <option>Papua</option>
-          <option>New Guinean</option>
-          <option>Singaporean</option>
-          <option>Timorese</option>
-          <option>Thai</option>
-          <option>Vietnamese</option>
-        </optgroup>
-
-        <optgroup label="South Asian">
-          <option>Bangladeshi</option>
-          <option>Bhutanese</option>
-          <option>Indian</option>
-          <option>Maldivians</option>
-          <option>Nepali</option>
-          <option>Pakistani</option>
-          <option>Sri Lankan</option>
-        </optgroup>
-
-        <optgroup label="Middle Eastern">
-          <option>Bahrain</option>
-          <option>Iran</option>
-          <option>Iraq</option>
-          <option>Israel</option>
-          <option>Jordan</option>
-          <option>Kuwait</option>
-          <option>Lebanon</option>
-          <option>Oman</option>
-          <option>Palestine</option>
-          <option>Qatar</option>
-          <option>Saudi Arabia</option>
-          <option>Syria</option>
-          <option>Turkey</option>
-          <option>United Arab Emirates</option>
-          <option>Yemen</option>
-        </optgroup>
-      <option>Mixed</option>
-      <option>Other</option>
     </select>
   </div>
 `
@@ -335,6 +258,7 @@ const handleDone = event => {
 window.addEventListener('load', () => {
   if (window.location.pathname === '/register/about') {
     getAllCountries()
+    getNationalities()
     const profileAboutPage = layout + almostDone + title + aboutForm
 
     document.getElementById('my-app').innerHTML = profileAboutPage;
@@ -344,6 +268,7 @@ window.addEventListener('load', () => {
     countrySelected = document.forms.about.elements.countryName
     stateSelected = document.forms.about.elements.stateName
     citySelected = document.forms.about.elements.cityName
+    nationalitiesList = document.forms.about.elements.ethnicity
 
     stateSelected.style.display = 'none'
   }
