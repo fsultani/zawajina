@@ -171,7 +171,7 @@ const cityList = `
 `
 
 const ethnicity = `
-  <div class="form-group col-md-4 col-md-offset-4" style="padding-left: 0">
+  <div class="form-group col-md-4 col-md-offset-4" style="padding-left: 0; margin-top: 15px;">
     <select name="ethnicity" class="form-control" required>
       <option selected disabled>Family Background</option>
         <optgroup label="Central Asian">
