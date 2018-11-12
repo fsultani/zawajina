@@ -194,4 +194,17 @@ const nationalities = [
   { value: 'other', label: 'Other' },
 ];
 
-module.exports.allNationalities = () => nationalities;
+const allNationalities = {
+  getNationality: function (input) {
+    let result = nationalities.filter((value, index) => {
+      return value.value.slice(0, input.length) === input
+      // if (value.value.slice(0, input.length) === input) {
+      //   console.log("value.label\n", value.label)
+      // }
+      // [...Array(input.length)].map((_, i) => {})
+      // return value.label === nationality
+    })
+    return result
+  }
+}
+module.exports = allNationalities;
