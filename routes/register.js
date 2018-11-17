@@ -4,7 +4,7 @@ const countries = require('country-state-city')
 const jwt = require('jwt-simple')
 const JWT_SECRET = Buffer.from('fe1a1915a379f3be5394b64d14794932', 'hex')
 const moment = require('moment')
-const allNationalities = require('./nationalities')
+const nationalities = require('./nationalities')
 
 const User = require('../models/user')
 
@@ -67,7 +67,7 @@ router.get('/api/city-list', (req, res) => {
 })
 
 router.get('/api/nationalities', (req, res) => {
-  res.send(allNationalities.getNationality(req.query.name))
+  res.send(nationalities.allNationalities())
 })
 
 router.post('/api/about', (req, res) => {

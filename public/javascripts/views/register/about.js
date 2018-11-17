@@ -97,16 +97,6 @@ const titleStyle = {
   'text-align': 'center',
 }
 
-const autocompleteItemsStyle = {
-  'position': 'absolute',
-  'border': '1px solid #d4d4d4',
-  'border-bottom': 'none',
-  'border-top': 'none',
-  'z-index': '99',
-  'top': '100%',
-  'left': '0',
-  'right': '0',
-}
 const title = `
   <div id="copy">
     <p>
@@ -190,17 +180,10 @@ const cityList = `
 `
 
 const ethnicity = `
-  <div class="form-group col-md-4 col-md-offset-4" id="autocompleteEthnicity" style="padding-left: 0; margin-top: 15px;">
-    <input
-      type="text"
-      class="form-control"
-      placeholder="Family Background"
-      name="ethnicity_input"
-      id="ethnicity_input"
-      list="ethnicity_list"
-      required
-    >
-    <datalist id="ethnicity_list"></datalist>
+  <div class="form-group col-md-4 col-md-offset-4" style="padding-left: 0; margin-top: 15px;">
+    <select name="ethnicity" class="form-control" required>
+      <option selected disabled>Family Background</option>
+    </select>
   </div>
 `
 
@@ -288,26 +271,5 @@ window.addEventListener('load', () => {
     nationalitiesList = document.forms.about.elements.ethnicity
 
     stateSelected.style.display = 'none'
-
-    const ethnicity_input = document.getElementById('ethnicity_input')
-    ethnicity_input.addEventListener("keyup", (event) => {
-      const userInput = event.target.value
-      const ethnicity_list = document.getElementById('ethnicity_list')
-      const min_characters = 0
-
-      axios.get('/register/api/nationalities', {
-        params: {
-          name: userInput
-        }
-      })
-      .then(res => {
-        res.data.map(data => {
-          const ethnicityContainer = document.getElementById('autocompleteEthnicity')
-          const value = document.createElement('div')
-          value.innerHTML = `<div style="border: 1px solid #d4d4d4">${data.label}</div>`
-          ethnicityContainer.appendChild(value)
-        })
-      })
-    })
   }
 })
