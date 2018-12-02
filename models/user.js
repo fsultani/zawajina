@@ -48,6 +48,12 @@ var User = mongoose.Schema({
       return typeof this.ethnicity === null || (this.ethnicity !== null && typeof this.ethnicity !== 'string')
     }
   },
+  profession: {
+    type: String,
+    required: function() {
+      return typeof this.profession === null || (this.profession !== null && typeof this.profession !== 'string')
+    }
+  },
   profilePicture: {
     type: String
   }

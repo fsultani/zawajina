@@ -6,9 +6,9 @@ Page 1:
 Page 2:
 - Gender
 - DOB
-- City
-- Background/Ethnicity
-Work
+- City (autocomplete)
+- Background/Ethnicity (autocomplete)
+Work (manual)
 Profile Headline
 About you
 I am a convert/revert (toggle)

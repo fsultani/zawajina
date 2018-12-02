@@ -7,6 +7,7 @@ let countrySelection;
 let stateSelection;
 let citySelection;
 let nationalitiesList;
+let professionsList;
 
 const getAllCountries = () => {
   axios.get('/register/api/all-countries')
@@ -82,9 +83,18 @@ const year = () => {
 
 const getNationalities = () => {
   axios.get('/register/api/nationalities')
-  .then(nationality => {
-    nationality.data.map(name => {
-      nationalitiesList.options[nationalitiesList.options.length] = new Option(name.label)
+  .then(nationalities => {
+    nationalities.data.map(nationality => {
+      nationalitiesList.options[nationalitiesList.options.length] = new Option(nationality.label)
+    })
+  })
+}
+
+const getAllProfessions = () => {
+  axios.get('/register/api/professions')
+  .then(professions => {
+    professions.data.map(profession => {
+      professionsList.options[professionsList.options.length] = new Option(profession.label)
     })
   })
 }
@@ -187,6 +197,14 @@ const ethnicity = `
   </div>
 `
 
+const profession = `
+  <div class="form-group col-md-4 col-md-offset-4" style="padding-left: 0; margin-top: 15px;">
+    <select name="profession" class="form-control" required>
+      <option selected disabled>Profession</option>
+    </select>
+  </div>
+`
+
 const doneButton = `
   <div class="row" id="sectionSeparator">
     <div class="col-md-4 col-md-offset-4 text-center">
@@ -205,6 +223,7 @@ const aboutForm = `
     ${stateList}
     ${cityList}
     ${ethnicity}
+    ${profession}
     ${doneButton}
   </form>
 `
@@ -223,7 +242,8 @@ const handleDone = event => {
     countrySelection,
     stateSelection,
     citySelection,
-    ethnicity: userAboutInfo.elements.ethnicity.value
+    ethnicity: userAboutInfo.elements.ethnicity.value,
+    profession: userAboutInfo.elements.profession.value
   }
 
   const data = {
@@ -234,20 +254,20 @@ const handleDone = event => {
   axios.post('/register/api/about', { data })
   .then(res => {
     if (res.status === 201) {
-      // const success = document.createElement('div')
-      // const container = document.getElementById('my-app')
-      // success.setAttribute('id', 'registrationSuccessful')
-      // success.classList.add("alert")
-      // success.classList.add("alert-success")
-      // success.innerHTML = '<h4>You have successfully registered!  You are now being redirected to the login screen.</h4>'
-      // success.style.color = 'green';
-      // success.style.width = '100%';
-      // success.style.height = 'auto';
-      // success.style.textAlign = 'center';
-      // container.before(success)
-      setTimeout(() => {
-        // window.location.pathname = '/login'
-      }, 3000)
+      const success = document.createElement('div')
+      const container = document.getElementById('my-app')
+      success.setAttribute('id', 'registrationSuccessful')
+      success.classList.add("alert")
+      success.classList.add("alert-success")
+      success.innerHTML = '<h4>You have successfully registered!  You are now being redirected to the login screen.</h4>'
+      success.style.color = 'green';
+      success.style.width = '100%';
+      success.style.height = 'auto';
+      success.style.textAlign = 'center';
+      container.before(success)
+      // setTimeout(() => {
+      //   window.location.pathname = '/login'
+      // }, 3000)
     }
   })
   .catch(error => {
@@ -259,8 +279,9 @@ window.addEventListener('load', () => {
   if (window.location.pathname === '/register/about') {
     getAllCountries()
     getNationalities()
-    const profileAboutPage = layout + almostDone + title + aboutForm
+    getAllProfessions()
 
+    const profileAboutPage = layout + almostDone + title + aboutForm
     document.getElementById('my-app').innerHTML = profileAboutPage;
     Object.assign(document.getElementById('copy').style, titleStyle)
 
@@ -269,6 +290,7 @@ window.addEventListener('load', () => {
     stateSelected = document.forms.about.elements.stateName
     citySelected = document.forms.about.elements.cityName
     nationalitiesList = document.forms.about.elements.ethnicity
+    professionsList = document.forms.about.elements.profession
 
     stateSelected.style.display = 'none'
   }

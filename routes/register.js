@@ -5,6 +5,7 @@ const jwt = require('jwt-simple')
 const JWT_SECRET = Buffer.from('fe1a1915a379f3be5394b64d14794932', 'hex')
 const moment = require('moment')
 const nationalities = require('./nationalities')
+const professions = require('./professions')
 
 const User = require('../models/user')
 
@@ -35,6 +36,7 @@ router.post('/api/personal-info', [
           state: null,
           city: null,
           ethnicity: null,
+          profession: null,
         })
 
         User.createUser(newUser, (err, user) => {
@@ -70,6 +72,10 @@ router.get('/api/nationalities', (req, res) => {
   res.send(nationalities.allNationalities())
 })
 
+router.get('/api/professions', (req, res) => {
+  res.send(professions.allProfessions())
+})
+
 router.post('/api/about', (req, res) => {
   const {
     usersInfo,
@@ -83,7 +89,8 @@ router.post('/api/about', (req, res) => {
     countrySelection,
     stateSelection,
     citySelection,
-    ethnicity 
+    ethnicity,
+    profession,
   } = usersInfo
 
   const dobMonth = moment().month(birthMonth).format('MM')
@@ -123,6 +130,7 @@ router.post('/api/about', (req, res) => {
       state: usersState,
       city: usersCity,
       ethnicity,
+      profession,
     }
   }, (err, userFound) => {
     if (err) {
