@@ -16,7 +16,7 @@ const getAllCountries = () => {
       countrySelected.options[countrySelected.options.length] = new Option(country.name, country.id)
     })
   })
-}
+};
 
 const handleCountrySelection = () => {
   countrySelection = countrySelected.options[countrySelected.selectedIndex].text
@@ -41,7 +41,7 @@ const handleCountrySelection = () => {
       })
     })
   }
-}
+};
 
 const handleStateSelection = () => {
   stateSelection = stateSelected.options[stateSelected.selectedIndex].text
@@ -53,7 +53,7 @@ const handleStateSelection = () => {
       citySelected.options[citySelected.options.length] = new Option(city.name, city.id)
     })
   })
-}
+};
 
 const handleCitySelection = () => {
   citySelection = citySelected.options[citySelected.selectedIndex].text
@@ -67,19 +67,19 @@ const handleCitySelection = () => {
   if (countrySelected.value && stateSelected.value && citySelected.value) {
     document.getElementById('submitButton').disabled = false
   }
-}
+};
 
 const day = () => {
   const dayOptions = []
   const res = [...Array(31)].map((_, i) => dayOptions.push(`<option>${i+1}</option>`))
   return dayOptions
-}
+};
 
 const year = () => {
   let yearOptions = []
   const res = [...Array(61)].map((_, i) => yearOptions.push(`<option>${1940+i}</option>`))
   return yearOptions.reverse()
-}
+};
 
 const getNationalities = () => {
   axios.get('/register/api/nationalities')
@@ -88,7 +88,7 @@ const getNationalities = () => {
       nationalitiesList.options[nationalitiesList.options.length] = new Option(nationality.label)
     })
   })
-}
+};
 
 const getAllProfessions = () => {
   axios.get('/register/api/professions')
@@ -97,27 +97,27 @@ const getAllProfessions = () => {
       professionsList.options[professionsList.options.length] = new Option(profession.label)
     })
   })
-}
+};
 
-const almostDone = `<center><h2>Sweet!  Almost done</h2></center>`
+const almostDone = `<center><h2>Sweet!  Almost done</h2></center>`;
 
 const titleStyle = {
   'font-size': '16px',
   'color': '#727272',
   'text-align': 'center',
-}
+};
 
 const title = `
   <div id="copy">
     <p>
-      To help match you with the right type of people, please answer a few short questions.
+      To help match you with the right type of people, please answer some short questions.
     </p>
   </div>
-`
+`;
 
 const genderSelection = `
   <div class="col-md-4 col-md-offset-4 gender-container" style="padding-left: 0">
-    <h5>Gender</h5>
+    <label>Gender</label>
     <div class="gender-input-group">
       <input
         id="male"
@@ -135,11 +135,11 @@ const genderSelection = `
       <label for="female">Female</label>
     </div>
   </div>
-`
+`;
 
 const dob = `
   <div class="col-md-4 col-md-offset-4" style="padding-left: 0">
-    <div>Date of Birth</div>
+    <label>Date of Birth</label>
     <div class="dob-container">
       <select name="birthMonth" class="form-control birthMonth" required>
         <option selected disabled>Month</option>
@@ -166,28 +166,31 @@ const dob = `
       </select>
     </div>
   </div>
-`
+`;
+
 const countryList = `
   <div class="form-group col-md-4 col-md-offset-4" style="padding-left: 0">
     <select name="countryName" class="form-control" onchange="handleCountrySelection()" required>
       <option selected disabled>Country</option>
     </select>
   </div>
-`
+`;
+
 const stateList = `
   <div class="form-group col-md-4 col-md-offset-4" style="padding-left: 0">
     <select name="stateName" class="form-control" onchange="handleStateSelection()">
       <option selected disabled>State</option>
     </select>
   </div>
-`
+`;
+
 const cityList = `
   <div class="form-group col-md-4 col-md-offset-4" style="padding-left: 0">
     <select name="cityName" class="form-control" onchange="handleCitySelection()" required>
       <option selected disabled>City</option>
     </select>
   </div>
-`
+`;
 
 const ethnicity = `
   <div class="form-group col-md-4 col-md-offset-4" style="padding-left: 0; margin-top: 15px;">
@@ -195,7 +198,7 @@ const ethnicity = `
       <option selected disabled>Family Background</option>
     </select>
   </div>
-`
+`;
 
 const profession = `
   <div class="form-group col-md-4 col-md-offset-4" style="padding-left: 0; margin-top: 15px;">
@@ -203,7 +206,16 @@ const profession = `
       <option selected disabled>Profession</option>
     </select>
   </div>
-`
+`;
+
+const aboutMe = `
+  <div class="form-group col-md-6 col-md-offset-3" style="padding-left: 0; margin-top: 15px;">
+    <div class="form-group shadow-textarea">
+      <label>Say something about yourself</label>
+      <textarea name="aboutMe" class="form-control" id="about-me-box-shadow" rows="8" placeholder="Write something here..."></textarea>
+    </div>
+  </div>
+`;
 
 const doneButton = `
   <div class="row" id="sectionSeparator">
@@ -213,7 +225,7 @@ const doneButton = `
       </button>
     </div>
   </div>
-`
+`;
 
 const aboutForm = `
   <form name="about">
@@ -224,10 +236,12 @@ const aboutForm = `
     ${cityList}
     ${ethnicity}
     ${profession}
+    ${aboutMe}
     ${doneButton}
   </form>
-`
-const lineBreak = `<div><hr style="width: 50%" /></div>`
+`;
+
+const lineBreak = `<div><hr style="width: 50%" /></div>`;
 
 const handleDone = event => {
   event.preventDefault()
@@ -243,7 +257,8 @@ const handleDone = event => {
     stateSelection,
     citySelection,
     ethnicity: userAboutInfo.elements.ethnicity.value,
-    profession: userAboutInfo.elements.profession.value
+    profession: userAboutInfo.elements.profession.value,
+    about: userAboutInfo.elements.aboutMe.value
   }
 
   const data = {
@@ -273,7 +288,7 @@ const handleDone = event => {
   .catch(error => {
     console.log("error\n", error)
   })
-}
+};
 
 window.addEventListener('load', () => {
   if (window.location.pathname === '/register/about') {
@@ -294,4 +309,4 @@ window.addEventListener('load', () => {
 
     stateSelected.style.display = 'none'
   }
-})
+});
