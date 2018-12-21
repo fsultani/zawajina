@@ -37,6 +37,7 @@ router.post('/api/personal-info', [
           city: null,
           ethnicity: null,
           profession: null,
+          aboutUserLines: null,
         })
 
         User.createUser(newUser, (err, user) => {
@@ -79,8 +80,10 @@ router.get('/api/professions', (req, res) => {
 router.post('/api/about', (req, res) => {
   const {
     usersInfo,
+    aboutUserLines,
     userId
   } = req.body.data
+
   const {
     gender,
     birthMonth,
@@ -131,6 +134,7 @@ router.post('/api/about', (req, res) => {
       city: usersCity,
       ethnicity,
       profession,
+      aboutUserLines,
     }
   }, (err, userFound) => {
     if (err) {

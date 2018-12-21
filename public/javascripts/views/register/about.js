@@ -247,6 +247,7 @@ const handleDone = event => {
   event.preventDefault()
   const userId = Cookies.get("userId")
 
+
   const userAboutInfo = document.forms.about
   const usersInfo = {
     gender: userAboutInfo.elements.gender.value,
@@ -258,11 +259,12 @@ const handleDone = event => {
     citySelection,
     ethnicity: userAboutInfo.elements.ethnicity.value,
     profession: userAboutInfo.elements.profession.value,
-    about: userAboutInfo.elements.aboutMe.value
   }
 
+  const aboutUserLines = userAboutInfo.elements.aboutMe.value.replace(/(\r\n|\n|\r)/gm, '<br />')
   const data = {
     usersInfo,
+    aboutUserLines,
     userId,
   }
 
@@ -280,9 +282,9 @@ const handleDone = event => {
       success.style.height = 'auto';
       success.style.textAlign = 'center';
       container.before(success)
-      // setTimeout(() => {
-      //   window.location.pathname = '/login'
-      // }, 3000)
+      setTimeout(() => {
+        window.location.pathname = '/login'
+      }, 3000)
     }
   })
   .catch(error => {
@@ -300,7 +302,7 @@ window.addEventListener('load', () => {
     document.getElementById('my-app').innerHTML = profileAboutPage;
     Object.assign(document.getElementById('copy').style, titleStyle)
 
-    document.forms.about.elements.submitButton.disabled = true
+    // document.forms.about.elements.submitButton.disabled = true
     countrySelected = document.forms.about.elements.countryName
     stateSelected = document.forms.about.elements.stateName
     citySelected = document.forms.about.elements.cityName

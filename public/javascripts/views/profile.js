@@ -31,10 +31,11 @@ window.addEventListener('load', () => {
             <div class="col-sm-6">
               <h4>Here is your basic info</h4>
               <div class="thumbnail" style="border-radius: 12px">
-                <p>Name: ${member.name} ${member.last_name}</p>
-                <p>email: ${member.email}</p>
-                <p>username: ${member.username}</p>
-                <p>gender: ${member.gender}</p>
+                <p>Name: ${member.name}</p>
+                <p>Email: ${member.email}</p>
+                <p>Username: ${member.username}</p>
+                <p>Gender: ${member.gender}</p>
+                <p>About: ${member.aboutUserLines}</p>
               </div>
               <label class="btn btn-primary btn-file">
                 Browse <input type="file" id="fileUpload" style="display: none;" name="faridsImage">

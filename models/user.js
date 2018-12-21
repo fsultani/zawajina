@@ -54,6 +54,12 @@ var User = mongoose.Schema({
       return typeof this.profession === null || (this.profession !== null && typeof this.profession !== 'string')
     }
   },
+  aboutUserLines: {
+    type: String,
+    required: function() {
+      return typeof this.aboutUserLines === null || (this.aboutUserLines !== null && typeof this.aboutUserLines !== 'string')
+    }
+  },
   profilePicture: {
     type: String
   }
