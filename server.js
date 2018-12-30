@@ -6,7 +6,7 @@ const bodyParser = require('body-parser')
 const session = require('express-session')
 const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy;
-// const osascript = require('node-osascript');
+const osascript = require('node-osascript');
 
 const flash = require('connect-flash')
 const mongo = require('mongodb')
