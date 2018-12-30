@@ -107,7 +107,8 @@ app.use(function(err, req, res, next) {
 
 const port = process.env.PORT || 3000;
 
-// Reload the app on every file change if env=dev
+// Reload the app on every file change.
+// This is for dev only.
 if (process.env.NODE_ENV === 'mlab-dev') {
   osascript.execute(
     `
