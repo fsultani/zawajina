@@ -108,19 +108,19 @@ app.use(function(err, req, res, next) {
 const port = process.env.PORT || 3000;
 
 // Reload the app on every file change
-// osascript.execute(
-//   `
-//   tell application "Google Chrome"
-//     set current_site to URL of active tab of front window
-//     if current_site contains ("http://localhost:3000") then
-//       reload active tab of front window
-//     end if
-//   end tell
+osascript.execute(
+  `
+  tell application "Google Chrome"
+    set current_site to URL of active tab of front window
+    if current_site contains ("http://localhost:3000") then
+      reload active tab of front window
+    end if
+  end tell
 
-//   `, (err, result, raw) => {
-//     if (err) return console.error(err)
-//     }
-// );
+  `, (err, result, raw) => {
+    if (err) return console.error(err)
+    }
+);
 
 app.listen(port, () => {
   console.log("Listening on port " + port)
