@@ -6,7 +6,7 @@ const bodyParser = require('body-parser')
 const session = require('express-session')
 const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy;
-const osascript = require('node-osascript');
+// const osascript = require('node-osascript');
 
 const flash = require('connect-flash')
 const mongo = require('mongodb')
@@ -14,14 +14,14 @@ const mongoose = require('mongoose')
 
 if (process.env.NODE_ENV === 'mlab-dev') {
   require('./db_credentials')
-  mongoose.connect(process.env.MONGO_DB_MLAB_DEV)
+  mongoose.connect(process.env.MONGO_DB_MLAB_DEV, { useNewUrlParser: true })
   console.log("\nUsing mlab\n")
 } else if (process.env.NODE_ENV === 'local') {
   require('./db_credentials')
-  mongoose.connect(process.env.LOCAL)
+  mongoose.connect(process.env.LOCAL, { useNewUrlParser: true })
   console.log("Using local db - mongodb://localhost/my_match_local_dev")
 } else {
-  mongoose.connect(process.env.HEROKU)
+  mongoose.connect(process.env.HEROKU, { useNewUrlParser: true })
   console.log("Heroku deployment")
 }
 
@@ -108,19 +108,19 @@ app.use(function(err, req, res, next) {
 const port = process.env.PORT || 3000;
 
 // Reload the app on every file change
-osascript.execute(
-  `
-  tell application "Google Chrome"
-    set current_site to URL of active tab of front window
-    if current_site contains ("http://localhost:3000") then
-      reload active tab of front window
-    end if
-  end tell
+// osascript.execute(
+//   `
+//   tell application "Google Chrome"
+//     set current_site to URL of active tab of front window
+//     if current_site contains ("http://localhost:3000") then
+//       reload active tab of front window
+//     end if
+//   end tell
 
-  `, (err, result, raw) => {
-    if (err) return console.error(err)
-    }
-);
+//   `, (err, result, raw) => {
+//     if (err) return console.error(err)
+//     }
+// );
 
 app.listen(port, () => {
   console.log("Listening on port " + port)
