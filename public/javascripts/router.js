@@ -7,26 +7,31 @@ import WelcomeHomePage from './views/home.js';
 import loginPage from './views/login.js';
 
 export default (() => {
-  if (!window.location.hash) {
-    console.log("Empty hash")
-    window.location.hash = '#home'
+  let { pathname, hash } = window.location;
+  if (!hash || hash === '#home' || (pathname && hash)) {
+    window.history.replaceState(null, null, '/');
+    document.getElementById('app').innerHTML = layout + WelcomeHomePage();
   }
 
   window.addEventListener('popstate', (e) => {
     // console.log('e\n', e)
+    console.log("popstate\n", window.location)
   })
 
   window.addEventListener('hashchange', () => {
+    console.log("hashchange\n", window.location)
     switch (window.location.hash) {
       case '#home':
-        // window.location.hash = ''
+        window.history.replaceState(null, null, '/');
         document.getElementById('app').innerHTML = layout + WelcomeHomePage();
-        // window.history.pushState('', '', window.location.hash.slice(1));
         break;
       case '#login':
-        // window.location.hash = ''
+        window.history.replaceState(null, null, '/login');
         document.getElementById('app').innerHTML = layout + loginPage;
-        // window.history.pushState('', '', window.location.hash.slice(1));
+        break;
+      case '#register':
+        window.history.replaceState(null, null, '/register');
+        document.getElementById('app').innerHTML = layout + personalInfo;
         break;
       default:
         break;
