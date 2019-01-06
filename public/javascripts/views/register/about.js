@@ -302,7 +302,7 @@ window.addEventListener('load', () => {
     document.getElementById('my-app').innerHTML = profileAboutPage;
     Object.assign(document.getElementById('copy').style, titleStyle)
 
-    // document.forms.about.elements.submitButton.disabled = true
+    document.forms.about.elements.submitButton.disabled = true
     countrySelected = document.forms.about.elements.countryName
     stateSelected = document.forms.about.elements.stateName
     citySelected = document.forms.about.elements.cityName
