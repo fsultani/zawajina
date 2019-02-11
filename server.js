@@ -73,7 +73,9 @@ app.use(function (req, res, next) {
 
 // Catch all 'get' requests, and respond with public/index.html
 app.get('*', (req, res, next) => {
-  if (req.url.indexOf('/api/') === -1) {
+  if (req.url === '/favicon.ico') {
+    res.status(204)
+  } else if (req.url.indexOf('/api/') === -1) {
     res.sendFile(path.join(__dirname, 'public/index.html'))
     // res.sendFile(path.join(__dirname, 'public/index-no-network.html'))
   } else {
