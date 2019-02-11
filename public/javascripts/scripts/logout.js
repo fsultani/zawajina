@@ -1,4 +1,4 @@
-const logout = () => {
+const handleLogout = () => {
   Cookies.remove('token')
   Cookies.remove('name')
   Cookies.remove('id')

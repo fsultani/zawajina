@@ -7,33 +7,38 @@ import WelcomeHomePage from './views/home.js';
 import loginPage from './views/login.js';
 
 const Router = () => {
-  console.log("window.location\n", window.location)
-  console.log("Cookies.get('token')\n", Cookies.get('token'))
+  axios.defaults.headers.common['authorization'] = Cookies.get('token')
   let { pathname, hash } = window.location;
-  if (!Cookies.get('token')) {
+
+  const loginScript = document.createElement('script');
+  loginScript.src = 'javascripts/scripts/login.js';
+  document.head.appendChild(loginScript);
+
+  const logoutScript = document.createElement('script');
+  logoutScript.src = 'javascripts/scripts/logout.js';
+  document.head.appendChild(logoutScript);
+  if (Cookies.get('token')) {
+    layout() + WelcomeHomePage();
+  } else {
     window.history.pushState(null, null, '/login');
     document.getElementById('app').innerHTML = layout() + loginPage();
-    const loginScript = document.createElement('script');
-    loginScript.src = 'javascripts/scripts/login.js';
-    document.head.appendChild(loginScript);
-  } else {
-    document.getElementById('app').innerHTML = layout() + WelcomeHomePage();
   }
 
   window.addEventListener('popstate', (e) => {
-    console.log("popstate\n", window.location.pathname)
     switch (window.location.pathname) {
       case '/':
-        document.getElementById('app').innerHTML = layout() + WelcomeHomePage();
+        layout() + WelcomeHomePage();
+        // document.getElementById('app').innerHTML = layout() + WelcomeHomePage();
         break;
       case '/login':
-        document.getElementById('app').innerHTML = layout() + loginPage();
+        // layout() + WelcomeHomePage();
+        // document.getElementById('app').innerHTML = layout() + loginPage();
         break;
       case '/register':
-        document.getElementById('app').innerHTML = layout() + personalInfo;
+        // document.getElementById('app').innerHTML = layout() + personalInfo;
         break;
       case '/home':
-        document.getElementById('app').innerHTML = layout() + WelcomeHomePage();
+        // document.getElementById('app').innerHTML = layout() + WelcomeHomePage();
         break;
       default:
         break;
@@ -41,11 +46,10 @@ const Router = () => {
   })
 
   window.addEventListener('hashchange', () => {
-    console.log("hash\n", window.location.hash)
     switch (window.location.hash) {
       case '#home':
         window.history.replaceState(null, null, '/');
-        document.getElementById('app').innerHTML = layout() + WelcomeHomePage();
+        layout() + WelcomeHomePage();
         break;
       case '#login':
         window.history.replaceState(null, null, '/login');
