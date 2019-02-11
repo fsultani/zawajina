@@ -101,7 +101,7 @@ router.get('/api/profile-info', (req, res, next) => {
 router.get('/api/all-members', (req, res, next) => {
   const token = req.headers['authorization']
   const decodedUser = jwt.decode(token, JWT_SECRET)
-  User.findOne({username: decodedUser.username}, (err, user) => {
+  User.findOne({ email: decodedUser.email }, (err, user) => {
     if (!user) {
       return res.status(403).send("Authentication failed. User not found.")
     } else {
