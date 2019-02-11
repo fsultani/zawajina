@@ -1,4 +1,4 @@
-import { layout } from './views/layout.js';
+import layout from './views/layout.js';
 import { personalInfo } from './views/register/personalInfo/index.js';
 import PersonalInfoValidation from './views/register/personalInfo/validations.js';
 import HandleSignUp from './views/register/personalInfo/handleSignUp.js';
@@ -6,42 +6,34 @@ import profileAbout from './views/register/about/index.js';
 import WelcomeHomePage from './views/home.js';
 import loginPage from './views/login.js';
 
-export default (() => {
+const Router = () => {
+  console.log("window.location\n", window.location)
+  console.log("Cookies.get('token')\n", Cookies.get('token'))
   let { pathname, hash } = window.location;
-  if (!hash || hash === '#home' || (pathname && hash)) {
-    window.history.replaceState(null, null, '/login');
-    // document.getElementById('app').innerHTML = layout + WelcomeHomePage();
-    document.getElementById('app').innerHTML = layout + loginPage();
-
-    document.getElementById("login").onclick = (e) => {
-      e.preventDefault();
-      const email = document.loginForm.email.value
-      const password = document.loginForm.password.value
-      console.log("email\n", email)
-      console.log("password\n", password)
-      axios.post('/login', {
-        email,
-        password
-      }).then(res => {
-        console.log("res.data\n", res.data)
-        Cookies.set('token', res.data.token)
-        Cookies.set('name', res.data.member.name)
-        Cookies.set('id', res.data.member._id)
-        // window.location.pathname = '/home'
-      })
-    }
+  if (!Cookies.get('token')) {
+    window.history.pushState(null, null, '/login');
+    document.getElementById('app').innerHTML = layout() + loginPage();
+    const loginScript = document.createElement('script');
+    loginScript.src = 'javascripts/scripts/login.js';
+    document.head.appendChild(loginScript);
+  } else {
+    document.getElementById('app').innerHTML = layout() + WelcomeHomePage();
   }
 
   window.addEventListener('popstate', (e) => {
+    console.log("popstate\n", window.location.pathname)
     switch (window.location.pathname) {
       case '/':
-        document.getElementById('app').innerHTML = layout + WelcomeHomePage();
+        document.getElementById('app').innerHTML = layout() + WelcomeHomePage();
         break;
       case '/login':
-        document.getElementById('app').innerHTML = layout + loginPage;
+        document.getElementById('app').innerHTML = layout() + loginPage();
         break;
       case '/register':
-        document.getElementById('app').innerHTML = layout + personalInfo;
+        document.getElementById('app').innerHTML = layout() + personalInfo;
+        break;
+      case '/home':
+        document.getElementById('app').innerHTML = layout() + WelcomeHomePage();
         break;
       default:
         break;
@@ -49,21 +41,24 @@ export default (() => {
   })
 
   window.addEventListener('hashchange', () => {
+    console.log("hash\n", window.location.hash)
     switch (window.location.hash) {
       case '#home':
         window.history.replaceState(null, null, '/');
-        document.getElementById('app').innerHTML = layout + WelcomeHomePage();
+        document.getElementById('app').innerHTML = layout() + WelcomeHomePage();
         break;
       case '#login':
         window.history.replaceState(null, null, '/login');
-        document.getElementById('app').innerHTML = layout + loginPage;
+        document.getElementById('app').innerHTML = layout() + loginPage();
         break;
       case '#register':
         window.history.replaceState(null, null, '/register');
-        document.getElementById('app').innerHTML = layout + personalInfo;
+        document.getElementById('app').innerHTML = layout() + personalInfo;
         break;
       default:
         break;
     }
   })
-})
+}
+
+export default Router;
