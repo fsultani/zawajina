@@ -1,4 +1,4 @@
-const layout = () => `
+const layout = () => document.getElementById('app').innerHTML = `
   <div class="container">
     <div class="row">
       <div class="header clearfix">
@@ -9,7 +9,7 @@ const layout = () => `
             </li>
           </ul>
           <ul class="nav nav-pills pull-right">
-            <li role="presentation">${Cookies.get('token') ? `<a href="#logout">Logout</a>` : `<a href="#login">Login</a>`}</li>
+            <li role="presentation">${Cookies.get('token') ? `<a onclick="handleLogout()" href="javascript:void(0)">Logout</a>` : `<a href="#login">Login</a>`}</li>
             <li role="presentation"><a href="#register">Register</a></li>
           </ul>
         </nav>
