@@ -1,4 +1,4 @@
-export const layout = `
+const layout = () => `
   <div class="container">
     <div class="row">
       <div class="header clearfix">
@@ -9,7 +9,7 @@ export const layout = `
             </li>
           </ul>
           <ul class="nav nav-pills pull-right">
-            <li role="presentation"><a href="#login">Login</a></li>
+            <li role="presentation">${Cookies.get('token') ? `<a href="#logout">Logout</a>` : `<a href="#login">Login</a>`}</li>
             <li role="presentation"><a href="#register">Register</a></li>
           </ul>
         </nav>
@@ -17,3 +17,5 @@ export const layout = `
     </div>
   </div>
 `;
+
+export default layout;
