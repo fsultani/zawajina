@@ -1,4 +1,4 @@
-const WelcomeHomePage = () => {
+const Welcome = () => {
   let htmlOutput;
   if (Cookies.get('token')) {
     htmlOutput = `
@@ -39,4 +39,4 @@ const WelcomeHomePage = () => {
   }
 }
 
-export default WelcomeHomePage;
+export default Welcome;
