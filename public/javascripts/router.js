@@ -11,11 +11,11 @@ const Router = () => {
   let { pathname, hash } = window.location;
 
   const loginScript = document.createElement('script');
-  loginScript.src = 'javascripts/scripts/login.js';
+  loginScript.src = 'javascripts/scripts/Login.js';
   document.head.appendChild(loginScript);
 
   const logoutScript = document.createElement('script');
-  logoutScript.src = 'javascripts/scripts/logout.js';
+  logoutScript.src = 'javascripts/scripts/Logout.js';
   document.head.appendChild(logoutScript);
   if (Cookies.get('token')) {
     layout() + WelcomeHomePage();
