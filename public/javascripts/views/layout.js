@@ -10,7 +10,7 @@ const layout = () => document.getElementById('app').innerHTML = `
           </ul>
           <ul class="nav nav-pills pull-right">
             <li role="presentation">${Cookies.get('token') ? `<a onclick="handleLogout()" href="javascript:void(0)">Logout</a>` : `<a href="#login">Login</a>`}</li>
-            <li role="presentation"><a href="#register">Register</a></li>
+            ${Cookies.get('token') ? '' : `<li role="presentation"><a href="#register">Register</a></li>`}
           </ul>
         </nav>
       </div>
