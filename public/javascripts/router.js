@@ -4,7 +4,10 @@ import PersonalInfoValidation from './views/register/personalInfo/validations.js
 import HandleSignUp from './views/register/personalInfo/handleSignUp.js';
 import profileAbout from './views/register/about/index.js';
 import welcome from './views/welcome.js';
-import loginPage from './views/login.js';
+import login from './views/login.js';
+import memberProfile from './views/memberProfile.js';
+
+let currentPath = null;
 
 const Router = () => {
   axios.defaults.headers.common['authorization'] = Cookies.get('token')
@@ -17,22 +20,24 @@ const Router = () => {
   const logoutScript = document.createElement('script');
   logoutScript.src = 'javascripts/scripts/Logout.js';
   document.head.appendChild(logoutScript);
+
   if (Cookies.get('token')) {
-    layout() + welcome();
+    window.location.hash = '#home';
   } else {
-    window.history.pushState(null, null, '/login');
-    document.getElementById('app').innerHTML = layout() + loginPage();
+    document.getElementById('app').innerHTML = layout() + login();
   }
 
   window.addEventListener('popstate', (e) => {
+    if (!e.state) {
+      e.preventDefault()
+      return false;
+    }
     switch (window.location.pathname) {
       case '/':
         layout() + welcome();
-        // document.getElementById('app').innerHTML = layout() + welcome();
         break;
       case '/login':
         // layout() + welcome();
-        // document.getElementById('app').innerHTML = layout() + loginPage();
         break;
       case '/register':
         // document.getElementById('app').innerHTML = layout() + personalInfo;
@@ -46,21 +51,19 @@ const Router = () => {
   })
 
   window.addEventListener('hashchange', () => {
-    switch (window.location.hash) {
-      case '#home':
-        window.history.replaceState(null, null, '/');
-        layout() + welcome();
-        break;
-      case '#login':
-        window.history.replaceState(null, null, '/login');
-        document.getElementById('app').innerHTML = layout() + loginPage();
-        break;
-      case '#register':
-        window.history.replaceState(null, null, '/register');
-        document.getElementById('app').innerHTML = layout() + personalInfo;
-        break;
-      default:
-        break;
+    const { hash } = window.location;
+    if (hash === '#home') {
+      window.history.pushState(null, null, '/');
+      layout() + welcome();
+    } else if (hash === '#login') {
+      window.history.pushState(null, null, '/login');
+      document.getElementById('app').innerHTML = layout() + login();
+    } else if (hash === '#register') {
+      window.history.pushState(null, null, '/register');
+      document.getElementById('app').innerHTML = layout() + personalInfo;
+    } else if (hash.startsWith('#users')) {
+      window.history.pushState(null, null, hash);
+      layout() + memberProfile();
     }
   })
 }

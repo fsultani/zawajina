@@ -16,7 +16,7 @@ const Welcome = () => {
 
         getAllMembers.map((user) => {
           htmlOutput += `
-            <a href="/users/${user._id}/about" style="text-decoration: none">
+            <a href="#users/${user._id}/about" style="text-decoration: none">
               <div class="col-md-6">
                 <div class="thumbnail" style="border-radius: 12px">
                   <h3 style="margin: 20px 0px; text-align: center;">${user.name}</h3>
