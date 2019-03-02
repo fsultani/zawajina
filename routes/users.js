@@ -15,6 +15,7 @@ router.get('/api/info/:member', (req, res, next) => {
     const token = req.headers.authorization
     const decodedToken = jwt.decode(token, JWT_SECRET)
     User.findOne({ _id: req.params.member }, (err, member) => {
+      console.log("member\n", member)
       member ? res.json({ member: member }) : res.send(err)
     })
   } else {
