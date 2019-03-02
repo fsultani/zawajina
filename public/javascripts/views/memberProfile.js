@@ -1,10 +1,6 @@
-const url = window.location.hash.split('/')
-const memberId = window.location.hash.split('/')[1]
-
-const memberProfile = () => {
+const memberProfile = (url, memberId) => {
   if (url[0] === '#users' && url[2] === 'about' && Cookies.get('token')) {
-    return axios.get(`/users/api/info/${memberId}`).then((res) => {
-      console.log("res.data.member\n", res.data.member)
+    axios.get(`/users/api/info/${memberId}`).then((res) => {
       const htmlOutput = `
         <center>
           <h2 class="dashboard-text">${res.data.member.name}'s profile page</h2>
@@ -29,9 +25,8 @@ const memberProfile = () => {
         </center>
       `;
 
-      // const htmlOutput = authenticatedNavArea(Cookies.get('conversationCount')) + welcome
       document.getElementById('app').innerHTML += htmlOutput;
-      // document.getElementById('contactForm').style.display = "none";
+      document.getElementById('contactForm').style.display = "none";
     })
   }
 }

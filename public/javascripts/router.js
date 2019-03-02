@@ -7,8 +7,6 @@ import welcome from './views/welcome.js';
 import login from './views/login.js';
 import memberProfile from './views/memberProfile.js';
 
-let currentPath = null;
-
 const Router = () => {
   axios.defaults.headers.common['authorization'] = Cookies.get('token')
   let { pathname, hash } = window.location;
@@ -21,49 +19,68 @@ const Router = () => {
   logoutScript.src = 'javascripts/scripts/Logout.js';
   document.head.appendChild(logoutScript);
 
-  if (Cookies.get('token')) {
-    window.location.hash = '#home';
+  if (Cookies.get('token') && window.history.state && window.history.state.page) {
+    const { page } = window.history.state
+    if (page === 'home') {
+      window.history.replaceState({ page: 'home'}, null, '/');
+      layout() + welcome();
+    } else if (page === 'login') {
+      window.history.replaceState({ page: 'login'}, null, '/login');
+      document.getElementById('app').innerHTML = layout() + login();
+    } else if (page === 'register') {
+      window.history.replaceState({ page: 'register'}, null, '/register');
+      document.getElementById('app').innerHTML = layout() + personalInfo;
+    } else if (page.startsWith('userId')) {
+      const url = window.location.hash.split('/')
+      const memberId = window.location.hash.split('/')[1]
+      window.history.replaceState({ page: `userId=${memberId}`}, null, hash);
+      layout() + memberProfile(url, memberId);
+    }
   } else {
+    window.history.replaceState({ page: 'login'}, null, '/login');
     document.getElementById('app').innerHTML = layout() + login();
   }
 
-  window.addEventListener('popstate', (e) => {
-    if (!e.state) {
-      e.preventDefault()
+  window.addEventListener('popstate', event => {
+    if (!event.state) {
+      event.preventDefault()
       return false;
     }
-    switch (window.location.pathname) {
-      case '/':
-        layout() + welcome();
-        break;
-      case '/login':
-        // layout() + welcome();
-        break;
-      case '/register':
-        // document.getElementById('app').innerHTML = layout() + personalInfo;
-        break;
-      case '/home':
-        // document.getElementById('app').innerHTML = layout() + welcome();
-        break;
-      default:
-        break;
+    const { page } = event.state
+    const { hash } = window.location;
+    if (page === 'home') {
+      window.history.replaceState({ page: 'home'}, null, '/');
+      layout() + welcome();
+    } else if (page === 'login') {
+      window.history.replaceState({ page: 'login'}, null, '/login');
+      document.getElementById('app').innerHTML = layout() + login();
+    } else if (page === 'register') {
+      window.history.replaceState({ page: 'register'}, null, '/register');
+      document.getElementById('app').innerHTML = layout() + personalInfo;
+    } else if (page.startsWith('#users')) {
+      const url = hash.split('/')
+      const memberId = hash.split('/')[1]
+      window.history.replaceState({ page: `userId=${memberId}`}, null, hash);
+      layout() + memberProfile(url, memberId);
     }
   })
 
   window.addEventListener('hashchange', () => {
     const { hash } = window.location;
     if (hash === '#home') {
-      window.history.pushState(null, null, '/');
+      window.history.replaceState({ page: 'home'}, null, '/');
       layout() + welcome();
     } else if (hash === '#login') {
-      window.history.pushState(null, null, '/login');
+      window.history.replaceState({ page: 'login'}, null, '/login');
       document.getElementById('app').innerHTML = layout() + login();
     } else if (hash === '#register') {
-      window.history.pushState(null, null, '/register');
+      window.history.replaceState({ page: 'register'}, null, '/register');
       document.getElementById('app').innerHTML = layout() + personalInfo;
     } else if (hash.startsWith('#users')) {
-      window.history.pushState(null, null, hash);
-      layout() + memberProfile();
+      const url = window.location.hash.split('/')
+      const memberId = window.location.hash.split('/')[1]
+      window.history.replaceState({ page: `userId=${memberId}`}, null, hash);
+      layout() + memberProfile(url, memberId);
     }
   })
 }
