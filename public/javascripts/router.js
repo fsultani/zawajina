@@ -7,7 +7,7 @@ import welcome from './views/welcome.js';
 import login from './views/login.js';
 import memberProfile from './views/memberProfile.js';
 
-const Router = () => {
+window.onload = () => {
   axios.defaults.headers.common['authorization'] = Cookies.get('token')
   let { pathname } = window.location;
 
@@ -98,5 +98,3 @@ const Router = () => {
     }
   })
 }
-
-export default Router;
