@@ -9,18 +9,60 @@ import memberProfile from './views/memberProfile.js';
 
 const Router = () => {
   axios.defaults.headers.common['authorization'] = Cookies.get('token')
-  let { pathname, hash } = window.location;
+  let { pathname } = window.location;
 
   const loginScript = document.createElement('script');
-  loginScript.src = 'javascripts/scripts/Login.js';
+  loginScript.src = '/static/javascripts/scripts/Login.js';
   document.head.appendChild(loginScript);
 
   const logoutScript = document.createElement('script');
-  logoutScript.src = 'javascripts/scripts/Logout.js';
+  logoutScript.src = '/static/javascripts/scripts/Logout.js';
   document.head.appendChild(logoutScript);
 
-  if (Cookies.get('token') && window.history.state && window.history.state.page) {
-    const { page } = window.history.state
+  if (Cookies.get('token')) {
+    if (!window.history.state) {
+      window.history.replaceState({ page: 'home'}, null, '/');
+      layout() + welcome();
+    } else {
+      if (window.history.state.page) {
+        const { page } = window.history.state
+        if (page.startsWith('userId')) {
+          const memberId = window.location.pathname.split('/')[2]
+          window.history.replaceState({ page: `userId=${memberId}`}, null, window.location.pathname);
+          layout() + memberProfile(memberId);
+        } else {
+          window.history.replaceState({ page: 'home'}, null, '/');
+          layout() + welcome();
+        }
+      }
+    }
+  } else {
+    if (window.history.state && window.history.state.page) {
+      const { page } = window.history.state
+      if (page === 'home') {
+        window.history.replaceState({ page: 'home'}, null, '/');
+        layout() + welcome();
+      } else if (page === 'login') {
+        window.history.replaceState({ page: 'login'}, null, '/login');
+        document.getElementById('app').innerHTML = layout() + login();
+      } else if (page === 'register') {
+        window.history.replaceState({ page: 'register'}, null, '/register');
+        document.getElementById('app').innerHTML = layout() + personalInfo;
+      } else {
+        window.history.replaceState({ page: 'home'}, null, '/');
+      }
+    } else {
+      window.history.replaceState({ page: 'home'}, null, '/home');
+      document.getElementById('app').innerHTML = layout() + login();
+    }
+  }
+
+  window.addEventListener('popstate', event => {
+    if (!event.state) {
+      event.preventDefault()
+      return false;
+    }
+    const { page } = event.state
     if (page === 'home') {
       window.history.replaceState({ page: 'home'}, null, '/');
       layout() + welcome();
@@ -31,41 +73,14 @@ const Router = () => {
       window.history.replaceState({ page: 'register'}, null, '/register');
       document.getElementById('app').innerHTML = layout() + personalInfo;
     } else if (page.startsWith('userId')) {
-      const url = window.location.hash.split('/')
-      const memberId = window.location.hash.split('/')[1]
-      window.history.replaceState({ page: `userId=${memberId}`}, null, hash);
-      layout() + memberProfile(url, memberId);
-    }
-  } else {
-    window.history.replaceState({ page: 'login'}, null, '/login');
-    document.getElementById('app').innerHTML = layout() + login();
-  }
-
-  window.addEventListener('popstate', event => {
-    if (!event.state) {
-      event.preventDefault()
-      return false;
-    }
-    const { page } = event.state
-    const { hash } = window.location;
-    if (page === 'home') {
-      window.history.replaceState({ page: 'home'}, null, '/');
-      layout() + welcome();
-    } else if (page === 'login') {
-      window.history.replaceState({ page: 'login'}, null, '/login');
-      document.getElementById('app').innerHTML = layout() + login();
-    } else if (page === 'register') {
-      window.history.replaceState({ page: 'register'}, null, '/register');
-      document.getElementById('app').innerHTML = layout() + personalInfo;
-    } else if (page.startsWith('#users')) {
-      const url = hash.split('/')
-      const memberId = hash.split('/')[1]
-      window.history.replaceState({ page: `userId=${memberId}`}, null, hash);
-      layout() + memberProfile(url, memberId);
+      const memberId = window.location.pathname.split('/').slice(1)[1]
+      window.history.replaceState({ page: `userId=${memberId}`}, null, window.location.pathname);
+      layout() + memberProfile(memberId);
     }
   })
 
-  window.addEventListener('hashchange', () => {
+  window.addEventListener('hashchange', event => {
+    event.preventDefault();
     const { hash } = window.location;
     if (hash === '#home') {
       window.history.replaceState({ page: 'home'}, null, '/');
@@ -77,10 +92,9 @@ const Router = () => {
       window.history.replaceState({ page: 'register'}, null, '/register');
       document.getElementById('app').innerHTML = layout() + personalInfo;
     } else if (hash.startsWith('#users')) {
-      const url = window.location.hash.split('/')
       const memberId = window.location.hash.split('/')[1]
-      window.history.replaceState({ page: `userId=${memberId}`}, null, hash);
-      layout() + memberProfile(url, memberId);
+      window.history.replaceState({ page: `userId=${memberId}`}, null, hash.slice(1));
+      layout() + memberProfile(memberId);
     }
   })
 }
