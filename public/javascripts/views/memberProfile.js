@@ -1,5 +1,6 @@
-const memberProfile = (url, memberId) => {
-  if (url[0] === '#users' && url[2] === 'about' && Cookies.get('token')) {
+const memberProfile = memberId => {
+  // if (url[0] === '#users' && url[2] === 'about' && Cookies.get('token')) {
+  if (Cookies.get('token')) {
     axios.get(`/users/api/info/${memberId}`).then((res) => {
       const htmlOutput = `
         <center>
