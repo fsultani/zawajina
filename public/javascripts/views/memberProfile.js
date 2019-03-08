@@ -1,5 +1,4 @@
 const memberProfile = memberId => {
-  // if (url[0] === '#users' && url[2] === 'about' && Cookies.get('token')) {
   if (Cookies.get('token')) {
     axios.get(`/users/api/info/${memberId}`).then((res) => {
       const htmlOutput = `
@@ -10,7 +9,7 @@ const memberProfile = memberId => {
 
           <p>In the meantime, you may contact ${res.data.member.name} using the button below.</p>
 
-          <button class="btn btn-primary" onclick="openMessageComposer()" id="messageCta">Message</button>
+          <button class="btn btn-primary" onclick="openMessageComposer" id="messageCta">Message</button>
 
           <div id="contactForm">
             <div class="form-group col-md-6 col-md-offset-3">
@@ -28,6 +27,9 @@ const memberProfile = memberId => {
 
       document.getElementById('app').innerHTML += htmlOutput;
       document.getElementById('contactForm').style.display = "none";
+      document.getElementById('messageCta').onclick = () => {
+        console.log("openMessageComposer")
+      }
     })
   }
 }
