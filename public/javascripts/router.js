@@ -98,5 +98,3 @@ window.onload = () => {
     }
   })
 }
-
-//comment
