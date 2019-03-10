@@ -8,15 +8,69 @@ import login from './views/login.js';
 import memberProfile from './views/memberProfile.js';
 
 window.onload = () => {
+  const doc = document
+  const rootEl = doc.documentElement
+  const body = doc.body
+  /* global ScrollReveal */
+  const sr = window.sr = ScrollReveal({ mobile: false })
+
+  rootEl.classList.remove('no-js')
+  rootEl.classList.add('js')
+
+  body.classList.add('is-loaded')
+  // window.addEventListener('load', function () {})
+
+  // Reveal animations
+  function revealAnimations () {
+    sr.reveal('.app .features .section-title, .features-illustration, .feature', {
+      delay: 300,
+      duration: 600,
+      distance: '60px',
+      easing: 'cubic-bezier(0.215, 0.61, 0.355, 1)',
+      origin: 'bottom',
+      viewFactor: 0.2,
+      interval: 150
+    })
+    sr.reveal('.app .feature-extended:nth-child(odd) .feature-extended-body, .feature-extended:nth-child(even) .feature-extended-image', {
+      duration: 600,
+      distance: '40px',
+      easing: 'cubic-bezier(0.215, 0.61, 0.355, 1)',
+      origin: 'right',
+      viewFactor: 0.5
+    })
+    sr.reveal('.app .feature-extended:nth-child(even) .feature-extended-body, .feature-extended:nth-child(odd) .feature-extended-image', {
+      duration: 600,
+      distance: '40px',
+      easing: 'cubic-bezier(0.215, 0.61, 0.355, 1)',
+      origin: 'left',
+      viewFactor: 0.5
+    })
+    sr.reveal('.app .pricing-table, .testimonial, .cta-inner', {
+      duration: 600,
+      distance: '60px',
+      easing: 'cubic-bezier(0.215, 0.61, 0.355, 1)',
+      origin: 'bottom',
+      viewFactor: 0.5,
+      interval: 150
+    })
+  }
+
+  // // if (body.classList.contains('has-animations')) {
+  // //   window.addEventListener('load', revealAnimations)
+  // // }
+  if (body.classList.contains('has-animations')) {
+    revealAnimations()
+  }
+
   axios.defaults.headers.common['authorization'] = Cookies.get('token')
   let { pathname } = window.location;
 
   const loginScript = document.createElement('script');
-  loginScript.src = '/static/javascripts/scripts/Login.js';
+  loginScript.src = '/static/js/scripts/Login.js';
   document.head.appendChild(loginScript);
 
   const logoutScript = document.createElement('script');
-  logoutScript.src = '/static/javascripts/scripts/Logout.js';
+  logoutScript.src = '/static/js/scripts/Logout.js';
   document.head.appendChild(logoutScript);
 
   if (Cookies.get('token')) {
@@ -41,7 +95,7 @@ window.onload = () => {
       const { page } = window.history.state
       if (page === 'home') {
         window.history.replaceState({ page: 'home'}, null, '/');
-        layout() + welcome();
+        layout();
       } else if (page === 'login') {
         window.history.replaceState({ page: 'login'}, null, '/login');
         document.getElementById('app').innerHTML = layout() + login();

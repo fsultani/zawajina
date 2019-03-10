@@ -1,4 +1,4 @@
-*,
+/**,
 *:before,
 *:after {
   box-sizing: border-box;
@@ -106,4 +106,4 @@ input[type="checkbox"] + label:after {
   opacity: 0;
   font-family: FontAwesome;
   content: "\f00c";
-}
+}*/
