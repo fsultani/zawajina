@@ -18,11 +18,11 @@ window.onload = () => {
   rootEl.classList.add('js')
 
   body.classList.add('is-loaded')
-  // window.addEventListener('load', function () {})
 
   // Reveal animations
   function revealAnimations () {
-    sr.reveal('.app .features .section-title, .features-illustration, .feature', {
+    console.log("revealAnimations")
+    sr.reveal('.features .section-title, .features-illustration, .feature', {
       delay: 300,
       duration: 600,
       distance: '60px',
@@ -31,21 +31,21 @@ window.onload = () => {
       viewFactor: 0.2,
       interval: 150
     })
-    sr.reveal('.app .feature-extended:nth-child(odd) .feature-extended-body, .feature-extended:nth-child(even) .feature-extended-image', {
+    sr.reveal('.feature-extended:nth-child(odd) .feature-extended-body, .feature-extended:nth-child(even) .feature-extended-image', {
       duration: 600,
       distance: '40px',
       easing: 'cubic-bezier(0.215, 0.61, 0.355, 1)',
       origin: 'right',
       viewFactor: 0.5
     })
-    sr.reveal('.app .feature-extended:nth-child(even) .feature-extended-body, .feature-extended:nth-child(odd) .feature-extended-image', {
+    sr.reveal('.feature-extended:nth-child(even) .feature-extended-body, .feature-extended:nth-child(odd) .feature-extended-image', {
       duration: 600,
       distance: '40px',
       easing: 'cubic-bezier(0.215, 0.61, 0.355, 1)',
       origin: 'left',
       viewFactor: 0.5
     })
-    sr.reveal('.app .pricing-table, .testimonial, .cta-inner', {
+    sr.reveal('.pricing-table, .testimonial, .cta-inner', {
       duration: 600,
       distance: '60px',
       easing: 'cubic-bezier(0.215, 0.61, 0.355, 1)',
@@ -53,13 +53,6 @@ window.onload = () => {
       viewFactor: 0.5,
       interval: 150
     })
-  }
-
-  // // if (body.classList.contains('has-animations')) {
-  // //   window.addEventListener('load', revealAnimations)
-  // // }
-  if (body.classList.contains('has-animations')) {
-    revealAnimations()
   }
 
   axios.defaults.headers.common['authorization'] = Cookies.get('token')
@@ -151,4 +144,7 @@ window.onload = () => {
       layout() + memberProfile(memberId);
     }
   })
+  if (body.classList.contains('has-animations')) {
+    revealAnimations()
+  }
 }

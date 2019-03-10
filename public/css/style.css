@@ -982,7 +982,7 @@ button,input,select,textarea,label{
 .has-animations .hero::before,.has-animations .hero::after,.has-animations .site-header,.has-animations .hero-title,.has-animations .hero-paragraph,.has-animations .hero-cta{
     opacity:0
 }
-/*.has-animations.is-loaded .hero::before{
+.has-animations.is-loaded .hero::before{
     -webkit-animation:heroBg 0.6s cubic-bezier(0.215, 0.61, 0.355, 1) forwards;
     animation:heroBg 0.6s cubic-bezier(0.215, 0.61, 0.355, 1) forwards
 }
@@ -1005,7 +1005,7 @@ button,input,select,textarea,label{
 .has-animations.is-loaded .hero-cta{
     -webkit-animation:heroContent 0.6s cubic-bezier(0.215, 0.61, 0.355, 1) forwards 0.45s;
     animation:heroContent 0.6s cubic-bezier(0.215, 0.61, 0.355, 1) forwards 0.45s
-}*/
+}
 @-webkit-keyframes heroBg{
     from{
         -webkit-transform:translateY(-100%);
