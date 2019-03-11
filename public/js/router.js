@@ -21,7 +21,6 @@ window.onload = () => {
 
   // Reveal animations
   function revealAnimations () {
-    console.log("revealAnimations")
     sr.reveal('.features .section-title, .features-illustration, .feature', {
       delay: 300,
       duration: 600,
