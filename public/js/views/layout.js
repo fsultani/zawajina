@@ -10,6 +10,14 @@ const layout = () => document.getElementById('app').innerHTML = `
               </a>
             </h1>
           </div>
+          <ul class="header-links list-reset m-0">
+            <li>
+              <a href="#">Login</a>
+            </li>
+            <li>
+              <a class="button button-sm button-shadow button-signup" href="#">Signup</a>
+            </li>
+          </ul>
         </div>
       </div>
     </header>
@@ -19,10 +27,10 @@ const layout = () => document.getElementById('app').innerHTML = `
         <div class="container-sm">
           <div class="hero-inner">
             <div class="hero-copy">
-              <h1 class="hero-title mt-0">Landing template for startups</h1>
+              <h1 class="hero-title mt-0">Find your other half</h1>
               <p class="hero-paragraph">Our landing page template works on all devices, so you only have to set it up once, and get beautiful results forever.</p>
               <div class="hero-cta">
-                <a class="button button-primary button-wide-mobile" href="#">Early access</a>
+                <a class="button button-secondary button-shadow" href="#">Get started now</a>
               </div>
             </div>
           </div>

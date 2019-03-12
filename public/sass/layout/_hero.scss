@@ -11,21 +11,8 @@
 		bottom: 0;
 		left: 0;
 		right: 0;
-		background: color(typography, 2i);
+    background: linear-gradient(57deg, color(secondary, 5) 0%, color(additional, 2) 100%);
 		z-index: -2;
-	}
-
-	&::after {
-		content: '';
-		position: absolute;
-		top: 0;
-		left: calc(50% - 320px);
-		width: 640px;
-		height: 136px;
-		background-image: url('../images/hero-illustration.svg');
-		background-size: 640px 136px;
-		background-repeat: no-repeat;
-		z-index: -1;
 	}
 }
 
@@ -86,6 +73,7 @@
 		}
 
 		.hero-paragraph {
+      color: color(typography, 2i);
 			animation: heroContent .6s cubic-bezier(0.215, 0.61, 0.355, 1) forwards .3s;
 		}
 

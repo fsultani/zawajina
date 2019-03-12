@@ -8,7 +8,7 @@
 
 	.section-title {
 		margin-bottom: 48px;
-		color: color(primary, 4) !important;
+    color: color(typography, 1i) !important;
 	}
 
 	&::before {
@@ -24,19 +24,8 @@
 
 .cta-inner {
 	position: relative;
-	background: color(primary, 1);
+  background: linear-gradient(57deg, color(secondary, 5) 0%, color(additional, 2) 100%);
 	overflow: hidden;
-
-	&::before {
-		content: '';
-		position: absolute;
-		right: 58px;
-		bottom: calc(50% - 155px);
-		width: 155px;
-		height: 150px;
-		background-image: url('../images/cta-illustration.svg');
-		background-repeat: no-repeat;
-	}
 
 	> * {
 		position: relative; /* To display elements above hero illustrations */
