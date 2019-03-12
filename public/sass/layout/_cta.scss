@@ -8,7 +8,7 @@
 
 	.section-title {
 		margin-bottom: 48px;
-    color: color(typography, 1i) !important;
+    color: #fff;
 	}
 
 	&::before {
@@ -18,13 +18,13 @@
 		position: absolute;
 		left: 0;
 		bottom: 0;
-		background: color(typography, 1);
+		background: #161E2A,
 	}
 }
 
 .cta-inner {
 	position: relative;
-  background: linear-gradient(57deg, color(secondary, 5) 0%, color(additional, 2) 100%);
+  background: linear-gradient(57deg, #00C6A7 0%, #1E4D92 100%);
 	overflow: hidden;
 
 	> * {

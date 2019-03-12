@@ -9,7 +9,7 @@ html {
 }
 
 body {
-	background: color(bg, 1); /* Fallback for when there is no custom background color defined. */
+	background: #FFFFFF; /* Fallback for when there is no custom background color defined. */
 	-moz-osx-font-smoothing: grayscale;
 	-webkit-font-smoothing: antialiased;
 }
@@ -46,7 +46,7 @@ dl {
 }
 
 dt {
-	@include font-weight(semibold);
+	font-weight: 600;
 }
 
 dd {
@@ -65,7 +65,7 @@ figure {
 }
 
 figcaption {
-	@include font-size(7, mobile, true, true);
+	font-size: 16px;
 	padding: 8px 0;
 }
 
@@ -82,7 +82,7 @@ table {
 }
 
 tr {
-	border-bottom: 1px solid color(bg, 3);
+	border-bottom: 1px solid #E4E8EE;
 }
 
 th {
