@@ -7,8 +7,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "sass:watch": "sass --watch public/sass:public/css",
-    "dev": "NODE_ENV=mlab-dev browser-refresh server.js & npm run sass:watch",
+    "dev": "NODE_ENV=mlab-dev browser-refresh server.js",
     "start": "node server.js"
   },
   "author": "",
