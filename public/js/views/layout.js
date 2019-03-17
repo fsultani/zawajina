@@ -12,7 +12,7 @@ const layout = () => document.getElementById('app').innerHTML = `
           </div>
           <ul class="header-links list-reset m-0">
             <li>
-              <a href="#">Login</a>
+              <a href="#login">Login</a>
             </li>
             <li>
               <a class="button button-sm button-shadow button-signup" href="#">Signup</a>

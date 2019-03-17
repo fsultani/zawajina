@@ -90,7 +90,7 @@ window.onload = () => {
         layout();
       } else if (page === 'login') {
         window.history.replaceState({ page: 'login'}, null, '/login');
-        document.getElementById('app').innerHTML = layout() + login();
+        document.getElementById('app').innerHTML = login();
       } else if (page === 'register') {
         window.history.replaceState({ page: 'register'}, null, '/register');
         document.getElementById('app').innerHTML = layout() + personalInfo;
@@ -133,7 +133,8 @@ window.onload = () => {
       layout() + welcome();
     } else if (hash === '#login') {
       window.history.replaceState({ page: 'login'}, null, '/login');
-      document.getElementById('app').innerHTML = layout() + login();
+      // document.getElementById('app').innerHTML = layout() + login();
+      document.getElementById('app').innerHTML = login();
     } else if (hash === '#register') {
       window.history.replaceState({ page: 'register'}, null, '/register');
       document.getElementById('app').innerHTML = layout() + personalInfo;
