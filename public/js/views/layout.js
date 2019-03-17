@@ -143,7 +143,7 @@ const layout = () => document.getElementById('app').innerHTML = `
       <section class="pricing section text-light">
         <div class="container">
           <div class="pricing-inner section-inner">
-            <h2 class="section-title mt-0 text-center">Simple, transarent pricing</h2>
+            <h2 class="section-title mt-0 text-center">Simple, transparent pricing</h2>
             <div class="pricing-tables-wrap">
               <div class="pricing-table is-revealing">
                 <div class="pricing-table-inner">
