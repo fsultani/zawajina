@@ -68,7 +68,7 @@ window.onload = () => {
   if (Cookies.get('token')) {
     if (!window.history.state) {
       window.history.replaceState({ page: 'home'}, null, '/');
-      layout() + welcome();
+      layout();
     } else {
       if (window.history.state.page) {
         const { page } = window.history.state
@@ -78,7 +78,7 @@ window.onload = () => {
           layout() + memberProfile(memberId);
         } else {
           window.history.replaceState({ page: 'home'}, null, '/');
-          layout() + welcome();
+          layout();
         }
       }
     }
@@ -96,10 +96,11 @@ window.onload = () => {
         document.getElementById('app').innerHTML = layout() + personalInfo;
       } else {
         window.history.replaceState({ page: 'home'}, null, '/');
+        layout();
       }
     } else {
       window.history.replaceState({ page: 'home'}, null, '/home');
-      document.getElementById('app').innerHTML = layout() + login();
+      layout();
     }
   }
 
@@ -111,7 +112,7 @@ window.onload = () => {
     const { page } = event.state
     if (page === 'home') {
       window.history.replaceState({ page: 'home'}, null, '/');
-      layout() + welcome();
+      layout();
     } else if (page === 'login') {
       window.history.replaceState({ page: 'login'}, null, '/login');
       document.getElementById('app').innerHTML = layout() + login();
@@ -130,7 +131,7 @@ window.onload = () => {
     const { hash } = window.location;
     if (hash === '#home') {
       window.history.replaceState({ page: 'home'}, null, '/');
-      layout() + welcome();
+      layout();
     } else if (hash === '#login') {
       window.history.replaceState({ page: 'login'}, null, '/login');
       // document.getElementById('app').innerHTML = layout() + login();
