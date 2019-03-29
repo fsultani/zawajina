@@ -1,11 +1,11 @@
-import layout from './views/layout.js';
-import { personalInfo } from './views/register/personalInfo/index.js';
-import PersonalInfoValidation from './views/register/personalInfo/validations.js';
-import HandleSignUp from './views/register/personalInfo/handleSignUp.js';
-import profileAbout from './views/register/about/index.js';
-import welcome from './views/welcome.js';
-import login from './views/login.js';
-import memberProfile from './views/memberProfile.js';
+import layout from './pages/layout.js';
+import { personalInfo } from './pages/register/personalInfo/index.js';
+import PersonalInfoValidation from './pages/register/personalInfo/validations.js';
+import HandleSignUp from './pages/register/personalInfo/handleSignUp.js';
+import profileAbout from './pages/register/about/index.js';
+import welcome from './pages/welcome.js';
+import login from './pages/login.js';
+import memberProfile from './pages/memberProfile.js';
 
 // const bootstrapCss = document.createElement('link');
 // const fontAwesomeCss = document.createElement('link');
