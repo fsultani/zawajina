@@ -37,7 +37,7 @@ const loginPageCss = () => {
       href: "/static/css/util.css"
     },
     {
-      href: "/static/css/main.css"
+      href: "/static/css/login-main.css"
     }
   ]
 
