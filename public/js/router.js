@@ -10,25 +10,19 @@ import memberProfile from './pages/memberProfile.js';
 const loginPageCss = () => {
   let bootstrapCss;
   let fontAwesomeCss;
-  let materialCss;
   let animateCss;
   let hamburgersCss;
-  let animsitionCss;
   let select2Css;
-  let daterangepickerCss;
   let utilCss;
   let mainCss;
 
   const loginPageCssLinks = []
   const loginPageCssHrefs = [
     {
-      href: "/static/css/bootstrap.min.css"
+      href: "https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     },
     {
-      href: "/static/css/font-awesome.min.css"
-    },
-    {
-      href: "/static/material-design-iconic-font.min.css"
+      href: "/static/css/fonts/font-awesome-4.7.0/css/font-awesome.min.css"
     },
     {
       href: "/static/css/animate.css"
@@ -37,13 +31,7 @@ const loginPageCss = () => {
       href: "/static/css/hamburgers.min.css"
     },
     {
-      href: "/static/css/animsition.min.css"
-    },
-    {
       href: "/static/css/select2.min.css"
-    },
-    {
-      href: "/static/css/daterangepicker.css"
     },
     {
       href: "/static/css/util.css"
@@ -56,12 +44,9 @@ const loginPageCss = () => {
   loginPageCssLinks.push(
     bootstrapCss,
     fontAwesomeCss,
-    materialCss,
     animateCss,
     hamburgersCss,
-    animsitionCss,
     select2Css,
-    daterangepickerCss,
     utilCss,
     mainCss
   )
@@ -72,6 +57,10 @@ const loginPageCss = () => {
     element.href = loginPageCssHrefs[index].href
     document.head.appendChild(element)
   })
+
+  const bootstrapcdnScript = document.createElement('script')
+  bootstrapcdnScript.src = 'https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js'
+  document.head.appendChild(bootstrapcdnScript)
 }
 
 const layoutCss = () => {
