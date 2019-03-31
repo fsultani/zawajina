@@ -8,7 +8,6 @@ import login from './pages/login.js';
 import memberProfile from './pages/memberProfile.js';
 
 const loginPageCss = () => {
-  let bootstrapCss;
   let fontAwesomeCss;
   let animateCss;
   let hamburgersCss;
@@ -18,9 +17,6 @@ const loginPageCss = () => {
 
   const loginPageCssLinks = []
   const loginPageCssHrefs = [
-    {
-      href: "https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-    },
     {
       href: "/static/css/fonts/font-awesome-4.7.0/css/font-awesome.min.css"
     },
@@ -42,7 +38,6 @@ const loginPageCss = () => {
   ]
 
   loginPageCssLinks.push(
-    bootstrapCss,
     fontAwesomeCss,
     animateCss,
     hamburgersCss,
@@ -56,11 +51,32 @@ const loginPageCss = () => {
     element.rel = "stylesheet"
     element.href = loginPageCssHrefs[index].href
     document.head.appendChild(element)
-  })
+  });
 
-  const bootstrapcdnScript = document.createElement('script')
-  bootstrapcdnScript.src = 'https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js'
-  document.head.appendChild(bootstrapcdnScript)
+  const bootstrapCss = document.createElement('link')
+  bootstrapCss.src = 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css'
+  bootstrapCss.integrity = "sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+  bootstrapCss.crossOrigin = "anonymous"
+
+  const popper = document.createElement('script')
+  popper.src = 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js'
+  popper.integrity = "sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+  popper.crossOrigin = "anonymous"
+
+  const jQuery = document.createElement('script')
+  jQuery.src = 'https://code.jquery.com/jquery-3.3.1.slim.min.js'
+  jQuery.integrity = "sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+  jQuery.crossOrigin = "anonymous"
+
+  const bootstrapJs = document.createElement('script')
+  bootstrapJs.src = 'https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js'
+  bootstrapJs.integrity = "sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" 
+  bootstrapJs.crossOrigin = "anonymous"
+
+  document.head.appendChild(bootstrapCss)
+  document.body.appendChild(jQuery)
+  document.body.appendChild(popper)
+  document.body.appendChild(bootstrapJs)
 }
 
 const layoutCss = () => {
@@ -182,7 +198,7 @@ window.onload = () => {
       return false;
     }
     const { page } = event.state
-    console.log("page\n", page)
+    console.log("popstate\n", page)
     if (page === 'home') {
       layoutCss();
       revealAnimations()
@@ -214,8 +230,6 @@ window.onload = () => {
       loginPageCss();
       window.history.replaceState({ page: 'login'}, null, '/login');
       login();
-      document.getElementById('loginPage').style.display = 'flex'
-
     } else if (hash === '#register') {
       window.history.replaceState({ page: 'register'}, null, '/register');
       document.getElementById('app').innerHTML = layout() + personalInfo;
@@ -225,6 +239,7 @@ window.onload = () => {
       layout() + memberProfile(memberId);
     }
   })
-  revealAnimations()
-  // if (body.classList.contains('has-animations')) {}
+  if (body.classList.contains('has-animations')) {
+    revealAnimations()
+  }
 }
