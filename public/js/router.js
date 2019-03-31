@@ -79,14 +79,108 @@ const loginPageCss = () => {
   document.body.appendChild(bootstrapJs)
 }
 
-const layoutCss = () => {
-  const element = document.createElement('link')
-  element.rel = "stylesheet"
-  element.href = "/static/css/style.css"
-  document.head.appendChild(element)
-}
-
 window.onload = () => {
+  axios.defaults.headers.common['authorization'] = Cookies.get('token')
+  let { pathname } = window.location;
+
+  const loginScript = document.createElement('script');
+  loginScript.src = '/static/js/scripts/Login.js';
+  document.head.appendChild(loginScript);
+
+  const logoutScript = document.createElement('script');
+  logoutScript.src = '/static/js/scripts/Logout.js';
+  document.head.appendChild(logoutScript);
+
+  if (Cookies.get('token')) {
+    if (!window.history.state) {
+      window.history.replaceState({ page: 'home'}, null, '/');
+      layout();
+    } else {
+      if (window.history.state.page) {
+        const { page } = window.history.state
+        if (page.startsWith('userId')) {
+          const memberId = window.location.pathname.split('/')[2]
+          window.history.replaceState({ page: `userId=${memberId}`}, null, window.location.pathname);
+          layout() + memberProfile(memberId);
+        } else {
+          // layoutCss();
+          window.history.replaceState({ page: 'home'}, null, '/');
+          layout();
+        }
+      }
+    }
+  } else {
+    if (window.history.state && window.history.state.page) {
+      const { page } = window.history.state
+      if (page === 'home') {
+        // First page load
+        // layoutCss();
+        window.history.replaceState({ page: 'home'}, null, '/');
+        layout();
+      } else if (page === 'login') {
+        loginPageCss();
+        window.history.replaceState({ page: 'login'}, null, '/login');
+        login();
+      } else if (page === 'register') {
+        window.history.replaceState({ page: 'register'}, null, '/register');
+        document.getElementById('app').innerHTML = layout() + personalInfo;
+      } else {
+        // layoutCss();
+        window.history.replaceState({ page: 'home'}, null, '/');
+        layout();
+      }
+    } else {
+      // layoutCss();
+      window.history.replaceState({ page: 'home'}, null, '/home');
+      layout();
+    }
+  }
+
+  window.addEventListener('popstate', event => {
+    if (!event.state) {
+      event.preventDefault()
+      return false;
+    }
+    const { page } = event.state
+    if (page === 'home') {
+      // layoutCss();
+      window.history.replaceState({ page: 'home'}, null, '/');
+      layout();
+    } else if (page === 'login') {
+      loginPageCss();
+      window.history.replaceState({ page: 'login'}, null, '/login');
+      login();
+    } else if (page === 'register') {
+      window.history.replaceState({ page: 'register'}, null, '/register');
+      document.getElementById('app').innerHTML = layout() + personalInfo;
+    } else if (page.startsWith('userId')) {
+      const memberId = window.location.pathname.split('/').slice(1)[1]
+      window.history.replaceState({ page: `userId=${memberId}`}, null, window.location.pathname);
+      layout() + memberProfile(memberId);
+    }
+  })
+
+  window.addEventListener('hashchange', event => {
+    event.preventDefault();
+    const { hash } = window.location;
+    if (hash === '#home') {
+      // layoutCss();
+      window.history.replaceState({ page: 'home'}, null, '/');
+      layout();
+    } else if (hash === '#login') {
+      loginPageCss();
+      window.history.replaceState({ page: 'login'}, null, '/login');
+      login();
+    } else if (hash === '#register') {
+      window.history.replaceState({ page: 'register'}, null, '/register');
+      document.getElementById('app').innerHTML = layout() + personalInfo;
+    } else if (hash.startsWith('#users')) {
+      const memberId = window.location.hash.split('/')[1]
+      window.history.replaceState({ page: `userId=${memberId}`}, null, hash.slice(1));
+      layout() + memberProfile(memberId);
+    }
+  })
+
   const doc = document
   const rootEl = doc.documentElement
   const body = doc.body
@@ -99,7 +193,7 @@ window.onload = () => {
   body.classList.add('is-loaded')
 
   // Reveal animations
-  function revealAnimations () {
+  const revealAnimations = () => {
     sr.reveal('.features .section-title, .features-illustration, .feature', {
       delay: 300,
       duration: 600,
@@ -133,112 +227,6 @@ window.onload = () => {
     })
   }
 
-  axios.defaults.headers.common['authorization'] = Cookies.get('token')
-  let { pathname } = window.location;
-
-  const loginScript = document.createElement('script');
-  loginScript.src = '/static/js/scripts/Login.js';
-  document.head.appendChild(loginScript);
-
-  const logoutScript = document.createElement('script');
-  logoutScript.src = '/static/js/scripts/Logout.js';
-  document.head.appendChild(logoutScript);
-
-  if (Cookies.get('token')) {
-    if (!window.history.state) {
-      window.history.replaceState({ page: 'home'}, null, '/');
-      layout();
-    } else {
-      if (window.history.state.page) {
-        const { page } = window.history.state
-        if (page.startsWith('userId')) {
-          const memberId = window.location.pathname.split('/')[2]
-          window.history.replaceState({ page: `userId=${memberId}`}, null, window.location.pathname);
-          layout() + memberProfile(memberId);
-        } else {
-          layoutCss();
-          revealAnimations()
-          window.history.replaceState({ page: 'home'}, null, '/');
-          layout();
-        }
-      }
-    }
-  } else {
-    if (window.history.state && window.history.state.page) {
-      const { page } = window.history.state
-      if (page === 'home') {
-        layoutCss();
-        revealAnimations()
-        window.history.replaceState({ page: 'home'}, null, '/');
-        layout();
-      } else if (page === 'login') {
-        loginPageCss();
-        window.history.replaceState({ page: 'login'}, null, '/login');
-        login();
-      } else if (page === 'register') {
-        window.history.replaceState({ page: 'register'}, null, '/register');
-        document.getElementById('app').innerHTML = layout() + personalInfo;
-      } else {
-        layoutCss();
-        revealAnimations()
-        window.history.replaceState({ page: 'home'}, null, '/');
-        layout();
-      }
-    } else {
-      layoutCss();
-      revealAnimations()
-      window.history.replaceState({ page: 'home'}, null, '/home');
-      layout();
-    }
-  }
-
-  window.addEventListener('popstate', event => {
-    if (!event.state) {
-      event.preventDefault()
-      return false;
-    }
-    const { page } = event.state
-    console.log("popstate\n", page)
-    if (page === 'home') {
-      layoutCss();
-      revealAnimations()
-      window.history.replaceState({ page: 'home'}, null, '/');
-      layout();
-    } else if (page === 'login') {
-      loginPageCss();
-      window.history.replaceState({ page: 'login'}, null, '/login');
-      login();
-    } else if (page === 'register') {
-      window.history.replaceState({ page: 'register'}, null, '/register');
-      document.getElementById('app').innerHTML = layout() + personalInfo;
-    } else if (page.startsWith('userId')) {
-      const memberId = window.location.pathname.split('/').slice(1)[1]
-      window.history.replaceState({ page: `userId=${memberId}`}, null, window.location.pathname);
-      layout() + memberProfile(memberId);
-    }
-  })
-
-  window.addEventListener('hashchange', event => {
-    event.preventDefault();
-    const { hash } = window.location;
-    if (hash === '#home') {
-      layoutCss();
-      revealAnimations()
-      window.history.replaceState({ page: 'home'}, null, '/');
-      layout();
-    } else if (hash === '#login') {
-      loginPageCss();
-      window.history.replaceState({ page: 'login'}, null, '/login');
-      login();
-    } else if (hash === '#register') {
-      window.history.replaceState({ page: 'register'}, null, '/register');
-      document.getElementById('app').innerHTML = layout() + personalInfo;
-    } else if (hash.startsWith('#users')) {
-      const memberId = window.location.hash.split('/')[1]
-      window.history.replaceState({ page: `userId=${memberId}`}, null, hash.slice(1));
-      layout() + memberProfile(memberId);
-    }
-  })
   if (body.classList.contains('has-animations')) {
     revealAnimations()
   }
