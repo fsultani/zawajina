@@ -127,7 +127,7 @@ router.post('/login', (req, res, next) => {
       // Return a token to the client once the user is authenticated
       const token = jwt.encode({ email: req.body.email }, JWT_SECRET)
       const decodedUser = jwt.decode(token, JWT_SECRET)
-      Cookies.set('token', token)
+      // Cookies.set('token', token)
       User.findOne({ email: decodedUser.email }, (err, member) => {
         res.json({ token, member })
       })

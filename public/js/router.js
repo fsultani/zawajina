@@ -4,7 +4,7 @@ import PersonalInfoValidation from './pages/register/personalInfo/validations.js
 import HandleSignUp from './pages/register/personalInfo/handleSignUp.js';
 import profileAbout from './pages/register/about/index.js';
 import welcome from './pages/welcome.js';
-import { loginPageCss, Login } from './pages/login.js';
+import { loginPageCss, Login } from './pages/Login/index.js';
 import memberProfile from './pages/memberProfile.js';
 
 window.onload = () => {
@@ -57,12 +57,8 @@ window.onload = () => {
   axios.defaults.headers.common['authorization'] = Cookies.get('token')
   let { pathname } = window.location;
 
-  const loginScript = document.createElement('script');
-  loginScript.src = '/static/js/scripts/Login.js';
-  document.head.appendChild(loginScript);
-
   const logoutScript = document.createElement('script');
-  logoutScript.src = '/static/js/scripts/Logout.js';
+  logoutScript.src = '/static/js/scripts/handleLogout.js';
   document.head.appendChild(logoutScript);
 
   if (Cookies.get('token')) {
@@ -139,6 +135,9 @@ window.onload = () => {
       loginPageCss();
       window.history.replaceState({ page: 'login'}, null, '/login');
       Login();
+      const loginScript = document.createElement('script');
+      loginScript.src = '/static/js/pages/Login/handleLogin.js';
+      document.head.appendChild(loginScript);
     } else if (hash === '#register') {
       window.history.replaceState({ page: 'register'}, null, '/register');
       document.getElementById('app').innerHTML = layout() + personalInfo;

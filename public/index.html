@@ -9,6 +9,10 @@
   <link href="https://fonts.googleapis.com/css?family=Heebo:400,700|Playfair+Display:700" rel="stylesheet">
 
   <script type="text/javascript">
+    const scrollreveal = document.createElement('script')
+    scrollreveal.src = "https://unpkg.com/scrollreveal@4.0.5/dist/scrollreveal.min.js"
+    document.head.appendChild(scrollreveal)
+
     const { page } = window.history.state
     switch(page) {
       case 'home':
@@ -20,10 +24,6 @@
       default:
         break;
     }
-
-    const scrollreveal = document.createElement('script')
-    scrollreveal.src = "https://unpkg.com/scrollreveal@4.0.5/dist/scrollreveal.min.js"
-    document.head.appendChild(scrollreveal)
   </script>
   <script src="/static/js/styles/js.cookie.js"></script>
   
