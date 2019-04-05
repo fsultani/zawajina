@@ -15,6 +15,22 @@ const User = require('../models/user')
 const Message = require('../models/message')
 const Conversation = require('../models/conversation')
 
+router.post('/login', (req, res, next) => {
+  passport.authenticate('local', (err, user, info) => {
+    if (err) return next(err)
+    if (!user) {
+      return res.status(401).json({ error: 'message' })
+    } else {
+      // Return a token to the client once the user is authenticated
+      const token = jwt.encode({ email: req.body.email }, JWT_SECRET)
+      const decodedUser = jwt.decode(token, JWT_SECRET)
+      User.findOne({ email: decodedUser.email }, (err, member) => {
+        res.json({ token, member })
+      })
+    }
+  })(req, res, next)
+})
+
 passport.use(new LocalStrategy({
   usernameField: 'email',
   passwordField: 'password'
@@ -116,23 +132,6 @@ router.get('/api/all-members', (req, res, next) => {
       )
     }
   })
-})
-
-router.post('/login', (req, res, next) => {
-  passport.authenticate('local', (err, user, info) => {
-    if (err) return next(err)
-    if (!user) {
-      return res.status(401).json({ error: 'message' })
-    } else {
-      // Return a token to the client once the user is authenticated
-      const token = jwt.encode({ email: req.body.email }, JWT_SECRET)
-      const decodedUser = jwt.decode(token, JWT_SECRET)
-      // Cookies.set('token', token)
-      User.findOne({ email: decodedUser.email }, (err, member) => {
-        res.json({ token, member })
-      })
-    }
-  })(req, res, next)
 })
 
 const ensureAuthenticated = (req, res, next) => {
