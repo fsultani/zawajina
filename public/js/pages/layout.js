@@ -10,14 +10,16 @@ const layout = () => document.getElementById('app').innerHTML = `
               </a>
             </h1>
           </div>
-          <ul class="header-links list-reset m-0">
-            <li>
-              <a href="#login">Login</a>
-            </li>
-            <li>
-              <a class="button button-sm button-shadow button-signup" href="#">Signup</a>
-            </li>
-          </ul>
+          ${!Cookies.get('token') ? `
+            <ul class="header-links list-reset m-0">
+              <li>
+                <a href="#login">Login</a>
+              </li>
+              <li>
+                <a class="button button-sm button-shadow button-signup" href="#">Signup</a>
+              </li>
+            </ul>` : `<span style="color: #fff">Welcome, ${Cookies.get('name')}!</span>`
+          }
         </div>
       </div>
     </header>
