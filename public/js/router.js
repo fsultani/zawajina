@@ -58,7 +58,7 @@ window.onload = () => {
   let { pathname } = window.location;
 
   const logoutScript = document.createElement('script');
-  logoutScript.src = '/static/js/scripts/handleLogout.js';
+  logoutScript.src = '/static/js/pages/Logout/handleLogout.js';
   document.head.appendChild(logoutScript);
 
   if (Cookies.get('token')) {
@@ -129,6 +129,10 @@ window.onload = () => {
     event.preventDefault();
     const { hash } = window.location;
     if (hash === '#home') {
+      const logoutScript = document.createElement('script');
+      logoutScript.src = '/static/js/pages/Logout/handleLogout.js';
+      document.head.appendChild(logoutScript);
+
       window.history.replaceState({ page: 'home'}, null, '/');
       layout();
     } else if (hash === '#login') {

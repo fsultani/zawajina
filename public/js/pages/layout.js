@@ -10,7 +10,12 @@ const layout = () => document.getElementById('app').innerHTML = `
               </a>
             </h1>
           </div>
-          ${!Cookies.get('token') ? `
+          ${Cookies.get('token') ? `
+            <ul class="header-links list-reset m-0">
+              <li>
+                <button class="button button-sm button-shadow" onclick="handleLogout(event)">Logout</button>
+              </li>
+            </ul>` : `
             <ul class="header-links list-reset m-0">
               <li>
                 <a href="#login">Login</a>
@@ -18,7 +23,8 @@ const layout = () => document.getElementById('app').innerHTML = `
               <li>
                 <a class="button button-sm button-shadow button-signup" href="#">Signup</a>
               </li>
-            </ul>` : `<span style="color: #fff">Welcome, ${Cookies.get('name')}!</span>`
+            </ul>
+            `
           }
         </div>
       </div>
@@ -29,6 +35,7 @@ const layout = () => document.getElementById('app').innerHTML = `
         <div class="container-sm">
           <div class="hero-inner">
             <div class="hero-copy">
+              ${Cookies.get('token') ? `<span style="color: #fff">Welcome, ${Cookies.get('name')}!</span>` : ''}
               <h1 class="hero-title mt-0">Find your other half</h1>
               <p class="hero-paragraph">Our landing page template works on all devices, so you only have to set it up once, and get beautiful results forever.</p>
               <div class="hero-cta">
