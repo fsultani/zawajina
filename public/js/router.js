@@ -60,43 +60,58 @@ window.onload = () => {
   const logoutScript = document.createElement('script');
   logoutScript.src = '/static/js/pages/Logout/handleLogout.js';
   document.head.appendChild(logoutScript);
+  console.log("1")
+  console.log("window.history\n", window.history)
 
   if (Cookies.get('token')) {
+    console.log("2")
     if (!window.history.state) {
+      console.log("3")
       window.history.replaceState({ page: 'home'}, null, '/');
       layout();
     } else {
+      console.log("4")
       if (window.history.state.page) {
+        console.log("5")
         const { page } = window.history.state
         if (page.startsWith('userId')) {
+          console.log("6")
           const memberId = window.location.pathname.split('/')[2]
           window.history.replaceState({ page: `userId=${memberId}`}, null, window.location.pathname);
           layout() + memberProfile(memberId);
         } else {
+          console.log("6")
           window.history.replaceState({ page: 'home'}, null, '/');
           layout();
         }
       }
     }
   } else {
+    console.log("7")
     if (window.history.state && window.history.state.page) {
+      console.log("8")
       const { page } = window.history.state
       if (page === 'home') {
+        console.log("9")
         // First page load
         window.history.replaceState({ page: 'home'}, null, '/');
         layout();
       } else if (page === 'login') {
+        console.log("10")
         loginPageCss();
         window.history.replaceState({ page: 'login'}, null, '/login');
         Login();
       } else if (page === 'register') {
+        console.log("11")
         window.history.replaceState({ page: 'register'}, null, '/register');
         document.getElementById('app').innerHTML = layout() + personalInfo;
       } else {
+        console.log("12")
         window.history.replaceState({ page: 'home'}, null, '/');
         layout();
       }
     } else {
+      console.log("13")
       window.history.replaceState({ page: 'home'}, null, '/home');
       layout();
     }
@@ -108,17 +123,22 @@ window.onload = () => {
       return false;
     }
     const { page } = event.state
+    console.log("14")
     if (page === 'home') {
+      console.log("15")
       window.history.replaceState({ page: 'home'}, null, '/');
       layout();
     } else if (page === 'login') {
+      console.log("16")
       loginPageCss();
       window.history.replaceState({ page: 'login'}, null, '/login');
       Login();
     } else if (page === 'register') {
+      console.log("17")
       window.history.replaceState({ page: 'register'}, null, '/register');
       document.getElementById('app').innerHTML = layout() + personalInfo;
     } else if (page.startsWith('userId')) {
+      console.log("18")
       const memberId = window.location.pathname.split('/').slice(1)[1]
       window.history.replaceState({ page: `userId=${memberId}`}, null, window.location.pathname);
       layout() + memberProfile(memberId);
@@ -128,7 +148,9 @@ window.onload = () => {
   window.addEventListener('hashchange', event => {
     event.preventDefault();
     const { hash } = window.location;
+    console.log("19")
     if (hash === '#home') {
+      console.log("20")
       const logoutScript = document.createElement('script');
       logoutScript.src = '/static/js/pages/Logout/handleLogout.js';
       document.head.appendChild(logoutScript);
@@ -136,6 +158,7 @@ window.onload = () => {
       window.history.replaceState({ page: 'home'}, null, '/');
       layout();
     } else if (hash === '#login') {
+      console.log("21")
       loginPageCss();
       window.history.replaceState({ page: 'login'}, null, '/login');
       Login();
@@ -143,9 +166,11 @@ window.onload = () => {
       loginScript.src = '/static/js/pages/Login/handleLogin.js';
       document.head.appendChild(loginScript);
     } else if (hash === '#register') {
+      console.log("22")
       window.history.replaceState({ page: 'register'}, null, '/register');
       document.getElementById('app').innerHTML = layout() + personalInfo;
     } else if (hash.startsWith('#users')) {
+      console.log("23")
       const memberId = window.location.hash.split('/')[1]
       window.history.replaceState({ page: `userId=${memberId}`}, null, hash.slice(1));
       layout() + memberProfile(memberId);
