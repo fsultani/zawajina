@@ -57,6 +57,10 @@ window.onload = () => {
   axios.defaults.headers.common['authorization'] = Cookies.get('token')
   let { pathname } = window.location;
 
+  const loginScript = document.createElement('script');
+  loginScript.src = '/static/js/pages/Login/handleLogin.js';
+  document.head.appendChild(loginScript);
+
   const logoutScript = document.createElement('script');
   logoutScript.src = '/static/js/pages/Logout/handleLogout.js';
   document.head.appendChild(logoutScript);
@@ -129,19 +133,12 @@ window.onload = () => {
     event.preventDefault();
     const { hash } = window.location;
     if (hash === '#home') {
-      const logoutScript = document.createElement('script');
-      logoutScript.src = '/static/js/pages/Logout/handleLogout.js';
-      document.head.appendChild(logoutScript);
-
       window.history.replaceState({ page: 'home'}, null, '/');
       layout();
     } else if (hash === '#login') {
       loginPageCss();
       window.history.replaceState({ page: 'login'}, null, '/login');
       Login();
-      const loginScript = document.createElement('script');
-      loginScript.src = '/static/js/pages/Login/handleLogin.js';
-      document.head.appendChild(loginScript);
     } else if (hash === '#register') {
       window.history.replaceState({ page: 'register'}, null, '/register');
       document.getElementById('app').innerHTML = layout() + personalInfo;
