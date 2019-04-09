@@ -2,29 +2,25 @@ const loginPageCss = () => {
   let fontAwesomeCss;
   let animateCss;
   let hamburgersCss;
-  let select2Css;
   let utilCss;
   let mainCss;
 
   const loginPageCssLinks = []
   const loginPageCssHrefs = [
     {
-      href: "/static/css/fonts/font-awesome-4.7.0/css/font-awesome.min.css"
+      href: "/static/css/login-page/fonts/font-awesome-4.7.0/css/font-awesome.min.css"
     },
     {
-      href: "/static/css/animate.css"
+      href: "/static/css/login-page/animate.css"
     },
     {
-      href: "/static/css/hamburgers.min.css"
+      href: "/static/css/login-page/hamburgers.min.css"
     },
     {
-      href: "/static/css/select2.min.css"
+      href: "/static/css/login-page/util.css"
     },
     {
-      href: "/static/css/util.css"
-    },
-    {
-      href: "/static/css/login-main.css"
+      href: "/static/css/login-page/login-main.css"
     }
   ]
 
@@ -32,7 +28,6 @@ const loginPageCss = () => {
     fontAwesomeCss,
     animateCss,
     hamburgersCss,
-    select2Css,
     utilCss,
     mainCss
   )
@@ -41,6 +36,7 @@ const loginPageCss = () => {
     element = document.createElement('link')
     element.rel = "stylesheet"
     element.href = loginPageCssHrefs[index].href
+    element.setAttribute('id', `loginPageCssLinks-${index}`)
     document.head.appendChild(element)
   });
 
@@ -68,6 +64,22 @@ const loginPageCss = () => {
   document.body.appendChild(jQuery)
   document.body.appendChild(popper)
   document.body.appendChild(bootstrapJs)
+}
+
+const removeLoginPageCss = () => {
+  const list = document.getElementsByTagName('link')
+
+  Object.entries(list).map(item => {
+    if (item[1].href.split('/').includes('login-page')) {
+      item[1].parentNode.removeChild(item[1])
+    }
+  })
+
+  // document.getElementById('loginPageCssLinks-0').parentNode.removeChild(document.getElementById('loginPageCssLinks-0'))
+  // document.getElementById('loginPageCssLinks-1').parentNode.removeChild(document.getElementById('loginPageCssLinks-1'))
+  // document.getElementById('loginPageCssLinks-2').parentNode.removeChild(document.getElementById('loginPageCssLinks-2'))
+  // document.getElementById('loginPageCssLinks-3').parentNode.removeChild(document.getElementById('loginPageCssLinks-3'))
+  // document.getElementById('loginPageCssLinks-4').parentNode.removeChild(document.getElementById('loginPageCssLinks-4'))
 }
 
 const Login = () => document.getElementById('app').innerHTML = `
@@ -126,4 +138,4 @@ const Login = () => document.getElementById('app').innerHTML = `
   </div>
 `;
 
-export { loginPageCss, Login};
+export { loginPageCss, removeLoginPageCss, Login};

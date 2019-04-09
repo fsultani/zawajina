@@ -4,7 +4,7 @@ import PersonalInfoValidation from './pages/register/personalInfo/validations.js
 import HandleSignUp from './pages/register/personalInfo/handleSignUp.js';
 import profileAbout from './pages/register/about/index.js';
 import welcome from './pages/welcome.js';
-import { loginPageCss, Login } from './pages/Login/index.js';
+import { loginPageCss, removeLoginPageCss, Login } from './pages/Login/index.js';
 import memberProfile from './pages/memberProfile.js';
 
 window.onload = () => {
@@ -133,6 +133,7 @@ window.onload = () => {
     event.preventDefault();
     const { hash } = window.location;
     if (hash === '#home') {
+      removeLoginPageCss();
       window.history.replaceState({ page: 'home'}, null, '/');
       layout();
     } else if (hash === '#login') {
