@@ -1,4 +1,4 @@
-import layout from './pages/layout.js';
+import Home from './pages/home.js';
 import { personalInfo } from './pages/register/personalInfo/index.js';
 import PersonalInfoValidation from './pages/register/personalInfo/validations.js';
 import HandleSignUp from './pages/register/personalInfo/handleSignUp.js';
@@ -68,17 +68,17 @@ window.onload = () => {
   if (Cookies.get('token')) {
     if (!window.history.state) {
       window.history.replaceState({ page: 'home'}, null, '/');
-      layout();
+      Home();
     } else {
       if (window.history.state.page) {
         const { page } = window.history.state
         if (page.startsWith('userId')) {
           const memberId = window.location.pathname.split('/')[2]
           window.history.replaceState({ page: `userId=${memberId}`}, null, window.location.pathname);
-          layout() + memberProfile(memberId);
+          Home() + memberProfile(memberId);
         } else {
           window.history.replaceState({ page: 'home'}, null, '/');
-          layout();
+          Home();
         }
       }
     }
@@ -88,21 +88,21 @@ window.onload = () => {
       if (page === 'home') {
         // First page load
         window.history.replaceState({ page: 'home'}, null, '/');
-        layout();
+        Home();
       } else if (page === 'login') {
         loginPageCss();
         window.history.replaceState({ page: 'login'}, null, '/login');
         Login();
       } else if (page === 'register') {
         window.history.replaceState({ page: 'register'}, null, '/register');
-        document.getElementById('app').innerHTML = layout() + personalInfo;
+        document.getElementById('app').innerHTML = Home() + personalInfo;
       } else {
         window.history.replaceState({ page: 'home'}, null, '/');
-        layout();
+        Home();
       }
     } else {
       window.history.replaceState({ page: 'home'}, null, '/home');
-      layout();
+      Home();
     }
   }
 
@@ -114,18 +114,18 @@ window.onload = () => {
     const { page } = event.state
     if (page === 'home') {
       window.history.replaceState({ page: 'home'}, null, '/');
-      layout();
+      Home();
     } else if (page === 'login') {
       loginPageCss();
       window.history.replaceState({ page: 'login'}, null, '/login');
       Login();
     } else if (page === 'register') {
       window.history.replaceState({ page: 'register'}, null, '/register');
-      document.getElementById('app').innerHTML = layout() + personalInfo;
+      document.getElementById('app').innerHTML = Home() + personalInfo;
     } else if (page.startsWith('userId')) {
       const memberId = window.location.pathname.split('/').slice(1)[1]
       window.history.replaceState({ page: `userId=${memberId}`}, null, window.location.pathname);
-      layout() + memberProfile(memberId);
+      Home() + memberProfile(memberId);
     }
   })
 
@@ -135,18 +135,18 @@ window.onload = () => {
     if (hash === '#home') {
       removeLoginPageCss();
       window.history.replaceState({ page: 'home'}, null, '/');
-      layout();
+      Home();
     } else if (hash === '#login') {
       loginPageCss();
       window.history.replaceState({ page: 'login'}, null, '/login');
       Login();
     } else if (hash === '#register') {
       window.history.replaceState({ page: 'register'}, null, '/register');
-      document.getElementById('app').innerHTML = layout() + personalInfo;
+      document.getElementById('app').innerHTML = Home() + personalInfo;
     } else if (hash.startsWith('#users')) {
       const memberId = window.location.hash.split('/')[1]
       window.history.replaceState({ page: `userId=${memberId}`}, null, hash.slice(1));
-      layout() + memberProfile(memberId);
+      Home() + memberProfile(memberId);
     }
   })
   if (body.classList.contains('has-animations')) {

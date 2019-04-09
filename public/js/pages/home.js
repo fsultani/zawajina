@@ -1,4 +1,4 @@
-const layout = () => document.getElementById('app').innerHTML = `
+const Home = () => document.getElementById('app').innerHTML = `
   <div class="body-wrap boxed-container">
     <header class="site-header text-light">
       <div class="container">
@@ -442,4 +442,4 @@ const layout = () => document.getElementById('app').innerHTML = `
   </div>
 `;
 
-export default layout;
+export default Home;

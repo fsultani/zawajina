@@ -84,6 +84,13 @@ const removeLoginPageCss = () => {
 
 const Login = () => document.getElementById('app').innerHTML = `
   <div class="limiter">
+    <div class="brand header-brand">
+      <h1 class="m-0">
+        <a href="#">
+          <img class="header-logo-image" src="/static/images/logo.svg" alt="Logo">
+        </a>
+      </h1>
+    </div>
     <div class="container-login100">
       <div class="wrap-login100">
         <div class="login100-pic js-tilt" data-tilt>
