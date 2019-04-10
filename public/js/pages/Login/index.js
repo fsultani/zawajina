@@ -74,12 +74,6 @@ const removeLoginPageCss = () => {
       item[1].parentNode.removeChild(item[1])
     }
   })
-
-  // document.getElementById('loginPageCssLinks-0').parentNode.removeChild(document.getElementById('loginPageCssLinks-0'))
-  // document.getElementById('loginPageCssLinks-1').parentNode.removeChild(document.getElementById('loginPageCssLinks-1'))
-  // document.getElementById('loginPageCssLinks-2').parentNode.removeChild(document.getElementById('loginPageCssLinks-2'))
-  // document.getElementById('loginPageCssLinks-3').parentNode.removeChild(document.getElementById('loginPageCssLinks-3'))
-  // document.getElementById('loginPageCssLinks-4').parentNode.removeChild(document.getElementById('loginPageCssLinks-4'))
 }
 
 const Login = () => document.getElementById('app').innerHTML = `
