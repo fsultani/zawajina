@@ -8,19 +8,19 @@ const loginPageCss = () => {
   const loginPageCssLinks = []
   const loginPageCssHrefs = [
     {
-      href: "/static/css/login-page/fonts/font-awesome-4.7.0/css/font-awesome.min.css"
+      href: "/static/css/Login/fonts/font-awesome-4.7.0/css/font-awesome.min.css"
     },
     {
-      href: "/static/css/login-page/animate.css"
+      href: "/static/css/Login/animate.css"
     },
     {
-      href: "/static/css/login-page/hamburgers.min.css"
+      href: "/static/css/Login/hamburgers.min.css"
     },
     {
-      href: "/static/css/login-page/util.css"
+      href: "/static/css/Login/util.css"
     },
     {
-      href: "/static/css/login-page/main.css"
+      href: "/static/css/Login/main.css"
     }
   ]
 

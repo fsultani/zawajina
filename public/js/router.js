@@ -1,8 +1,5 @@
-import Home from './pages/home.js';
-import { personalInfo } from './pages/register/personalInfo/index.js';
-import PersonalInfoValidation from './pages/register/personalInfo/validations.js';
-import HandleSignUp from './pages/register/personalInfo/handleSignUp.js';
-import profileAbout from './pages/register/about/index.js';
+import { homeCss, Home } from './pages/Home/index.js';
+import { personalInfoCss, PersonalInfo } from './pages/Register/PersonalInfo/index.js';
 import welcome from './pages/welcome.js';
 import { loginPageCss, removeLoginPageCss, Login } from './pages/Login/index.js';
 import memberProfile from './pages/memberProfile.js';
@@ -87,6 +84,7 @@ window.onload = () => {
       const { page } = window.history.state
       if (page === 'home') {
         // First page load
+        homeCss();
         window.history.replaceState({ page: 'home'}, null, '/');
         Home();
       } else if (page === 'login') {
@@ -95,7 +93,8 @@ window.onload = () => {
         Login();
       } else if (page === 'register') {
         window.history.replaceState({ page: 'register'}, null, '/register');
-        document.getElementById('app').innerHTML = Home() + personalInfo;
+        personalInfoCss();
+        PersonalInfo();
       } else {
         window.history.replaceState({ page: 'home'}, null, '/');
         Home();
@@ -121,7 +120,6 @@ window.onload = () => {
       Login();
     } else if (page === 'register') {
       window.history.replaceState({ page: 'register'}, null, '/register');
-      document.getElementById('app').innerHTML = Home() + personalInfo;
     } else if (page.startsWith('userId')) {
       const memberId = window.location.pathname.split('/').slice(1)[1]
       window.history.replaceState({ page: `userId=${memberId}`}, null, window.location.pathname);
@@ -134,6 +132,7 @@ window.onload = () => {
     const { hash } = window.location;
     if (hash === '#home') {
       removeLoginPageCss();
+      homeCss();
       window.history.replaceState({ page: 'home'}, null, '/');
       Home();
     } else if (hash === '#login') {
@@ -141,8 +140,9 @@ window.onload = () => {
       window.history.replaceState({ page: 'login'}, null, '/login');
       Login();
     } else if (hash === '#register') {
+      personalInfoCss();
       window.history.replaceState({ page: 'register'}, null, '/register');
-      document.getElementById('app').innerHTML = Home() + personalInfo;
+      PersonalInfo();
     } else if (hash.startsWith('#users')) {
       const memberId = window.location.hash.split('/')[1]
       window.history.replaceState({ page: `userId=${memberId}`}, null, hash.slice(1));

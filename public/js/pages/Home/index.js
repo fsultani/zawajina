@@ -1,3 +1,10 @@
+const homeCss = () => {
+  const element = document.createElement('link')
+  element.rel = "stylesheet"
+  element.href = "/static/css/Home/style.css"
+  document.head.appendChild(element)
+}
+
 const Home = () => document.getElementById('app').innerHTML = `
   <div class="body-wrap boxed-container">
     <header class="site-header text-light">
@@ -5,7 +12,7 @@ const Home = () => document.getElementById('app').innerHTML = `
         <div class="site-header-inner">
           <div class="brand header-brand">
             <h1 class="m-0">
-              <a href="#">
+              <a href="#home">
                 <svg width="32" height="32" xmlns="http://www.w3.org/2000/svg">
                   <defs>
                     <linearGradient x1="114.674%" y1="39.507%" x2="-52.998%" y2="39.507%" id="logo-a">
@@ -44,7 +51,7 @@ const Home = () => document.getElementById('app').innerHTML = `
                 <a href="#login">Login</a>
               </li>
               <li>
-                <a class="button button-sm button-shadow button-signup" href="#">Signup</a>
+                <a class="button button-sm button-shadow button-signup" href="#register">Signup</a>
               </li>
             </ul>
             `
@@ -465,4 +472,4 @@ const Home = () => document.getElementById('app').innerHTML = `
   </div>
 `;
 
-export default Home;
+export { homeCss, Home };
