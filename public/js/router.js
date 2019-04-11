@@ -80,10 +80,10 @@ window.onload = () => {
       }
     }
   } else {
+    // First page load
     if (window.history.state && window.history.state.page) {
       const { page } = window.history.state
       if (page === 'home') {
-        // First page load
         homeCss();
         window.history.replaceState({ page: 'home'}, null, '/');
         Home();

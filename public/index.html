@@ -12,6 +12,13 @@
       const scrollreveal = document.createElement('script')
       scrollreveal.src = "https://unpkg.com/scrollreveal@4.0.5/dist/scrollreveal.min.js"
       document.head.appendChild(scrollreveal)
+
+      if (window.location.pathname === '/') {
+        const element = document.createElement('link')
+        element.rel = "stylesheet"
+        element.href = "/static/css/Home/style.css"
+        document.head.appendChild(element)
+      }
     </script>
 
     <script src="/static/js/styles/js.cookie.js"></script>
