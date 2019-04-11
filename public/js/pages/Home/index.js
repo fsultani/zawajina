@@ -1,10 +1,3 @@
-const homeCss = () => {
-  const element = document.createElement('link')
-  element.rel = "stylesheet"
-  element.href = "/static/css/Home/style.css"
-  document.head.appendChild(element)
-}
-
 const Home = () => document.getElementById('app').innerHTML = `
   <div class="body-wrap boxed-container">
     <header class="site-header text-light">
@@ -472,4 +465,4 @@ const Home = () => document.getElementById('app').innerHTML = `
   </div>
 `;
 
-export { homeCss, Home };
+export default Home;

@@ -1,4 +1,4 @@
-import { homeCss, Home } from './pages/Home/index.js';
+import Home from './pages/Home/index.js';
 import { personalInfoCss, PersonalInfo } from './pages/Register/PersonalInfo/index.js';
 import welcome from './pages/welcome.js';
 import { loginPageCss, removeLoginPageCss, Login } from './pages/Login/index.js';
@@ -84,11 +84,11 @@ window.onload = () => {
     if (window.history.state && window.history.state.page) {
       const { page } = window.history.state
       if (page === 'home') {
-        homeCss();
         window.history.replaceState({ page: 'home'}, null, '/');
         Home();
       } else if (page === 'login') {
-        loginPageCss();
+        console.log("router")
+        // loginPageCss();
         window.history.replaceState({ page: 'login'}, null, '/login');
         Login();
       } else if (page === 'register') {
@@ -132,11 +132,11 @@ window.onload = () => {
     const { hash } = window.location;
     if (hash === '#home') {
       removeLoginPageCss();
-      homeCss();
       window.history.replaceState({ page: 'home'}, null, '/');
       Home();
     } else if (hash === '#login') {
-      loginPageCss();
+      console.log("router login")
+      // loginPageCss();
       window.history.replaceState({ page: 'login'}, null, '/login');
       Login();
     } else if (hash === '#register') {
