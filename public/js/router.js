@@ -69,14 +69,8 @@ window.onload = () => {
     } else {
       if (window.history.state.page) {
         const { page } = window.history.state
-        if (page.startsWith('userId')) {
-          const memberId = window.location.pathname.split('/')[2]
-          window.history.replaceState({ page: `userId=${memberId}`}, null, window.location.pathname);
-          Home() + memberProfile(memberId);
-        } else {
-          window.history.replaceState({ page: 'home'}, null, '/');
-          Home();
-        }
+        window.history.replaceState({ page: 'home'}, null, '/');
+        Home();
       }
     }
   } else {
@@ -87,13 +81,12 @@ window.onload = () => {
         window.history.replaceState({ page: 'home'}, null, '/');
         Home();
       } else if (page === 'login') {
-        console.log("router")
         // loginPageCss();
         window.history.replaceState({ page: 'login'}, null, '/login');
         Login();
       } else if (page === 'register') {
         window.history.replaceState({ page: 'register'}, null, '/register');
-        personalInfoCss();
+        // personalInfoCss();
         PersonalInfo();
       } else {
         window.history.replaceState({ page: 'home'}, null, '/');
@@ -112,18 +105,14 @@ window.onload = () => {
     }
     const { page } = event.state
     if (page === 'home') {
-      window.history.replaceState({ page: 'home'}, null, '/');
-      Home();
+      // window.history.replaceState({ page: 'home'}, null, '/');
+      // Home();
     } else if (page === 'login') {
-      loginPageCss();
+      // loginPageCss();
       window.history.replaceState({ page: 'login'}, null, '/login');
       Login();
     } else if (page === 'register') {
       window.history.replaceState({ page: 'register'}, null, '/register');
-    } else if (page.startsWith('userId')) {
-      const memberId = window.location.pathname.split('/').slice(1)[1]
-      window.history.replaceState({ page: `userId=${memberId}`}, null, window.location.pathname);
-      Home() + memberProfile(memberId);
     }
   })
 
@@ -131,7 +120,7 @@ window.onload = () => {
     event.preventDefault();
     const { hash } = window.location;
     if (hash === '#home') {
-      removeLoginPageCss();
+      // removeLoginPageCss();
       window.history.replaceState({ page: 'home'}, null, '/');
       Home();
     } else if (hash === '#login') {
@@ -140,15 +129,12 @@ window.onload = () => {
       window.history.replaceState({ page: 'login'}, null, '/login');
       Login();
     } else if (hash === '#register') {
-      personalInfoCss();
+      // personalInfoCss();
       window.history.replaceState({ page: 'register'}, null, '/register');
       PersonalInfo();
-    } else if (hash.startsWith('#users')) {
-      const memberId = window.location.hash.split('/')[1]
-      window.history.replaceState({ page: `userId=${memberId}`}, null, hash.slice(1));
-      Home() + memberProfile(memberId);
     }
   })
+
   if (body.classList.contains('has-animations')) {
     revealAnimations()
   }
