@@ -4,6 +4,19 @@ const scrollreveal = document.createElement('script')
 scrollreveal.src = "https://unpkg.com/scrollreveal@4.0.5/dist/scrollreveal.min.js"
 document.head.appendChild(scrollreveal)
 
+const googleapis = document.createElement('link')
+googleapis.rel = "stylesheet"
+googleapis.href = "https://fonts.googleapis.com/css?family=Heebo:400,700|Playfair+Display:700"
+document.head.appendChild(googleapis)
+
+const jsCookie = document.createElement('script')
+jsCookie.src = "/static/js/styles/js.cookie.js"
+document.head.appendChild(jsCookie)
+
+const axiosScript = document.createElement('script')
+axiosScript.src = "https://unpkg.com/axios/dist/axios.min.js"
+document.head.appendChild(axiosScript)
+
 if (window.location.pathname === '/') {
   const element = document.createElement('link')
   element.rel = "stylesheet"
