@@ -1,3 +1,13 @@
+const removeNonLoginCss = () => {
+  const list = document.getElementsByTagName('link')
+
+  Object.entries(list).map(item => {
+    if (!item[1].href.split('/').includes('Login')) {
+      item[1].parentNode.removeChild(item[1])
+    }
+  })
+}
+
 const loginPageCss = () => {
   let fontAwesomeCss;
   let animateCss;
@@ -64,16 +74,6 @@ const loginPageCss = () => {
   document.body.appendChild(jQuery)
   document.body.appendChild(popper)
   document.body.appendChild(bootstrapJs)
-}
-
-const removeLoginPageCss = () => {
-  const list = document.getElementsByTagName('link')
-
-  Object.entries(list).map(item => {
-    if (item[1].href.split('/').includes('login-page')) {
-      item[1].parentNode.removeChild(item[1])
-    }
-  })
 }
 
 const Login = () => document.getElementById('app').innerHTML = `
@@ -162,4 +162,4 @@ const Login = () => document.getElementById('app').innerHTML = `
   </div>
 `;
 
-export { loginPageCss, removeLoginPageCss, Login};
+export { removeNonLoginCss, loginPageCss, Login};

@@ -1,14 +1,25 @@
 const personalInfoCss = () => {
   const mainCss = document.createElement('link')
   mainCss.rel = "stylesheet"
-  mainCss.href = "/static/css/register/style.css"
+  mainCss.href = "/static/css/Register/style.css"
   document.head.appendChild(mainCss);
 
   const materialCss = document.createElement('link')
   materialCss.rel = "stylesheet"
-  materialCss.href = "/static/css/register/material-design-iconic-font.css"
+  materialCss.href = "/static/css/Register/material-design-iconic-font.css"
   document.head.appendChild(materialCss);
 }
+
+const removeNonRegisterCss = () => {
+  const list = document.getElementsByTagName('link')
+
+  Object.entries(list).map(item => {
+    if (!item[1].href.split('/').includes('Register')) {
+      item[1].parentNode.removeChild(item[1])
+    }
+  })
+}
+
 
 const PersonalInfo = () => document.getElementById('app').innerHTML = `
   <div class="main">
@@ -48,4 +59,4 @@ const PersonalInfo = () => document.getElementById('app').innerHTML = `
   </div>
 `;
 
-export { personalInfoCss, PersonalInfo }
+export { removeNonRegisterCss, personalInfoCss, PersonalInfo }

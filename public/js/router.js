@@ -1,7 +1,7 @@
 import Home from './pages/Home/index.js';
 import { personalInfoCss, PersonalInfo } from './pages/Register/PersonalInfo/index.js';
 import welcome from './pages/welcome.js';
-import { loginPageCss, removeLoginPageCss, Login } from './pages/Login/index.js';
+import { loginPageCss, Login } from './pages/Login/index.js';
 import memberProfile from './pages/memberProfile.js';
 
 window.onload = () => {
@@ -81,12 +81,10 @@ window.onload = () => {
         window.history.replaceState({ page: 'home'}, null, '/');
         Home();
       } else if (page === 'login') {
-        // loginPageCss();
         window.history.replaceState({ page: 'login'}, null, '/login');
         Login();
       } else if (page === 'register') {
         window.history.replaceState({ page: 'register'}, null, '/register');
-        // personalInfoCss();
         PersonalInfo();
       } else {
         window.history.replaceState({ page: 'home'}, null, '/');
@@ -105,10 +103,9 @@ window.onload = () => {
     }
     const { page } = event.state
     if (page === 'home') {
-      // window.history.replaceState({ page: 'home'}, null, '/');
-      // Home();
+      window.history.replaceState({ page: 'home'}, null, '/');
+      Home();
     } else if (page === 'login') {
-      // loginPageCss();
       window.history.replaceState({ page: 'login'}, null, '/login');
       Login();
     } else if (page === 'register') {
@@ -120,16 +117,12 @@ window.onload = () => {
     event.preventDefault();
     const { hash } = window.location;
     if (hash === '#home') {
-      // removeLoginPageCss();
       window.history.replaceState({ page: 'home'}, null, '/');
       Home();
     } else if (hash === '#login') {
-      console.log("router login")
-      // loginPageCss();
       window.history.replaceState({ page: 'login'}, null, '/login');
       Login();
     } else if (hash === '#register') {
-      // personalInfoCss();
       window.history.replaceState({ page: 'register'}, null, '/register');
       PersonalInfo();
     }
