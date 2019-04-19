@@ -1,7 +1,7 @@
 import Home from './pages/Home/index.js';
 import { personalInfoCss, PersonalInfo } from './pages/Register/PersonalInfo/index.js';
 import welcome from './pages/welcome.js';
-import { loginPageCss, Login } from './pages/Login/index.js';
+import { removeNonLoginCss, loginPageCss, Login } from './pages/Login/index.js';
 import memberProfile from './pages/memberProfile.js';
 
 window.onload = () => {

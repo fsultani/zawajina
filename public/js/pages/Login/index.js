@@ -2,7 +2,7 @@ const removeNonLoginCss = () => {
   const list = document.getElementsByTagName('link')
 
   Object.entries(list).map(item => {
-    if (!item[1].href.split('/').includes('Login')) {
+    if (!item[1].href.split('/').includes('Home')) {
       item[1].parentNode.removeChild(item[1])
     }
   })
@@ -46,7 +46,6 @@ const loginPageCss = () => {
     element = document.createElement('link')
     element.rel = "stylesheet"
     element.href = loginPageCssHrefs[index].href
-    element.setAttribute('id', `loginPageCssLinks-${index}`)
     document.head.appendChild(element)
   });
 
