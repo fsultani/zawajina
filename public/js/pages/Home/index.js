@@ -59,7 +59,7 @@ const Home = () => document.getElementById('app').innerHTML = `
           <div class="hero-inner">
             <div class="hero-copy">
               ${Cookies.get('token') ? `<span style="color: #fff">Welcome, ${Cookies.get('name')}!</span>` : ''}
-              <h1 class="hero-title mt-0">Find your other half</h1>
+              <h1 class="hero-title mt-0">JS - Find your other half</h1>
               <p class="hero-paragraph">Our landing page template works on all devices, so you only have to set it up once, and get beautiful results forever.</p>
               <div class="hero-cta">
                 <a class="button button-secondary button-shadow" href="#">Get started now</a>
