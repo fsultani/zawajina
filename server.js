@@ -26,6 +26,7 @@ if (process.env.NODE_ENV === 'mlab-dev') {
 }
 
 const app = express()
+const router = express.Router();
 
 const index = require('./routes/index')
 const registerRoute = require('./routes/registerRoute')
@@ -36,76 +37,85 @@ const messages = require('./routes/messages')
 const Conversation = require('./models/conversation')
 
 // Set static folder
-app.use('/static', express.static(path.join(__dirname, 'public')))
+// app.use('/static', express.static(path.join(__dirname, 'public')))
+// app.use(express.static(path.join(__dirname, 'public')))
+
+app.get('/', (req, res, next) => {
+  res.sendFile(path.join(__dirname, 'public/pages/index.html'))
+})
 
 // Body Parser Middleware
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true }))
-app.use(cookieParser())
+// app.use(bodyParser.json())
+// app.use(bodyParser.urlencoded({ extended: true }))
+// app.use(cookieParser())
 
 // Express Session
 // app.set('trust proxy', 1) // trust first proxy 
-app.use(session({
-  secret: "farid's secret",
-  resave: true,
-  saveUninitialized: true,
-  // cookie: { secure: true }
-}))
+// app.use(session({
+//   secret: "farid's secret",
+//   resave: true,
+//   saveUninitialized: true,
+//   // cookie: { secure: true }
+// }))
 
 // Passport init
-app.use(passport.initialize())
-app.use(passport.session())
+// app.use(passport.initialize())
+// app.use(passport.session())
 
 // Express Validator
 // app.use(express.json())
 
 // Connect Flash
-app.use(flash())
+// app.use(flash())
 
-app.use(function (req, res, next) {
-  res.locals.success_message = req.flash('success_message')
-  res.locals.error_message = req.flash('error_message')
-  res.locals.error = req.flash('error')
-  res.locals.logged_out_message = req.flash('logged_out_message')
-  res.locals.logged_in_user = req.user
-  next()
-})
+// app.use(function (req, res, next) {
+//   res.locals.success_message = req.flash('success_message')
+//   res.locals.error_message = req.flash('error_message')
+//   res.locals.error = req.flash('error')
+//   res.locals.logged_out_message = req.flash('logged_out_message')
+//   res.locals.logged_in_user = req.user
+//   next()
+// })
 
 // Catch all 'get' requests, and respond with public/index.html
-app.get('*', (req, res, next) => {
-  if (req.url === '/favicon.ico') {
-    res.status(204)
-  } else if (req.url.indexOf('/api/') === -1) {
-    res.sendFile(path.join(__dirname, 'public/index.html'))
-    // res.sendFile(path.join(__dirname, 'public/index-no-network.html'))
-  } else {
-    return next()
-  }
-})
+// app.get('/', (req, res, next) => {
+//   res.sendFile(path.join(__dirname, 'public/home.html'))
+//   // if (req.url.indexOf('/api/') === -1) {
+//   // } else {
+//   //   return next();
+//   // }
+//   // if (req.url === '/favicon.ico') {
+//   //   res.status(204)
+//   // } else if (req.url.indexOf('/api/') === -1) {
+//   //   res.sendFile(path.join(__dirname, 'public/index.html'))
+//   // } else {
+//   //   return next()
+//   // }
+// })
 
 // Use index.js for any routes beginning with '/'
-app.use('/', index)
-app.use('/register', registerRoute)
-app.use('/users', users)
-app.use('/conversation', conversation)
-app.use('/messages', messages)
+// app.use('/', index)
+// app.use('/register', registerRoute)
+// app.use('/users', users)
+// app.use('/conversation', conversation)
+// app.use('/messages', messages)
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  const err = new Error('Not Found')
-  err.status = 404;
-  next(err)
-})
+// app.use(function(req, res, next) {
+//   const err = new Error('Not Found')
+//   err.status = 404;
+//   next(err)
+// })
 
-// error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+// // error handler
+// app.use(function(err, req, res, next) {
+//   // set locals, only providing error in development
+//   res.locals.message = err.message;
+//   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // render the error page
-  res.status(err.status || 500)
-})
+//   // render the error page
+//   res.status(err.status || 500)
+// })
 
 const port = process.env.PORT || 3000;
 

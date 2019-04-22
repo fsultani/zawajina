@@ -84,6 +84,7 @@ if (Cookies.get('token')) {
   // First page load
   if (window.history.state && window.history.state.page) {
     const { page } = window.history.state
+    console.log("page\n", page)
     if (page === 'home') {
       homeRemoveOtherCss();
       const element = document.createElement('link')
