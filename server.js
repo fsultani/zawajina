@@ -77,6 +77,8 @@ app.get('*', (req, res, next) => {
     res.sendFile(path.join(__dirname, 'public/pages/index.html'))
   } else if (req.url === '/login') {
     res.sendFile(path.join(__dirname, 'public/pages/login.html'))
+  } else if (req.url === '/register') {
+    res.sendFile(path.join(__dirname, 'public/pages/register.html'))
   }
   else if (req.url.indexOf('/api/') === -1) {
     res.sendFile(path.join(__dirname, 'public/router.html'))
