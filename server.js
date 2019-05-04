@@ -25,8 +25,6 @@ if (process.env.NODE_ENV === 'mlab-dev') {
   console.log("Heroku deployment")
 }
 
-//Test comment
-
 const app = express()
 
 const index = require('./routes/index')
