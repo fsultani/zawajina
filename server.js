@@ -1,4 +1,3 @@
-// Test comment
 const http = require('http')
 const express = require('express')
 const path = require('path')
@@ -78,6 +77,8 @@ app.get('*', (req, res, next) => {
     res.sendFile(path.join(__dirname, 'public/pages/index.html'))
   } else if (req.url === '/login') {
     res.sendFile(path.join(__dirname, 'public/pages/login.html'))
+  } else if (req.url === '/about') {
+    res.sendFile(path.join(__dirname, 'public/pages/about.html'))
   } else if (req.url === '/register') {
     res.sendFile(path.join(__dirname, 'public/pages/register.html'))
   }
