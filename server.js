@@ -78,10 +78,13 @@ app.get('*', (req, res, next) => {
     res.sendFile(path.join(__dirname, 'public/pages/index.html'))
   } else if (req.url === '/login') {
     res.sendFile(path.join(__dirname, 'public/pages/login.html'))
-  } else if (req.url === '/register') {
-    res.sendFile(path.join(__dirname, 'public/pages/register.html'))
-  }
-  else if (req.url.indexOf('/api/') === -1) {
+  } else if (req.url === '/about') {
+    res.sendFile(path.join(__dirname, 'public/pages/about.html'))
+  } else if (req.url === '/registration/student') {
+    res.sendFile(path.join(__dirname, 'public/pages/registration-student.html'))
+  } else if (req.url === '/registration/tutor') {
+    res.sendFile(path.join(__dirname, 'public/pages/registration-tutor.html'))
+  } else if (req.url.indexOf('/api/') === -1) {
     res.sendFile(path.join(__dirname, 'public/router.html'))
   } else if (req.url === '/favicon.ico') {
     res.status(204)
