@@ -1,3 +1,5 @@
+@import "../SharedComponents/layout/_header.css";
+
 /* @extend display-flex; */
 display-flex, .display-flex, .display-flex-center {
   display: flex;

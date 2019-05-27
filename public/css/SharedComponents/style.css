@@ -1,7 +1,7 @@
 /*--------------------------------------------------------------
 # Variables, functions and mixins
 --------------------------------------------------------------*/
-/*@import "../SharedComponents/abstracts/variables",
+/*@import "abstracts/variables",
         "abstracts/functions",
         "abstracts/mixins",
         'abstracts/include-media';*/
@@ -11,69 +11,69 @@
   * normalize.css v7.0.0 | MIT License
   * github.com/necolas/normalize.css
 --------------------------------------------------------------*/
-@import "../SharedComponents/_normalize.css";
+@import "_normalize.css";
 
 /*--------------------------------------------------------------
 # Base
 --------------------------------------------------------------*/
-@import "../SharedComponents/base/_base.css";
+@import "base/_base.css";
 
 /*--------------------------------------------------------------
 # Typography
 --------------------------------------------------------------*/
-@import "../SharedComponents/base/_typography.css";
+@import "base/_typography.css";
 
 /*--------------------------------------------------------------
 # Helpers
 --------------------------------------------------------------*/
-@import "../SharedComponents/base/_helpers.css";
+@import "base/_helpers.css";
 
 /*--------------------------------------------------------------
 # Buttons
 --------------------------------------------------------------*/
-@import "../SharedComponents/components/_buttons.css";
+@import "components/_buttons.css";
 
 /*--------------------------------------------------------------
 # Header
 --------------------------------------------------------------*/
-@import "../SharedComponents/layout/_header.css";
+@import "layout/_header.css";
 
 /*--------------------------------------------------------------
 # Hero
 --------------------------------------------------------------*/
-@import "../SharedComponents/layout/_hero.css";
+@import "layout/_hero.css";
 
 /*--------------------------------------------------------------
 # Features
 --------------------------------------------------------------*/
-@import "../SharedComponents/layout/_features.css";
+@import "layout/_features.css";
 
 /*--------------------------------------------------------------
 # Features extended
 --------------------------------------------------------------*/
-@import "../SharedComponents/layout/_features-extended.css";
+@import "layout/_features-extended.css";
 
 /*--------------------------------------------------------------
 # Pricing
 --------------------------------------------------------------*/
-@import "../SharedComponents/layout/_pricing.css";
+@import "layout/_pricing.css";
 
 /*--------------------------------------------------------------
 # Testimonials
 --------------------------------------------------------------*/
-@import "../SharedComponents/layout/_testimonials.css";
+@import "layout/_testimonials.css";
 
 /*--------------------------------------------------------------
 # CTA
 --------------------------------------------------------------*/
-@import "../SharedComponents/layout/_cta.css";
+@import "layout/_cta.css";
 
 /*--------------------------------------------------------------
 # Site content
 --------------------------------------------------------------*/
-@import "../SharedComponents/layout/_main.css";
+@import "layout/_main.css";
 
 /*--------------------------------------------------------------
 # Footer
 --------------------------------------------------------------*/
-@import "../SharedComponents/layout/_footer.css";
+@import "layout/_footer.css";
