@@ -134,6 +134,7 @@ h2 {
   clear: both; }
 
 body {
+  min-height: 100vh;
   font-size: 14px;
   line-height: 1.8;
   color: #222;
