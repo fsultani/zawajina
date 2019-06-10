@@ -1,4 +1,3 @@
-// Test comment
 const http = require('http')
 const express = require('express')
 const path = require('path')
@@ -47,27 +46,7 @@ app.use(session({
   secret: "farid's secret",
   resave: true,
   saveUninitialized: true,
-  // cookie: { secure: true }
 }))
-
-// Passport init
-app.use(passport.initialize())
-app.use(passport.session())
-
-// Express Validator
-// app.use(express.json())
-
-// Connect Flash
-app.use(flash())
-
-app.use(function (req, res, next) {
-  res.locals.success_message = req.flash('success_message')
-  res.locals.error_message = req.flash('error_message')
-  res.locals.error = req.flash('error')
-  res.locals.logged_out_message = req.flash('logged_out_message')
-  res.locals.logged_in_user = req.user
-  next()
-})
 
 // Set static folder
 app.use('/static', express.static(path.join(__dirname, 'public')))
@@ -91,6 +70,25 @@ app.get('*', (req, res, next) => {
   }
   return next()
 })
+
+// Passport init
+// app.use(passport.initialize())
+// app.use(passport.session())
+
+// Express Validator
+// app.use(express.json())
+
+// Connect Flash
+// app.use(flash())
+
+// app.use(function (req, res, next) {
+//   res.locals.success_message = req.flash('success_message')
+//   res.locals.error_message = req.flash('error_message')
+//   res.locals.error = req.flash('error')
+//   res.locals.logged_out_message = req.flash('logged_out_message')
+//   res.locals.logged_in_user = req.user
+//   next()
+// })
 
 // Use index.js for any routes beginning with '/'
 app.use('/', index)
