@@ -4,17 +4,22 @@
   <title></title>
   <link rel="stylesheet" type="text/css" href="/static/css/Register/style.css">
   <link rel="stylesheet" type="text/css" href="/static/css/Register/material-design-iconic-font.css">
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </head>
 <body>
 <div class="main">
+  <div w3-include-html="/static/pages/nav.html"></div>
   <section class="signup">
-    <!-- <img src="images/signup-bg.jpg" alt=""> -->
+    <!-- <img src="/static/images/signup-bg.jpg" alt=""> -->
     <div class="container">
       <div class="signup-content">
         <form method="POST" id="signup-form" class="signup-form">
           <h2 class="form-title">Create a free tutor account</h2>
           <div class="form-group">
-            <input type="text" class="form-input" name="name" id="name" placeholder="Your Name"/>
+            <input type="text" class="form-input" name="first_name" id="name" placeholder="First Name"/>
+          </div>
+          <div class="form-group">
+            <input type="text" class="form-input" name="last_name" id="name" placeholder="Last Name"/>
           </div>
           <div class="form-group">
             <input type="email" class="form-input" name="email" id="email" placeholder="Your Email"/>
@@ -22,9 +27,6 @@
           <div class="form-group">
             <input type="text" class="form-input" name="password" id="password" placeholder="Password"/>
             <span toggle="#password" class="zmdi zmdi-eye field-icon toggle-password"></span>
-          </div>
-          <div class="form-group">
-            <input type="password" class="form-input" name="re_password" id="re_password" placeholder="Repeat your password"/>
           </div>
           <div class="form-group">
             <input type="checkbox" name="agree-term" id="agree-term" class="agree-term" />
@@ -41,5 +43,6 @@
     </div>
   </section>
 </div>
+<script type="text/javascript" src="/static/pages/includeHTML.js"></script>
 </body>
 </html>
