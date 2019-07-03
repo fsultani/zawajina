@@ -290,6 +290,10 @@ input[type=checkbox]:not(old):checked + label > span:before {
 .term-service {
   color: #555; }
 
+.signup-button {
+  cursor: pointer;
+}
+
 .loginhere {
   color: #555;
   font-weight: 500;
