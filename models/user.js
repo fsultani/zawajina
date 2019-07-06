@@ -2,7 +2,11 @@ var mongoose = require('mongoose');
 var bcrypt = require('bcryptjs');
 
 var User = mongoose.Schema({
-  name: {
+  first_name: {
+    type: String,
+    required: true
+  },
+  last_name: {
     type: String,
     required: true
   },
@@ -13,42 +17,6 @@ var User = mongoose.Schema({
   password: {
     type: String
   },
-  gender: {
-    type: String,
-    required: true
-  },
-  birthMonth: {
-    type: String,
-    required: true
-  },
-  birthDate: {
-    type: Number,
-    required: true
-  },
-  birthYear: {
-    type: Number,
-    required: true
-  },
-  country: {
-    type: String,
-    required: function() {
-      return typeof this.country === null || (this.country !== null && typeof this.country !== 'string')
-    }
-  },
-  state: {
-    type: String,
-    default: null,
-    required: false,
-  },
-  city: {
-    type: String,
-    required: function() {
-      return typeof this.city === null || (this.city !== null && typeof this.city !== 'string')
-    }
-  },
-  profilePicture: {
-    type: String
-  }
 });
 
 var User = module.exports = mongoose.model('Users', User);

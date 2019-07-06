@@ -8,17 +8,6 @@ const handleSignup = () => {
   console.log("email\n", email)
   console.log("password\n", password)
 
-  // axios.post('/login', {
-  //   email,
-  //   password
-  // }).then(res => {
-  //   Cookies.set('token', res.data.token)
-  //   Cookies.set('name', res.data.member.name)
-  //   Cookies.set('id', res.data.member._id)
-  //   axios.defaults.headers.common['authorization'] = res.data.token
-  //   window.location.hash = 'home'
-  // })
-
   axios.post('/register/api/personal-info', {
     first_name,
     last_name,
@@ -26,5 +15,10 @@ const handleSignup = () => {
     password
   }).then(res => {
     console.log("res.data\n", res.data)
+    Cookies.set('token', res.data.token)
+    axios.defaults.headers.common['authorization'] = res.data.token
+    // window.location.hash = 'home'
+  }).catch(err => {
+    console.log("err\n", err)
   })
 }
