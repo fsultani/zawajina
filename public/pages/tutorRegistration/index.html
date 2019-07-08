@@ -9,32 +9,33 @@
 </head>
 <body>
 <div class="main">
-  <div w3-include-html="/static/pages/nav.html"></div>
+  <!-- <div w3-include-html="/static/pages/nav.html"></div> -->
   <section class="signup">
     <!-- <img src="/static/images/signup-bg.jpg" alt=""> -->
     <div class="container">
       <div class="signup-content">
-        <form name="signupForm">
+        <form name="signupForm" onsubmit="return false" novalidate>
           <h2 class="form-title">Create a free tutor account</h2>
           <div class="form-group">
-            <input type="text" class="form-input" name="first_name" id="name" placeholder="First Name"/>
+            <input type="text" class="form-input" name="first_name" id="first_name_id" placeholder="First Name" required />
           </div>
           <div class="form-group">
-            <input type="text" class="form-input" name="last_name" id="name" placeholder="Last Name"/>
+            <input type="text" class="form-input" name="last_name" id="last_name_id" placeholder="Last Name" required />
           </div>
           <div class="form-group">
-            <input type="email" class="form-input" name="email" id="email" placeholder="Your Email"/>
+            <input type="email" class="form-input" name="email" id="email_id" placeholder="Your Email" required />
           </div>
           <div class="form-group">
-            <input type="password" class="form-input" name="password" id="password" placeholder="Password"/>
+            <input type="password" class="form-input" name="password" id="password_id" placeholder="Password" required />
             <span toggle="#password" class="zmdi zmdi-eye field-icon toggle-password"></span>
           </div>
           <div class="form-group">
-            <input type="checkbox" name="agree-term" id="agree-term" class="agree-term" />
-            <label for="agree-term" class="label-agree-term"><span><span></span></span>I agree all statements in  <a href="#" class="term-service">Terms of service</a></label>
-          </div>
-          <div class="form-group">
-            <button type="button" onclick="handleSignup()" class="form-submit signup-button" id="login">Sign up</button>
+            <input
+              type="submit"
+              onclick="handleSignup()"
+              class="form-submit signup-button"
+              value="Sign Up"
+            />
           </div>
         </form>
         <p class="loginhere">

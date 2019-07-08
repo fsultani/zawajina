@@ -1,6 +1,7 @@
 mongo ds139322.mlab.com:39322/my_match_dev -u farid -p farid
 
 // Return a count of all users with a given name
+db.users.find().count()
 db.users.find({ name: "John"}).count()
 db.users.find({ name: "Test"}).count()
 

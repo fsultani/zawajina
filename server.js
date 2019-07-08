@@ -56,13 +56,13 @@ app.get('*', (req, res, next) => {
   if (req.url === '/') {
     res.sendFile(path.join(__dirname, 'public/pages/index.html'))
   } else if (req.url === '/login') {
-    res.sendFile(path.join(__dirname, 'public/pages/login.html'))
+    res.sendFile(path.join(__dirname, 'public/pages/login/index.html'))
   } else if (req.url === '/about') {
     res.sendFile(path.join(__dirname, 'public/pages/about.html'))
   } else if (req.url === '/registration/student') {
     res.sendFile(path.join(__dirname, 'public/pages/registration-student.html'))
   } else if (req.url === '/registration/tutor') {
-    res.sendFile(path.join(__dirname, 'public/pages/tutorRegistration/registration-tutor.html'))
+    res.sendFile(path.join(__dirname, 'public/pages/tutorRegistration/index.html'))
   } else if (req.url.indexOf('/api/') === -1) {
     res.sendFile(path.join(__dirname, 'public/router.html'))
   } else if (req.url === '/static/favicon.ico') {
