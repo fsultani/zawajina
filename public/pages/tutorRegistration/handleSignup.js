@@ -1,8 +1,8 @@
-const signupFormElements = document.signupForm.elements
-const first_name = document.signupForm.first_name
-const last_name = document.signupForm.last_name
-const email = document.signupForm.email
-const password = document.signupForm.password
+const signupFormElements = document.signupForm.elements;
+const first_name = document.signupForm.first_name;
+const last_name = document.signupForm.last_name;
+const email = document.signupForm.email;
+const password = document.signupForm.password;
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const handleFirstNameValidation = () => {
@@ -17,6 +17,8 @@ const handleFirstNameValidation = () => {
         document.signupForm.first_name.classList.add('form-error')
       }
     })
+  } else if (document.signupForm.last_name.classList.contains('form-error')) {
+    document.signupForm.first_name.classList.remove('form-error')
   }
 }
 
@@ -32,23 +34,27 @@ const handleLastNameValidation = () => {
         document.signupForm.last_name.classList.add('form-error')
       }
     })
+  } else if (document.signupForm.last_name.classList.contains('form-error')) {
+    document.signupForm.last_name.classList.remove('form-error')
   }
 }
 
 const handleEmailValidation = () => {
   if (!emailRegex.test(email.value)) {
-    console.log("form-error")
     document.signupForm.email.classList.add('form-error')
-
-    // signupFormElements.email.addEventListener("blur", () => {
-    //   if (emailRegex.test(email.value)) {
-    //     document.signupForm.email.classList.remove('form-error')
-    //     signupFormElements.email.removeEventListener("blur", () => {})
-    //   } else {
-    //     document.signupForm.email.classList.add('form-error')
-    //   }
-    // })
+  } else {
+    document.signupForm.email.classList.remove('form-error')
   }
+
+  signupFormElements.email.addEventListener("blur", () => {
+    if (!emailRegex.test(email.value)) {
+      document.signupForm.email.classList.add('form-error')
+      signupFormElements.last_name.removeEventListener("blur", () => {})
+    } else {
+      document.signupForm.email.classList.remove('form-error')
+      signupFormElements.last_name.removeEventListener("blur", () => {})
+    }
+  })
 }
 
 const handlePasswordValidation = () => {
@@ -63,6 +69,8 @@ const handlePasswordValidation = () => {
         document.signupForm.password.classList.add('form-error')
       }
     })
+  } else if (document.signupForm.last_name.classList.contains('form-error')) {
+    document.signupForm.password.classList.remove('form-error')
   }
 }
 
@@ -71,6 +79,10 @@ const handleSignup = () => {
   handleLastNameValidation()
   handleEmailValidation()
   handlePasswordValidation()
+  console.log("first_name.value\n", first_name.value)
+  console.log("last_name.value\n", last_name.value)
+  console.log("email.value\n", email.value)
+  console.log("password.value\n", password.value)
 
   // axios.post('/register/api/personal-info', {
   //   first_name,
