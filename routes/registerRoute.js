@@ -9,35 +9,36 @@ const User = require('../models/user')
 const router = express.Router()
 
 router.post('/api/personal-info', [
-  check('first_name').not().isEmpty().withMessage('Enter your first name'),
-  check('last_name').not().isEmpty().withMessage('Enter your last name'),
-  check('email').isEmail().withMessage('Enter a valid email address'),
-  check('password').not().isEmpty().withMessage('Enter a password'),
+  check('firstName').not().isEmpty().withMessage('Enter your first name'),
+  check('lastName').not().isEmpty().withMessage('Enter your last name'),
+  check('userEmail').isEmail().withMessage('Enter a valid email address'),
+  check('userPassword').not().isEmpty().withMessage('Enter a password'),
+  check('userPassword').isLength({ min: 8 }),
 ], (req, res) => {
-  const { first_name, last_name, email, password } = req.body;
+  const { firstName, lastName, userEmail, userPassword } = req.body;
   const getErrors = validationResult(req);
 
   if (!getErrors.isEmpty()) {
     return res.status(400).json({ error: getErrors.array() })
   } else {
-    User.findOne({ email }, (err, userExists) => {
+    User.findOne({ userEmail }, (err, userExists) => {
       if (!userExists) {
         const newUser = new User ({
-          first_name,
-          last_name,
-          email,
-          password,
+          firstName,
+          lastName,
+          userEmail,
+          userPassword
         })
 
         User.createUser(newUser, (err, user) => {
-          const token = jwt.encode({ email: user.email }, JWT_SECRET)
-          const userId = user.id
-          res.status(201).send({ token })
+          const token = jwt.encode({ email: user.userEmail }, JWT_SECRET)
+          const userId = user._id
+          return res.status(201).send({ token })
         })
-      } else if (userExists.email) {
-        res.json({ error: "Email already exists"})
+      } else if (userExists.userEmail) {
+        return res.json({ error: "Email already exists"})
       } else {
-        res.json({ error: "Unknown error" })
+        return res.json({ error: "Unknown error" })
       }
     })
   }
