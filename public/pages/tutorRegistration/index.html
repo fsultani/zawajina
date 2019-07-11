@@ -4,6 +4,7 @@
   <title></title>
   <link rel="stylesheet" type="text/css" href="/static/css/Register/style.css">
   <link rel="stylesheet" type="text/css" href="/static/css/Register/material-design-iconic-font.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script src="/static/js/styles/js.cookie.js"></script>
 </head>
@@ -14,6 +15,9 @@
     <!-- <img src="/static/images/signup-bg.jpg" alt=""> -->
     <div class="container">
       <div class="signup-content">
+        <div class="alert alert-danger" id="show-alert-danger">
+          Email has already been taken
+        </div>
         <form name="signupForm" onsubmit="return false" novalidate>
           <h2 class="form-title">Create a free tutor account</h2>
           <div class="form-group">
@@ -37,8 +41,6 @@
               type="submit"
               onclick="handleSignup()"
               class="form-submit signup-button"
-              value="Sign Up"
-              name="signupButton"
             >Sign Up
           </button>
           </div>

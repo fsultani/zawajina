@@ -175,6 +175,11 @@ body {
   padding: 50px 85px;
 }
 
+#show-alert-danger {
+  display: none;
+  text-align: center;
+}
+
 .form-group {
   overflow: hidden;
   margin-bottom: 20px;

@@ -36,7 +36,7 @@ router.post('/api/personal-info', [
           return res.status(201).send({ token })
         })
       } else if (userExists.userEmail) {
-        return res.json({ error: "Email already exists"})
+        return res.status(200).json({ error: "Email already exists"})
       } else {
         return res.json({ error: "Unknown error" })
       }

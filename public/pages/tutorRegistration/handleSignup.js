@@ -113,15 +113,17 @@ const handleSignup = () => {
       userEmail,
       userPassword
     }).then(res => {
-      console.log("res.data\n", res.data)
-      Cookies.set('token', res.data.token)
-      // axios.defaults.headers.common['authorization'] = res.data.token
-      // window.location.pathname = 'login'
+      if (res.status === 200 && res.data.error) {
+        document.getElementById('show-alert-danger').style.display = 'block';
+      } else {
+        Cookies.set('token', res.data.token)
+        // axios.defaults.headers.common['authorization'] = res.data.token
+        // window.location.pathname = 'login'
+      }
     }).catch(error => {
       error.response.data.error.map(err => {
-        console.log("err\n", err)
+        return err;
       })
     })
   }
-
 }
