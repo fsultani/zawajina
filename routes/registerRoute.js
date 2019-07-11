@@ -1,12 +1,12 @@
-const express = require('express')
-const { check, body, validationResult } = require('express-validator/check')
-const countries = require('country-state-city')
-const jwt = require('jwt-simple')
-const JWT_SECRET = Buffer.from('fe1a1915a379f3be5394b64d14794932', 'hex')
+const express = require('express');
+const { check, body, validationResult } = require('express-validator/check');
+const countries = require('country-state-city');
+const jwt = require('jwt-simple');
+const JWT_SECRET = Buffer.from('fe1a1915a379f3be5394b64d14794932', 'hex');
 
-const User = require('../models/user')
+const User = require('../models/user');
 
-const router = express.Router()
+const router = express.Router();
 
 router.post('/api/personal-info', [
   check('firstName').not().isEmpty().withMessage('Enter your first name'),
@@ -19,7 +19,7 @@ router.post('/api/personal-info', [
   const getErrors = validationResult(req);
 
   if (!getErrors.isEmpty()) {
-    return res.status(400).json({ error: getErrors.array() })
+    return res.status(400).json({ error: getErrors.array() });
   } else {
     User.findOne({ userEmail }, (err, userExists) => {
       if (!userExists) {
@@ -28,20 +28,20 @@ router.post('/api/personal-info', [
           lastName,
           userEmail,
           userPassword
-        })
+        });
 
         User.createUser(newUser, (err, user) => {
-          const token = jwt.encode({ email: user.userEmail }, JWT_SECRET)
-          const userId = user._id
-          return res.status(201).send({ token })
+          const token = jwt.encode({ email: user.userEmail }, JWT_SECRET);
+          const userId = user._id;
+          return res.status(201).send({ token });
         })
       } else if (userExists.userEmail) {
-        return res.status(200).json({ error: "Email already exists"})
+        return res.status(200).json({ error: "Email already exists"});
       } else {
-        return res.json({ error: "Unknown error" })
+        return res.json({ error: "Unknown error" });
       }
     })
   }
 })
 
-module.exports = router
+module.exports = router;

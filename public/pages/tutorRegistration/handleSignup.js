@@ -14,18 +14,18 @@ let handlePasswordValidationValue = false;
 
 const handleFirstNameValidation = () => {
   if (!first_name.checkValidity()) {
-    document.signupForm.first_name.classList.add('form-error')
+    document.signupForm.first_name.classList.add('form-error');
 
     signupFormElements.first_name.addEventListener("keyup", () => {
       if (first_name.checkValidity()) {
-        document.signupForm.first_name.classList.remove('form-error')
-        signupFormElements.first_name.removeEventListener("blur", () => {})
+        document.signupForm.first_name.classList.remove('form-error');
+        signupFormElements.first_name.removeEventListener("blur", () => {});
       } else {
-        document.signupForm.first_name.classList.add('form-error')
+        document.signupForm.first_name.classList.add('form-error');
       }
     })
   } else if (document.signupForm.last_name.classList.contains('form-error')) {
-    document.signupForm.first_name.classList.remove('form-error')
+    document.signupForm.first_name.classList.remove('form-error');
   } else {
     handleFirstNameValidationValue = true;
   }
@@ -33,19 +33,19 @@ const handleFirstNameValidation = () => {
 
 const handleLastNameValidation = () => {
   if (!last_name.checkValidity()) {
-    document.signupForm.last_name.classList.add('form-error')
+    document.signupForm.last_name.classList.add('form-error');
 
     signupFormElements.last_name.addEventListener("keyup", () => {
       if (last_name.checkValidity()) {
-        document.signupForm.last_name.classList.remove('form-error')
-        signupFormElements.last_name.removeEventListener("blur", () => {})
+        document.signupForm.last_name.classList.remove('form-error');
+        signupFormElements.last_name.removeEventListener("blur", () => {});
         handleLastNameValidationValue = true;
       } else {
-        document.signupForm.last_name.classList.add('form-error')
+        document.signupForm.last_name.classList.add('form-error');
       }
     })
   } else if (document.signupForm.last_name.classList.contains('form-error')) {
-    document.signupForm.last_name.classList.remove('form-error')
+    document.signupForm.last_name.classList.remove('form-error');
   } else {
     handleLastNameValidationValue = true;
   }
@@ -53,19 +53,19 @@ const handleLastNameValidation = () => {
 
 const handleEmailValidation = () => {
   if (!emailRegex.test(email.value)) {
-    document.signupForm.email.classList.add('form-error')
+    document.signupForm.email.classList.add('form-error');
   } else {
-    document.signupForm.email.classList.remove('form-error')
+    document.signupForm.email.classList.remove('form-error');
     handleEmailValidationValue = true;
   }
 
   signupFormElements.email.addEventListener("keyup", () => {
     if (!emailRegex.test(email.value)) {
-      document.signupForm.email.classList.add('form-error')
-      signupFormElements.last_name.removeEventListener("blur", () => {})
+      document.signupForm.email.classList.add('form-error');
+      signupFormElements.last_name.removeEventListener("blur", () => {});
     } else {
-      document.signupForm.email.classList.remove('form-error')
-      signupFormElements.last_name.removeEventListener("blur", () => {})
+      document.signupForm.email.classList.remove('form-error');
+      signupFormElements.last_name.removeEventListener("blur", () => {});
       handleEmailValidationValue = true;
     }
   })
@@ -73,28 +73,28 @@ const handleEmailValidation = () => {
 
 const handlePasswordValidation = () => {
   if (document.signupForm.password.value.length < 8) {
-    document.signupForm.password.classList.add('form-error')
+    document.signupForm.password.classList.add('form-error');
   } else {
-    document.signupForm.password.classList.remove('form-error')
+    document.signupForm.password.classList.remove('form-error');
     handlePasswordValidationValue = true;
   }
 
   signupFormElements.password.addEventListener("keyup", () => {
     if (document.signupForm.password.value.length < 8) {
-      document.signupForm.password.classList.add('form-error')
+      document.signupForm.password.classList.add('form-error');
     } else {
-      document.signupForm.password.classList.remove('form-error')
-      signupFormElements.password.removeEventListener("blur", () => {})
+      document.signupForm.password.classList.remove('form-error');
+      signupFormElements.password.removeEventListener("blur", () => {});
       handlePasswordValidationValue = true;
     }
   })
 }
 
 const handleSignup = () => {
-  handleFirstNameValidation()
-  handleLastNameValidation()
-  handleEmailValidation()
-  handlePasswordValidation()
+  handleFirstNameValidation();
+  handleLastNameValidation();
+  handleEmailValidation();
+  handlePasswordValidation();
 
   const firstName = first_name.value;
   const lastName = last_name.value;
@@ -116,7 +116,7 @@ const handleSignup = () => {
       if (res.status === 200 && res.data.error) {
         document.getElementById('show-alert-danger').style.display = 'block';
       } else {
-        Cookies.set('token', res.data.token)
+        Cookies.set('token', res.data.token);
         // axios.defaults.headers.common['authorization'] = res.data.token
         // window.location.pathname = 'login'
       }
