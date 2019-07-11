@@ -7,12 +7,8 @@ const password = document.signupForm.password;
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-let handleFirstNameValidationValue = false;
-let handleLastNameValidationValue = false;
-let handleEmailValidationValue = false;
-let handlePasswordValidationValue = false;
-
-const handleFirstNameValidation = () => {
+export const handleFirstNameValidation = () => {
+  console.log("handleFirstNameValidation")
   if (!first_name.checkValidity()) {
     document.signupForm.first_name.classList.add('form-error')
 
@@ -26,14 +22,10 @@ const handleFirstNameValidation = () => {
     })
   } else if (document.signupForm.last_name.classList.contains('form-error')) {
     document.signupForm.first_name.classList.remove('form-error')
-  } else {
-    console.log("true")
-    handleFirstNameValidationValue = true;
-    return true;
   }
 }
 
-const handleLastNameValidation = () => {
+export const handleLastNameValidation = () => {
   if (!last_name.checkValidity()) {
     document.signupForm.last_name.classList.add('form-error')
 
@@ -41,24 +33,20 @@ const handleLastNameValidation = () => {
       if (last_name.checkValidity()) {
         document.signupForm.last_name.classList.remove('form-error')
         signupFormElements.last_name.removeEventListener("blur", () => {})
-        handleLastNameValidationValue = true;
       } else {
         document.signupForm.last_name.classList.add('form-error')
       }
     })
   } else if (document.signupForm.last_name.classList.contains('form-error')) {
     document.signupForm.last_name.classList.remove('form-error')
-  } else {
-    handleLastNameValidationValue = true;
   }
 }
 
-const handleEmailValidation = () => {
+export const handleEmailValidation = () => {
   if (!emailRegex.test(email.value)) {
     document.signupForm.email.classList.add('form-error')
   } else {
     document.signupForm.email.classList.remove('form-error')
-    handleEmailValidationValue = true;
   }
 
   signupFormElements.email.addEventListener("keyup", () => {
@@ -68,17 +56,15 @@ const handleEmailValidation = () => {
     } else {
       document.signupForm.email.classList.remove('form-error')
       signupFormElements.last_name.removeEventListener("blur", () => {})
-      handleEmailValidationValue = true;
     }
   })
 }
 
-const handlePasswordValidation = () => {
+export const handlePasswordValidation = () => {
   if (document.signupForm.password.value.length < 8) {
     document.signupForm.password.classList.add('form-error')
   } else {
     document.signupForm.password.classList.remove('form-error')
-    handlePasswordValidationValue = true;
   }
 
   signupFormElements.password.addEventListener("keyup", () => {
@@ -87,43 +73,6 @@ const handlePasswordValidation = () => {
     } else {
       document.signupForm.password.classList.remove('form-error')
       signupFormElements.password.removeEventListener("blur", () => {})
-      handlePasswordValidationValue = true;
     }
   })
-}
-
-const handleSignup = () => {
-  handleFirstNameValidation()
-  handleLastNameValidation()
-  handleEmailValidation()
-  handlePasswordValidation()
-
-  const firstName = first_name.value;
-  const lastName = last_name.value;
-  const userEmail = email.value;
-  const userPassword = password.value;
-
-  if (
-    handleFirstNameValidationValue && 
-    handleLastNameValidationValue &&
-    handleEmailValidationValue &&
-    handlePasswordValidationValue
-  ) {
-    axios.post('/register/api/personal-info', {
-      firstName,
-      lastName,
-      userEmail,
-      userPassword
-    }).then(res => {
-      console.log("res.data\n", res.data)
-      Cookies.set('token', res.data.token)
-      // axios.defaults.headers.common['authorization'] = res.data.token
-      // window.location.pathname = 'login'
-    }).catch(error => {
-      error.response.data.error.map(err => {
-        console.log("err\n", err)
-      })
-    })
-  }
-
 }

@@ -65,7 +65,7 @@ app.get('*', (req, res, next) => {
     res.sendFile(path.join(__dirname, 'public/pages/tutorRegistration/index.html'))
   } else if (req.url.indexOf('/api/') === -1) {
     res.sendFile(path.join(__dirname, 'public/router.html'))
-  } else if (req.url === '/static/favicon.ico') {
+  } else if (req.url === '/favicon.ico') {
     res.status(204)
   }
   return next()
