@@ -27,9 +27,7 @@ const handleFirstNameValidation = () => {
   } else if (document.signupForm.last_name.classList.contains('form-error')) {
     document.signupForm.first_name.classList.remove('form-error')
   } else {
-    console.log("true")
     handleFirstNameValidationValue = true;
-    return true;
   }
 }
 
