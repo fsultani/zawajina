@@ -117,7 +117,7 @@ const handleSignup = () => {
         document.getElementById('show-alert-danger').style.display = 'block';
       } else {
         Cookies.set('token', res.data.token);
-        // axios.defaults.headers.common['authorization'] = res.data.token
+        axios.defaults.headers.common['authorization'] = res.data.token
         // window.location.pathname = 'login'
       }
     }).catch(error => {
