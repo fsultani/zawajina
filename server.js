@@ -61,8 +61,10 @@ app.get('*', (req, res, next) => {
     res.sendFile(path.join(__dirname, 'public/pages/about.html'))
   } else if (req.url === '/registration/student') {
     res.sendFile(path.join(__dirname, 'public/pages/registration-student.html'))
-  } else if (req.url === '/registration/tutor') {
-    res.sendFile(path.join(__dirname, 'public/pages/tutorRegistration/index.html'))
+  } else if (req.url === '/registration/tutor/get-started') {
+    res.sendFile(path.join(__dirname, 'public/pages/tutorRegistration/Signup/index.html'))
+  } else if (req.url === '/registration/tutor/basic-info') {
+    res.sendFile(path.join(__dirname, 'public/pages/tutorRegistration/BasicInfo/index.html'))
   } else if (req.url.indexOf('/api/') === -1) {
     res.sendFile(path.join(__dirname, 'public/router.html'))
   } else if (req.url === '/favicon.ico') {

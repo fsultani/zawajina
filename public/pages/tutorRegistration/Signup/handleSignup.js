@@ -118,7 +118,7 @@ const handleSignup = () => {
       } else {
         Cookies.set('token', res.data.token);
         axios.defaults.headers.common['authorization'] = res.data.token
-        // window.location.pathname = 'login'
+        window.location.pathname = '/registration/tutor/basic-info'
       }
     }).catch(error => {
       error.response.data.error.map(err => {
