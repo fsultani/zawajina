@@ -194,6 +194,10 @@ main {
   text-align: center;
 }
 
+.form-title {
+  color: #222 !important;
+}
+
 .form-group {
   overflow: hidden;
   margin-bottom: 20px;
