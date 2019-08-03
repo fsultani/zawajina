@@ -121,7 +121,7 @@ const handleSignup = () => {
         window.location.pathname = '/registration/tutor/basic-info'
       }
     }).catch(error => {
-      error.response.data.error.map(err => {
+      error.response && error.response.data.error.map(err => {
         return err;
       })
     })
