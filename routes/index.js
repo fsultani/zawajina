@@ -54,48 +54,48 @@ passport.use(new LocalStrategy({
 ));
 
 // Set multer storage engine
-const storageEngine = multer.diskStorage({
-  destination: './public/uploads/',
-  filename: (req, file, cb) => {
-    cb(null, `${file.originalname}`)
-  }
-})
+// const storageEngine = multer.diskStorage({
+//   destination: './public/uploads/',
+//   filename: (req, file, cb) => {
+//     cb(null, `${file.originalname}`)
+//   }
+// })
 
 // Initialize upload
-const upload = multer({
-  storage: storageEngine,
-  fileFilter: (req, file, cb) => {
-    checkFileType(file, cb)
-  }
-}).single('image')
+// const upload = multer({
+//   storage: storageEngine,
+//   fileFilter: (req, file, cb) => {
+//     checkFileType(file, cb)
+//   }
+// }).single('image')
 
 // Check File Type
-const checkFileType = (file, cb) => {
-  // Allowed extensions
-  const filetypes = /jpeg|jpg|png|gif/
+// const checkFileType = (file, cb) => {
+//   // Allowed extensions
+//   const filetypes = /jpeg|jpg|png|gif/
   
-  // Check extension
-  const extname = filetypes.test(path.extname(file.originalname).toLowerCase())
+//   // Check extension
+//   const extname = filetypes.test(path.extname(file.originalname).toLowerCase())
   
-  // Check mime
-  const mimetype = filetypes.test(file.mimetype)
+//   // Check mime
+//   const mimetype = filetypes.test(file.mimetype)
 
-  mimetype && extname ? cb(null, true) : cb('Error: Images only')
-}
+//   mimetype && extname ? cb(null, true) : cb('Error: Images only')
+// }
 
-router.post('/api/upload', (req, res) => {
-  upload(req, res, err => {
-    if (err) {
-      res.json({ msg: err })
-    } else {
-      if (req.file == undefined) {
-        res.json({ msg: "Error: No File Selected" })
-      } else {
-        res.json({ msg: "File Uploaded Successfully", file: `/uploads/${req.file.filename}` })
-      }
-    }
-  })
-})
+// router.post('/api/upload', (req, res) => {
+//   upload(req, res, err => {
+//     if (err) {
+//       res.json({ msg: err })
+//     } else {
+//       if (req.file == undefined) {
+//         res.json({ msg: "Error: No File Selected" })
+//       } else {
+//         res.json({ msg: "File Uploaded Successfully", file: `/uploads/${req.file.filename}` })
+//       }
+//     }
+//   })
+// })
 
 router.put('/api/profile-info', (req, res) => {
   const token = req.headers['authorization']

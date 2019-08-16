@@ -54,13 +54,13 @@ app.use('/static', express.static(path.join(__dirname, 'public')))
 // Catch all 'get' requests, and respond with public/index.html
 app.get('*', (req, res, next) => {
   if (req.url === '/') {
-    res.sendFile(path.join(__dirname, 'public/pages/index.html'))
+    res.sendFile(path.join(__dirname, 'public/pages/home/index.html'))
   } else if (req.url === '/login') {
     res.sendFile(path.join(__dirname, 'public/pages/login/index.html'))
   } else if (req.url === '/about') {
-    res.sendFile(path.join(__dirname, 'public/pages/about.html'))
+    res.sendFile(path.join(__dirname, 'public/pages/about/index.html'))
   } else if (req.url === '/registration/student') {
-    res.sendFile(path.join(__dirname, 'public/pages/registration-student.html'))
+    res.sendFile(path.join(__dirname, 'public/pages/studentRegistration/index.html'))
   } else if (req.url === '/registration/tutor/get-started') {
     res.sendFile(path.join(__dirname, 'public/pages/tutorRegistration/Signup/index.html'))
   } else if (req.url === '/registration/tutor/basic-info') {
