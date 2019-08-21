@@ -15,19 +15,15 @@ var User = mongoose.Schema({
   },
   gender: {
     type: String,
-    required: true
+    required: function() {
+      return typeof this.gender === null || (this.gender !== null && typeof this.gender !== 'string')
+    }
   },
-  birthMonth: {
-    type: String,
-    required: true
-  },
-  birthDate: {
+  age: {
     type: Number,
-    required: true
-  },
-  birthYear: {
-    type: Number,
-    required: true
+    required: function() {
+      return typeof this.age === null || (this.age !== null && typeof this.age !== 'string')
+    }
   },
   country: {
     type: String,
@@ -44,6 +40,24 @@ var User = mongoose.Schema({
     type: String,
     required: function() {
       return typeof this.city === null || (this.city !== null && typeof this.city !== 'string')
+    }
+  },
+  ethnicity: {
+    type: String,
+    required: function() {
+      return typeof this.ethnicity === null || (this.ethnicity !== null && typeof this.ethnicity !== 'string')
+    }
+  },
+  profession: {
+    type: String,
+    required: function() {
+      return typeof this.profession === null || (this.profession !== null && typeof this.profession !== 'string')
+    }
+  },
+  aboutUserLines: {
+    type: String,
+    required: function() {
+      return typeof this.aboutUserLines === null || (this.aboutUserLines !== null && typeof this.aboutUserLines !== 'string')
     }
   },
   profilePicture: {

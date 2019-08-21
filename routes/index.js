@@ -84,7 +84,7 @@ router.post('/api/upload', (req, res) => {
 router.put('/api/profile-info', (req, res) => {
   const token = req.headers['authorization']
   const decodedUser = jwt.decode(token, JWT_SECRET)
-  User.findOneAndUpdate({ username: decodedUser.username}, { profilePicture: req.body.data }, (err, member) => {
+  User.findOneAndUpdate({ email: decodedUser.email}, { profilePicture: req.body.data }, (err, member) => {
     console.log('The member is\n', member)
     res.json({ member })
   })
@@ -93,7 +93,7 @@ router.put('/api/profile-info', (req, res) => {
 router.get('/api/profile-info', (req, res, next) => {
   const token = req.headers['authorization']
   const decodedUser = jwt.decode(token, JWT_SECRET)
-  User.findOne({ username: decodedUser.username}, (err, member) => {
+  User.findOne({ email: decodedUser.email}, (err, member) => {
     res.json({ member })
   })
 })
