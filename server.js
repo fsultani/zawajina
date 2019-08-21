@@ -13,22 +13,23 @@ const mongo = require('mongodb')
 const mongoose = require('mongoose')
 
 if (process.env.NODE_ENV === 'mlab-dev') {
-  require('./db_credentials')
-  mongoose.connect(process.env.MONGO_DB_MLAB_DEV)
+  // require('./db_credentials')
+  // mongoose.connect(process.env.MONGO_DB_MLAB_DEV)
+  mongoose.connect('mongodb://farid:farid@ds161901.mlab.com:61901/my_match')
   console.log("Using mlab:", process.env.NODE_ENV)
 } else if (process.env.NODE_ENV === 'local') {
   require('./db_credentials')
-  mongoose.connect(process.env.LOCAL)
+  mongoose.connect(process.env.LOCAL, { useNewUrlParser: true })
   console.log("Using local db - mongodb://localhost/my_match_local_dev")
 } else {
-  mongoose.connect(process.env.HEROKU)
+  mongoose.connect(process.env.HEROKU, { useNewUrlParser: true })
   console.log("Heroku deployment")
 }
 
 const app = express()
 
 const index = require('./routes/index')
-const registerRoute = require('./routes/registerRoute')
+const register = require('./routes/register')
 const users = require('./routes/users')
 const conversation = require('./routes/conversation')
 const messages = require('./routes/messages')
@@ -36,7 +37,7 @@ const messages = require('./routes/messages')
 const Conversation = require('./models/conversation')
 
 // Set static folder
-app.use('/static', express.static(path.join(__dirname, 'public')))
+app.use(express.static(path.join(__dirname, 'public')))
 
 // Body Parser Middleware
 app.use(bodyParser.json())
@@ -73,9 +74,7 @@ app.use(function (req, res, next) {
 
 // Catch all 'get' requests, and respond with public/index.html
 app.get('*', (req, res, next) => {
-  if (req.url === '/favicon.ico') {
-    res.status(204)
-  } else if (req.url.indexOf('/api/') === -1) {
+  if (req.url.indexOf('/api/') === -1) {
     res.sendFile(path.join(__dirname, 'public/index.html'))
     // res.sendFile(path.join(__dirname, 'public/index-no-network.html'))
   } else {
@@ -85,7 +84,7 @@ app.get('*', (req, res, next) => {
 
 // Use index.js for any routes beginning with '/'
 app.use('/', index)
-app.use('/register', registerRoute)
+app.use('/register', register)
 app.use('/users', users)
 app.use('/conversation', conversation)
 app.use('/messages', messages)
@@ -100,34 +99,38 @@ app.use(function(req, res, next) {
 // error handler
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+  // res.locals.message = err.message;
+  // res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // render the error page
-  res.status(err.status || 500)
+  // // render the error page
+  // res.status(err.status || 500)
 })
 
 const port = process.env.PORT || 3000;
 
-// Reload the app on every file change
-osascript.execute(
-  `
-  tell application "Google Chrome"
-    set current_site to URL of active tab of front window
-    if current_site contains ("http://localhost:3000") then
-      reload active tab of front window
-    end if
-  end tell
+// Reload the app on every file change.
+// This is for dev only.
+if (process.env.NODE_ENV === 'mlab-dev') {
+  osascript.execute(
+    `
+      tell application "Google Chrome"
+        set current_site to URL of active tab of front window
+        if current_site contains ("http://localhost:3000") then
+          reload active tab of front window
+        end if
+      end tell
 
-  `, (err, result, raw) => {
-    if (err) return console.error(err)
-    }
-);
+    `, (err, result, raw) => {
+      if (err) return console.error(err)
+      }
+  );
+};
 
 app.listen(port, () => {
   console.log("Listening on port " + port)
   if (process.send) {
-    process.send({ event:'online', url:'http://localhost:' + port})
+    // process.send({ event:'online', url:'http://localhost:' + port})
+    process.send('online')
   }
 })
 

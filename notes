@@ -1,0 +1,16 @@
+Page 1:
+- First name
+- Email
+- Password
+
+Page 2:
+- Gender
+- DOB
+- City (autocomplete)
+- Background/Ethnicity (autocomplete)
+- Work (manual)
+About you
+I am a convert/revert (toggle)
+
+City autocomplete
+Family origin autocomplete

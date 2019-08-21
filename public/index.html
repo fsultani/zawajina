@@ -2,14 +2,24 @@
 <html>
 <head>
   <title>My App</title>
+
   <script
-    src="https://code.jquery.com/jquery-3.2.1.min.js"
-    integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-    crossorigin="anonymous">
+  src="https://code.jquery.com/jquery-3.2.1.min.js"
+  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+  crossorigin="anonymous">
   </script>
 
-  <link rel="stylesheet" type="text/css" href="/static/javascripts/styles/register/personalInfo.css">
+  <link
+  rel="stylesheet"
+  type="text/css"
+  href="/stylesheets/style.css">
 
+  <link
+  rel="stylesheet"
+  type="text/css"
+  href="/stylesheets/registration.css">
+
+  <!-- Latest compiled and minified CSS -->
   <link
   rel="stylesheet"
   href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
@@ -31,15 +41,36 @@
   </script>
 
   <script
-    type="text/javascript"
-    src="/static/javascripts/styles/js.cookie.js">
+  type="text/javascript"
+  src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js">
+  </script>
+
+  <script src="https://use.fontawesome.com/7973784de3.js"></script>
+
+  <script
+  type="text/javascript"
+  src="/javascripts/styles/js.cookie.js">
   </script>
 
   <!-- axios -->
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+  <script src="/javascripts/views/layout.js"></script>
+  <script src="/javascripts/views/nav.js"></script>
+  <script src="/javascripts/views/home.js"></script>
+  <script src="/javascripts/views/login.js"></script>
+  <script src="/javascripts/scripts/login.js"></script>
+  <script src="/javascripts/scripts/logout.js"></script>
+  <script src="/javascripts/views/memberProfile.js"></script>
+  <script src="/javascripts/views/profile.js"></script>
+  <script src="/javascripts/views/messages.js"></script>
+  <script src="/javascripts/views/conversation.js"></script>
+  <script src="/javascripts/views/conversationCount.js"></script>
+  <script src="/javascripts/views/register/personal.js"></script>
+  <script src="/javascripts/views/register/about.js"></script>
 </head>
 <body>
-  <div id="app"></div>
-  <script type="module" src="/static/javascripts/router.js"></script>
+  <div id="my-app"></div>
 </body>
+
 </html>

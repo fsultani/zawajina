@@ -3,10 +3,14 @@ mongo ds139322.mlab.com:39322/my_match_dev -u farid -p farid
 // Return a count of all users with a given name
 db.users.find({ name: "John"}).count()
 db.users.find({ name: "Test"}).count()
+db.users.find().pretty()
 
 // Remove all users with a specific name
 db.users.remove({ name: "John"})
 db.users.remove({ name: "Test"})
+
+// Find a single user by first name
+db.users.find({ name: "John" }).pretty()
 
 // Delete a collection
 db.messages.drop() && db.conversations.drop()
@@ -23,15 +27,11 @@ db.users.update({name: {$regex: "^"}}, { $set: { "messages": []}}, {"multi": tru
 // Remove all usernames that end in a number
 db.users.remove({username: {$regex: "[0-9]$"}})
 
-
 // Prints each item on a separate line
 db.users.find().forEach(function(u) { print(u.name) })
 
 // Returns an array
 db.users.find().map( function(u) { return u.name } )
-
-// Find a single user by first name
-db.users.find({ name: "John" }).pretty()
 
 // Find all users
 db.users.find().pretty()

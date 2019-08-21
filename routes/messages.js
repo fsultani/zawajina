@@ -16,7 +16,7 @@ const Conversation = require('../models/conversation')
 router.get('/api/all-messages', (req, res, next) => {
   const token = req.headers['authorization']
   const decodedUser = jwt.decode(token, JWT_SECRET)
-  User.findOne({ username: decodedUser.username}, (err, user) => {
+  User.findOne({ email: decodedUser.email}, (err, user) => {
     Message.aggregate(
       [
         {
@@ -53,7 +53,7 @@ router.post('/api/new-message', (req, res, next) => {
   const decodedUser = jwt.decode(token, JWT_SECRET)
   Promise.all([
     User.findOne({ _id: req.body.memberId }),
-    User.findOne({ username: decodedUser.username }),
+    User.findOne({ email: decodedUser.email }),
   ]).then(([ user, member ]) => {
     Conversation.findOne({
       $and: [

@@ -1,22 +1,16 @@
-const layout = () => document.getElementById('app').innerHTML = `
+const layout = `
   <div class="container">
     <div class="row">
       <div class="header clearfix">
         <nav style="padding-top: 10px">
           <ul class="nav nav-pills pull-left">
             <li role="presentation">
-              <a href="#home"><h3>My App</h3></a>
+              <a href="/"><h3>My App</h3></a>
             </li>
           </ul>
           <ul class="nav nav-pills pull-right">
-            <li role="presentation">
-              ${Cookies.get('token') ?
-                `<a onclick="handleLogout()" href="javascript:void(0)">Logout</a>`
-                :
-                `<a href="#login">Login</a>`
-              }
-            </li>
-            ${Cookies.get('token') ? '' : `<li role="presentation"><a href="#register">Register</a></li>`}
+            <li role="presentation"><a href="/login">Login</a></li>
+            <li role="presentation"><a href="/register">Register</a></li>
           </ul>
         </nav>
       </div>
@@ -24,4 +18,10 @@ const layout = () => document.getElementById('app').innerHTML = `
   </div>
 `;
 
-export default layout;
+window.addEventListener('load', () => {
+  axios.defaults.headers.common['authorization'] = Cookies.get('token')
+
+  if (window.location.pathname === '/') {
+    window.location.pathname = '/home'
+  }
+})
