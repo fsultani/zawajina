@@ -1,59 +1,43 @@
-!function includeHTML() {
-  let z, i, elmnt, file, xhttp;
+!function includeNavbar() {
+  let z, i, element, navbar;
   
   /* Loop through a collection of all HTML elements: */
   z = document.getElementsByTagName("*");
   for (i = 0; i < z.length; i++) {
-    elmnt = z[i];
+    element = z[i];
     /*search for elements with a certain atrribute:*/
-    file = elmnt.getAttribute("w3-include-html");
-    function getFile() {
-      return axios.get(file);
-    }
-    if (file) {
-      elmnt.removeAttribute("w3-include-html");
-      getFile().then(res => {
-        if (res.status === 200) {
-          elmnt.innerHTML = res.data
-        }
-      })
-      includeHTML();
-      return;
+    navbar = element.hasAttribute('include-navbar');
+
+    if (navbar) {
+      element.removeAttribute('include-navbar');
+      fetch('/static/components/Nav/index.html')
+        .then(res => res.text())
+        .then(data => {
+          element.innerHTML = data;
+        })
+      return includeNavbar();
     }
   }
 }();
 
-// !function includeHTML() {
-//   let z, i, elmnt, file, xhttp;
+!function includeFooter() {
+  let z, i, element, footer;
   
-//   /* Loop through a collection of all HTML elements: */
-//   z = document.getElementsByTagName("*");
-//   for (i = 0; i < z.length; i++) {
-//     elmnt = z[i];
-//     /*search for elements with a certain atrribute:*/
-//     file = elmnt.getAttribute("w3-include-html");
-//     function getFile() {
-//       // return axios.get(file);
-//       return fetch(file);
-//     }
+  /* Loop through a collection of all HTML elements: */
+  z = document.getElementsByTagName("*");
+  for (i = 0; i < z.length; i++) {
+    element = z[i];
+    /*search for elements with a certain atrribute:*/
+    footer = element.hasAttribute('site-footer');
 
-//     if (file) {
-//       elmnt.removeAttribute("w3-include-html");
-//       getFile().then(response => {
-//         const resData = response.json();
-//         console.log("resData\n", resData);
-//         return resData;
-//       }).then(data => {
-//         console.log("data\n", data)
-//         console.log("JSON.stringify(data)\n", JSON.stringify(data))
-//       });
-//       // getFile().then(res => {
-//       //   if (res.status === 200) {
-//       //     elmnt.innerHTML = res.data
-//       //   }
-//       // })
-//       includeHTML();
-//       return;
-//     }
-//   }
-// }();
+    if (footer) {
+      element.removeAttribute('site-footer');
+      fetch('/static/components/Footer/index.html')
+        .then(res => res.text())
+        .then(data => {
+          element.innerHTML = data;
+        })
+      return includeFooter();
+    }
+  }
+}();
