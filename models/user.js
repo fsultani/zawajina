@@ -2,67 +2,22 @@ var mongoose = require('mongoose');
 var bcrypt = require('bcryptjs');
 
 var User = mongoose.Schema({
-  name: {
+  firstName: {
     type: String,
     required: true
   },
-  email: {
+  lastName: {
     type: String,
     required: true
   },
-  password: {
-    type: String
-  },
-  gender: {
+  userEmail: {
     type: String,
-    required: function() {
-      return typeof this.gender === null || (this.gender !== null && typeof this.gender !== 'string')
-    }
+    required: true
   },
-  age: {
-    type: Number,
-    required: function() {
-      return typeof this.age === null || (this.age !== null && typeof this.age !== 'string')
-    }
-  },
-  country: {
+  userPassword: {
     type: String,
-    required: function() {
-      return typeof this.country === null || (this.country !== null && typeof this.country !== 'string')
-    }
+    required: true
   },
-  state: {
-    type: String,
-    default: null,
-    required: false,
-  },
-  city: {
-    type: String,
-    required: function() {
-      return typeof this.city === null || (this.city !== null && typeof this.city !== 'string')
-    }
-  },
-  ethnicity: {
-    type: String,
-    required: function() {
-      return typeof this.ethnicity === null || (this.ethnicity !== null && typeof this.ethnicity !== 'string')
-    }
-  },
-  profession: {
-    type: String,
-    required: function() {
-      return typeof this.profession === null || (this.profession !== null && typeof this.profession !== 'string')
-    }
-  },
-  aboutUserLines: {
-    type: String,
-    required: function() {
-      return typeof this.aboutUserLines === null || (this.aboutUserLines !== null && typeof this.aboutUserLines !== 'string')
-    }
-  },
-  profilePicture: {
-    type: String
-  }
 });
 
 var User = module.exports = mongoose.model('Users', User);
