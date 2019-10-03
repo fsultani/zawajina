@@ -7,7 +7,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "dev": "NODE_ENV=mlab-dev browser-refresh server.js",
+    "dev": "NODE_ENV=mlab-dev browser-refresh server/index.js",
     "start": "node server.js"
   },
   "author": "",
