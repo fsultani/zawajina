@@ -49,29 +49,55 @@ app.use(session({
 }))
 
 // Set static folder
-app.use('/static', express.static(path.join(__dirname, '../client/public')))
+app.use('/static', express.static(path.join(__dirname, '../client')))
 
 // Catch all GET requests, and respond with an html file
 app.get('*', (req, res, next) => {
-  if (req.url === '/') {
-    res.sendFile(path.join(__dirname, '../client/public/pages/home/index.html'))
-  } else if (req.url === '/login') {
-    res.sendFile(path.join(__dirname, '../client/public/pages/login/index.html'))
-  } else if (req.url === '/about') {
-    res.sendFile(path.join(__dirname, '../client/public/pages/about/index.html'))
-  } else if (req.url === '/registration/student') {
-    res.sendFile(path.join(__dirname, '../client/public/pages/studentRegistration/index.html'))
-  } else if (req.url === '/registration/tutor/get-started') {
-    res.sendFile(path.join(__dirname, '../client/public/pages/tutorRegistration/Signup/index.html'))
-  } else if (req.url === '/registration/tutor/basic-info') {
-    res.sendFile(path.join(__dirname, '../client/public/pages/tutorRegistration/BasicInfo/index.html'))
-  } else if (req.url.indexOf('/api/') === -1) {
-    res.sendFile(path.join(__dirname, '../client/public/router.html'))
-  } else if (req.url === '/favicon.ico') {
-    res.status(204)
+  switch(req.url) {
+    case '/':
+      res.sendFile(path.join(__dirname, '../client/pages/home/index.html'));
+      break;
+    case '/login':
+      res.sendFile(path.join(__dirname, '../client/pages/login/index.html'));
+      break;
+    case '/about':
+      res.sendFile(path.join(__dirname, '../client/pages/about/index.html'));
+      break;
+    case '/registration/student':
+      res.sendFile(path.join(__dirname, '../client/pages/studentRegistration/index.html'));
+      break;
+    case '/registration/tutor/get-started':
+      res.sendFile(path.join(__dirname, '../client/pages/tutorRegistration/Signup/index.html'));
+      break;
+    case '/registration/tutor/basic-info':
+      res.sendFile(path.join(__dirname, '../client/pages/tutorRegistration/BasicInfo/index.html'))
+      break;
+    default:
+      res.sendFile(path.join(__dirname, '../client/router.html'));
   }
-  return next()
+  return next();
 })
+
+// app.get('*', (req, res, next) => {
+//   if (req.url === '/') {
+//     res.sendFile(path.join(__dirname, '../client/pages/home/index.html'))
+//   } else if (req.url === '/login') {
+//     res.sendFile(path.join(__dirname, '../client/pages/login/index.html'))
+//   } else if (req.url === '/about') {
+//     res.sendFile(path.join(__dirname, '../client/pages/about/index.html'))
+//   } else if (req.url === '/registration/student') {
+//     res.sendFile(path.join(__dirname, '../client/pages/studentRegistration/index.html'))
+//   } else if (req.url === '/registration/tutor/get-started') {
+//     res.sendFile(path.join(__dirname, '../client/pages/tutorRegistration/Signup/index.html'))
+//   } else if (req.url === '/registration/tutor/basic-info') {
+//     res.sendFile(path.join(__dirname, '../client/pages/tutorRegistration/BasicInfo/index.html'))
+//   } else if (req.url.indexOf('/api/') === -1) {
+//     res.sendFile(path.join(__dirname, '../client/router.html'))
+//   } else if (req.url === '/favicon.ico') {
+//     res.status(204)
+//   }
+//   return next()
+// })
 
 // Passport init
 // app.use(passport.initialize())
