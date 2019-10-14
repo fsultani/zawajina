@@ -63,41 +63,16 @@ app.get('*', (req, res, next) => {
     case '/about':
       res.sendFile(path.join(__dirname, '../client/pages/about/index.html'));
       break;
-    case '/registration/student':
-      res.sendFile(path.join(__dirname, '../client/pages/studentRegistration/index.html'));
-      break;
-    case '/registration/tutor/get-started':
-      res.sendFile(path.join(__dirname, '../client/pages/tutorRegistration/Signup/index.html'));
-      break;
-    case '/registration/tutor/basic-info':
-      res.sendFile(path.join(__dirname, '../client/pages/tutorRegistration/BasicInfo/index.html'))
+    case '/signup':
+      res.sendFile(path.join(__dirname, '../client/pages/signup/Step_1_Signup/index.html'));
+      // res.sendFile(path.join(__dirname, '../client/pages/signup/test_template/index.html'));
       break;
     default:
-      res.sendFile(path.join(__dirname, '../client/router.html'));
+      // res.sendFile(path.join(__dirname, '../client/router.html'));
+      res.sendFile(path.join(__dirname, '../client/pages/home/index.html'));
   }
   return next();
 })
-
-// app.get('*', (req, res, next) => {
-//   if (req.url === '/') {
-//     res.sendFile(path.join(__dirname, '../client/pages/home/index.html'))
-//   } else if (req.url === '/login') {
-//     res.sendFile(path.join(__dirname, '../client/pages/login/index.html'))
-//   } else if (req.url === '/about') {
-//     res.sendFile(path.join(__dirname, '../client/pages/about/index.html'))
-//   } else if (req.url === '/registration/student') {
-//     res.sendFile(path.join(__dirname, '../client/pages/studentRegistration/index.html'))
-//   } else if (req.url === '/registration/tutor/get-started') {
-//     res.sendFile(path.join(__dirname, '../client/pages/tutorRegistration/Signup/index.html'))
-//   } else if (req.url === '/registration/tutor/basic-info') {
-//     res.sendFile(path.join(__dirname, '../client/pages/tutorRegistration/BasicInfo/index.html'))
-//   } else if (req.url.indexOf('/api/') === -1) {
-//     res.sendFile(path.join(__dirname, '../client/router.html'))
-//   } else if (req.url === '/favicon.ico') {
-//     res.status(204)
-//   }
-//   return next()
-// })
 
 // Passport init
 // app.use(passport.initialize())
