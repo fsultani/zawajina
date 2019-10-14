@@ -5,14 +5,17 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Home</title>
+
   <link href="https://fonts.googleapis.com/css?family=Heebo:400,700|Playfair+Display:700" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="/static/css/Home/style.css">
+  <link rel="stylesheet" type="text/css" href="/static/components/Nav/style.css">
+
   <script src="https://unpkg.com/scrollreveal@4.0.5/dist/scrollreveal.min.js"></script>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </head>
 <body class="is-boxed has-animations">
   <div class="body-wrap boxed-container">
-    <div w3-include-html="/static/components/nav.html"></div>
+    <div w3-include-html="/static/components/Nav/index.html"></div>
     <main>
       <section class="hero text-center text-light">
         <div class="container-sm">
@@ -21,7 +24,7 @@
               <h1 class="hero-title mt-0">Find your other half.</h1>
               <p class="hero-paragraph">For those looking to get married.</p>
               <div class="hero-cta">
-                <a class="button button-secondary button-shadow" href="#">Sign Up Now</a>
+                <a class="button button-secondary button-shadow" href="/signup">Sign Up Now</a>
               </div>
             </div>
           </div>
