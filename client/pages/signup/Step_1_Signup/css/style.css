@@ -1,4 +1,4 @@
- @extend display-flex; */
+@extend display-flex; */
 
 display-flex,
 .display-flex,
@@ -178,7 +178,6 @@ body {
   line-height: 1.8;
   color: #222;
   font-weight: 400;
-  /*font-family: 'Montserrat';*/
   background: #9053c7;
   background: -webkit-linear-gradient(-135deg, #c850c0, #4158d0);
   background: -o-linear-gradient(-135deg, #c850c0, #4158d0);
@@ -189,12 +188,8 @@ body {
   background: -o-linear-gradient(57deg, #00C6A7 0%, #1E4D92 100%);
   background: -moz-linear-gradient(57deg, #00C6A7 0%, #1E4D92 100%);
   background: linear-gradient(57deg, #00C6A7 0%, #1E4D92 100%);
-  height: 100vh;
+  height: 101vh;
   padding-top: 115px;
-}
-
-.signup-wrapper {
-  width: 100%;
 }
 
 .signup-container {
