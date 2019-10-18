@@ -9,13 +9,12 @@ const User = require('../models/user');
 const router = express.Router();
 
 router.post('/api/personal-info', [
-  check('firstName').not().isEmpty().withMessage('Enter your first name'),
-  check('lastName').not().isEmpty().withMessage('Enter your last name'),
+  check('userName').not().isEmpty().withMessage('Enter your first name'),
   check('userEmail').isEmail().withMessage('Enter a valid email address'),
   check('userPassword').not().isEmpty().withMessage('Enter a password'),
   check('userPassword').isLength({ min: 8 }),
 ], (req, res) => {
-  const { firstName, lastName, userEmail, userPassword } = req.body;
+  const { userName, userEmail, userPassword } = req.body;
   const getErrors = validationResult(req);
 
   if (!getErrors.isEmpty()) {
@@ -24,8 +23,7 @@ router.post('/api/personal-info', [
     User.findOne({ userEmail }, (err, userExists) => {
       if (!userExists) {
         const newUser = new User ({
-          firstName,
-          lastName,
+          userName,
           userEmail,
           userPassword
         });
