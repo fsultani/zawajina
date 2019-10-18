@@ -5,6 +5,9 @@ db.users.find().count()
 db.users.find({ name: "John"}).count()
 db.users.find({ name: "Test"}).count()
 
+// Remove all users
+db.users.drop()
+
 // Remove all users with a specific name
 db.users.remove({ name: "John"})
 db.users.remove({ name: "Test"})

@@ -127,6 +127,14 @@ osascript.execute(
       reload active tab of front window
     end if
   end tell
+  tell application "Safari"
+    set current_site to URL of document 1
+    if current_site contains ("http://localhost:3000") then
+      tell window 1
+        do JavaScript "window.location.reload(true)" in current tab
+      end tell
+    end if
+  end tell
 
   `, (err, result, raw) => {
     if (err) return console.error(err)
