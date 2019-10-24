@@ -7,7 +7,7 @@ const Cookies = require('js-cookie');
 const path = require('path');
 const JWT_SECRET = Buffer.from('fe1a1915a379f3be5394b64d14794932', 'hex')
 const multer = require('multer')
-const { check, body, validationResult } = require('express-validator/check')
+// const { check, body, validationResult } = require('express-validator/check')
 
 const router = express.Router()
 
