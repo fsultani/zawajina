@@ -49,7 +49,7 @@ app.use(session({
 }))
 
 // Set static folder
-app.use('/static', express.static(path.join(__dirname, '../client')))
+app.use('/static', express.static(path.join(__dirname, '../../tutor')))
 
 // Catch all GET requests, and respond with an html file
 app.get('*', (req, res, next) => {

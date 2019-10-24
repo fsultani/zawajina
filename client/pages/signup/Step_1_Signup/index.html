@@ -8,25 +8,17 @@
     <link
       rel="stylesheet"
       type="text/css"
-      href="/static/components/Nav/style.css"
+      href="/static/client/components/Nav/style.css"
     >
-
     <!-- Font Icon -->
-    <link
-      rel="stylesheet"
-      href="/static/pages/signup/Step_1_Signup/fonts/material-icon/css/material-design-iconic-font.min.css"
-    >
+    <link rel="stylesheet" href="/static/client/pages/signup/Step_1_Signup/fonts/material-icon/css/material-design-iconic-font.min.css">
 
     <!-- Main css -->
-    <link
-      rel="stylesheet"
-      href="/static/pages/signup/Step_1_Signup/css/style.css"
-    >
-
+    <link rel="stylesheet" href="/static/dist/pages/signup/Step_1_Signup/css/style.css">
   </head>
   <body>
     <div class="signup-wrapper">
-      <div w3-include-html="/static/components/Nav/index.html"></div>
+      <div w3-include-html="/static/client/components/Nav/index.html"></div>
       <section>
         <div class="signup-container">
           <div class="signup-content">
@@ -45,7 +37,7 @@
                 <input type="password" class="form-input" name="password" id="password" placeholder="Password"/>
                 <span toggle="#password" class="zmdi zmdi-eye field-icon toggle-password" onclick="togglePassword()"></span>
               </div>
-              <div class="invalid-password">
+              <div class="password-helper-text">
                 Password must be at least 8 characters long
               </div>
               <div class="form-group">
@@ -62,19 +54,19 @@
             <div class="form-group">
               <label for="agree-term" class="label-agree-term"><span><span></span></span>By signing up, you agree to all statements in <a href="#" class="term-service">Terms of Service</a></label>
             </div>
-            <p class="loginhere">
-              Have already an account ? <a href="#" class="loginhere-link">Login here</a>
+            <p class="login">
+              Already have an account? <a href="#" class="login-link">Login here</a>
             </p>
           </div>
         </div>
       </section>
     </div>
 
-    <script type="text/javascript" src="/static/pages/signup/Step_1_Signup/includeHTML.js"></script>
-    <script type="text/javascript" src="/static/pages/signup/Step_1_Signup/togglePassword.js"></script>
-    <script type="text/javascript" src="/static/pages/signup/Step_1_Signup/handleSignup.js"></script>
+    <script type="text/javascript" src="/static/client/pages/signup/Step_1_Signup/includeHTML.js"></script>
+    <script type="text/javascript" src="/static/client/pages/signup/Step_1_Signup/togglePassword.js"></script>
+    <script type="text/javascript" src="/static/client/pages/signup/Step_1_Signup/handleSignup.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script src="/static/js/styles/js.cookie.js"></script>
+    <script src="/static/client/js/styles/js.cookie.js"></script>
   </body>
   <!-- This templates was made by Colorlib (https://colorlib.com) -->
 </html>
