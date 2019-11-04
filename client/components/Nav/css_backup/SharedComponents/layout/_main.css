@@ -1,0 +1,39 @@
+/*--------------------------------------------------------------
+# Site content
+--------------------------------------------------------------*/
+.is-boxed {
+  background: #FFFFFF;
+}
+
+.body-wrap {
+  background: #FFFFFF;
+  overflow: hidden;
+  /* Sticky footer */
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.boxed-container {
+  max-width: 1440px;
+  margin: 0 auto;
+  box-shadow: 0 20px 48px rgba(22, 30, 42, 0.16);
+}
+
+main {
+  flex: 1 0 auto;
+}
+
+.section-inner {
+  position: relative;
+  /* To always display inner elements above pseudo decorative stuff */
+  padding-top: 48px;
+  padding-bottom: 48px;
+}
+
+@media (min-width: 641px) {
+  .section-inner {
+    padding-top: 80px;
+    padding-bottom: 80px;
+  }
+}

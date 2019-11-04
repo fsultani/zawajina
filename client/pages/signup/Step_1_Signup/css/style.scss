@@ -1,3 +1,6 @@
-@import 'common/fonts.scss';
+@import 'common/fonts';
+@import 'common/global';
+@import 'common/mixins';
+@import 'common/variables';
 
-@import 'main.scss';
+@import 'layout/main';
