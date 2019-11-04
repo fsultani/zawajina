@@ -1,0 +1,112 @@
+/*--------------------------------------------------------------
+# Base
+--------------------------------------------------------------*/
+html {
+  box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+  /* Inherit box-sizing to make it easier to change the property for components that leverage other behavior; see http://css-tricks.com/inheriting-box-sizing-probably-slightly-better-best-practice/ */
+  box-sizing: inherit;
+}
+
+body {
+  background: #FFFFFF;
+  /* Fallback for when there is no custom background color defined. */
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+}
+
+hr {
+  border: 0;
+  display: block;
+  height: 1px;
+  background: #E4E8EE;
+  margin-top: 24px;
+  margin-bottom: 24px;
+}
+
+ul, ol {
+  margin-top: 0;
+  margin-bottom: 24px;
+  padding-left: 24px;
+}
+
+ul {
+  list-style: disc;
+}
+
+ol {
+  list-style: decimal;
+}
+
+li > ul,
+li > ol {
+  margin-bottom: 0;
+}
+
+dl {
+  margin-top: 0;
+  margin-bottom: 24px;
+}
+
+dt {
+  font-weight: 600;
+}
+
+dd {
+  margin-left: 24px;
+  margin-bottom: 24px;
+}
+
+img {
+  height: auto;
+  /* Make sure images are scaled correctly. */
+  max-width: 100%;
+  /* Adhere to container width. */
+  vertical-align: middle;
+}
+
+figure {
+  margin: 24px 0;
+  /* Extra wide images within figure tags don't overflow the content area. */
+}
+
+figcaption {
+  font-size: 16px;
+  padding: 8px 0;
+}
+
+img,
+svg {
+  display: block;
+}
+
+table {
+  border-collapse: collapse;
+  margin-bottom: 24px;
+  width: 100%;
+}
+
+tr {
+  border-bottom: 1px solid #E4E8EE;
+}
+
+th {
+  text-align: left;
+}
+
+th,
+td {
+  padding: 10px 16px;
+}
+th:first-child,
+td:first-child {
+  padding-left: 0;
+}
+th:last-child,
+td:last-child {
+  padding-right: 0;
+}

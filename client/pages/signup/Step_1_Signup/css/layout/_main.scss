@@ -1,29 +1,4 @@
-p {
-  font-size: 15px;
-}
-
-.form-title-create-account {
-  line-height: 1.66;
-  margin: 0;
-  padding: 0;
-  font-weight: 900;
-  color: #222;
-  font-family: 'Montserrat';
-  font-size: 24px;
-  text-transform: uppercase;
-  text-align: center;
-  margin-bottom: 40px;
-}
-
-body {
-  font-size: 14px;
-  line-height: 1.8;
-  color: #222;
-  font-weight: 400;
-  background: #FFFFFF;
-}
-
-.signup-wrapper {
+.signup-container {
   height: 101vh;
   padding-top: 115px;
   background: linear-gradient(57deg, #00C6A7 0%, #1E4D92 100%);
@@ -32,7 +7,7 @@ body {
   background: -moz-linear-gradient(57deg, #00C6A7 0%, #1E4D92 100%);
 }
 
-.signup-container {
+.signup-wrapper {
   width: 660px;
   position: relative;
   margin: 0 auto;
@@ -46,6 +21,19 @@ body {
   -o-border-radius: 10px;
   -ms-border-radius: 10px;
   padding: 50px 85px;
+}
+
+.form-title-create-account {
+  line-height: 1.66;
+  margin: 0;
+  padding: 0;
+  font-weight: 900;
+  color: #222;
+  font-family: 'Montserrat';
+  font-size: 24px;
+  text-transform: uppercase;
+  text-align: center;
+  margin-bottom: 40px;
 }
 
 #show-alert-danger {
@@ -69,91 +57,48 @@ body {
 
 .form-input {
   width: 100%;
-  border: 1px solid #ebebeb;
-  border-radius: 5px;
-  -moz-border-radius: 5px;
-  -webkit-border-radius: 5px;
-  -o-border-radius: 5px;
-  -ms-border-radius: 5px;
+  border: 1px solid rgb(235, 235, 235);
+  @include border-radius(5px);
   padding: 17px 20px;
   box-sizing: border-box;
   font-size: 14px;
   font-weight: 500;
-  color: #222;
-}
+  color: $black-color;
+  @include input-placeholder($gray-light);
+  &::-webkit-input-placeholder {
+    font-weight: 500;
+  }
 
-.form-input::-webkit-input-placeholder {
-  color: #999;
-}
+  &::-moz-placeholder {
+    font-weight: 500;
+  }
 
-.form-input::-moz-placeholder {
-  color: #999;
-}
+  &:-ms-input-placeholder {
+    font-weight: 500;
+  }
 
-.form-input:-ms-input-placeholder {
-  color: #999;
-}
+  &:-moz-placeholder {
+    font-weight: 500;
+  }
 
-.form-input:-moz-placeholder {
-  color: #999;
-}
-
-.form-input::-webkit-input-placeholder {
-  font-weight: 500;
-}
-
-.form-input::-moz-placeholder {
-  font-weight: 500;
-}
-
-.form-input:-ms-input-placeholder {
-  font-weight: 500;
-}
-
-.form-input:-moz-placeholder {
-  font-weight: 500;
-}
-
-.form-input:focus {
-  border: 1px solid transparent;
-  -webkit-border-image-source: -webkit-linear-gradient(to right, #9face6, #74ebd5);
-  -moz-border-image-source: -moz-linear-gradient(to right, #9face6, #74ebd5);
-  -o-border-image-source: -o-linear-gradient(to right, #9face6, #74ebd5);
-  border-image-source: linear-gradient(to right, #9face6, #74ebd5);
-  -webkit-border-image-slice: 1;
-  border-image-slice: 1;
-  border-radius: 5px;
-  -moz-border-radius: 5px;
-  -webkit-border-radius: 5px;
-  -o-border-radius: 5px;
-  -ms-border-radius: 5px;
-  background-origin: border-box;
-  background-clip: content-box, border-box;
-}
-
-.form-input:focus::-webkit-input-placeholder {
-  color: #222;
-}
-
-.form-input:focus::-moz-placeholder {
-  color: #222;
-}
-
-.form-input:focus:-ms-input-placeholder {
-  color: #222;
-}
-
-.form-input:focus:-moz-placeholder {
-  color: #222;
+  &:focus {
+    border: 1px solid transparent;
+    -webkit-border-image-source: -webkit-linear-gradient(to right, rgb(159, 172, 230), rgb(116, 235, 213));
+    -moz-border-image-source: -moz-linear-gradient(to right, rgb(159, 172, 230), rgb(116, 235, 213));
+    -o-border-image-source: -o-linear-gradient(to right, rgb(159, 172, 230), rgb(116, 235, 213));
+    border-image-source: linear-gradient(to right, rgb(159, 172, 230), rgb(116, 235, 213));
+    -webkit-border-image-slice: 1;
+    border-image-slice: 1;
+    @include border-radius(5px);
+    @include input-placeholder($black-color);
+    background-origin: border-box;
+    background-clip: content-box, border-box;
+  }
 }
 
 .form-submit {
   width: 100%;
-  border-radius: 5px;
-  -moz-border-radius: 5px;
-  -webkit-border-radius: 5px;
-  -o-border-radius: 5px;
-  -ms-border-radius: 5px;
+  @include border-radius(5px);
   padding: 17px 20px;
   box-sizing: border-box;
   font-size: 14px;
@@ -170,10 +115,9 @@ body {
 
 .form-error {
   border: 2px solid red;
-}
-
-.form-error:focus {
-  border: 2px solid red;
+  &:focus {
+    border: 2px solid red;
+  }
 }
 
 .password-wrapper {
@@ -223,18 +167,20 @@ body {
 }
 
 @media screen and (max-width: 768px) {
-  .signup-wrapper {
+  .signup-container {
     height: 100%;
   }
 
-  .signup-container {
+  .signup-wrapper {
     width: calc(100% - 40px);
     max-width: 100%;
   }
-}
 
-@media screen and (max-width: 480px) {
   .signup-content {
     padding: 50px 25px;
+  }
+
+  .password-helper-text {
+    font-size: 10px;
   }
 }
