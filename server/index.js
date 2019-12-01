@@ -64,7 +64,10 @@ app.get('*', (req, res, next) => {
       res.sendFile(path.join(__dirname, '../client/pages/about/index.html'));
       break;
     case '/signup':
-      res.sendFile(path.join(__dirname, '../client/pages/signup/Step_1_Signup/index.html'));
+      res.sendFile(path.join(__dirname, '../client/pages/signup/step1/index.html'));
+      break;
+    case '/signup/info':
+      res.sendFile(path.join(__dirname, '../client/pages/signup/step2/index.html'));
       break;
     default:
       // res.sendFile(path.join(__dirname, '../client/router.html'));
