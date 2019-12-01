@@ -123,13 +123,13 @@ osascript.execute(
   `
   tell application "Google Chrome"
     set current_site to URL of active tab of front window
-    if current_site contains ("http://localhost:3000") then
+    if current_site contains ("localhost") then
       reload active tab of front window
     end if
   end tell
   tell application "Safari"
     set current_site to URL of document 1
-    if current_site contains ("http://localhost:3000") then
+    if current_site contains ("localhost") then
       tell window 1
         do JavaScript "window.location.reload(true)" in current tab
       end tell
