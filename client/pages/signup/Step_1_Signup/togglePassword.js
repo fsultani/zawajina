@@ -4,9 +4,11 @@ const togglePassword = () => {
 
   if (passwordType.type === 'password') {
     passwordType.type = 'text';
-    eye.classList.add('zmdi-eye');
+    eye.classList.remove('fa-eye');
+    eye.classList.add('fa-eye-slash');
   } else {
     passwordType.type = 'password';
-    eye.classList.remove('zmdi-eye');
+    eye.classList.remove('fa-eye-slash');
+    eye.classList.add('fa-eye');
   }
 }

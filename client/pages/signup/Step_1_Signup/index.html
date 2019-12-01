@@ -5,14 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Registration</title>
-    <!-- <link rel="stylesheet" type="text/css" href="/static/client/components/Nav/css_backup/style_backup.css"> -->
-    <link rel="stylesheet" type="text/css" href="/static/dist/components/Nav/css/style.css">
+
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/static/dist/components/Nav/css/style.css"
+    >
 
     <!-- Font Icon -->
-    <link rel="stylesheet" href="/static/client/pages/signup/Step_1_Signup/fonts/material-icon/css/material-design-iconic-font.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <!-- Main css -->
-    <link rel="stylesheet" href="/static/dist/pages/signup/Step_1_Signup/css/style.css">
+    <link
+      rel="stylesheet"
+      href="/static/dist/pages/signup/Step_1_Signup/css/style.css"
+    >
   </head>
   <body>
     <div class="signup-container">
@@ -33,7 +40,9 @@
               </div>
               <div class="form-group password-wrapper">
                 <input type="password" class="form-input" name="password" id="password" placeholder="Password"/>
-                <span toggle="#password" class="zmdi zmdi-eye field-icon toggle-password" onclick="togglePassword()"></span>
+                <span toggle="#password" class="field-icon" onclick="togglePassword()">
+                  <i class="fa fa-eye" id="passwordEye"></i>
+                </span>
               </div>
               <div class="password-helper-text">
                 Password must be at least 8 characters long
@@ -60,9 +69,15 @@
       </section>
     </div>
 
-    <script type="text/javascript" src="/static/client/pages/signup/Step_1_Signup/includeHTML.js"></script>
-    <script type="text/javascript" src="/static/client/pages/signup/Step_1_Signup/togglePassword.js"></script>
-    <script type="text/javascript" src="/static/client/pages/signup/Step_1_Signup/handleSignup.js"></script>
+    <script
+      type="text/javascript"
+      src="/static/client/pages/signup/Step_1_Signup/includeHTML.js"></script>
+    <script
+      type="text/javascript"
+      src="/static/client/pages/signup/Step_1_Signup/togglePassword.js"></script>
+    <script
+      type="text/javascript"
+      src="/static/client/pages/signup/Step_1_Signup/handleSignup.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="/static/client/js/styles/js.cookie.js"></script>
   </body>

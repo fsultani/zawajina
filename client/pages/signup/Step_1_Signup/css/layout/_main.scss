@@ -121,6 +121,7 @@
 }
 
 .password-wrapper {
+  position: relative;
   margin-bottom: 5px;
 }
 
@@ -158,11 +159,9 @@
 }
 
 .field-icon {
-  float: right;
-  margin-right: 17px;
-  margin-top: -32px;
-  position: relative;
-  z-index: 2;
+  position: absolute;
+  top: 20px;
+  right: 20px;
   color: #555;
 }
 
