@@ -32,12 +32,12 @@ h2 {
 }
 .clear { clear: both; }
 body {
-	font-size: 13px;
+  font-size: 13px;
     line-height: 1.8;
     color: $black-color;
     font-weight: 600;
     font-family: 'Montserrat';
-    background: #c5e9ff;
+    background: linear-gradient(57deg, #00C6A7 0%, #1E4D92 100%);
     padding: 115px 0;
 }
 a {
