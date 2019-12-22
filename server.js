@@ -13,8 +13,9 @@ const mongo = require('mongodb')
 const mongoose = require('mongoose')
 
 if (process.env.NODE_ENV === 'mlab-dev') {
-  require('./db_credentials')
-  mongoose.connect(process.env.MONGO_DB_MLAB_DEV)
+  // require('./db_credentials')
+  // mongoose.connect(process.env.MONGO_DB_MLAB_DEV)
+  mongoose.connect('mongodb://farid:farid@ds161901.mlab.com:61901/my_match')
   console.log("Using mlab:", process.env.NODE_ENV)
 } else if (process.env.NODE_ENV === 'local') {
   require('./db_credentials')
