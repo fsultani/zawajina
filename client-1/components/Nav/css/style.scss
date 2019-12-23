@@ -3,12 +3,10 @@
 "abstracts/mixins",
 "abstracts/include-media";
 
+/*@import "normalize";*/
 @import "base/base";
-@import "base/helpers";
 @import "base/typography";
-
+@import "base/helpers";
 @import "components/buttons";
-
-@import "header";
-@import "hero";
-@import "normalize";
+@import "layout/header";
+@import "layout/hero";
