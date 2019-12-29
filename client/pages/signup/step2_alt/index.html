@@ -28,15 +28,26 @@
       <section>
         <div class="signup-wrapper">
           <div class="signup-content">
-            <div id="show-alert-danger">
-              Email exists
-            </div>
             <form name="signupForm" onsubmit="return false" novalidate>
               <h2 class="form-title">Create account</h2>
-              <div class="form-group">
-                <input type="text" class="form-input" name="name" id="name_id" placeholder="Name" required />
+
+              <div class="form-row">
+                <div class="form-group form-icon">
+                  <label for="birth_date">Birth date</label>
+                  <input type="text" class="form-input" name="birth_date" id="birth_date" placeholder="MM-DD-YYYY" />
+                </div>
+                <div class="form-radio">
+                  <label for="gender">Gender</label>
+                  <div class="form-flex">
+                    <input type="radio" name="gender" value="male" id="male" checked="checked" />
+                    <label for="male">Male</label>
+                    <input type="radio" name="gender" value="female" id="female" />
+                    <label for="female">Female</label>
+                  </div>
+                </div>
               </div>
-              <div class="form-group">
+
+              <!-- <div class="form-group">
                 <input type="email" class="form-input" name="email" id="email_id" placeholder="Email" required />
               </div>
               <div class="form-group password-wrapper">
@@ -47,7 +58,7 @@
               </div>
               <div class="password-helper-text">
                 Password must be at least 8 characters long
-              </div>
+              </div> -->
               <div class="form-group">
                 <button
                   type="submit"
