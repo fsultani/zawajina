@@ -109,7 +109,7 @@ const handleSignup = () => {
       userPassword
     }).then(res => {
       if (res.status === 200 && res.data.error) {
-        document.getElementById('show-alert-danger').style.display = 'block';
+        // document.getElementById('show-alert-danger').style.display = 'block';
       } else {
         Cookies.set('token', res.data.token);
         axios.defaults.headers.common['authorization'] = res.data.token

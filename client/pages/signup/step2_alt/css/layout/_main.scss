@@ -36,20 +36,6 @@
   margin-bottom: 40px;
 }
 
-#show-alert-danger {
-  display: none;
-  position: relative;
-  padding: 0.75rem 1.25rem;
-  margin-bottom: 1rem;
-  border: 1px solid transparent;
-  border-radius: 0.25rem;
-  text-align: center;
-  font-size: 16px;
-  color: #721c24;
-  background-color: #f8d7da;
-  border-color: #f5c6cb;
-}
-
 .form-group {
   overflow: hidden;
   margin-bottom: 20px;
@@ -163,6 +149,127 @@
   top: 20px;
   right: 20px;
   color: #555;
+}
+
+/* ****************************************************************************************** */
+
+.form-row {
+  display: flex;
+  margin: 0 -11px;
+  .form-group,
+  .form-radio {
+    width: 50%;
+    padding: 0 11px;
+  }
+  label {
+    font-size: 13px;
+  }
+}
+
+.form-group,
+.form-radio {
+  margin-bottom: 23px;
+  position: relative;
+}
+
+label,
+input {
+  display: block;
+  width: 100%;
+}
+
+label {
+  text-transform: uppercase;
+  font-weight: 800;
+  margin-bottom: 3px;
+}
+
+input {
+  border: 1px solid #ebebeb;
+  @include border-radius(5px);
+  box-sizing: border-box;
+  padding: 15px 20px;
+  font-size: 14px;
+  font-weight: bold;
+  font-family: 'Montserrat';
+  &:focus {
+    border: 1px solid $blue-color;
+  }
+  &::-webkit-input-placeholder {
+    color: #999;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  &::-moz-placeholder {
+    color: #999;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  &:-ms-input-placeholder {
+    color: #999;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  &:-moz-placeholder {
+    color: #999;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+}
+
+.form-radio {
+  margin-bottom: 40px;
+  input {
+    @include hideInput;
+  }
+  input+label {
+    margin: 0px;
+    padding: 12px 10px;
+    width: 94px;
+    height: 50px;
+    box-sizing: border-box;
+    position: relative;
+    display: inline-block;
+    text-align: center;
+    border: 1px solid $border-color;
+    background-color: #FFF;
+    font-size: 14px;
+    font-weight: 600;
+    color: #888;
+    text-align: center;
+    text-transform: none;
+    transition: border-color .15s ease-out, color .25s ease-out, background-color .15s ease-out, box-shadow .15s ease-out;
+    @include border-radius(5px);
+  }
+  input:checked+label {
+    background-color: #1da0f2;
+    color: #FFF;
+    border-color: $blue-color;
+    z-index: 1;
+  }
+  input:focus+label {
+    outline: none;
+  }
+  input:hover {
+    background-color: $blue-color;
+    color: #FFF;
+    border-color: $blue-color;
+  }
+}
+
+.form-flex {
+  @extend display-flex;
+  input+label {
+    line-height: inherit;
+    &:first-of-type {
+      @include border-radius(5px 0 0 5px);
+      border-right: none;
+    }
+    &:last-of-type {
+      @include border-radius(0 5px 5px 0);
+      border-left: none;
+    }
+  }
 }
 
 @media screen and (max-width: 768px) {
