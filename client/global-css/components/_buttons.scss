@@ -29,7 +29,7 @@
   }
 }
 
-.button-shadow {
+.navbar--button-shadow {
   position: relative;
   &::before {
     content: '';
@@ -49,10 +49,10 @@
   }
 }
 
-.button-sm {
+.navbar--button-sm {
   padding: 8px 24px;
   height: 32px;
-  &.button-shadow {
+  &.navbar--button-shadow {
     &::before {
       box-shadow: 0 4px 16px rgba(color(typography, 1), .12);
     }
