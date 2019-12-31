@@ -6,16 +6,10 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Registration</title>
 
-    <link rel="stylesheet" type="text/css" href="/static/dist/global-css/style.css">
-    <!-- <link
-      rel="stylesheet"
-      type="text/css"
-      href="/static/dist/components/Nav/css/style.css"
-    > -->
-
     <!-- Font Icon -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <link rel="stylesheet" type="text/css" href="/static/dist/global-css/style.css">
 
     <!-- Main css -->
     <link
@@ -33,10 +27,10 @@
               <h2 class="form-title">Create account</h2>
 
               <div class="form-row">
-                <div class="form-group form-icon dob">
+                <div class="form-group form-icon">
                   <label for="birth_date">Birth date</label>
                   <div class="dob-container">
-                    <select class="form-control form-control-sm dob" id="inlineFormCustomSelectPref">
+                    <select class="form-control form-control-sm" id="inlineFormCustomSelectPref">
                       <option selected disabled>Month</option>
                       <option value="january">January</option>
                       <option value="february">February</option>
@@ -51,13 +45,13 @@
                       <option value="november">November</option>
                       <option value="december">December</option>
                     </select>
-                    <select class="form-control form-control-sm dob" id="dob-day">
+                    <select class="form-control form-control-sm" id="dob-day">
                       <script type="module">
                         import { birthDay } from "/static/client/pages/signup/step2/helpers.js";
                         birthDay();
                       </script>
                     </select>
-                    <select class="form-control form-control-sm dob" id="dob-year">
+                    <select class="form-control form-control-sm" id="dob-year">
                       <script type="module">
                         import { birthYear } from "/static/client/pages/signup/step2/helpers.js";
                         birthYear();
