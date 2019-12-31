@@ -7,8 +7,6 @@
     <title>Registration</title>
 
     <link rel="stylesheet" type="text/css" href="/static/dist/global-css/style.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
     <link
       rel="stylesheet"
       type="text/css"
@@ -17,6 +15,7 @@
 
     <!-- Font Icon -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
     <!-- Main css -->
     <link
@@ -31,29 +30,43 @@
         <div class="signup-wrapper">
           <div class="signup-content">
             <form name="signupForm" onsubmit="return false" novalidate>
-              <h2 class="form-title">Sweet!  Almost done</h2>
-              <p>
-                To help match you with the right type of people, please answer some short questions.
-              </p>
-              <div class="gender-container">
-                <label>Gender</label>
-                <div class="gender-input-group">
-                  <input
-                    id="male"
-                    type="radio"
-                    name="gender"
-                    value="male"
-                  >
-                  <label for="male" class="gender-male">Male</label>
-                  <input
-                    id="female"
-                    type="radio"
-                    name="gender"
-                    value="female"
-                  >
-                  <label for="female">Female</label>
+              <h2 class="form-title">Create account</h2>
+
+              <div class="form-row">
+                <div class="form-group form-icon dob">
+                  <label for="birth_date">Birth date</label>
+                  <div class="dob-container">
+                    <select class="dob" id="inlineFormCustomSelectPref">
+                      <option selected>Month</option>
+                      <option value="1">One</option>
+                      <option value="2">Two</option>
+                      <option value="3">Three</option>
+                    </select>
+                    <select class="dob" id="inlineFormCustomSelectPref">
+                      <option selected>Day</option>
+                      <option value="1">One</option>
+                      <option value="2">Two</option>
+                      <option value="3">Three</option>
+                    </select>
+                    <select class="dob" id="inlineFormCustomSelectPref">
+                      <option selected>Year</option>
+                      <option value="1">One</option>
+                      <option value="2">Two</option>
+                      <option value="3">Three</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-radio">
+                  <label for="gender">Gender</label>
+                  <div class="form-flex">
+                    <input type="radio" name="gender" value="male" id="male" checked="checked" />
+                    <label for="male">Male</label>
+                    <input type="radio" name="gender" value="female" id="female" />
+                    <label for="female">Female</label>
+                  </div>
                 </div>
               </div>
+
               <div class="form-group">
                 <button
                   type="submit"
@@ -61,16 +74,10 @@
                   class="form-submit signup-button"
                   name="signupButton"
                 >
-                  Sign Up
+                  Done
                 </button>
               </div>
             </form>
-            <div class="form-group">
-              <label for="agree-term" class="label-agree-term"><span><span></span></span>By signing up, you agree to all statements in <a href="#" class="term-service">Terms of Service</a></label>
-            </div>
-            <p class="login">
-              Already have an account? <a href="#" class="login-link">Login here</a>
-            </p>
           </div>
         </div>
       </section>
@@ -78,19 +85,19 @@
 
     <script
       type="text/javascript"
-      src="/static/client/pages/signup/step2/includeHTML.js"></script>
+      src="/static/client/pages/signup/step1/includeHTML.js"></script>
     <script
       type="text/javascript"
-      src="/static/client/pages/signup/step2/togglePassword.js"></script>
+      src="/static/client/pages/signup/step1/togglePassword.js"></script>
     <script
       type="text/javascript"
-      src="/static/client/pages/signup/step2/handleSignup.js"></script>
+      src="/static/client/pages/signup/step1/handleSignup.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js"></script>
 
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
   </body>
   <!-- This templates was made by Colorlib (https://colorlib.com) -->
 </html>
