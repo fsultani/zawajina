@@ -25,7 +25,7 @@
                 <div class="form-group form-icon">
                   <label for="birth_date">Birth date</label>
                   <div class="dob-container">
-                    <select class="form-control form-control-sm" id="inlineFormCustomSelectPref">
+                    <select class="form-control form-control-sm dob">
                       <option selected disabled>Month</option>
                       <option value="january">January</option>
                       <option value="february">February</option>
@@ -40,13 +40,13 @@
                       <option value="november">November</option>
                       <option value="december">December</option>
                     </select>
-                    <select class="form-control form-control-sm" id="dob-day">
+                    <select class="form-control form-control-sm dob" id="dob-day">
                       <script type="module">
                         import { birthDay } from "/static/client/pages/signup/step2/helpers.js";
                         birthDay();
                       </script>
                     </select>
-                    <select class="form-control form-control-sm" id="dob-year">
+                    <select class="form-control form-control-sm dob" id="dob-year">
                       <script type="module">
                         import { birthYear } from "/static/client/pages/signup/step2/helpers.js";
                         birthYear();
@@ -63,6 +63,15 @@
                     <label for="female">Female</label>
                   </div>
                 </div>
+              </div>
+
+              <div class="form-row">
+                <select class="form-control form-control-md" id="countries-list">
+                  <script type="module">
+                    import { countriesList } from "/static/client/pages/signup/step2/helpers.js";
+                    countriesList();
+                  </script>
+                </select>
               </div>
 
               <div class="form-group">
@@ -82,6 +91,7 @@
     </div>
 
     <script type="text/javascript" src="/static/client/pages/signup/step1/includeHTML.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   </body>
   <!-- This templates was made by Colorlib (https://colorlib.com) -->
 </html>

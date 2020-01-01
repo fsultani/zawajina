@@ -53,28 +53,30 @@ app.use('/static', express.static(path.join(__dirname, '../../tutor')))
 
 // Catch all GET requests, and respond with an html file
 app.get('*', (req, res, next) => {
-  switch(req.url) {
-    case '/':
-      res.sendFile(path.join(__dirname, '../client/pages/home/index.html'));
-      break;
-    case '/login':
-      res.sendFile(path.join(__dirname, '../client/pages/login/index.html'));
-      break;
-    case '/about':
-      res.sendFile(path.join(__dirname, '../client/pages/about/index.html'));
-      break;
-    case '/signup':
-      res.sendFile(path.join(__dirname, '../client/pages/signup/step1/index.html'));
-      break;
-    case '/signup/profile':
-      res.sendFile(path.join(__dirname, '../client/pages/signup/step2/index.html'));
-      // res.sendFile(path.join(__dirname, '../client/pages/signup/step2/index.html'));
-      break;
-    default:
-      // res.sendFile(path.join(__dirname, '../client/router.html'));
-      res.sendFile(path.join(__dirname, '../client/pages/home/index.html'));
+  if (req.url.indexOf('/api/') === -1) {
+    switch(req.url) {
+      case '/':
+        res.sendFile(path.join(__dirname, '../client/pages/home/index.html'));
+        break;
+      case '/login':
+        res.sendFile(path.join(__dirname, '../client/pages/login/index.html'));
+        break;
+      case '/about':
+        res.sendFile(path.join(__dirname, '../client/pages/about/index.html'));
+        break;
+      case '/signup':
+        res.sendFile(path.join(__dirname, '../client/pages/signup/step1/index.html'));
+        break;
+      case '/signup/profile':
+        res.sendFile(path.join(__dirname, '../client/pages/signup/step2/index.html'));
+        break;
+      default:
+        // res.sendFile(path.join(__dirname, '../client/router.html'));
+        res.sendFile(path.join(__dirname, '../client/pages/home/index.html'));
+    }
+  } else {
+    return next();
   }
-  return next();
 })
 
 // Passport init

@@ -38,7 +38,7 @@
 
 .form-group {
   overflow: hidden;
-  margin: 0;
+  margin: 0 16px 0 0;
 }
 
 .form-input {
@@ -155,11 +155,10 @@
 
 .form-row {
   display: flex;
-  margin: 0 -11px 30px;
+  padding-bottom: 30px;
   .form-group,
   .form-radio {
     width: 50%;
-    padding: 0 11px;
   }
   label {
     font-size: 13px;
@@ -225,11 +224,14 @@ select {
   color: #495057;
   font-weight: 400;
   font-size: 14px;
-  margin-right: 3px;
 }
 
 .dob-container {
   display: flex;
+}
+
+.dob {
+  margin-right: 6px;
 }
 
 .form-radio {
@@ -240,7 +242,7 @@ select {
     margin: 0px;
     padding: 5px 10px;
     line-height: 1.5;
-    width: 94px;
+    width: 100%;
     box-sizing: border-box;
     position: relative;
     display: flex;
