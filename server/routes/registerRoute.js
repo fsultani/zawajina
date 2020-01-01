@@ -42,4 +42,9 @@ router.post('/api/personal-info', [
   }
 })
 
+router.get('/api/all-countries', (req, res) => {
+  const countryList = countries.default.getAllCountries()
+  res.send(countryList)
+})
+
 module.exports = router;
