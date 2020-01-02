@@ -42,13 +42,13 @@
                     </select>
                     <select class="form-control form-control-sm dob" id="dob-day">
                       <script type="module">
-                        import { birthDay } from "/static/client/pages/signup/step2/helpers.js";
+                        import { birthDay } from "/static/client/pages/signup/step2/js/helpers.js";
                         birthDay();
                       </script>
                     </select>
                     <select class="form-control form-control-sm dob" id="dob-year">
                       <script type="module">
-                        import { birthYear } from "/static/client/pages/signup/step2/helpers.js";
+                        import { birthYear } from "/static/client/pages/signup/step2/js/helpers.js";
                         birthYear();
                       </script>
                     </select>
@@ -66,9 +66,14 @@
               </div>
 
               <div class="form-row">
-                <select class="form-control form-control-md" id="countries-list">
+                <select
+                  name="countryName"
+                  class="form-control form-control-md"
+                  id="countries-list"
+                  onchange="handleCountrySelection()"
+                >
                   <script type="module">
-                    import { countriesList } from "/static/client/pages/signup/step2/helpers.js";
+                    import { countriesList } from "/static/client/pages/signup/step2/js/helpers.js";
                     countriesList();
                   </script>
                 </select>
@@ -90,7 +95,8 @@
       </section>
     </div>
 
-    <script type="text/javascript" src="/static/client/pages/signup/step1/includeHTML.js"></script>
+    <script type="text/javascript" src="/static/client/pages/signup/step2/js/includeHTML.js"></script>
+    <script type="text/javascript" src="/static/client/pages/signup/step2/js/handleSelections.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   </body>
   <!-- This templates was made by Colorlib (https://colorlib.com) -->
