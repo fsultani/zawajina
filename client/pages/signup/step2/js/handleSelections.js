@@ -1,4 +1,3 @@
-const handleCountrySelection = () => {
-  const selection = document.forms.signupForm.elements.countryName.value
-  console.log("selection\n", selection);
+const handleCountrySelection = (event) => {
+  const value = event.target.value
 }
