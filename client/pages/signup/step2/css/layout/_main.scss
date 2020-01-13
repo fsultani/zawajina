@@ -280,7 +280,6 @@ select {
   input+label {
     &:first-of-type {
       @include border-radius(5px 0 0 5px);
-      border-right: none;
     }
     &:last-of-type {
       @include border-radius(0 5px 5px 0);
