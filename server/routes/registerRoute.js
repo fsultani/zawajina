@@ -47,4 +47,17 @@ router.get('/api/all-countries', (req, res) => {
   res.send(countryList)
 })
 
+router.get('/api/state-list', (req, res) => {
+  const stateList = countries.default.getStatesOfCountry("231")
+  res.send(stateList)
+})
+
+router.get('/api/cities-list', ({ query }, res) => {
+  if (query.stateId) {
+    res.send(countries.default.getCitiesOfState(query.stateId))
+  } else {
+    res.send(countries.default.getStatesOfCountry(query.countryId))
+  }
+})
+
 module.exports = router;

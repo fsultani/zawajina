@@ -17,7 +17,7 @@ export const countriesList = () => {
   let countriesList = ["<option selected disabled>Country</option>"]
   axios.get('/register/api/all-countries')
   .then(countries => {
-    countries.data.map(country => countriesList.push(`<option>${country.name}</option>`))
+    countries.data.map(country => countriesList.push(`<option id=${country.id}>${country.name}</option>`))
     document.getElementById('countries-list').innerHTML = countriesList;
   })
 }

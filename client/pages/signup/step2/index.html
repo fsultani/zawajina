@@ -22,9 +22,9 @@
               <h2 class="form-title">Create account</h2>
 
               <div class="form-row">
-                <div class="form-group form-icon">
+                <div class="dob-container form-group form-icon">
                   <label for="birth_date">Birth date</label>
-                  <div class="dob-container">
+                  <div class="dob-wrapper">
                     <select class="form-control form-control-sm dob" onchange="handleBirthdayMonth(event)">
                       <option selected disabled>Month</option>
                       <option value="january">January</option>
@@ -58,7 +58,10 @@
                     </select>
                   </div>
                 </div>
-                <div class="form-radio">
+              </div>
+
+              <div class="form-row">
+                <div class="gender-container form-radio">
                   <label for="gender">Gender</label>
                   <div class="form-flex">
                     <input
@@ -92,6 +95,25 @@
                 </select>
               </div>
 
+              <div class="form-row" id="displayStates">
+                <select
+                  class="form-control form-control-md"
+                  id="states-list"
+                  onchange="handleStateSelection(event)"
+                >
+                </select>
+              </div>
+
+              <div class="form-row">
+                <select
+                  class="form-control form-control-md"
+                  id="cities-list"
+                  onchange="handleCitySelection(event)"
+                >
+                  <option selected disabled>City</option>
+                </select>
+              </div>
+
               <div class="form-group">
                 <button
                   type="submit"
@@ -99,7 +121,7 @@
                   class="form-submit signup-button"
                   name="signupButton"
                 >
-                  Done
+                  Sign Up
                 </button>
               </div>
             </form>
