@@ -10,7 +10,7 @@ const handleBirthdayYear = event => year = event.target.value;
 const handleGender = value => gender = value;
 const handleCountrySelection = event => country = event.target.value;
 
-const handleStep2Signup = () => {
+const handleProfileInfo = () => {
   console.log("month\n", month);
   console.log("day\n", day);
   console.log("year\n", year);

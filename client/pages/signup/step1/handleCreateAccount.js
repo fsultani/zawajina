@@ -89,7 +89,7 @@ const handlePasswordValidation = () => {
   })
 }
 
-const handleStep1Signup = () => {
+const handleCreateAccount = () => {
   handleNameValidation();
   handleEmailValidation();
   handlePasswordValidation();
