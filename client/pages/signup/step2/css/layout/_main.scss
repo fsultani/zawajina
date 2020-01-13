@@ -155,9 +155,11 @@
 
 .form-row {
   display: flex;
-  padding-bottom: 30px;
-  .form-group,
-  .form-radio {
+  padding-bottom: 16px;
+  .dob-container {
+    width: 100%;
+  }
+  .gender-container {
     width: 50%;
   }
   label {
@@ -226,7 +228,7 @@ select {
   font-size: 14px;
 }
 
-.dob-container {
+.dob-wrapper {
   display: flex;
 }
 
