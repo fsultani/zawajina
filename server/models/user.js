@@ -16,27 +16,19 @@ var User = mongoose.Schema({
   },
   fullDob: {
     type: String,
-    required: function() {
-      return typeof this.fullDob === undefined || (this.fullDob !== undefined && typeof this.fullDob !== 'string')
-    }
+    required: () => typeof this.fullDob === undefined || (this.fullDob !== undefined && typeof this.fullDob !== 'string'),
   },
   userAge: {
     type: Number,
-    required: function() {
-      return typeof this.userAge === undefined || (this.userAge !== undefined && typeof this.userAge !== 'string')
-    }
+    required: () => typeof this.userAge === undefined || (this.userAge !== undefined && typeof this.userAge !== 'string'),
   },
   gender: {
     type: String,
-    required: function() {
-      return typeof this.gender === undefined || (this.gender !== undefined && typeof this.gender !== 'string')
-    }
+    required: () => typeof this.gender === undefined || (this.gender !== undefined && typeof this.gender !== 'string'),
   },
   country: {
     type: String,
-    required: function() {
-      return typeof this.country === undefined || (this.country !== undefined && typeof this.country !== 'string')
-    }
+    required: () => typeof this.country === undefined || (this.country !== undefined && typeof this.country !== 'string'),
   },
   state: {
     type: String,
@@ -45,9 +37,7 @@ var User = mongoose.Schema({
   },
   city: {
     type: String,
-    required: function() {
-      return typeof this.city === undefined || (this.city !== undefined && typeof this.city !== 'string')
-    }
+    required: () => typeof this.city === undefined || (this.city !== undefined && typeof this.city !== 'string'),
   },
 });
 
