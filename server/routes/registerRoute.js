@@ -2,6 +2,8 @@ const express = require('express');
 const { check, body, validationResult } = require('express-validator/check');
 const countries = require('country-state-city');
 const jwt = require('jwt-simple');
+const moment = require('moment')
+
 const JWT_SECRET = Buffer.from('fe1a1915a379f3be5394b64d14794932', 'hex');
 
 const User = require('../models/user');
@@ -25,13 +27,13 @@ router.post('/api/personal-info', [
         const newUser = new User ({
           userName,
           userEmail,
-          userPassword
+          userPassword,
         });
 
         User.createUser(newUser, (err, user) => {
           const token = jwt.encode({ email: user.userEmail }, JWT_SECRET);
           const userId = user._id;
-          return res.status(201).send({ token });
+          return res.status(201).send({ token, userId });
         })
       } else if (userExists.userEmail) {
         return res.status(200).json({ error: "Email already exists"});
@@ -58,6 +60,41 @@ router.get('/api/cities-list', ({ query }, res) => {
   } else {
     res.send(countries.default.getStatesOfCountry(query.countryId))
   }
+})
+
+router.post('/api/about', (req, res) => {
+  const {
+    birthMonth,
+    birthDay,
+    birthYear,
+    gender,
+    country,
+    state,
+    city,
+  } = req.body.userInfo
+
+  const dobMonth = moment().month(birthMonth).format('MM');
+  const dobDate = moment().date(birthDay).format('DD');
+  const fullDob = `${birthYear}${dobMonth}${dobDate}`;
+  const userAge = moment().diff(fullDob, 'years');
+  const userId = req.body.userId;
+
+  User.updateOne({ _id: userId }, {
+    $set: {
+      fullDob,
+      userAge,
+      gender,
+      country,
+      state,
+      city,
+    }
+  }, (err, userFound) => {
+    if (err) {
+      res.send({error: err})
+    } else {
+      res.status(201).send(userId);
+    }
+  })
 })
 
 module.exports = router;

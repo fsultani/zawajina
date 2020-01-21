@@ -112,6 +112,7 @@ const handleCreateAccount = () => {
         document.getElementById('show-alert-danger').style.display = 'block';
       } else {
         Cookies.set('token', res.data.token);
+        Cookies.set('userId', res.data.userId);
         axios.defaults.headers.common['authorization'] = res.data.token
         window.location.pathname = '/signup/profile'
       }
