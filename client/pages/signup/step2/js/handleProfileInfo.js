@@ -52,7 +52,6 @@ const handleStateSelection = event => {
 const handleCitySelection = event => city = event.target.value;
 
 const handleProfileInfo = () => {
-
   const userInfo = {
     birthMonth,
     birthDay,
@@ -62,5 +61,10 @@ const handleProfileInfo = () => {
     state,
     city,
   }
-  console.log("userInfo\n", userInfo);
+  const userId = Cookies.get("userId")
+
+  axios.post('/register/api/about', { userInfo, userId })
+  .then(res => {
+    console.log("res\n", res);
+  })
 }

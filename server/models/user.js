@@ -14,14 +14,49 @@ var User = mongoose.Schema({
     type: String,
     required: true
   },
+  fullDob: {
+    type: String,
+    required: function() {
+      return typeof this.fullDob === undefined || (this.fullDob !== undefined && typeof this.fullDob !== 'string')
+    }
+  },
+  userAge: {
+    type: Number,
+    required: function() {
+      return typeof this.userAge === undefined || (this.userAge !== undefined && typeof this.userAge !== 'string')
+    }
+  },
+  gender: {
+    type: String,
+    required: function() {
+      return typeof this.gender === undefined || (this.gender !== undefined && typeof this.gender !== 'string')
+    }
+  },
+  country: {
+    type: String,
+    required: function() {
+      return typeof this.country === undefined || (this.country !== undefined && typeof this.country !== 'string')
+    }
+  },
+  state: {
+    type: String,
+    default: undefined,
+    required: false,
+  },
+  city: {
+    type: String,
+    required: function() {
+      return typeof this.city === undefined || (this.city !== undefined && typeof this.city !== 'string')
+    }
+  },
 });
 
 var User = module.exports = mongoose.model('Users', User);
 
 module.exports.createUser = (newUser, callback) => {
   bcrypt.genSalt(10, (err, salt) => {
-      bcrypt.hash(newUser.password, salt, (err, hash) => {
-          newUser.password = hash;
+      bcrypt.hash(newUser.userPassword, salt, (err, hash) => {
+          newUser.userPassword = hash;
           newUser.save(callback);
       });
   });
