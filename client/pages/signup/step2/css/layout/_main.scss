@@ -38,7 +38,6 @@
 
 .form-group {
   overflow: hidden;
-  margin: 0 16px 0 0;
 }
 
 .form-input {
@@ -154,7 +153,7 @@
 /* ****************************************************************************************** */
 
 .form-row {
-  display: flex;
+  /*display: flex;*/
   padding-bottom: 16px;
   .dob-container {
     width: 100%;
@@ -230,10 +229,12 @@ select {
 
 .dob-wrapper {
   display: flex;
-}
-
-.dob {
-  margin-right: 6px;
+  select {
+    margin-right: 6px;
+    &:last-child {
+      margin-right: 0;
+    }
+  }
 }
 
 .form-radio {

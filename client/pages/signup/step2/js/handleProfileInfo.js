@@ -9,9 +9,9 @@ let city;
 const states = document.getElementById("displayStates")
 states.style.display = "none";
 
-const handleBirthdayMonth = event => birthMonth = event.target.value;
-const handleBirthdayDay = event => birthDay = event.target.value;
-const handleBirthdayYear = event => birthYear = event.target.value;
+const handleBirthMonth = event => birthMonth = event.target.value;
+const handleBirthDay = event => birthDay = event.target.value;
+const handleBirthYear = event => birthYear = event.target.value;
 const handleGender = value => gender = value;
 const handleCountrySelection = event => {
   country = event.target.value;
@@ -66,5 +66,10 @@ const handleProfileInfo = () => {
   axios.post('/register/api/about', { userInfo, userId })
   .then(res => {
     console.log("res\n", res);
+
+    if (res.status === 201) {
+      const signupSuccess = document.getElementById('signup-success')
+      signupSuccess.style.display = "block";
+    }
   })
 }

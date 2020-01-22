@@ -17,6 +17,7 @@
       <div w3-include-html="/static/client/components/Nav/index.html"></div>
       <section>
         <div class="signup-wrapper">
+          <h4 id="signup-success" style="display: none; text-align: center; color: white">You have successfully registered!</h4>
           <div class="signup-content">
             <form name="signupForm" onsubmit="return false" novalidate>
               <h2 class="form-title">Create account</h2>
@@ -25,7 +26,7 @@
                 <div class="dob-container form-group form-icon">
                   <label for="birth_date">Birth date</label>
                   <div class="dob-wrapper">
-                    <select class="form-control form-control-sm dob" onchange="handleBirthdayMonth(event)">
+                    <select class="form-control form-control-sm" onchange="handleBirthMonth(event)">
                       <option selected disabled>Month</option>
                       <option value="january">January</option>
                       <option value="february">February</option>
@@ -41,16 +42,16 @@
                       <option value="december">December</option>
                     </select>
                     <select
-                      class="form-control form-control-sm dob"
+                      class="form-control form-control-sm"
                       id="dob-day"
-                      onchange="handleBirthdayDay(event)"
+                      onchange="handleBirthDay(event)"
                     >
                       <script type="module">
                         import { birthDay } from "/static/client/pages/signup/step2/js/helpers.js";
                         birthDay();
                       </script>
                     </select>
-                    <select class="form-control form-control-sm dob" id="dob-year" onchange="handleBirthdayYear(event)">
+                    <select class="form-control form-control-sm" id="dob-year" onchange="handleBirthYear(event)">
                       <script type="module">
                         import { birthYear } from "/static/client/pages/signup/step2/js/helpers.js";
                         birthYear();
