@@ -61,12 +61,11 @@ const handleProfileInfo = () => {
     state,
     city,
   }
-  const userId = Cookies.get("userId")
+  // const userId = Cookies.get("userId")
+  const userId = localStorage.getItem("userId");
 
   axios.post('/register/api/about', { userInfo, userId })
   .then(res => {
-    console.log("res\n", res);
-
     if (res.status === 201) {
       const signupSuccess = document.getElementById('signup-success')
       signupSuccess.style.display = "block";
