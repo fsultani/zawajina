@@ -28,6 +28,8 @@ router.post('/api/personal-info', [
           userName,
           userEmail,
           userPassword,
+          startedRegistration: true,
+          completedRegistration: false,
         });
 
         User.createUser(newUser, (err, user) => {
@@ -35,8 +37,21 @@ router.post('/api/personal-info', [
           const userId = user._id;
           return res.status(201).send({ token, userId });
         })
-      } else if (userExists.userEmail) {
-        return res.status(200).json({ error: "Email already exists"});
+      } else if (userExists.startedRegistration && !userExists.completedRegistration) {
+        User.updateOne({ _id: userExists._id }, {
+          $set: {
+            userName,
+            userPassword
+          }
+        }, (err, userFound) => {
+          if (err) {
+            return res.json({ error: "Unknown error" });
+          } else {
+            return res.status(200).json({ startedRegistration: userExists.startedRegistration });
+          }
+        })
+      } else if (userExists.startedRegistration && userExists.completedRegistration) {
+        return res.status(403).json({ error: "Account already exists" });
       } else {
         return res.json({ error: "Unknown error" });
       }
@@ -87,6 +102,7 @@ router.post('/api/about', (req, res) => {
       country,
       state,
       city,
+      completedRegistration: true,
     }
   }, (err, userFound) => {
     if (err) {
