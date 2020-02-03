@@ -30,6 +30,7 @@ router.post('/api/personal-info', [
           userPassword,
           startedRegistration: true,
           completedRegistration: false,
+          isUserSessionValid: false,
         });
 
         User.createUser(newUser, (err, user) => {
@@ -103,6 +104,7 @@ router.post('/api/about', (req, res) => {
       state,
       city,
       completedRegistration: true,
+      isUserSessionValid: true,
     }
   }, (err, userFound) => {
     if (err) {

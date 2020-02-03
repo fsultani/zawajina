@@ -57,6 +57,10 @@ var User = mongoose.Schema({
       typeof this.city === undefined || (this.city !== undefined && typeof this.city !== 'string')
     )
   },
+  isUserSessionValid: {
+    type: Boolean,
+    required: true,
+  },
 });
 
 var User = module.exports = mongoose.model('Users', User);
