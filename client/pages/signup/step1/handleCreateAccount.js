@@ -99,7 +99,7 @@ const handleCreateAccount = () => {
   const userPassword = password.value;
 
   if (
-    handleNameValidationValue && 
+    handleNameValidationValue &&
     handleEmailValidationValue &&
     handlePasswordValidationValue
   ) {
@@ -108,18 +108,19 @@ const handleCreateAccount = () => {
       userEmail,
       userPassword
     }).then(res => {
-      if (res.status === 200 && res.data.error) {
-        document.getElementById('show-alert-danger').style.display = 'block';
-      } else {
+      if (res.status === 201) {
         Cookies.set('token', res.data.token);
         Cookies.set('userId', res.data.userId);
-        axios.defaults.headers.common['authorization'] = res.data.token
-        window.location.pathname = '/signup/profile'
+        axios.defaults.headers.common['authorization'] = res.data.token;
+        window.location.pathname = '/signup/profile';
+      } else if (res.status === 200) {
+        window.location.pathname = '/signup/profile';
       }
     }).catch(error => {
-      error.response && error.response.data.error.map(err => {
-        return err;
-      })
+      console.log("error.response\n", error.response);
+      if (error.response.status === 403) {
+        document.getElementById('email-exists-error').style.display = 'block';
+      }
     })
   }
 }
