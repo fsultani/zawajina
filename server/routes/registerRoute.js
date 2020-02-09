@@ -23,6 +23,7 @@ router.post('/api/personal-info', [
     return res.status(400).json({ error: getErrors.array() });
   } else {
     User.findOne({ userEmail }, (err, userExists) => {
+      // User does not exist; create a new account
       if (!userExists) {
         const newUser = new User ({
           userName,
@@ -34,11 +35,12 @@ router.post('/api/personal-info', [
         });
 
         User.createUser(newUser, (err, user) => {
-          const token = jwt.encode({ email: user.userEmail }, JWT_SECRET);
+          // const token = jwt.encode({ email: user.userEmail }, JWT_SECRET);
           const userId = user._id;
-          return res.status(201).send({ token, userId });
+          return res.status(201).send({ userId });
         })
       } else if (userExists.startedRegistration && !userExists.completedRegistration) {
+        // User started registration, but did not complete it
         User.updateOne({ _id: userExists._id }, {
           $set: {
             userName,
@@ -61,20 +63,20 @@ router.post('/api/personal-info', [
 })
 
 router.get('/api/all-countries', (req, res) => {
-  const countryList = countries.default.getAllCountries()
-  res.send(countryList)
+  const countryList = countries.default.getAllCountries();
+  res.send(countryList);
 })
 
 router.get('/api/state-list', (req, res) => {
-  const stateList = countries.default.getStatesOfCountry("231")
-  res.send(stateList)
+  const stateList = countries.default.getStatesOfCountry("231");
+  res.send(stateList);
 })
 
 router.get('/api/cities-list', ({ query }, res) => {
   if (query.stateId) {
-    res.send(countries.default.getCitiesOfState(query.stateId))
+    res.send(countries.default.getCitiesOfState(query.stateId));
   } else {
-    res.send(countries.default.getStatesOfCountry(query.countryId))
+    res.send(countries.default.getStatesOfCountry(query.countryId));
   }
 })
 
@@ -87,7 +89,7 @@ router.post('/api/about', (req, res) => {
     country,
     state,
     city,
-  } = req.body.userInfo
+  } = req.body.userInfo;
 
   const dobMonth = moment().month(birthMonth).format('MM');
   const dobDate = moment().date(birthDay).format('DD');
@@ -108,9 +110,10 @@ router.post('/api/about', (req, res) => {
     }
   }, (err, userFound) => {
     if (err) {
-      res.send({error: err})
+      res.send({error: err});
     } else {
-      res.status(201).send(userId);
+      const token = jwt.encode({ email: userFound.userEmail }, JWT_SECRET);
+      res.status(201).send({ token, userId });
     }
   })
 })

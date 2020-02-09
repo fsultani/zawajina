@@ -89,7 +89,7 @@ const handlePasswordValidation = () => {
   })
 }
 
-const handleCreateAccount = () => {
+const handleSignupStepOne = () => {
   handleNameValidation();
   handleEmailValidation();
   handlePasswordValidation();
@@ -108,15 +108,9 @@ const handleCreateAccount = () => {
       userEmail,
       userPassword
     }).then(res => {
-      if (res.status === 201) {
-        localStorage.setItem("token", res.data.token);
-        localStorage.setItem("userId", res.data.userId);
-
-        // Cookies.set('token', res.data.token);
-        // Cookies.set('userId', res.data.userId);
+      if (res.status === 200 || res.status === 201) {
+        Cookies.set('userId', res.data.userId);
         // axios.defaults.headers.common['authorization'] = res.data.token;
-        window.location.pathname = '/signup/profile';
-      } else if (res.status === 200) {
         window.location.pathname = '/signup/profile';
       }
     }).catch(error => {
