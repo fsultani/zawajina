@@ -51,7 +51,7 @@ const handleStateSelection = event => {
 
 const handleCitySelection = event => city = event.target.value;
 
-const handleProfileInfo = () => {
+const handleCreateNewAccount = () => {
   const userInfo = {
     birthMonth,
     birthDay,
@@ -61,14 +61,16 @@ const handleProfileInfo = () => {
     state,
     city,
   }
-  // const userId = Cookies.get("userId")
-  const userId = localStorage.getItem("userId");
+  const userId = Cookies.get("userId")
 
   axios.post('/register/api/about', { userInfo, userId })
   .then(res => {
+    console.log("res.data\n", res.data);
     if (res.status === 201) {
       const signupSuccess = document.getElementById('signup-success')
       signupSuccess.style.display = "block";
+      Cookies.set('token', res.data.token);
+      window.location.pathname = '/';
     }
   })
 }

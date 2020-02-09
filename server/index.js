@@ -12,8 +12,6 @@ const flash = require('connect-flash')
 const mongo = require('mongodb')
 const mongoose = require('mongoose')
 
-const User = require('./models/user');
-
 if (process.env.NODE_ENV === 'mlab-dev') {
   // require('./db_credentials')
   mongoose.connect('mongodb://farid:farid@ds139322.mlab.com:39322/my_match_dev')
@@ -53,39 +51,61 @@ app.use(session({
 // Set static folder
 app.use('/static', express.static(path.join(__dirname, '../../tutor')))
 
-// Catch all GET requests
+// Catch all GET requests, and respond with an html file
 app.get('*', (req, res, next) => {
-  // Check if a valid session already exists
-  User.findOne({ isUserSessionValid: true }, (err, sessionExists) => {
-    if (sessionExists.isUserSessionValid) {
-      return res.sendFile(path.join(__dirname, '../client/app/router.html'));
-    } else {
-      if (req.url.indexOf('/api/') === -1) {
-        switch(req.url) {
-          case '/':
-            res.sendFile(path.join(__dirname, '../client/pages/home/index.html'));
-            break;
-          case '/login':
-            res.sendFile(path.join(__dirname, '../client/pages/login/index.html'));
-            break;
-          case '/about':
-            res.sendFile(path.join(__dirname, '../client/pages/about/index.html'));
-            break;
-          case '/signup':
-            res.sendFile(path.join(__dirname, '../client/pages/signup/step1/index.html'));
-            break;
-          case '/signup/profile':
-            res.sendFile(path.join(__dirname, '../client/pages/signup/step2/index.html'));
-            break;
-          default:
-            // res.sendFile(path.join(__dirname, '../client/router.html'));
-            res.sendFile(path.join(__dirname, '../client/pages/home/index.html'));
-        }
-      } else {
-        return next();
+  const { token, userId } = req.cookies;
+  if (token && userId) {
+    return res.sendFile(path.join(__dirname, '../client/app/router.html'));
+  } else {
+    console.log("else");
+    if (req.url.indexOf('/api/') === -1) {
+      switch(req.url) {
+        case '/':
+          res.sendFile(path.join(__dirname, '../client/pages/home/index.html'));
+          break;
+        case '/login':
+          res.sendFile(path.join(__dirname, '../client/pages/login/index.html'));
+          break;
+        case '/about':
+          res.sendFile(path.join(__dirname, '../client/pages/about/index.html'));
+          break;
+        case '/signup':
+          res.sendFile(path.join(__dirname, '../client/pages/signup/step1/index.html'));
+          break;
+        case '/signup/profile':
+          res.sendFile(path.join(__dirname, '../client/pages/signup/step2/index.html'));
+          break;
+        default:
+          // res.sendFile(path.join(__dirname, '../client/router.html'));
+          res.sendFile(path.join(__dirname, '../client/pages/home/index.html'));
       }
+    } else {
+      return next();
     }
-  })
+  }
+  // if (req.url.indexOf('/api/') === -1) {
+  //   switch(req.url) {
+  //     case '/':
+  //       res.sendFile(path.join(__dirname, '../client/pages/home/index.html'));
+  //       break;
+  //     case '/login':
+  //       res.sendFile(path.join(__dirname, '../client/pages/login/index.html'));
+  //       break;
+  //     case '/about':
+  //       res.sendFile(path.join(__dirname, '../client/pages/about/index.html'));
+  //       break;
+  //     case '/signup':
+  //       res.sendFile(path.join(__dirname, '../client/pages/signup/step1/index.html'));
+  //       break;
+  //     case '/signup/profile':
+  //       res.sendFile(path.join(__dirname, '../client/pages/signup/step2/index.html'));
+  //       break;
+  //     default:
+  //       res.sendFile(path.join(__dirname, '../client/pages/home/index.html'));
+  //   }
+  // } else {
+  //   return next();
+  // }
 })
 
 // Passport init
