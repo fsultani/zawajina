@@ -13,6 +13,7 @@ const handleBirthMonth = event => birthMonth = event.target.value;
 const handleBirthDay = event => birthDay = event.target.value;
 const handleBirthYear = event => birthYear = event.target.value;
 const handleGender = value => gender = value;
+
 const handleCountrySelection = event => {
   country = event.target.value;
   countryId = event.target[event.srcElement.selectedIndex].id
@@ -65,7 +66,6 @@ const handleCreateNewAccount = () => {
 
   axios.post('/register/api/about', { userInfo, userId })
   .then(res => {
-    console.log("res.data\n", res.data);
     if (res.status === 201) {
       const signupSuccess = document.getElementById('signup-success')
       signupSuccess.style.display = "block";

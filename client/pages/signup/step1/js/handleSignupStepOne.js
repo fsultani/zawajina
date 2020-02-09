@@ -1,8 +1,9 @@
 const signupFormElements = document.signupForm.elements;
 
-const name = document.signupForm.name;
-const email = document.signupForm.email;
-const password = document.signupForm.password;
+const user_name = document.signupForm.user_name;
+const user_email = document.signupForm.user_email;
+const user_password = document.signupForm.user_password;
+const submitButton = document.signupForm.signupButton;
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -11,29 +12,29 @@ let handleEmailValidationValue = false;
 let handlePasswordValidationValue = false;
 
 const disableSubmitButton = () => {
-  document.signupForm.signupButton.disabled = true;
-  document.signupForm.signupButton.style.opacity = 0.5;
-  document.signupForm.signupButton.style.cursor = 'not-allowed';
+  submitButton.disabled = true;
+  submitButton.style.opacity = 0.5;
+  submitButton.style.cursor = 'not-allowed';
 }
 
 const enableSubmitButton = () => {
-  document.signupForm.signupButton.disabled = false;
-  document.signupForm.signupButton.style.opacity = 1;
-  document.signupForm.signupButton.style.cursor = 'pointer';
+  submitButton.disabled = false;
+  submitButton.style.opacity = 1;
+  submitButton.style.cursor = 'pointer';
 }
 
 const handleNameValidation = () => {
-  if (!name.checkValidity()) {
-    document.signupForm.name.classList.add('form-error');
+  if (!user_name.checkValidity()) {
+    user_name.classList.add('form-error');
     disableSubmitButton();
 
-    signupFormElements.name.addEventListener("keyup", () => {
-      if (name.checkValidity()) {
-        document.signupForm.name.classList.remove('form-error');
-        signupFormElements.name.removeEventListener("keyup", () => {});
+    signupFormElements.user_name.addEventListener("keyup", () => {
+      if (user_name.checkValidity()) {
+        document.signupForm.user_name.classList.remove('form-error');
+        signupFormElements.user_name.removeEventListener("keyup", () => {});
         enableSubmitButton();
       } else {
-        document.signupForm.name.classList.add('form-error');
+        document.signupForm.user_name.classList.add('form-error');
         disableSubmitButton();
       }
     })
@@ -43,23 +44,23 @@ const handleNameValidation = () => {
 }
 
 const handleEmailValidation = () => {
-  if (!emailRegex.test(email.value)) {
-    document.signupForm.email.classList.add('form-error');
+  if (!emailRegex.test(user_email.value)) {
+    document.signupForm.user_email.classList.add('form-error');
     disableSubmitButton();
   } else {
-    document.signupForm.email.classList.remove('form-error');
+    document.signupForm.user_email.classList.remove('form-error');
     enableSubmitButton();
     handleEmailValidationValue = true;
   }
 
-  signupFormElements.email.addEventListener("keyup", () => {
-    if (!emailRegex.test(email.value)) {
-      document.signupForm.email.classList.add('form-error');
-      signupFormElements.name.removeEventListener("keyup", () => {});
+  signupFormElements.user_email.addEventListener("keyup", () => {
+    if (!emailRegex.test(user_email.value)) {
+      document.signupForm.user_email.classList.add('form-error');
+      signupFormElements.user_name.removeEventListener("keyup", () => {});
       disableSubmitButton();
     } else {
-      document.signupForm.email.classList.remove('form-error');
-      signupFormElements.name.removeEventListener("keyup", () => {});
+      document.signupForm.user_email.classList.remove('form-error');
+      signupFormElements.user_name.removeEventListener("keyup", () => {});
       enableSubmitButton();
       handleEmailValidationValue = true;
     }
@@ -67,22 +68,22 @@ const handleEmailValidation = () => {
 }
 
 const handlePasswordValidation = () => {
-  if (document.signupForm.password.value.length < 8) {
-    document.signupForm.password.classList.add('form-error');
+  if (document.signupForm.user_password.value.length < 8) {
+    document.signupForm.user_password.classList.add('form-error');
     disableSubmitButton();
   } else {
-    document.signupForm.password.classList.remove('form-error');
+    document.signupForm.user_password.classList.remove('form-error');
     enableSubmitButton();
     handlePasswordValidationValue = true;
   }
 
-  signupFormElements.password.addEventListener("keyup", () => {
-    if (document.signupForm.password.value.length < 8) {
-      document.signupForm.password.classList.add('form-error');
+  signupFormElements.user_password.addEventListener("keyup", () => {
+    if (document.signupForm.user_password.value.length < 8) {
+      document.signupForm.user_password.classList.add('form-error');
       disableSubmitButton();
     } else {
-      document.signupForm.password.classList.remove('form-error');
-      signupFormElements.password.removeEventListener("keyup", () => {});
+      document.signupForm.user_password.classList.remove('form-error');
+      signupFormElements.user_password.removeEventListener("keyup", () => {});
       enableSubmitButton();
       handlePasswordValidationValue = true;
     }
@@ -94,9 +95,9 @@ const handleSignupStepOne = () => {
   handleEmailValidation();
   handlePasswordValidation();
 
-  const userName = name.value;
-  const userEmail = email.value;
-  const userPassword = password.value;
+  const name = user_name.value;
+  const email = user_email.value;
+  const password = user_password.value;
 
   if (
     handleNameValidationValue &&
@@ -104,13 +105,12 @@ const handleSignupStepOne = () => {
     handlePasswordValidationValue
   ) {
     axios.post('/register/api/personal-info', {
-      userName,
-      userEmail,
-      userPassword
+      name,
+      email,
+      password
     }).then(res => {
       if (res.status === 200 || res.status === 201) {
         Cookies.set('userId', res.data.userId);
-        // axios.defaults.headers.common['authorization'] = res.data.token;
         window.location.pathname = '/signup/profile';
       }
     }).catch(error => {

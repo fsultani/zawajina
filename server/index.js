@@ -1,44 +1,46 @@
-const http = require('http')
-const express = require('express')
-const path = require('path')
-const cookieParser = require('cookie-parser')
-const bodyParser = require('body-parser')
-const session = require('express-session')
-const passport = require('passport')
+const http = require('http');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+const session = require('express-session');
+const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const osascript = require('node-osascript');
 
-const flash = require('connect-flash')
-const mongo = require('mongodb')
-const mongoose = require('mongoose')
+const flash = require('connect-flash');
+const mongo = require('mongodb');
+const mongoose = require('mongoose');
+
+const User = require('./models/user');
 
 if (process.env.NODE_ENV === 'mlab-dev') {
   // require('./db_credentials')
-  mongoose.connect('mongodb://farid:farid@ds139322.mlab.com:39322/my_match_dev')
-  console.log("Using mlab:", process.env.NODE_ENV)
+  mongoose.connect('mongodb://farid:farid@ds139322.mlab.com:39322/my_match_dev');
+  console.log("Using mlab:", process.env.NODE_ENV);
 } else if (process.env.NODE_ENV === 'local') {
-  require('./db_credentials')
-  mongoose.connect(process.env.LOCAL)
+  require('./db_credentials');
+  mongoose.connect(process.env.LOCAL);
   console.log("Using local db - mongodb://localhost/my_match_local_dev")
 } else {
-  mongoose.connect(process.env.HEROKU)
-  console.log("Heroku deployment")
+  mongoose.connect(process.env.HEROKU);
+  console.log("Heroku deployment");
 }
 
-const app = express()
+const app = express();
 
-const index = require('./routes/index')
-const registerRoute = require('./routes/registerRoute')
-const users = require('./routes/users')
-const conversation = require('./routes/conversation')
-const messages = require('./routes/messages')
+const index = require('./routes/index');
+const registerRoute = require('./routes/registerRoute');
+const users = require('./routes/users');
+const conversation = require('./routes/conversation');
+const messages = require('./routes/messages');
 
-const Conversation = require('./models/conversation')
+const Conversation = require('./models/conversation');
 
 // Body Parser Middleware
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true }))
-app.use(cookieParser())
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 // Express Session
 // app.set('trust proxy', 1) // trust first proxy 
@@ -46,18 +48,17 @@ app.use(session({
   secret: "Farid's secret",
   resave: true,
   saveUninitialized: true,
-}))
+}));
 
 // Set static folder
-app.use('/static', express.static(path.join(__dirname, '../../tutor')))
+app.use('/static', express.static(path.join(__dirname, '../../tutor')));
 
 // Catch all GET requests, and respond with an html file
 app.get('*', (req, res, next) => {
   const { token, userId } = req.cookies;
-  if (token && userId) {
-    return res.sendFile(path.join(__dirname, '../client/app/router.html'));
+  if (token && userId && req.url.indexOf('/api/') === -1) {
+    res.sendFile(path.join(__dirname, '../client/app/router.html'));
   } else {
-    console.log("else");
     if (req.url.indexOf('/api/') === -1) {
       switch(req.url) {
         case '/':
@@ -76,7 +77,6 @@ app.get('*', (req, res, next) => {
           res.sendFile(path.join(__dirname, '../client/pages/signup/step2/index.html'));
           break;
         default:
-          // res.sendFile(path.join(__dirname, '../client/router.html'));
           res.sendFile(path.join(__dirname, '../client/pages/home/index.html'));
       }
     } else {
@@ -128,18 +128,18 @@ app.get('*', (req, res, next) => {
 // })
 
 // Use index.js for any routes beginning with '/'
-app.use('/', index)
-app.use('/register', registerRoute)
-app.use('/users', users)
-app.use('/conversation', conversation)
-app.use('/messages', messages)
+app.use('/', index);
+app.use('/register', registerRoute);
+app.use('/users', users);
+app.use('/conversation', conversation);
+app.use('/messages', messages);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   const err = new Error('Not Found')
   err.status = 404;
   next(err)
-})
+});
 
 // error handler
 app.use(function(err, req, res, next) {
@@ -148,7 +148,7 @@ app.use(function(err, req, res, next) {
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
   // render the error page
-  res.status(err.status || 500)
+  res.status(err.status || 500);
 })
 
 const port = process.env.PORT || 3000;
@@ -177,7 +177,7 @@ osascript.execute(
 );
 
 app.listen(port, () => {
-  console.log("Listening on port " + port)
+  console.log("Listening on port " + port);
   if (process.send) {
     // process.send({ event:'online', url:'http://localhost:' + port})
     process.send('online');
