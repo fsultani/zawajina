@@ -11,31 +11,30 @@ const User = require('../models/user');
 const router = express.Router();
 
 router.post('/api/personal-info', [
-  check('userName').not().isEmpty().withMessage('Enter your first name'),
-  check('userEmail').isEmail().withMessage('Enter a valid email address'),
-  check('userPassword').not().isEmpty().withMessage('Enter a password'),
-  check('userPassword').isLength({ min: 8 }),
+  check('name').not().isEmpty().withMessage('Enter your name'),
+  check('email').isEmail().withMessage('Enter a valid email address'),
+  check('password').not().isEmpty().withMessage('Enter a password'),
+  check('password').isLength({ min: 8 }),
 ], (req, res) => {
-  const { userName, userEmail, userPassword } = req.body;
+  const { name, email, password } = req.body;
   const getErrors = validationResult(req);
 
   if (!getErrors.isEmpty()) {
     return res.status(400).json({ error: getErrors.array() });
   } else {
-    User.findOne({ userEmail }, (err, userExists) => {
+    User.findOne({ email }, (err, userExists) => {
       // User does not exist; create a new account
       if (!userExists) {
         const newUser = new User ({
-          userName,
-          userEmail,
-          userPassword,
+          name,
+          email,
+          password,
           startedRegistration: true,
           completedRegistration: false,
           isUserSessionValid: false,
         });
 
         User.createUser(newUser, (err, user) => {
-          // const token = jwt.encode({ email: user.userEmail }, JWT_SECRET);
           const userId = user._id;
           return res.status(201).send({ userId });
         })
@@ -43,8 +42,8 @@ router.post('/api/personal-info', [
         // User started registration, but did not complete it
         User.updateOne({ _id: userExists._id }, {
           $set: {
-            userName,
-            userPassword
+            name,
+            password
           }
         }, (err, userFound) => {
           if (err) {
@@ -112,7 +111,7 @@ router.post('/api/about', (req, res) => {
     if (err) {
       res.send({error: err});
     } else {
-      const token = jwt.encode({ email: userFound.userEmail }, JWT_SECRET);
+      const token = jwt.encode({ email: userFound.email }, JWT_SECRET);
       res.status(201).send({ token, userId });
     }
   })

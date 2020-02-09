@@ -97,6 +97,13 @@ passport.use(new LocalStrategy({
 //   })
 // })
 
+router.get('/api/user-details', (req, res, next) => {
+  const { token, userId } = req.cookies;
+  User.findOne({ _id: userId }, (err, user) => {
+    res.status(201).send({ token, name: user.name });
+  })
+})
+
 router.put('/api/profile-info', (req, res) => {
   const token = req.headers['authorization']
   const decodedUser = jwt.decode(token, JWT_SECRET)
