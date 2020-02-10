@@ -4,7 +4,7 @@ import Body from './Body.js';
 const App = () => {
   const globalStyles = document.createElement('link');
   globalStyles.rel = "stylesheet"
-  globalStyles.href = '/static/client/app/global-styles.css';
+  globalStyles.href = '/static/client/app/app-global-styles.css';
 
   document.head.appendChild(globalStyles);
 

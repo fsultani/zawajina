@@ -62,22 +62,22 @@ app.get('*', (req, res, next) => {
     if (req.url.indexOf('/api/') === -1) {
       switch(req.url) {
         case '/':
-          res.sendFile(path.join(__dirname, '../client/pages/home/index.html'));
+          res.sendFile(path.join(__dirname, '../client/landing-page/pages/home/index.html'));
           break;
         case '/login':
-          res.sendFile(path.join(__dirname, '../client/pages/login/index.html'));
+          res.sendFile(path.join(__dirname, '../client/landing-page/pages/login/index.html'));
           break;
         case '/about':
-          res.sendFile(path.join(__dirname, '../client/pages/about/index.html'));
+          res.sendFile(path.join(__dirname, '../client/landing-page/pages/about/index.html'));
           break;
         case '/signup':
-          res.sendFile(path.join(__dirname, '../client/pages/signup/step1/index.html'));
+          res.sendFile(path.join(__dirname, '../client/landing-page/pages/signup/step1/index.html'));
           break;
         case '/signup/profile':
-          res.sendFile(path.join(__dirname, '../client/pages/signup/step2/index.html'));
+          res.sendFile(path.join(__dirname, '../client/landing-page/pages/signup/step2/index.html'));
           break;
         default:
-          res.sendFile(path.join(__dirname, '../client/pages/home/index.html'));
+          res.sendFile(path.join(__dirname, '../client/landing-page/pages/home/index.html'));
       }
     } else {
       return next();
