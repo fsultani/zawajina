@@ -9,7 +9,7 @@ const Body = () => {
     const { name } = res.data;
     const Content = `
       <div class="container">
-        <h1>Welcome home, ${name}!</h1>
+        <p>Salaam ${name}!</p>
       </div>
     `;
     document.getElementById('main-app').innerHTML = Content;
