@@ -23,7 +23,7 @@ const NavBar = () => {
                 <a href="/search">Search</a>
               </li>
               <li>
-                <a onclick="logout(event)" style="cursor: pointer">Logout</a></li>
+                <a id="logout" style="cursor: pointer">Logout</a></li>
               </li>
             </ul>
           </div>
@@ -32,6 +32,14 @@ const NavBar = () => {
     </div>
   `;
   document.getElementById('navbar').innerHTML = navBar;
+
+  document.getElementById('logout').onclick = () => {
+    console.log("logout");
+
+    Cookies.remove('token')
+    Cookies.remove('userId')
+    location.reload();
+  }
 }
 
 export default NavBar;
