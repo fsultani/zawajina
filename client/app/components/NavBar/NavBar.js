@@ -23,7 +23,7 @@ const NavBar = () => {
                 <a href="/search">Search</a>
               </li>
               <li>
-                <a href="/logout">Logout</a>
+                <a onclick="logout(event)" style="cursor: pointer">Logout</a></li>
               </li>
             </ul>
           </div>

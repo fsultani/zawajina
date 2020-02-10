@@ -1,4 +1,4 @@
-import NavBar from '/static/client/app/components/NavBar/index.js';
+import NavBar from '/static/client/app/components/NavBar/NavBar.js';
 import Body from './Body.js';
 
 const App = () => {
