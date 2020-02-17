@@ -35,6 +35,7 @@ router.post('/api/personal-info', [
         });
 
         User.createUser(newUser, (err, user) => {
+          if (err) throw new Error(err);
           const userId = user._id;
           return res.status(201).send({ userId });
         })
