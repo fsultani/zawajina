@@ -7,9 +7,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "watch-sass": "node-sass --output-style compressed -w client/ -o dist/",
-    "run-dev": "NODE_ENV=mlab-dev browser-refresh server/index.js",
-    "dev": "npm run watch-sass & npm run run-dev",
+    "dev": "NODE_ENV=mlab-dev browser-refresh server/index.js",
     "start": "node server.js"
   },
   "author": "",
@@ -20,24 +18,17 @@
     "browser-refresh": "1.7.3",
     "connect-flash": "0.1.1",
     "cookie-parser": "1.4.4",
-    "country-state-city": "^1.0.0",
+    "country-state-city": "1.0.0",
     "express": "4.17.1",
-    "express-session": "^1.17.0",
-    "express-validator": "^6.2.0",
-    "js-cookie": "^2.2.1",
+    "express-session": "1.16.2",
+    "express-validator": "6.1.1",
+    "js-cookie": "2.2.0",
     "jwt-simple": "0.5.6",
-    "moment": "^2.24.0",
-    "mongoose": "^5.7.7",
-    "multer": "^1.4.2",
+    "mongoose": "5.6.2",
+    "multer": "1.4.1",
     "node-osascript": "2.1.0",
     "passport": "0.4.0",
     "passport-jwt": "4.0.0",
     "passport-local": "1.0.0"
-  },
-  "devDependencies": {
-    "node-sass": "^4.12.0"
-  },
-  "_comments": {
-    "watch-sass": "node-sass --output-style expanded -w client/ -o dist/"
   }
 }

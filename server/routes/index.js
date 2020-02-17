@@ -7,7 +7,7 @@ const Cookies = require('js-cookie');
 const path = require('path');
 const JWT_SECRET = Buffer.from('fe1a1915a379f3be5394b64d14794932', 'hex')
 const multer = require('multer')
-// const { check, body, validationResult } = require('express-validator/check')
+const { check, body, validationResult } = require('express-validator/check')
 
 const router = express.Router()
 
@@ -96,13 +96,6 @@ passport.use(new LocalStrategy({
 //     }
 //   })
 // })
-
-router.get('/api/user-details', (req, res, next) => {
-  const { token, userId } = req.cookies;
-  User.findOne({ _id: userId }, (err, user) => {
-    res.status(201).send({ token, name: user.name });
-  })
-})
 
 router.put('/api/profile-info', (req, res) => {
   const token = req.headers['authorization']
