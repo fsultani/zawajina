@@ -65,7 +65,8 @@ app.get('*', (req, res, next) => {
           res.sendFile(path.join(__dirname, '../client/landing-page/pages/home/index.html'));
           break;
         case '/login':
-          res.sendFile(path.join(__dirname, '../client/landing-page/pages/login/index.html'));
+          // res.sendFile(path.join(__dirname, '../client/landing-page/pages/login/index.html'));
+          res.sendFile(path.join(__dirname, '../client/app/router.html'));
           break;
         case '/about':
           res.sendFile(path.join(__dirname, '../client/landing-page/pages/about/index.html'));
