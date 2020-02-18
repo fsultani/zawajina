@@ -67,8 +67,8 @@ var User = module.exports = mongoose.model('Users', User);
 
 module.exports.createUser = (newUser, callback) => {
   bcrypt.genSalt(10, (err, salt) => {
-      bcrypt.hash(newUser.userPassword, salt, (err, hash) => {
-          newUser.userPassword = hash;
+      bcrypt.hash(newUser.password, salt, (err, hash) => {
+          newUser.password = hash;
           newUser.save(callback);
       });
   });

@@ -1,17 +1,14 @@
 const handleLogin = event => {
   event.preventDefault();
-  console.log("handleLogin")
-  // const email = document.loginForm.email.value
-  // const password = document.loginForm.password.value
+  const email = document.login.elements.email.value;
+  const password = document.login.elements.password.value;
 
-  // axios.post('/login', {
-  //   email,
-  //   password
-  // }).then(res => {
-  //   Cookies.set('token', res.data.token)
-  //   Cookies.set('name', res.data.member.name)
-  //   Cookies.set('id', res.data.member._id)
-  //   axios.defaults.headers.common['authorization'] = res.data.token
-  //   window.location.hash = 'home'
-  // })
+  axios.post('/login', {
+    email,
+    password
+  }).then(res => {
+    Cookies.set('token', res.data.token)
+    Cookies.set('userId', res.data.member._id)
+    window.location.pathname = '/';
+  })
 }
