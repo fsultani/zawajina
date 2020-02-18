@@ -2,13 +2,13 @@ import App from './index.js';
 import Login from './Login.js';
 
 window.onload = () => {
-  // App();
-  console.log("window.history.state\n", window.history.state);
-  console.log("window.location\n", window.location.pathname);
+  App();
+  // console.log("window.history.state\n", window.history.state);
+  // console.log("window.location\n", window.location.pathname);
 
-  if (window.location.pathname === '/login') {
-    Login();
-  }
+  // if (window.location.pathname === '/login') {
+  //   Login();
+  // }
   // if (Cookies.get('token')) {
   //   if (!window.history.state) {
   //     window.history.replaceState({ page: 'home'}, null, '/');
