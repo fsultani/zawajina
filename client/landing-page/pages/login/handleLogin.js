@@ -1,4 +1,5 @@
-const handleLogin = () => {
+const handleLogin = event => {
+  event.preventDefault();
   console.log("handleLogin")
   // const email = document.loginForm.email.value
   // const password = document.loginForm.password.value
