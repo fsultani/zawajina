@@ -11,31 +11,28 @@ const NavBar = () => {
   document.head.appendChild(navBarCss);
 
   const navBar = `
-    <div class="navbar--wrapper">
-      <header class="navbar--site-header">
-        <div class="navbar--container">
-          <div class="navbar--site-header-inner">
-            <div>
-              <a href="/"><img src="/static/client/landing-page/images/home.svg" alt="Home"></a>
-            </div>
-            <ul class="navbar--header-links margin-0">
-              <li>
-                <a href="/search">Search</a>
-              </li>
-              <li>
-                <a id="logout" style="cursor: pointer">Logout</a></li>
-              </li>
-            </ul>
+    <header class="navbar--site-header">
+      <div class="navbar--container">
+        <div class="navbar--site-header-inner">
+          <div>
+            <a href="/"><img src="/static/client/landing-page/images/home.svg" alt="Home"></a>
           </div>
+          <ul class="navbar--header-links margin-0">
+            <li>
+              <a href="/search">Search</a>
+            </li>
+            <li>
+              <a id="logout" style="cursor: pointer">Logout</a></li>
+            </li>
+          </ul>
         </div>
-      </header>
-    </div>
+      </div>
+    </header>
+
   `;
   document.getElementById('navbar').innerHTML = navBar;
 
   document.getElementById('logout').onclick = () => {
-    console.log("logout");
-
     Cookies.remove('token')
     Cookies.remove('userId')
     location.reload();
