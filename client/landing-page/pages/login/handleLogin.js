@@ -30,11 +30,18 @@ const handleLogin = event => {
     if (!emailIsValid) {
       document.login.email.blur()
       document.getElementById('email').classList.add('email-error')
+      document.getElementById('email-wrapper').classList.add('form-error')
     };
+
+    const emailHasError = document.getElementById('email').classList.contains('email-error')
+    if (emailIsValid && emailHasError) {
+      document.getElementById('email').classList.remove('email-error')
+      document.getElementById('email-wrapper').classList.remove('form-error')
+    }
 
     if (!passwordIsValid) {
       document.login.password.blur()
-      document.getElementById('password').classList.add('password-error')
+      document.getElementById('password').classList.add('form-error')
     };
   }
 }
