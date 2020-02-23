@@ -215,6 +215,10 @@ iframe {
   margin-bottom: 37px;
 }
 
+.password-error {
+  border-bottom: 2px solid red;
+}
+
 .input100 {
   font-family: Poppins-Regular;
   font-size: 15px;
@@ -258,6 +262,23 @@ iframe {
   background: -o-linear-gradient(left, #21d4fd, #b721ff);
   background: -moz-linear-gradient(left, #21d4fd, #b721ff);
   background: linear-gradient(left, #21d4fd, #b721ff);
+}
+
+.focus-input100.email-error::before {
+  content: "";
+  display: block;
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+
+  -webkit-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  -moz-transition: all 0.4s;
+  transition: all 0.4s;
+
+  border-bottom: 2px solid red;
 }
 
 .focus-input100::after {
