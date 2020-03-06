@@ -18,6 +18,9 @@ const Conversation = require('../models/conversation')
 router.post('/login', (req, res, next) => {
   passport.authenticate('local', (err, user, info) => {
     if (err) return next(err)
+    if (info) {
+      return res.status(401).json({ error: info.message })
+    }
     if (!user) {
       return res.status(401).json({ error: 'message' })
     } else {

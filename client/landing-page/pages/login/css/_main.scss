@@ -301,6 +301,18 @@ iframe {
   transition: all 0.4s;
 }
 
+.invalid-email, .invalid-password {
+  position: absolute;
+  left: 4px;
+  font-size: 12px;
+  color: red;
+  padding-top: 4px;
+}
+
+#invalid-email, #invalid-password {
+  display: none;
+}
+
 .input100:focus + .focus-input100::after {
   top: -15px;
 }
