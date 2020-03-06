@@ -25,6 +25,12 @@ const handleLogin = event => {
       Cookies.set('token', res.data.token)
       Cookies.set('userId', res.data.member._id)
       window.location.pathname = '/';
+    }).catch(error => {
+      if (error.response.data.error === 'Unknown user') {
+        document.getElementById('invalid-email').style.display = 'block';
+      } else if (error.response.data.error === 'Invalid password') {
+        document.getElementById('invalid-password').style.display = 'block';
+      }
     })
   } else {
     if (!emailIsValid) {
