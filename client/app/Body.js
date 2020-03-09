@@ -62,6 +62,36 @@ const Body = () => {
                     </div>
                   </div>
                 </div>
+                <div class="testimonial is-revealing">
+                  <div class="testimonial-inner">
+                    <div class="testimonial-main mb-32">
+                      <div class="testimonial-body">
+                        <p class="text-sm m-0">Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.</p>
+                      </div>
+                    </div>
+                    <div class="testimonial-footer">
+                      <div class="testimonial-image">
+                        <img src="/static/client/landing-page/images/testimonial-02.png" alt="Marta Smirth">
+                      </div>
+                      <div class="testimonial-name text-sm">Marta Smirth</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="testimonial is-revealing">
+                  <div class="testimonial-inner">
+                    <div class="testimonial-main mb-32">
+                      <div class="testimonial-body">
+                        <p class="text-sm m-0">Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.</p>
+                      </div>
+                    </div>
+                    <div class="testimonial-footer">
+                      <div class="testimonial-image">
+                        <img src="/static/client/landing-page/images/testimonial-03.png" alt="Evan Hill">
+                      </div>
+                      <div class="testimonial-name text-sm">Evan Hill</div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

@@ -11,12 +11,14 @@
 }
 
 .testimonials-wrap {
-  display: flex;
+  /*display: flex;
   flex-wrap: wrap;
   justify-content: center;
   margin-right: -12px;
   margin-left: -12px;
-  margin-top: -12px
+  margin-top: -12px*/
+  display: grid;
+  grid-template-columns: auto auto auto auto auto;
 }
 
 .testimonials-wrap:last-of-type {
@@ -29,9 +31,9 @@
 
 .testimonial {
   padding: 12px;
-  width: 368px;
-  max-width: 368px;
-  flex-grow: 1
+  /*width: 368px;*/
+  /*max-width: 368px;*/
+  /*flex-grow: 1*/
 }
 
 .testimonial-inner {
@@ -49,8 +51,8 @@
 }
 
 .text-sm {
-  font-size: 18px;
-  line-height: 28px;
+  font-size: 14px;
+  line-height: normal;
   letter-spacing: -0.1px;
 }
 
