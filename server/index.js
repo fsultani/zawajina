@@ -178,10 +178,10 @@ osascript.execute(
 );
 
 app.listen(port, () => {
-  console.log("Listening on port " + port);
   if (process.send) {
     // process.send({ event:'online', url:'http://localhost:' + port})
     process.send('online');
+    console.log("Listening on port " + port);
   }
 })
 
