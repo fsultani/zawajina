@@ -4,10 +4,7 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const session = require('express-session');
-const passport = require('passport');
-const LocalStrategy = require('passport-local').Strategy;
 const osascript = require('node-osascript');
-
 const flash = require('connect-flash');
 const mongo = require('mongodb');
 const mongoose = require('mongoose');
@@ -42,21 +39,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-// Express Session
-// app.set('trust proxy', 1) // trust first proxy 
-app.use(session({
-  secret: "Farid's secret",
-  resave: true,
-  saveUninitialized: true,
-}));
-
 // Set static folder
 app.use('/static', express.static(path.join(__dirname, '../../tutor')));
 
 // Catch all GET requests, and respond with an html file
 app.get('*', (req, res, next) => {
-  const { token, userId } = req.cookies;
-  if (token && userId && req.url.indexOf('/api/') === -1) {
+  const { token } = req.cookies;
+  if (token && req.url.indexOf('/api/') === -1) {
     res.sendFile(path.join(__dirname, '../client/app/router.html'));
   } else {
     if (req.url.indexOf('/api/') === -1) {
@@ -84,34 +73,7 @@ app.get('*', (req, res, next) => {
       return next();
     }
   }
-  // if (req.url.indexOf('/api/') === -1) {
-  //   switch(req.url) {
-  //     case '/':
-  //       res.sendFile(path.join(__dirname, '../client/pages/home/index.html'));
-  //       break;
-  //     case '/login':
-  //       res.sendFile(path.join(__dirname, '../client/pages/login/index.html'));
-  //       break;
-  //     case '/about':
-  //       res.sendFile(path.join(__dirname, '../client/pages/about/index.html'));
-  //       break;
-  //     case '/signup':
-  //       res.sendFile(path.join(__dirname, '../client/pages/signup/step1/index.html'));
-  //       break;
-  //     case '/signup/profile':
-  //       res.sendFile(path.join(__dirname, '../client/pages/signup/step2/index.html'));
-  //       break;
-  //     default:
-  //       res.sendFile(path.join(__dirname, '../client/pages/home/index.html'));
-  //   }
-  // } else {
-  //   return next();
-  // }
 })
-
-// Passport init
-// app.use(passport.initialize())
-// app.use(passport.session())
 
 // Express Validator
 // app.use(express.json())
@@ -181,7 +143,7 @@ app.listen(port, () => {
   if (process.send) {
     // process.send({ event:'online', url:'http://localhost:' + port})
     process.send('online');
-    console.log("Listening on port " + port);
+    console.log(`Listening on port ${port}`);
   }
 })
 

@@ -5,7 +5,11 @@ const Body = () => {
 
   document.head.appendChild(bodyStyles);
 
-  axios.get("/api/user-details").then(res => {
+  axios.get("/api/user-details", {
+    headers: {
+      Authorization: Cookies.get('token')
+    }
+  }).then(res => {
     const { name } = res.data;
     const Content = `
       <div class="container">
@@ -98,6 +102,9 @@ const Body = () => {
         </section>
     `;
     document.getElementById('main-app').innerHTML = Content;
+  }).catch(error => {
+    Cookies.remove('token')
+    window.location.pathname = '/login';
   })
 }
 
