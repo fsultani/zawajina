@@ -22,15 +22,12 @@ const handleLogin = event => {
       email,
       password
     }).then(res => {
-      Cookies.set('token', res.data.token)
-      Cookies.set('userId', res.data.member._id)
+      const { token } = res.data;
+      Cookies.set('token', token);
       window.location.pathname = '/';
     }).catch(error => {
-      if (error.response.data.error === 'Unknown user') {
-        document.getElementById('invalid-email').style.display = 'block';
-      } else if (error.response.data.error === 'Invalid password') {
-        document.getElementById('invalid-password').style.display = 'block';
-      }
+      // For any login errors, only display 'Invalid password' for security purposes
+      document.getElementById('invalid-password').style.display = 'block';
     })
   } else {
     if (!emailIsValid) {

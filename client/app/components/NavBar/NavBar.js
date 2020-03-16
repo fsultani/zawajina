@@ -33,9 +33,8 @@ const NavBar = () => {
   document.getElementById('navbar').innerHTML = navBar;
 
   document.getElementById('logout').onclick = () => {
-    Cookies.remove('token')
-    Cookies.remove('userId')
-    location.reload();
+    Cookies.remove('token');
+    window.location.pathname = '/login';
   }
 }
 
