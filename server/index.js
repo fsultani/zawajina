@@ -47,6 +47,7 @@ app.get('*', (req, res, next) => {
   const { token } = req.cookies;
   if (token && req.url.indexOf('/api/') === -1) {
     res.sendFile(path.join(__dirname, '../client/app/router.html'));
+    return next();
   } else {
     if (req.url.indexOf('/api/') === -1) {
       switch(req.url) {
@@ -55,7 +56,6 @@ app.get('*', (req, res, next) => {
           break;
         case '/login':
           res.sendFile(path.join(__dirname, '../client/landing-page/pages/login/index.html'));
-          // res.sendFile(path.join(__dirname, '../client/app/router.html'));
           break;
         case '/about':
           res.sendFile(path.join(__dirname, '../client/landing-page/pages/about/index.html'));
@@ -89,6 +89,8 @@ app.get('*', (req, res, next) => {
 //   res.locals.logged_in_user = req.user
 //   next()
 // })
+
+// require('./config/auth');
 
 // Use index.js for any routes beginning with '/'
 app.use('/', index);

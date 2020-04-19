@@ -23,7 +23,10 @@ router.post('/login', (req, res, next) => {
     User.comparePassword(req.body.password, user.password, (err, isMatch) => {
       if (err) throw err;
       if (isMatch) {
-        const token = jwt.sign({userDetails: user}, JWT_SECRET, { expiresIn: '1 day' });
+        const token = jwt.sign(
+          { userDetails: user },
+          JWT_SECRET,
+          { expiresIn: '1 day' });
         res.json({ token })
       } else {
         res.sendStatus(403);
