@@ -5,7 +5,7 @@ const NavBar = () => {
 
   const navBarCss = document.createElement('link');
   navBarCss.rel = "stylesheet"
-  navBarCss.href = '/static/client/app/components/NavBar/navBarStyles.css';
+  navBarCss.href = '/static/client/app/components/NavBar/nav-bar-styles.css';
 
   document.head.appendChild(googleapis);
   document.head.appendChild(navBarCss);

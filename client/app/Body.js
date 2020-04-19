@@ -13,93 +13,65 @@ const Body = () => {
     const { name } = res.data;
     const Content = `
       <div class="container">
-        <p>Salaam ${name}!</p>
-      </div>
-
-        <section class="testimonials section">
-          <div class="container">
-            <div class="testimonials-inner section-inner">
-              <h2 class="section-title mt-0 text-center">Recently Active</h2>
-              <div class="testimonials-wrap">
-                <div class="testimonial is-revealing">
-                  <div class="testimonial-inner">
-                    <div class="testimonial-main mb-32">
-                      <div class="testimonial-body">
-                        <p class="text-sm m-0">Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.</p>
-                      </div>
-                    </div>
-                    <div class="testimonial-footer">
-                      <div class="testimonial-image">
-                        <img src="/static/client/landing-page/images/testimonial-01.png" alt="Mark Walker">
-                      </div>
-                      <div class="testimonial-name text-sm">Mark Walker</div>
-                    </div>
-                  </div>
-                </div>
-                <div class="testimonial is-revealing">
-                  <div class="testimonial-inner">
-                    <div class="testimonial-main mb-32">
-                      <div class="testimonial-body">
-                        <p class="text-sm m-0">Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.</p>
-                      </div>
-                    </div>
-                    <div class="testimonial-footer">
-                      <div class="testimonial-image">
-                        <img src="/static/client/landing-page/images/testimonial-02.png" alt="Marta Smirth">
-                      </div>
-                      <div class="testimonial-name text-sm">Marta Smirth</div>
-                    </div>
-                  </div>
-                </div>
-                <div class="testimonial is-revealing">
-                  <div class="testimonial-inner">
-                    <div class="testimonial-main mb-32">
-                      <div class="testimonial-body">
-                        <p class="text-sm m-0">Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.</p>
-                      </div>
-                    </div>
-                    <div class="testimonial-footer">
-                      <div class="testimonial-image">
-                        <img src="/static/client/landing-page/images/testimonial-03.png" alt="Evan Hill">
-                      </div>
-                      <div class="testimonial-name text-sm">Evan Hill</div>
-                    </div>
-                  </div>
-                </div>
-                <div class="testimonial is-revealing">
-                  <div class="testimonial-inner">
-                    <div class="testimonial-main mb-32">
-                      <div class="testimonial-body">
-                        <p class="text-sm m-0">Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.</p>
-                      </div>
-                    </div>
-                    <div class="testimonial-footer">
-                      <div class="testimonial-image">
-                        <img src="/static/client/landing-page/images/testimonial-02.png" alt="Marta Smirth">
-                      </div>
-                      <div class="testimonial-name text-sm">Marta Smirth</div>
-                    </div>
-                  </div>
-                </div>
-                <div class="testimonial is-revealing">
-                  <div class="testimonial-inner">
-                    <div class="testimonial-main mb-32">
-                      <div class="testimonial-body">
-                        <p class="text-sm m-0">Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.</p>
-                      </div>
-                    </div>
-                    <div class="testimonial-footer">
-                      <div class="testimonial-image">
-                        <img src="/static/client/landing-page/images/testimonial-03.png" alt="Evan Hill">
-                      </div>
-                      <div class="testimonial-name text-sm">Evan Hill</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+        <p class="username">Salaam ${name}!</p>
+        <h2 class="testimonials-header">Recently Active</h2>
+        <div class="testimonials">
+          <div class="testimonial-wrapper">
+            <div class="testimonial-image">
+              <img src="/static/client/landing-page/images/girl_1.jpg" alt="Girl 1">
+            </div>
+            <div class="testimonial-body">
+              <div class="testimonial-name">Girl 1, 36</div>
+              <p class="location">Irvine, CA</p>
+              <p class="country">USA</p>
             </div>
           </div>
-        </section>
+
+          <div class="testimonial-wrapper">
+            <div class="testimonial-image">
+              <img src="/static/client/landing-page/images/girl_2.jpg" alt="Girl 2">
+            </div>
+            <div class="testimonial-body">
+              <div class="testimonial-name">Girl 2, 36</div>
+              <p class="location">Irvine, CA</p>
+              <p class="country">USA</p>
+            </div>
+          </div>
+
+          <div class="testimonial-wrapper">
+            <div class="testimonial-image">
+              <img src="/static/client/landing-page/images/girl_3.jpg" alt="Girl 3">
+            </div>
+            <div class="testimonial-body">
+              <div class="testimonial-name">Girl 3, 36</div>
+              <p class="location">Irvine, CA</p>
+              <p class="country">USA</p>
+            </div>
+          </div>
+
+          <div class="testimonial-wrapper">
+            <div class="testimonial-image">
+              <img src="/static/client/landing-page/images/girl_4.jpg" alt="Girl 4">
+            </div>
+            <div class="testimonial-body">
+              <div class="testimonial-name">Girl 4, 36</div>
+              <p class="location">Irvine, CA</p>
+              <p class="country">USA</p>
+            </div>
+          </div>
+
+          <div class="testimonial-wrapper">
+            <div class="testimonial-image">
+              <img src="/static/client/landing-page/images/girl_5.jpg" alt="Girl 5">
+            </div>
+            <div class="testimonial-body">
+              <div class="testimonial-name">Girl 5, 36</div>
+              <p class="location">Irvine, CA</p>
+              <p class="country">USA</p>
+            </div>
+          </div>
+        </div>
+      </div>
     `;
     document.getElementById('main-app').innerHTML = Content;
   }).catch(error => {

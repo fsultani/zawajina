@@ -1,5 +1,4 @@
 import App from './index.js';
-import Login from './Login.js';
 
 window.onload = () => {
   App();
