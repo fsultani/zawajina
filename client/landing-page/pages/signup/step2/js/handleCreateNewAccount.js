@@ -70,6 +70,7 @@ const handleCreateNewAccount = () => {
       const signupSuccess = document.getElementById('signup-success')
       signupSuccess.style.display = "block";
       Cookies.set('token', res.data.token);
+      Cookies.remove('userId');
       window.location.pathname = '/';
     }
   })

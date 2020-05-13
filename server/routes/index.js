@@ -4,15 +4,41 @@ const Cookies = require('js-cookie');
 const path = require('path');
 const JWT_SECRET = Buffer.from('fe1a1915a379f3be5394b64d14794932', 'hex')
 const multer = require('multer')
-// const { check, body, validationResult } = require('express-validator/check')
-
+const multerS3 = require('multer-s3');
+const aws = require('aws-sdk');
 const authenticateToken = require('../config/auth');
 
-const router = express.Router()
+const router = express.Router();
 
-const User = require('../models/user')
-const Message = require('../models/message')
-const Conversation = require('../models/conversation')
+const User = require('../models/user');
+const Message = require('../models/message');
+const Conversation = require('../models/conversation');
+
+aws.config.update({
+  accessKeyId: process.env.ACCESS_KEY_ID,
+  secretAccessKey: process.env.SECRET_ACCESS_KEY,
+  region: process.env.REGION,
+});
+
+const s3 = new aws.S3();
+
+const upload = multer({
+  storage: multerS3({
+    s3: s3,
+    bucket: 'my-match',
+    acl: 'public-read',
+    contentType: multerS3.AUTO_CONTENT_TYPE,
+    key: function (req, file, cb) {
+      const today = new Date();
+      cb(null, file.originalname)
+      console.log("file\n", file);
+    }
+  })
+});
+
+router.post('/api/upload', upload.array('upl', 1), (req, res, next) => {
+    res.status(201).send();
+});
 
 router.post('/login', (req, res, next) => {
   User.findOne({ email: req.body.email }, (err, user) => {

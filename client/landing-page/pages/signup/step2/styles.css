@@ -580,3 +580,139 @@ select {
     font-size: 10px
   }
 }
+
+/*
+  ****************************************************************************
+*/
+
+.image-upload-container {
+  display: flex;
+  justify-content: flex-start;
+  width: 150px;
+  margin-bottom: 16px;
+  position: relative;
+}
+
+.image-preview {
+  display: none;
+  width: 100%;
+  height: 100%;
+}
+
+.remove-image {
+  display: none;
+  height: 24px;
+  width: 24px;
+  background: #727272;
+  border-radius: 30px;
+  position: absolute;
+  bottom: -8px;
+  right: -8px;
+}
+
+.remove-image:after {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  content: "\d7";
+  font-size: 24px;
+  color: #fff;
+  line-height: 20px;
+  text-align: center;
+}
+
+.remove-image:hover {
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+#custom-button {
+  width: 150px;
+  height: 150px;
+  color: #fff;
+  background-color: #D3D3D3;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#custom-button:hover {
+  opacity: 0.8;
+}
+
+.display-image {
+  width: 100%;
+  height: 150px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  text-align: center;
+  color: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+  opacity: 0.5;
+}
+
+.display-image:hover {
+  opacity: 0.8;
+}
+
+.processing_bar {
+  position: absolute;
+  bottom: 5px;
+  left: 10px;
+  width: 0px;
+  height: 10px;
+  background-color: white;
+  border-radius: 5px;
+}
+
+.success_box {
+  display: none;
+  width: 40px;
+  height: 40px;
+  background: #83ccd3;
+  border-radius: 30px;
+  text-align: center;
+  position: absolute;
+  overflow: hidden;
+  top: 55px;
+  left: 55px;
+  animation: fadeIn 3s;
+}
+
+.success_box:before {
+  content: '';
+  display: block;
+  width: 9px;
+  height: 18px;
+  border-bottom: 3px solid #fff;
+  border-right: 3px solid #fff;
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+  position: absolute;
+  left: 16px;
+  top: 9px;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0
+  }
+
+  25% {
+    opacity: 1;
+  }
+
+  75% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
