@@ -1,7 +1,7 @@
 const express = require('express');
 const { check, body, validationResult } = require('express-validator/check');
 const countries = require('country-state-city');
-const jwt = require('jwt-simple');
+const jwt = require('jsonwebtoken');
 const moment = require('moment')
 
 const JWT_SECRET = Buffer.from('fe1a1915a379f3be5394b64d14794932', 'hex');
@@ -46,7 +46,7 @@ router.post('/api/personal-info', [
             name,
             password
           }
-        }, (err, userFound) => {
+        }, (err, user) => {
           if (err) {
             return res.json({ error: "Unknown error" });
           } else {
@@ -97,7 +97,7 @@ router.post('/api/about', (req, res) => {
   const userAge = moment().diff(fullDob, 'years');
   const userId = req.body.userId;
 
-  User.updateOne({ _id: userId }, {
+  User.findOneAndUpdate({ _id: userId }, {
     $set: {
       fullDob,
       userAge,
@@ -107,12 +107,12 @@ router.post('/api/about', (req, res) => {
       city,
       completedRegistration: true,
       isUserSessionValid: true,
-    }
-  }, (err, userFound) => {
+    },
+  }, { new: true }, (err, user) => {
     if (err) {
       res.send({error: err});
     } else {
-      const token = jwt.encode({ email: userFound.email }, JWT_SECRET);
+      const token = jwt.sign({ userDetails: user }, JWT_SECRET, { expiresIn: '1 day' });
       res.status(201).send({ token, userId });
     }
   })

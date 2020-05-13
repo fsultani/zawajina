@@ -13,14 +13,14 @@ const User = require('./models/user');
 
 if (process.env.NODE_ENV === 'mlab-dev') {
   // require('./db_credentials')
-  mongoose.connect('mongodb://farid:farid@ds139322.mlab.com:39322/my_match_dev');
+  mongoose.connect('mongodb://farid:farid@ds139322.mlab.com:39322/my_match_dev', { useFindAndModify: false });
   console.log("Using mlab:", process.env.NODE_ENV);
 } else if (process.env.NODE_ENV === 'local') {
   require('./db_credentials');
-  mongoose.connect(process.env.LOCAL);
+  mongoose.connect(process.env.LOCAL, { useFindAndModify: false });
   console.log("Using local db - mongodb://localhost/my_match_local_dev")
 } else {
-  mongoose.connect(process.env.HEROKU);
+  mongoose.connect(process.env.HEROKU, { useFindAndModify: false });
   console.log("Heroku deployment");
 }
 
@@ -47,7 +47,6 @@ app.get('*', (req, res, next) => {
   const { token } = req.cookies;
   if (token && req.url.indexOf('/api/') === -1) {
     res.sendFile(path.join(__dirname, '../client/app/router.html'));
-    return next();
   } else {
     if (req.url.indexOf('/api/') === -1) {
       switch(req.url) {
