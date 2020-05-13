@@ -24,7 +24,7 @@
           <h4 id="signup-success">You have successfully registered!</h4>
           <div class="signup-content">
             <form name="signupForm" onsubmit="return false" novalidate>
-              <h2 class="form-title">Create account</h2>
+              <h2 class="form-title">Register</h2>
 
               <div class="form-row">
                 <div class="dob-container form-group form-icon">
@@ -118,6 +118,74 @@
                   <option selected disabled>City</option>
                 </select>
               </div>
+
+              <input type="file" id="real-file" hidden="hidden" />
+              <div class="image-upload-container">
+                <div id="custom-button"></div>
+                <div id="image-upload">
+                  <img src="" class="image-preview">
+                </div>
+                <div class="remove-image"></div>
+                <div class="processing_bar"></div>
+                <div class="success_box"></div>
+              </div>
+              <span id="custom-text"></span>
+              <script type="text/javascript">
+                const realFileButton = document.getElementById("real-file");
+                const customButton = document.getElementById("custom-button");
+                const imageUpload = document.getElementById("image-upload");
+                const imagePreview = document.querySelector(".image-preview");
+                const removeImageButtom = document.querySelector(".remove-image");
+                const processingBar = document.querySelector(".processing_bar");
+                const successBox = document.querySelector(".success_box");
+
+                customButton.addEventListener("click", () => {
+                  realFileButton.click();
+                })
+
+                realFileButton.addEventListener("change", event => {
+                  if (event.target.files.length > 0) {
+                    const uploadedFile = URL.createObjectURL(event.target.files[0]);
+                    imagePreview.src = uploadedFile;
+                    imagePreview.style.display = "block";
+                    customButton.style.display = "none";
+                    imageUpload.classList.add("display-image");
+
+                    let width = 1;
+                    let identity = setInterval(frame, 10);
+                    function frame() {
+                      if (width < 131) {
+                        width++;
+                        processingBar.style.width = `${width}px`;
+                      } else {
+                        clearInterval(identity);
+                        document.querySelector(".display-image").style.opacity = 1;
+                        successBox.style.display = "inline-block";
+                        processingBar.style.transition = "0.75s";
+                        processingBar.style.transitionDelay = "2.25s";
+                        processingBar.style.opacity = 0;
+                        setTimeout(() => {
+                          successBox.style.display = "none";
+                          removeImageButtom.style.display = "block";
+                        }, 3000)
+                      }
+                    }
+                  }
+                })
+
+                removeImageButtom.addEventListener("click", event => {
+                  imagePreview.src = "";
+                  imagePreview.style.display = "none";
+                  imageUpload.classList.remove("display-image");
+                  customButton.style.display = "block";
+
+                  processingBar.style.opacity = "";
+                  processingBar.style.transition = "";
+                  processingBar.style.width = "";
+
+                  removeImageButtom.style.display = "none";
+                })
+              </script>
 
               <div class="form-group">
                 <button
