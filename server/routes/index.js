@@ -6,6 +6,7 @@ const JWT_SECRET = Buffer.from('fe1a1915a379f3be5394b64d14794932', 'hex')
 const multer = require('multer')
 const multerS3 = require('multer-s3');
 const aws = require('aws-sdk');
+const s3Credentials = require('./s3Credentials.json');
 const authenticateToken = require('../config/auth');
 
 const router = express.Router();
@@ -14,13 +15,7 @@ const User = require('../models/user');
 const Message = require('../models/message');
 const Conversation = require('../models/conversation');
 
-aws.config.update({
-  accessKeyId: process.env.ACCESS_KEY_ID,
-  secretAccessKey: process.env.SECRET_ACCESS_KEY,
-  region: process.env.REGION,
-});
-
-const s3 = new aws.S3();
+const s3 = new aws.S3(s3Credentials);
 
 const upload = multer({
   storage: multerS3({
@@ -34,10 +29,13 @@ const upload = multer({
       console.log("file\n", file);
     }
   })
-});
+}).array('upl', 1);
 
-router.post('/api/upload', upload.array('upl', 1), (req, res, next) => {
+router.post('/api/upload', (req, res, next) => {
+  upload(req, res, err => {
+    if (err) return console.log("err\n", err);
     res.status(201).send();
+  })
 });
 
 router.post('/login', (req, res, next) => {

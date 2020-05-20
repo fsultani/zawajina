@@ -3,6 +3,9 @@ const { check, body, validationResult } = require('express-validator/check');
 const countries = require('country-state-city');
 const jwt = require('jsonwebtoken');
 const moment = require('moment')
+const multer = require('multer')
+const multerS3 = require('multer-s3');
+const aws = require('aws-sdk');
 
 const JWT_SECRET = Buffer.from('fe1a1915a379f3be5394b64d14794932', 'hex');
 
@@ -80,7 +83,29 @@ router.get('/api/cities-list', ({ query }, res) => {
   }
 })
 
-router.post('/api/about', (req, res) => {
+aws.config.update({
+  accessKeyId: 'AKIAIBPIBROA6XZWYFIQ',
+  secretAccessKey: '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',
+  region: 'us-east-1'
+});
+
+const s3 = new aws.S3();
+
+const upload = multer({
+  storage: multerS3({
+    s3: s3,
+    bucket: 'my-match',
+    acl: 'public-read',
+    contentType: multerS3.AUTO_CONTENT_TYPE,
+    key: function (req, file, cb) {
+      const today = new Date();
+      cb(null, file.originalname)
+      console.log("file\n", file);
+    }
+  })
+});
+
+router.post('/api/about', upload.array('image-1', 1), (req, res) => {
   const {
     birthMonth,
     birthDay,
