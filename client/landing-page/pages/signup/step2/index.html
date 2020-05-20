@@ -23,7 +23,7 @@
         <div class="signup-wrapper">
           <h4 id="signup-success">You have successfully registered!</h4>
           <div class="signup-content">
-            <form name="signupForm" onsubmit="return false" novalidate>
+            <form name="signupForm" onsubmit="return false" enctype="multipart/form-data" novalidate>
               <h2 class="form-title">Register</h2>
 
               <div class="form-row">
@@ -119,73 +119,73 @@
                 </select>
               </div>
 
-              <input type="file" id="real-file" hidden="hidden" />
-              <div class="image-upload-container">
-                <div id="custom-button"></div>
-                <div id="image-upload">
-                  <img src="" class="image-preview">
-                </div>
-                <div class="remove-image"></div>
-                <div class="processing_bar"></div>
-                <div class="success_box"></div>
+              <h3 class="photos-header">Photos</h3>
+              <div class="invalid-file-type">
+                Please upload only JPEG or PNG
               </div>
-              <span id="custom-text"></span>
-              <script type="text/javascript">
-                const realFileButton = document.getElementById("real-file");
-                const customButton = document.getElementById("custom-button");
-                const imageUpload = document.getElementById("image-upload");
-                const imagePreview = document.querySelector(".image-preview");
-                const removeImageButtom = document.querySelector(".remove-image");
-                const processingBar = document.querySelector(".processing_bar");
-                const successBox = document.querySelector(".success_box");
+              <div class="images-wrapper">
+                <input type="file" name="image-1" class="image-1" hidden="hidden" accept=".jpg,.jpeg,.png" />
+                <div class="image-upload-container">
+                  <div class="custom-button-1"></div>
+                  <div class="image-upload-1">
+                    <img src="" class="image-preview-1">
+                  </div>
+                  <div class="remove-image-1"></div>
+                  <div class="processing-bar-1"></div>
+                  <div class="success-box-1"></div>
+                </div>
+                <input type="file" class="image-2" hidden="hidden" accept=".jpg,.jpeg,.png" />
+                <div class="image-upload-container">
+                  <div class="custom-button-2"></div>
+                  <div class="image-upload-2">
+                    <img src="" class="image-preview-2">
+                  </div>
+                  <div class="remove-image-2"></div>
+                  <div class="processing-bar-2"></div>
+                  <div class="success-box-2"></div>
+                </div>
+                <input type="file" class="image-3" hidden="hidden" accept=".jpg,.jpeg,.png" />
+                <div class="image-upload-container">
+                  <div class="custom-button-3"></div>
+                  <div class="image-upload-3">
+                    <img src="" class="image-preview-3">
+                  </div>
+                  <div class="remove-image-3"></div>
+                  <div class="processing-bar-3"></div>
+                  <div class="success-box-3"></div>
+                </div>
 
-                customButton.addEventListener("click", () => {
-                  realFileButton.click();
-                })
-
-                realFileButton.addEventListener("change", event => {
-                  if (event.target.files.length > 0) {
-                    const uploadedFile = URL.createObjectURL(event.target.files[0]);
-                    imagePreview.src = uploadedFile;
-                    imagePreview.style.display = "block";
-                    customButton.style.display = "none";
-                    imageUpload.classList.add("display-image");
-
-                    let width = 1;
-                    let identity = setInterval(frame, 10);
-                    function frame() {
-                      if (width < 131) {
-                        width++;
-                        processingBar.style.width = `${width}px`;
-                      } else {
-                        clearInterval(identity);
-                        document.querySelector(".display-image").style.opacity = 1;
-                        successBox.style.display = "inline-block";
-                        processingBar.style.transition = "0.75s";
-                        processingBar.style.transitionDelay = "2.25s";
-                        processingBar.style.opacity = 0;
-                        setTimeout(() => {
-                          successBox.style.display = "none";
-                          removeImageButtom.style.display = "block";
-                        }, 3000)
-                      }
-                    }
-                  }
-                })
-
-                removeImageButtom.addEventListener("click", event => {
-                  imagePreview.src = "";
-                  imagePreview.style.display = "none";
-                  imageUpload.classList.remove("display-image");
-                  customButton.style.display = "block";
-
-                  processingBar.style.opacity = "";
-                  processingBar.style.transition = "";
-                  processingBar.style.width = "";
-
-                  removeImageButtom.style.display = "none";
-                })
-              </script>
+                <input type="file" class="image-4" hidden="hidden" accept=".jpg,.jpeg,.png" />
+                <div class="image-upload-container">
+                  <div class="custom-button-4"></div>
+                  <div class="image-upload-4">
+                    <img src="" class="image-preview-4">
+                  </div>
+                  <div class="remove-image-4"></div>
+                  <div class="processing-bar-4"></div>
+                  <div class="success-box-4"></div>
+                </div>
+                <input type="file" class="image-5" hidden="hidden" accept=".jpg,.jpeg,.png" />
+                <div class="image-upload-container">
+                  <div class="custom-button-5"></div>
+                  <div class="image-upload-5">
+                    <img src="" class="image-preview-5">
+                  </div>
+                  <div class="remove-image-5"></div>
+                  <div class="processing-bar-5"></div>
+                  <div class="success-box-5"></div>
+                </div>
+                <input type="file" class="image-6" hidden="hidden" accept=".jpg,.jpeg,.png" />
+                <div class="image-upload-container">
+                  <div class="custom-button-6"></div>
+                  <div class="image-upload-6">
+                    <img src="" class="image-preview-6">
+                  </div>
+                  <div class="remove-image-6"></div>
+                  <div class="processing-bar-6"></div>
+                  <div class="success-box-6"></div>
+                </div>
+              </div>
 
               <div class="form-group">
                 <button
@@ -203,8 +203,9 @@
       </section>
     </div>
 
-    <script type="text/javascript" src="/static/client/landing-page/pages/signup/step2/js/includeHTML.js"></script>
-    <script type="text/javascript" src="/static/client/landing-page/pages/signup/step2/js/handleCreateNewAccount.js"></script>
+    <script src="/static/client/landing-page/pages/signup/step2/js/includeHTML.js"></script>
+    <script src="/static/client/landing-page/pages/signup/step2/js/handleCreateNewAccount.js"></script>
+    <script src="/static/client/landing-page/pages/signup/step2/js/imageUpload.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js"></script>
   </body>

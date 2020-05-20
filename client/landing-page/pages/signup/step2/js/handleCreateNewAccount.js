@@ -62,9 +62,12 @@ const handleCreateNewAccount = () => {
     state,
     city,
   }
+
+  const photos = new FormData();
+  photos.append('image-file', uploadedFile1);
   const userId = Cookies.get("userId")
 
-  axios.post('/register/api/about', { userInfo, userId })
+  axios.post('/register/api/about', { userInfo, photos, userId })
   .then(res => {
     if (res.status === 201) {
       const signupSuccess = document.getElementById('signup-success')
