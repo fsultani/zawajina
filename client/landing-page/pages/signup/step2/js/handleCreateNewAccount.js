@@ -61,17 +61,16 @@ const handleCreateNewAccount = () => {
     country,
     state,
     city,
-  }
+  };
 
-  const photos = new FormData();
-  photos.append('image-file', uploadedFile1);
-  const userId = Cookies.get("userId")
+  const images = document.forms.namedItem('signupForm');
+  const userData = new FormData(images);
+  userData.append('userInfo', JSON.stringify(userInfo));
+  userData.append('userId', Cookies.get("userId"));
 
-  axios.post('/register/api/about', { userInfo, photos, userId })
+  axios.post('/register/api/about', userData)
   .then(res => {
     if (res.status === 201) {
-      const signupSuccess = document.getElementById('signup-success')
-      signupSuccess.style.display = "block";
       Cookies.set('token', res.data.token);
       Cookies.remove('userId');
       window.location.pathname = '/';

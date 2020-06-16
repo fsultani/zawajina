@@ -1,89 +1,97 @@
-import App from './index.js';
+import NavBar from './components/NavBar/NavBar.js';
+import Body from './Body.js';
+import { Profile, About, Contact, Search } from './profile.js';
 
-window.onload = () => {
-  App();
-  // console.log("window.history.state\n", window.history.state);
-  // console.log("window.location\n", window.location.pathname);
+const checkAuthentication = async () => {
+  try {
+    const isAuthenticated = await axios.get("/api/authenticate", {
+      headers: {
+        Authorization: Cookies.get('token')
+      }
+    })
+    return isAuthenticated.status;
+  } catch (err) {
+    return err.response;
+  }
+};
 
-  // if (window.location.pathname === '/login') {
-  //   Login();
-  // }
-  // if (Cookies.get('token')) {
-  //   if (!window.history.state) {
-  //     window.history.replaceState({ page: 'home'}, null, '/');
-  //     layout() + welcome();
-  //   } else {
-  //     if (window.history.state.page) {
-  //       const { page } = window.history.state
-  //       if (page.startsWith('userId')) {
-  //         const memberId = window.location.pathname.split('/')[2]
-  //         window.history.replaceState({ page: `userId=${memberId}`}, null, window.location.pathname);
-  //         layout() + memberProfile(memberId);
-  //       } else {
-  //         window.history.replaceState({ page: 'home'}, null, '/');
-  //         layout() + welcome();
-  //       }
-  //     }
-  //   }
-  // } else {
-  //   if (window.history.state && window.history.state.page) {
-  //     const { page } = window.history.state
-  //     if (page === 'home') {
-  //       window.history.replaceState({ page: 'home'}, null, '/');
-  //       layout() + welcome();
-  //     } else if (page === 'login') {
-  //       window.history.replaceState({ page: 'login'}, null, '/login');
-  //       document.getElementById('app').innerHTML = layout() + login();
-  //     } else if (page === 'register') {
-  //       window.history.replaceState({ page: 'register'}, null, '/register');
-  //       document.getElementById('app').innerHTML = layout() + personalInfo;
-  //     } else {
-  //       window.history.replaceState({ page: 'home'}, null, '/');
-  //     }
-  //   } else {
-  //     window.history.replaceState({ page: 'home'}, null, '/home');
-  //     document.getElementById('app').innerHTML = layout() + login();
-  //   }
-  // }
-
-  window.addEventListener('popstate', event => {
-    // if (!event.state) {
-    //   event.preventDefault()
-    //   return false;
-    // }
-    // const { page } = event.state
-    // if (page === 'home') {
-    //   window.history.replaceState({ page: 'home'}, null, '/');
-    //   layout() + welcome();
-    // } else if (page === 'login') {
-    //   window.history.replaceState({ page: 'login'}, null, '/login');
-    //   document.getElementById('app').innerHTML = layout() + login();
-    // } else if (page === 'register') {
-    //   window.history.replaceState({ page: 'register'}, null, '/register');
-    //   document.getElementById('app').innerHTML = layout() + personalInfo;
-    // } else if (page.startsWith('userId')) {
-    //   const memberId = window.location.pathname.split('/').slice(1)[1]
-    //   window.history.replaceState({ page: `userId=${memberId}`}, null, window.location.pathname);
-    //   layout() + memberProfile(memberId);
-    // }
-  })
-
-  window.addEventListener('hashchange', event => {
-  //   event.preventDefault();
-  //   const { hash } = window.location;
-  //   if (hash === '#home') {
-  //     window.history.replaceState({ page: 'home'}, null, '/');
-  //     layout() + welcome();
-  //   } else if (hash === '#login') {
-  //     window.history.replaceState({ page: 'login'}, null, '/login');
-  //     document.getElementById('app').innerHTML = layout() + login();
-  //   } else if (hash === '#register') {
-  //     window.history.replaceState({ page: 'register'}, null, '/register');
-  //     document.getElementById('app').innerHTML = layout() + personalInfo;
-  //   } else if (hash.startsWith('#users')) {
-  //     const memberId = window.location.hash.split('/')[1]
-  //     window.history.replaceState({ page: `userId=${memberId}`}, null, hash.slice(1));
-  //     layout() + memberProfile(memberId);
-  //   }
-  })
+const Router = async path => {
+  const checkAuthenticationStatus = await checkAuthentication();
+  if (checkAuthenticationStatus === 201) {
+    document.querySelector('#nav').innerHTML = NavBar();
+    document.querySelector('#logout').onclick = () => {
+      Cookies.remove('token');
+      window.location.pathname = '/login';
+    }
+    if ((path === 'home') || (path === '/')) {
+      Body();
+    } else if (path === 'profile') {
+      Profile();
+    } else if (path === 'about') {
+      About();
+    } else if (path === 'contact') {
+      Contact();
+    } else if (path === 'search') {
+      Search();
+    } else {
+      Body();
+    }
+  } else {
+    Cookies.remove('token');
+    window.location.assign('/login');
+  }
 }
+
+(() => {
+  const { pathname } = window.location;
+  const path = pathname.length > 1 ? pathname.slice(1, pathname.length) : pathname;
+  Router(path);
+})();
+
+// const Router = async path => {
+//   const checkAuthenticationStatus = await checkAuthentication();
+//   if (checkAuthenticationStatus === 201) {
+//     document.querySelector('#nav').innerHTML = NavBar();
+//     document.querySelector('#logout').onclick = () => {
+//       Cookies.remove('token');
+//       window.location.pathname = '/login';
+//     }
+//     if ((path === 'home') || (path === '/')) {
+//       history.replaceState({ page: 'home'}, null, '/');
+//       Body();
+//     } else if (path === 'profile') {
+//       history.replaceState({ page: 'profile'}, null, '/profile');
+//       Profile();
+//     } else if (path === 'about') {
+//       history.replaceState({ page: 'about'}, null, '/about');
+//       About();
+//     } else if (path === 'contact') {
+//       history.replaceState({ page: 'contact'}, null, '/contact');
+//       Contact();
+//     } else if (path === 'search') {
+//       history.replaceState({ page: 'search'}, null, '/search');
+//       Search();
+//     } else {
+//       history.replaceState({ page: 'home'}, null, '/');
+//       Body();
+//     }
+//   } else {
+//     Cookies.remove('token');
+//     window.location.assign('/login');
+//   }
+// }
+
+// window.onhashchange = () => {
+//   const { hash } = window.location;
+//   const hashPath = hash.slice(1, hash.length);
+//   Router(hashPath);
+// }
+
+// window.addEventListener('popstate', () => {
+//   if (!history.state) {
+//     event.preventDefault()
+//     return false;
+//   }
+//   const { page } = history.state
+//   Router(page);
+// })

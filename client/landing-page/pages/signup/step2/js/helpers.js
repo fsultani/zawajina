@@ -9,7 +9,7 @@ export const birthYear = () => {
   const age18 = today.getFullYear() - 18;
 
   let yearOptions = ["<option selected disabled>Year</option>"]
-  const res = [...Array(61)].map((_, i) => yearOptions.push(`<option>${age18 - i}</option>`));
+  const res = [...Array(100)].map((_, i) => yearOptions.push(`<option>${age18 - i}</option>`));
   document.getElementById('dob-year').innerHTML = yearOptions;
 };
 

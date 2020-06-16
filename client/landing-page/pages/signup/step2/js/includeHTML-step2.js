@@ -1,5 +1,12 @@
 !function includeHTML() {
   let allElements, i, element, file;
+  axios.get("/api/signup-user-first-name", {
+    headers: {
+      userId: Cookies.get('userId')
+    }
+  }).then(res => {
+    document.querySelector('.form-title').innerHTML = `Welcome, ${res.data.name}`
+  })
 
   /* Loop through a collection of all HTML elements: */
   allElements = document.getElementsByTagName("*");

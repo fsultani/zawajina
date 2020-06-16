@@ -3,40 +3,13 @@ const jwt = require('jsonwebtoken');
 const Cookies = require('js-cookie');
 const path = require('path');
 const JWT_SECRET = Buffer.from('fe1a1915a379f3be5394b64d14794932', 'hex')
-const multer = require('multer')
-const multerS3 = require('multer-s3');
-const aws = require('aws-sdk');
-const s3Credentials = require('./s3Credentials.json');
+
 const authenticateToken = require('../config/auth');
-
-const router = express.Router();
-
 const User = require('../models/user');
 const Message = require('../models/message');
 const Conversation = require('../models/conversation');
 
-const s3 = new aws.S3(s3Credentials);
-
-const upload = multer({
-  storage: multerS3({
-    s3: s3,
-    bucket: 'my-match',
-    acl: 'public-read',
-    contentType: multerS3.AUTO_CONTENT_TYPE,
-    key: function (req, file, cb) {
-      const today = new Date();
-      cb(null, file.originalname)
-      console.log("file\n", file);
-    }
-  })
-}).array('upl', 1);
-
-router.post('/api/upload', (req, res, next) => {
-  upload(req, res, err => {
-    if (err) return console.log("err\n", err);
-    res.status(201).send();
-  })
-});
+const router = express.Router();
 
 router.post('/login', (req, res, next) => {
   User.findOne({ email: req.body.email }, (err, user) => {
@@ -59,9 +32,29 @@ router.post('/login', (req, res, next) => {
   })
 })
 
+router.get('/api/signup-user-first-name', (req, res, next) => {
+  User.findOne({ _id: req.headers.userid }, (err, user) => {
+    res.status(201).send({ name: user.name });
+  })
+})
+
 router.get('/api/user-details', authenticateToken, (req, res, next) => {
   User.findOne({ _id: req.user._id }, (err, user) => {
     res.status(201).send({ name: user.name });
+  })
+})
+
+router.get('/api/all-members', authenticateToken, (req, res, next) => {
+  User.findOne({ _id: req.user._id }, (err, user) => {
+    if (user && user.gender === 'male') {
+      User.find({ gender: 'female' }, (err, all) => {
+        res.status(201).send({ userName: user.name, all });
+      })
+    } else {
+      User.find({ gender: 'female' }, (err, all) => {
+        res.status(201).send({ userName: user && user.name || 'User', all });
+      })
+    }
   })
 })
 
@@ -69,29 +62,49 @@ router.put('/api/profile-info', (req, res) => {
   const token = req.headers['authorization']
   const decodedUser = jwt.decode(token, JWT_SECRET)
   User.findOneAndUpdate({ username: decodedUser.username}, { profilePicture: req.body.data }, (err, member) => {
-    console.log('The member is\n', member)
     res.json({ member })
   })
 })
 
-router.get('/api/all-members', (req, res, next) => {
-  const token = req.headers['authorization']
-  const decodedUser = jwt.decode(token, JWT_SECRET)
-  User.findOne({ email: decodedUser.email }, (err, user) => {
-    if (!user) {
-      return res.status(403).send("Authentication failed. User not found.")
-    } else {
-      user.gender === 'male' ? (
-        User.find({gender: 'female'}, (err, all) => {
-          res.json({all: all})
-        })
-      ) : (
-        User.find({gender: 'male'}, (err, all) => {
-          res.json({all: all})
-        })
-      )
-    }
-  })
-})
-
 module.exports = router;
+
+// const aws = require('aws-sdk');
+// const fs = require('fs')
+// const connectMultipart = require('connect-multiparty');
+// const imagemin = require('imagemin');
+// const imageminMozjpeg = require("imagemin-mozjpeg");
+// const imageminPngquant = require('imagemin-pngquant');
+// const s3Credentials = require('./s3Credentials.json');
+
+// const s3 = new aws.S3(s3Credentials);
+// const multipartMiddleware = connectMultipart();
+// router.post('/api/upload', multipartMiddleware, async (req, res, next) => {
+//   const file = req.files.upl;
+//   const compressedFile = await imagemin(
+//     [file.path],
+//     {
+//       destination: 'build',
+//       plugins: [
+//         imageminMozjpeg({ quality: 50 }),
+//         imageminPngquant()
+//       ]
+//     }
+//   );
+
+//   s3.upload({
+//     Bucket: 'my-match',
+//     Key: file.originalFilename,
+//     Body: compressedFile[0].data,
+//     ACL: 'public-read',
+//     ContentType: file.type,
+//   }, (err, data) => {
+//     if (err) return console.log("err\n", err);
+//     fs.unlink(compressedFile[0].sourcePath, err => {
+//       if (err) console.error(err);
+//       fs.unlink(compressedFile[0].destinationPath, err => {
+//         if (err) console.error(err);
+//       })
+//     });
+//     res.status(201).json({ imgLocation: data.Location })
+//   })
+// });

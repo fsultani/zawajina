@@ -1,4 +1,3 @@
-let uploadedFile1;
 const image1 = document.querySelector(".image-1");
 const customButton1 = document.querySelector(".custom-button-1");
 const imageUpload1 = document.querySelector(".image-upload-1");
@@ -12,15 +11,6 @@ customButton1.addEventListener("click", () => {
 })
 
 image1.addEventListener("change", event => {
-  // const fileType = event.target.files[0].type.split('/')[1];
-  // const hasError = document.querySelector(".invalid-file-type").style.display;
-  // if (!(fileType === "jpeg" || fileType === "png")) {
-  //   document.querySelector(".invalid-file-type").style.display = "block";
-  // } else {
-  //   if (hasError === "block") document.querySelector(".invalid-file-type").style.display = "none";
-  // }
-
-  uploadedFile1 = event.target.files[0];
   const uploadedFile = URL.createObjectURL(event.target.files[0]);
   imagePreview1.src = uploadedFile;
   imagePreview1.style.display = "block";
