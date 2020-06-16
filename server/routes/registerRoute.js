@@ -11,7 +11,7 @@ const imagemin = require('imagemin');
 const imageminMozjpeg = require("imagemin-mozjpeg");
 const imageminPngquant = require('imagemin-pngquant');
 
-const s3Credentials = require('./s3Credentials.json');
+// const s3Credentials = require('./s3Credentials.json');
 
 const JWT_SECRET = Buffer.from('fe1a1915a379f3be5394b64d14794932', 'hex');
 
