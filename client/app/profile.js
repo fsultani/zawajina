@@ -1,15 +1,12 @@
 const Profile = () => {
-  let content = `
-    <h2 class="testimonials-header">Profile</h2>
-  `;
-
   axios.get("/api/all-members", {
     headers: {
       Authorization: Cookies.get('token')
     }
   }).then(res => {
-    content += `
+    const content = `
       <div>
+        <h2 class="testimonials-header">Profile</h2>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Auctor urna nunc id cursus metus aliquam eleifend mi. Porttitor eget dolor morbi non arcu risus quis. Ac auctor augue mauris augue neque gravida in fermentum et. Mauris augue neque gravida in. Odio ut enim blandit volutpat. Nisl nunc mi ipsum faucibus vitae. Auctor neque vitae tempus quam pellentesque nec nam aliquam. Sed sed risus pretium quam. Urna duis convallis convallis tellus id. Neque vitae tempus quam pellentesque.
 
         Euismod quis viverra nibh cras pulvinar mattis nunc. Nisi scelerisque eu ultrices vitae auctor eu augue ut lectus. Venenatis cras sed felis eget velit aliquet sagittis id consectetur. Venenatis cras sed felis eget velit aliquet. Interdum varius sit amet mattis. Proin libero nunc consequat interdum varius sit. Dolor purus non enim praesent. Pellentesque habitant morbi tristique senectus et netus et malesuada fames. Consectetur libero id faucibus nisl tincidunt eget. Cras ornare arcu dui vivamus arcu felis. Scelerisque mauris pellentesque pulvinar pellentesque habitant morbi tristique. Sed euismod nisi porta lorem mollis aliquam. In metus vulputate eu scelerisque felis imperdiet proin. Nunc id cursus metus aliquam eleifend mi in nulla posuere. Venenatis cras sed felis eget velit.
@@ -31,17 +28,14 @@ const Profile = () => {
 };
 
 const About = () => {
-  let content = `
-    <h2 class="testimonials-header">About</h2>
-  `;
-
   axios.get("/api/all-members", {
     headers: {
       Authorization: Cookies.get('token')
     }
   }).then(res => {
-    content += `
+    const content = `
       <div>
+        <h2 class="testimonials-header">About</h2>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Auctor urna nunc id cursus metus aliquam eleifend mi. Porttitor eget dolor morbi non arcu risus quis. Ac auctor augue mauris augue neque gravida in fermentum et. Mauris augue neque gravida in. Odio ut enim blandit volutpat. Nisl nunc mi ipsum faucibus vitae. Auctor neque vitae tempus quam pellentesque nec nam aliquam. Sed sed risus pretium quam. Urna duis convallis convallis tellus id. Neque vitae tempus quam pellentesque.
 
         Euismod quis viverra nibh cras pulvinar mattis nunc. Nisi scelerisque eu ultrices vitae auctor eu augue ut lectus. Venenatis cras sed felis eget velit aliquet sagittis id consectetur. Venenatis cras sed felis eget velit aliquet. Interdum varius sit amet mattis. Proin libero nunc consequat interdum varius sit. Dolor purus non enim praesent. Pellentesque habitant morbi tristique senectus et netus et malesuada fames. Consectetur libero id faucibus nisl tincidunt eget. Cras ornare arcu dui vivamus arcu felis. Scelerisque mauris pellentesque pulvinar pellentesque habitant morbi tristique. Sed euismod nisi porta lorem mollis aliquam. In metus vulputate eu scelerisque felis imperdiet proin. Nunc id cursus metus aliquam eleifend mi in nulla posuere. Venenatis cras sed felis eget velit.
@@ -70,4 +64,4 @@ const Search = () => {
   document.querySelector('#app').innerHTML = `<h1>Search page</h1>`;
 }
 
-export { Profile, About, Contact, Search }
+export { Profile, About, Contact, Search };
