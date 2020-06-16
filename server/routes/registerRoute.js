@@ -89,7 +89,7 @@ router.get('/api/cities-list', ({ query }, res) => {
   }
 })
 
-const s3 = new aws.S3(s3Credentials);
+// const s3 = new aws.S3(s3Credentials);
 const storage = multer.diskStorage({
   destination: 'uploads',
   filename: (req, file, cb) => {
@@ -141,40 +141,40 @@ router.post('/api/about', upload.fields([
   const age = moment().diff(fullDob, 'years');
   const userId = req.body.userId;
 
-  Object.values(req.files).length > 0 && Object.values(req.files).map(async image => {
-    const compressedFile = await imagemin(
-      [image[0].path],
-      {
-        destination: 'compressed',
-        plugins: [
-          imageminMozjpeg({ quality: 50 }),
-          imageminPngquant()
-        ]
-      }
-    );
+  // Object.values(req.files).length > 0 && Object.values(req.files).map(async image => {
+  //   const compressedFile = await imagemin(
+  //     [image[0].path],
+  //     {
+  //       destination: 'compressed',
+  //       plugins: [
+  //         imageminMozjpeg({ quality: 50 }),
+  //         imageminPngquant()
+  //       ]
+  //     }
+  //   );
 
-    s3.upload({
-      Bucket: 'my-match',
-      Key: `${userId}/${compressedFile[0].sourcePath.split('/')[1]}`,
-      Body: compressedFile[0].data,
-      ACL: 'public-read',
-      ContentType: image[0].mimetype,
-    }, (err, data) => {
-      if (err) return console.log("err\n", err);
-      fs.unlink(compressedFile[0].sourcePath, err => {
-        if (err) return console.error(err);
-        fs.unlink(compressedFile[0].destinationPath, err => {
-          if (err) return console.error(err);
-        })
-      });
+  //   s3.upload({
+  //     Bucket: 'my-match',
+  //     Key: `${userId}/${compressedFile[0].sourcePath.split('/')[1]}`,
+  //     Body: compressedFile[0].data,
+  //     ACL: 'public-read',
+  //     ContentType: image[0].mimetype,
+  //   }, (err, data) => {
+  //     if (err) return console.log("err\n", err);
+  //     fs.unlink(compressedFile[0].sourcePath, err => {
+  //       if (err) return console.error(err);
+  //       fs.unlink(compressedFile[0].destinationPath, err => {
+  //         if (err) return console.error(err);
+  //       })
+  //     });
 
-      User.findOneAndUpdate({ _id: userId }, {
-        $push: { photos: data.Location }
-      }, { new: true }, (err, user) => {
-        if (err) return res.send({error: err})
-      })
-    })
-  });
+  //     User.findOneAndUpdate({ _id: userId }, {
+  //       $push: { photos: data.Location }
+  //     }, { new: true }, (err, user) => {
+  //       if (err) return res.send({error: err})
+  //     })
+  //   })
+  // });
 
   User.findOneAndUpdate({ _id: userId }, {
     $set: {
