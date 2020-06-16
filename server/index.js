@@ -41,9 +41,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // Set static folder
+// app.use('/static', express.static(path.join(__dirname, '../../tutor')));
 app.use('/static', express.static(path.join(process.env.PWD)));
-// console.log("__dirname\n", __dirname);
-// console.log("process.env.PWD\n", process.env.PWD);
 
 // Catch all GET requests, and respond with an html file
 app.get('*', (req, res, next) => {
