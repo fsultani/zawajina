@@ -22,7 +22,8 @@ if (process.env.NODE_ENV === 'mlab-dev') {
   mongoose.connect(process.env.LOCAL, { useFindAndModify: false });
   console.log("Using local db - mongodb://localhost/my_match_local_dev")
 } else {
-  mongoose.connect(process.env.HEROKU, { useFindAndModify: false });
+  // mongoose.connect(process.env.HEROKU, { useFindAndModify: false });
+  mongoose.connect('mongodb://farid:farid@ds139322.mlab.com:39322/my_match_dev', { useFindAndModify: false });
   console.log("Heroku deployment");
 }
 
