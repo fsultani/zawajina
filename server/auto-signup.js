@@ -1,4 +1,4 @@
-const puppeteer = require('puppeteer');
+// const puppeteer = require('puppeteer');
 const names = require('./names');
 const countries = require('country-state-city');
 
