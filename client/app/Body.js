@@ -1,5 +1,3 @@
-import NavBar from './components/NavBar/NavBar.js';
-
 const Body = () => {
   let content = `
     <h2 class="testimonials-header">Recently Active</h2>
