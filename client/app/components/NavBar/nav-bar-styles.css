@@ -1,6 +1,5 @@
 .navbar--site-header {
   display: flex;
-  /*justify-content: center;*/
   align-items: center;
   position: fixed;
   top: 0;
@@ -27,12 +26,11 @@
 }
 
 .home-link {
-  /*float: left;*/
   display: flex;
 }
 
 .navbar--header-links {
-  display: inline-flex;
+  display: flex;
   margin: 0;
 }
 
