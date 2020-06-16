@@ -2,9 +2,7 @@ const NavBar = () => (`
   <div class="navbar--site-header">
     <div class="navbar--container">
       <div class="navbar--site-header-inner">
-        <div>
-          <a href="/"><img src="/static/client/landing-page/images/home.svg" alt="Home"></a>
-        </div>
+        <a class="home-link" href="/"><img src="/static/client/landing-page/images/home.svg" alt="Home"></a>
         <ul class="navbar--header-links margin-0">
           <li>
             <a href="/profile">Profile</a>
