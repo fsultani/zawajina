@@ -1,10 +1,3 @@
-.navbar--wrapper {
-  display: flex;
-  flex-direction: column;
-  max-width: 1440px;
-  margin: 0 auto;
-}
-
 .navbar--site-header {
   background: linear-gradient(57deg, #00C6A7 0%, #1E4D92 100%);
   position: fixed;
@@ -12,7 +5,14 @@
   left: 0;
   width: 100%;
   padding: 10px;
-  z-index: 1;
+  z-index: 2000;
+}
+
+.navbar--container {
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 16px;
+  max-width: 1200px;
 }
 
 .navbar--site-header-inner {
@@ -23,7 +23,8 @@
 }
 
 .navbar--header-links {
-  display: inline-flex
+  display: inline-flex;
+  margin: 0;
 }
 
 .navbar--header-links li {
@@ -39,10 +40,16 @@
   text-transform: uppercase;
   text-decoration: none;
   line-height: 16px;
-  padding: 8px 24px
+  padding: 8px 24px;
 }
 
 .navbar--header-links a:not(.button):hover,
 .navbar--header-links a:not(.button):active {
   color: #FFF
+}
+
+@media (min-width: 481px) {
+  .navbar--container {
+    padding: 0 24px;
+  }
 }

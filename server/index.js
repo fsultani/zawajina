@@ -9,7 +9,9 @@ const flash = require('connect-flash');
 const mongo = require('mongodb');
 const mongoose = require('mongoose');
 
-const User = require('./models/user');
+const jwt = require('jsonwebtoken');
+const JWT_SECRET = Buffer.from('fe1a1915a379f3be5394b64d14794932', 'hex')
+const authenticateToken = require('./config/auth');
 
 if (process.env.NODE_ENV === 'mlab-dev') {
   // require('./db_credentials')
@@ -32,8 +34,6 @@ const users = require('./routes/users');
 const conversation = require('./routes/conversation');
 const messages = require('./routes/messages');
 
-const Conversation = require('./models/conversation');
-
 // Body Parser Middleware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -44,9 +44,9 @@ app.use('/static', express.static(path.join(__dirname, '../../tutor')));
 
 // Catch all GET requests, and respond with an html file
 app.get('*', (req, res, next) => {
-  const { token } = req.cookies;
+  const { userId, token } = req.cookies;
   if (token && req.url.indexOf('/api/') === -1) {
-    res.sendFile(path.join(__dirname, '../client/app/router.html'));
+    res.sendFile(path.join(__dirname, '../client/app/index.html'));
   } else {
     if (req.url.indexOf('/api/') === -1) {
       switch(req.url) {
@@ -60,10 +60,14 @@ app.get('*', (req, res, next) => {
           res.sendFile(path.join(__dirname, '../client/landing-page/pages/about/index.html'));
           break;
         case '/signup':
-          res.sendFile(path.join(__dirname, '../client/landing-page/pages/signup/step1/index.html'));
+          userId === undefined ?
+          res.sendFile(path.join(__dirname, '../client/landing-page/pages/signup/step1/index.html')) :
+          res.redirect('/signup/profile');
           break;
         case '/signup/profile':
-          res.sendFile(path.join(__dirname, '../client/landing-page/pages/signup/step2/index.html'));
+          userId !== undefined ?
+          res.sendFile(path.join(__dirname, '../client/landing-page/pages/signup/step2/index.html')) :
+          res.redirect('/signup');
           break;
         default:
           res.sendFile(path.join(__dirname, '../client/landing-page/pages/home/index.html'));
@@ -74,22 +78,15 @@ app.get('*', (req, res, next) => {
   }
 })
 
-// Express Validator
-// app.use(express.json())
-
-// Connect Flash
-// app.use(flash())
-
-// app.use(function (req, res, next) {
-//   res.locals.success_message = req.flash('success_message')
-//   res.locals.error_message = req.flash('error_message')
-//   res.locals.error = req.flash('error')
-//   res.locals.logged_out_message = req.flash('logged_out_message')
-//   res.locals.logged_in_user = req.user
-//   next()
-// })
-
-// require('./config/auth');
+app.get('/api/authenticate', (req, res, next) => {
+  const { authorization } = req.headers;
+  if (authorization === null) return res.sendStatus(401);
+  jwt.verify(authorization, JWT_SECRET, (err, user) => {
+    if (err) return res.sendStatus(403);
+    res.sendStatus(201);
+    next();
+  })
+});
 
 // Use index.js for any routes beginning with '/'
 app.use('/', index);
@@ -97,23 +94,6 @@ app.use('/register', registerRoute);
 app.use('/users', users);
 app.use('/conversation', conversation);
 app.use('/messages', messages);
-
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  const err = new Error('Not Found')
-  err.status = 404;
-  next(err)
-});
-
-// error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  // render the error page
-  res.status(err.status || 500);
-})
 
 const port = process.env.PORT || 3000;
 

@@ -116,6 +116,7 @@ const handleSignupStepOne = () => {
     }).catch(error => {
       console.log("error.response\n", error.response);
       if (error.response.status === 403) {
+        document.getElementById('email-exists-error').innerHTML = error.response.data.error;
         document.getElementById('email-exists-error').style.display = 'block';
       }
     })

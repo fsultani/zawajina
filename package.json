@@ -13,26 +13,37 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@daleighan/vanilla-js-router": "^0.1.2",
     "aws-sdk": "^2.663.0",
+    "axios": "^0.19.2",
     "bcryptjs": "2.4.3",
     "body-parser": "1.19.0",
     "browser-refresh": "1.7.3",
     "connect-flash": "0.1.1",
+    "connect-multiparty": "^2.2.0",
     "cookie-parser": "^1.4.4",
     "country-state-city": "^1.0.0",
     "express": "4.17.1",
     "express-session": "^1.17.1",
     "express-validator": "^6.2.0",
+    "fs": "0.0.1-security",
+    "gifsicle": "^5.0.0",
+    "imagemin": "^7.0.1",
+    "imagemin-mozjpeg": "^8.0.0",
+    "imagemin-pngquant": "^8.0.0",
+    "jroute.js": "^0.6.0",
     "js-cookie": "^2.2.1",
     "jsonwebtoken": "^8.5.1",
     "jwt-simple": "0.5.6",
     "moment": "^2.24.0",
     "mongoose": "^5.9.9",
     "multer": "^1.4.2",
-    "multer-s3": "^2.9.0",
     "node-osascript": "2.1.0"
   },
   "_comments": {
     "watch-sass": "node-sass --output-style expanded -w client/ -o dist/"
+  },
+  "devDependencies": {
+    "puppeteer": "^3.3.0"
   }
 }

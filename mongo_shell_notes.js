@@ -6,6 +6,12 @@ db.users.find().pretty()
 // Remove all users
 db.users.drop()
 
+// Remove all users except on
+db.users.find().forEach(x => {if (x.name !== "Farid") db.users.remove({"_id": x._id })})
+
+// Find last user
+db.users.find().limit(1).sort({ $natural: -1 }).pretty()
+
 // Return a count of all users with a given name
 db.users.find().count()
 db.users.find({ name: "John"}).count()

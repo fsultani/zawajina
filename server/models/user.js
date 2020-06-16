@@ -28,7 +28,7 @@ const UserSchema = mongoose.Schema({
       typeof this.fullDob === undefined || (this.fullDob !== undefined && typeof this.fullDob !== 'string')
     )
   },
-  userAge: {
+  age: {
     type: Number,
     required: () => (
       typeof this.userAge === undefined || (this.userAge !== undefined && typeof this.userAge !== 'string')
@@ -60,6 +60,10 @@ const UserSchema = mongoose.Schema({
   isUserSessionValid: {
     type: Boolean,
     required: true,
+  },
+  photos: {
+    type: Array,
+    required: false,
   },
 });
 
