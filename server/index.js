@@ -98,28 +98,30 @@ app.use('/messages', messages);
 
 const port = process.env.PORT || 3000;
 
-// Reload the app on every file change
-osascript.execute(
-  `
-  tell application "Google Chrome"
-    set current_site to URL of active tab of front window
-    if current_site contains ("localhost") then
-      reload active tab of front window
-    end if
-  end tell
-  tell application "Safari"
-    set current_site to URL of document 1
-    if current_site contains ("localhost") then
-      tell window 1
-        do JavaScript "window.location.reload(true)" in current tab
-      end tell
-    end if
-  end tell
+// Reload the app on every file change in development mode only
+if (process.env.DEVELOPMENT) {
+  osascript.execute(
+    `
+    tell application "Google Chrome"
+      set current_site to URL of active tab of front window
+      if current_site contains ("localhost") then
+        reload active tab of front window
+      end if
+    end tell
+    tell application "Safari"
+      set current_site to URL of document 1
+      if current_site contains ("localhost") then
+        tell window 1
+          do JavaScript "window.location.reload(true)" in current tab
+        end tell
+      end if
+    end tell
 
-  `, (err, result, raw) => {
-    if (err) return console.error(err)
-    }
-);
+    `, (err, result, raw) => {
+      if (err) return console.error(err)
+      }
+  );
+}
 
 app.listen(port, () => {
   if (process.send) {
