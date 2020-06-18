@@ -94,8 +94,8 @@ router.get('/api/cities-list', ({ query }, res) => {
 
 // const s3 = new aws.S3(s3Credentials);
 const s3 = new aws.S3({
-  "accessKeyId": process.env.DEVELOPMENT ? s3Credentials.accessKeyId : process.env.ACCESSKEYID,
-  "secretAccessKey": process.env.DEVELOPMENT ? s3Credentials.SECRETACCESSKEY : process.env.secretAccessKey
+  "accessKeyId": process.env.DEVELOPMENT ? s3Credentials.accessKeyId : process.env.AWS_ACCESS_KEY_ID,
+  "secretAccessKey": process.env.DEVELOPMENT ? s3Credentials.SECRETACCESSKEY : process.env.AWS_SECRET_ACCESS_KEY
 });
 
 const storage = multer.diskStorage({
