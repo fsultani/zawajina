@@ -43,5 +43,7 @@
   "_comments": {
     "watch-sass": "node-sass --output-style expanded -w client/ -o dist/"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "puppeteer": "^4.0.0"
+  }
 }

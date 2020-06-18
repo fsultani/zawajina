@@ -6,7 +6,7 @@ db.users.find().pretty()
 // Remove all users
 db.users.drop()
 
-// Remove all users except on
+// Remove all users except Farid
 db.users.find().forEach(x => {if (x.name !== "Farid") db.users.remove({"_id": x._id })})
 
 // Find last user
@@ -56,3 +56,7 @@ Message.find({ from_user_id: {"$in": senders}}).exec((err, msg) => { console.log
 git checkout master
 git merge branch
 git push
+
+// AWS notes
+// Empty s3 bucket via command line
+aws s3 rm s3://my-match --recursive
