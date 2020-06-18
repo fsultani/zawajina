@@ -14,7 +14,7 @@ const Body = () => {
           res.data.all.map(member => (`
             <div class="testimonial-wrapper">
               <div class="testimonial-image">
-                <img src="/static/client/app/images/girl-${Math.floor(Math.random() * 5) + 1}.jpg" alt="Girl 1">
+                <img src="https://my-match.s3.amazonaws.com/5eeabf03df48026ce9ea2b62/ohqp3ck0q1lozyaov17h38.jpg" alt="Girl 1">
               </div>
               <div class="testimonial-body">
                 <div class="testimonial-name">${member.name}, ${member.age}</div>
