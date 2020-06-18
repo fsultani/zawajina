@@ -13,9 +13,8 @@ const router = express.Router();
 
 router.post('/login', (req, res, next) => {
   User.findOne({ email: req.body.email }, (err, user) => {
-    if (err) {
-      throw new Error(err);
-    }
+    if (err) throw new Error(err);
+    if (!user) return res.sendStatus(403);
 
     User.comparePassword(req.body.password, user.password, (err, isMatch) => {
       if (err) throw err;
