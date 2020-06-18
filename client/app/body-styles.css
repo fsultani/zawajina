@@ -18,6 +18,18 @@
   box-shadow: 0 8px 8px rgba(22, 30, 42, 0.16);
 }
 
+.testimonial-image {
+  width: 100%;
+  height: 80%;
+}
+
+.testimonial-image img {
+  border-radius: 6px 6px 0 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 .testimonial-body {
   padding: 8px 16px 0;
   color: #92A2B1;
@@ -38,18 +50,6 @@
 
 .location {
   padding-bottom: 4px;
-}
-
-.testimonial-image {
-  width: 100%;
-  height: 80%;
-}
-
-.testimonial-image img {
-  border-radius: 6px 6px 0 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
 }
 
 @media (min-width: 600px) {
