@@ -7,7 +7,7 @@
   width: 100vw;
   height: 55px;
   padding: 10px;
-  z-index: 2000;
+  z-index: 1;
   background: linear-gradient(57deg, #00C6A7 0%, #1E4D92 100%);
 }
 
