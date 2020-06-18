@@ -5,7 +5,13 @@ const countries = require('country-state-city');
 const numberOfUsers = 5;
 
 (async () => {
-  const browser = await puppeteer.launch({ headless: false });
+  const browser = await puppeteer.launch({
+    headless: false,
+    args: [
+      '--no-sandbox',
+      '--disable-setuid-sandbox',
+    ]
+  });
   const allPages = await browser.pages();
   const page = allPages[0];
 
