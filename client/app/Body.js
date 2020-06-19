@@ -1,6 +1,6 @@
 const Body = () => {
   let content = `
-    <h2 class="testimonials-header">Recently Active Users</h2>
+    <h2 class="testimonials-header">Recently Active</h2>
   `;
 
   axios.get("/api/all-members", {
