@@ -109,7 +109,7 @@ const handleSignupStepOne = () => {
       email,
       password
     }).then(res => {
-      if (res.status === 200 || res.status === 201) {
+      if (res.status === 201) {
         Cookies.set('userId', res.data.userId);
         window.location.pathname = '/signup/profile';
       }
