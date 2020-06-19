@@ -6,6 +6,8 @@
     }
   }).then(res => {
     document.querySelector('.form-title').innerHTML = `Welcome, ${res.data.name}`
+  }).catch(err => {
+    console.log("err.response:", err.response);
   })
 
   /* Loop through a collection of all HTML elements: */

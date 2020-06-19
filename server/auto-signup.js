@@ -47,8 +47,21 @@ const numberOfUsers = 5;
     await page.waitForSelector('#cities-list');
     await page.select('#cities-list', 'Orange');
 
+    await page.evaluate(() => {
+      window.scrollBy(0, window.innerHeight);
+    });
+
+    const [fileChoose1] = await Promise.all([
+      page.waitForFileChooser(),
+      page.evaluate(() => document.querySelector('.image-1').click()),
+    ])
+
+    await fileChoose1.accept(['/Users/farid/Downloads/acorns.jpg']);
+    await page.waitFor(500);
+
     await page.waitForSelector('.signup-button');
     await page.click('button[name=createNewAccount]');
+    await page.waitFor(500);
 
     await page.waitForSelector('#logout');
     await page.evaluate(() => document.querySelector('#logout').click());
@@ -205,7 +218,7 @@ const numberOfUsers = 5;
 
       await page.waitForSelector('#logout');
       await page.evaluate(() => document.querySelector('#logout').click());
-      console.log("i: ", i);
+      console.log(`i: ${i + 1}/${numberOfUsers}`);
     }
   }
 
