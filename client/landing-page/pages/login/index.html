@@ -24,38 +24,44 @@
     <div class="limiter">
       <div w3-include-html="/static/client/landing-page/components/Nav/index.html"></div>
       <section>
-        <div class="container-login100">
-          <div class="wrap-login100">
-            <form class="login100-form validate-form" name="login" onsubmit="handleLogin(event)" novalidate>
-              <span class="login100-form-title p-b-26">
+        <div class="login-container">
+          <div class="login-wrapper">
+            <form class="login-form validate-form" name="login" onsubmit="handleLogin(event)" novalidate>
+              <span class="login-form-title">
                 Login
               </span>
-              <div class="wrap-input100 validate-input" id="email-wrapper" data-validate = "Valid email is: a@b.c">
-                <input class="input100" type="text" name="email">
-                <span class="focus-input100" id="email" data-placeholder="Email"></span>
+              <div class="input-wrapper validate-input" id="email-wrapper" data-validate = "Valid email is: a@b.c">
+                <input class="input-field" type="text" name="email">
+                <span class="input-focus" id="email" data-placeholder="Email"></span>
                 <div class="invalid-email" id="invalid-email">Invalid email</div>
               </div>
-              <div class="wrap-input100 validate-input" id="password" data-validate="Enter password">
-                <span class="btn-show-pass">
+              <div class="input-wrapper validate-input" id="password" data-validate="Enter password">
+                <span class="password-icon-wrapper">
                   <i class="zmdi zmdi-lock"></i>
                 </span>
-                <input class="input100" type="password" name="password">
-                <span class="focus-input100" data-placeholder="Password"></span>
+                <input class="input-field" type="password" name="password">
+                <span class="input-focus" data-placeholder="Password"></span>
                 <div class="invalid-password" id="invalid-password">Invalid password</div>
               </div>
-              <div class="container-login100-form-btn">
-                <div class="wrap-login100-form-btn">
-                  <div class="login100-form-bgbtn"></div>
-                  <button class="login100-form-btn" type="submit">
+              <div class="login-button-container">
+                <div class="login-button-wrapper">
+                  <div class="login-button-background"></div>
+                  <div class="lds-ring">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                  </div>
+                  <button class="login-button" type="submit" name="loginButton">
                     Login
                   </button>
                 </div>
               </div>
-              <div class="text-center p-t-115">
-                <span class="txt1">
+              <div class="no-account-container">
+                <span class="no-account-footer">
                   Don’t have an account?
                 </span>
-                <a class="txt2" href="/signup">
+                <a class="signup" href="/signup">
                   Sign Up
                 </a>
               </div>
