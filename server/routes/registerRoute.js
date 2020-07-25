@@ -75,8 +75,9 @@ router.post('/api/personal-info', [
 })
 
 router.get('/api/cities-list', async (req, res) => {
+  const { userIPAddress } = req.query;
   try {
-    const response = await axios.get('http://ip-api.com/json');
+    const response = await axios.get(`http://ip-api.com/json/${userIPAddress}`);
     res.json({ allCountries: countries.default.getAllCities(), userLocationData: response.data })
   } catch (err) {
     return res.json({ error: err.response })

@@ -73,6 +73,17 @@ const addActive = (element, currentFocus) => {
 export const userLocation = async () => {
   let currentFocus;
 
+  const getUserIPAddress = async () => {
+    try {
+      const response = await axios.get('https://api.ipify.org?format=json');
+      return response.data.ip;
+    } catch (err) {
+      console.error(err)
+      return err;
+    }
+  }
+  const userIPAddress = await getUserIPAddress();
+
   const getAllCountries = async () => {
     try {
       let response;
@@ -81,7 +92,11 @@ export const userLocation = async () => {
           document.querySelector('#results').innerHTML = 'Loading';
         }
       }, 3000)
-      response = await axios.get(`/register/api/cities-list`);
+      response = await axios.get(`/register/api/cities-list`, {
+        params: {
+          userIPAddress
+        }
+      });
       document.querySelector('#results').innerHTML = null;
       return response.data;
     } catch (err) {
@@ -89,9 +104,7 @@ export const userLocation = async () => {
     }
   }
 
-  // const allCountries = await getAllCountries();
   const { allCountries, userLocationData } = await getAllCountries();
-  console.log('allCountries:\n', allCountries)
   console.log('userLocationData:\n', userLocationData)
 
   allCountries
