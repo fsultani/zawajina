@@ -300,7 +300,7 @@ p {
 }
 
 .loading-spinner {
-  display: inline-block;
+  display: none;
   position: absolute;
   top: 2px;
   left: 40%;

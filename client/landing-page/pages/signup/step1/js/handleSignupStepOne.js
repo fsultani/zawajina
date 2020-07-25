@@ -107,8 +107,8 @@ const handleSignupStepOne = () => {
     handlePasswordValidationValue
   ) {
     loadingSpinner.style.display = 'inline-block';
-    submitButton.innerHTML = "";
-    disableSubmitButton();
+    // submitButton.innerHTML = "";
+    // disableSubmitButton();
 
     // axios.post('/register/api/personal-info', {
     //   name,
