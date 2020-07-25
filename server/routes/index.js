@@ -34,7 +34,11 @@ router.post('/login', (req, res, next) => {
 router.get('/api/signup-user-first-name', (req, res, next) => {
   User.findOne({ _id: req.headers.userid }, (err, user) => {
     if (err) return res.sendStatus(403);
-    res.status(201).send({ name: user.name });
+    if (user !== null) {
+      res.status(201).send({ name: user.name })
+    } else {
+      res.sendStatus(403);
+    }
   })
 })
 
