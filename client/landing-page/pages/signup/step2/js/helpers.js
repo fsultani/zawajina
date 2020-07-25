@@ -73,17 +73,6 @@ const addActive = (element, currentFocus) => {
 export const userLocation = async () => {
   let currentFocus;
 
-  const getUserLocation = async () => {
-    try {
-      const response = await axios.get('http://ip-api.com/json');
-      const { city, country, region } = response.data;
-      return { city, country, region };
-    } catch (err) {
-      return err.response;
-    }
-  }
-  const userLocationData = await getUserLocation();
-
   const getAllCountries = async () => {
     try {
       let response;
@@ -100,7 +89,10 @@ export const userLocation = async () => {
     }
   }
 
-  const allCountries = await getAllCountries();
+  // const allCountries = await getAllCountries();
+  const { allCountries, userLocationData } = await getAllCountries();
+  console.log('allCountries:\n', allCountries)
+  console.log('userLocationData:\n', userLocationData)
 
   allCountries
     // Show closest matching cities first

@@ -1,4 +1,5 @@
 const express = require('express');
+const axios = require('axios');
 const { check, body, validationResult } = require('express-validator/check');
 const countries = require('./world-cities');
 
@@ -73,9 +74,15 @@ router.post('/api/personal-info', [
   }
 })
 
-router.get('/api/cities-list', (req, res) => {
-  res.send(countries.default.getAllCities())
+router.get('/api/cities-list', async (req, res) => {
+  try {
+    const response = await axios.get('http://ip-api.com/json');
+    res.json({ allCountries: countries.default.getAllCities(), userLocationData: response.data })
+  } catch (err) {
+    return res.json({ error: err.response })
+  }
 });
+
 
 const s3 = new aws.S3({
   "accessKeyId": process.env.DEVELOPMENT ? require('./s3Credentials.json').accessKeyId : process.env.AWS_ACCESS_KEY_ID,
