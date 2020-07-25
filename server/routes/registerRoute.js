@@ -1,6 +1,7 @@
 const express = require('express');
 const { check, body, validationResult } = require('express-validator/check');
-const countries = require('country-state-city');
+const countries = require('./world-cities');
+
 const jwt = require('jsonwebtoken');
 const moment = require('moment')
 const aws = require('aws-sdk');
@@ -72,23 +73,9 @@ router.post('/api/personal-info', [
   }
 })
 
-router.get('/api/all-countries', (req, res) => {
-  const countryList = countries.default.getAllCountries();
-  res.send(countryList);
-})
-
-router.get('/api/state-list', (req, res) => {
-  const stateList = countries.default.getStatesOfCountry("231");
-  res.send(stateList);
-})
-
-router.get('/api/cities-list', ({ query }, res) => {
-  if (query.stateId) {
-    res.send(countries.default.getCitiesOfState(query.stateId));
-  } else {
-    res.send(countries.default.getStatesOfCountry(query.countryId));
-  }
-})
+router.get('/api/cities-list', (req, res) => {
+  res.send(countries.default.getAllCities())
+});
 
 const s3 = new aws.S3({
   "accessKeyId": process.env.DEVELOPMENT ? require('./s3Credentials.json').accessKeyId : process.env.AWS_ACCESS_KEY_ID,
@@ -140,10 +127,17 @@ router.post('/api/about', upload.fields([
     state,
     city,
   } = JSON.parse(req.body.userInfo);
-  const dobMonth = moment().month(birthMonth).format('MM');
-  const dobDate = moment().date(birthDay).format('DD');
-  const fullDob = `${birthYear}${dobMonth}${dobDate}`;
-  const age = moment().diff(fullDob, 'years');
+
+  const fullDob = `${birthMonth}/${birthDay}/${birthYear}`;
+  const today = new Date();
+  const dob = new Date(fullDob);
+  let age = today.getFullYear() - dob.getFullYear();
+  const month = today.getMonth() - dob.getMonth();
+
+  if (month < 0 || (month === 0 && today.getDate() < dob.getDate())) {
+    age = age - 1;
+  }
+
   const userId = req.body.userId;
 
   Object.values(req.files).length > 0 && Object.values(req.files).map(async image => {

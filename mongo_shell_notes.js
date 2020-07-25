@@ -3,11 +3,17 @@ mongo ds139322.mlab.com:39322/my_match_dev -u farid -p farid
 // Find all users
 db.users.find().pretty()
 
+// Find user "Farid"
+db.users.find({ name: "Farid"}).pretty()
+
 // Remove all users
 db.users.drop()
 
 // Remove all users except Farid
-db.users.find().forEach(x => {if (x.name !== "Farid") db.users.remove({"_id": x._id })})
+db.users.find().forEach(user => {if (user.name !== "Farid") db.users.remove({"_id": user._id })})
+
+// Remove only Farid
+db.users.find().forEach(user => {if (user.name === "Farid") db.users.remove({"_id": user._id })})
 
 // Find last user
 db.users.find().limit(1).sort({ $natural: -1 }).pretty()
