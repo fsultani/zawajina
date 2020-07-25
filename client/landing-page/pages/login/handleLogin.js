@@ -14,14 +14,14 @@ const handleLogin = event => {
   const email = document.login.elements.email.value;
   const password = document.login.elements.password.value;
   const loginButton = document.login.elements.loginButton;
-  const loadingSpinner = document.querySelector('.loading-spinner')
+  const loadingSpinner = document.querySelector('.loading-spinner');
 
   const emailIsValid = handleEmailValidation();
   const passwordIsValid = handlePasswordValidation();
 
   if (emailIsValid && passwordIsValid) {
-    loginButton.innerHTML = ""
-    loadingSpinner.style.display = 'inline-block'
+    loadingSpinner.style.display = 'inline-block';
+    loginButton.innerHTML = "";
     loginButton.disabled = true;
     loginButton.style.opacity = 0.5;
     loginButton.style.cursor = 'not-allowed';
@@ -34,8 +34,8 @@ const handleLogin = event => {
       Cookies.set('token', token);
       window.location.pathname = '/';
     }).catch(error => {
-      loginButton.innerHTML = "Login"
       loadingSpinner.style.display = 'none';
+      loginButton.innerHTML = "Login";
       loginButton.disabled = false;
       loginButton.style.opacity = 1;
       loginButton.style.cursor = 'pointer';
@@ -45,20 +45,20 @@ const handleLogin = event => {
     })
   } else {
     if (!emailIsValid) {
-      document.login.email.blur()
-      document.getElementById('email').classList.add('email-error')
-      document.getElementById('email-wrapper').classList.add('form-error')
+      document.login.email.blur();
+      document.getElementById('email').classList.add('email-error');
+      document.getElementById('email-wrapper').classList.add('form-error');
     };
 
-    const emailHasError = document.getElementById('email').classList.contains('email-error')
+    const emailHasError = document.getElementById('email').classList.contains('email-error');
     if (emailIsValid && emailHasError) {
-      document.getElementById('email').classList.remove('email-error')
-      document.getElementById('email-wrapper').classList.remove('form-error')
+      document.getElementById('email').classList.remove('email-error');
+      document.getElementById('email-wrapper').classList.remove('form-error');
     }
 
     if (!passwordIsValid) {
-      document.login.password.blur()
-      document.getElementById('password').classList.add('form-error')
+      document.login.password.blur();
+      document.getElementById('password').classList.add('form-error');
     };
   }
 }
