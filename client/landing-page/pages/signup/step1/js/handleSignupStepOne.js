@@ -4,10 +4,9 @@ const user_name = document.signupForm.user_name;
 const user_email = document.signupForm.user_email;
 const user_password = document.signupForm.user_password;
 const submitButton = document.signupForm.signupButton;
+const loadingSpinner = document.querySelector('.loading-spinner');
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-const loadingSpinner = document.querySelector('.loading-spinner');
 
 let handleNameValidationValue = false;
 let handleEmailValidationValue = false;
