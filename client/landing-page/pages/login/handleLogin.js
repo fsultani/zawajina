@@ -39,6 +39,7 @@ const handleLogin = event => {
       loginButton.disabled = false;
       loginButton.style.opacity = 1;
       loginButton.style.cursor = 'pointer';
+
       // For any login errors, only display 'Invalid password' for security purposes
       document.getElementById('invalid-password').style.display = 'block';
     })
