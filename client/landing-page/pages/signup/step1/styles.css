@@ -224,6 +224,7 @@ p {
   background-image: linear-gradient(to left, #74ebd5, #9face6)
 }
 
+/* User in client/landing-page/pages/signup/step1/js/handleSignupStepOne.js */
 .form-error {
   border: 2px solid red
 }

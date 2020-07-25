@@ -7,13 +7,12 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "dev": "NODE_ENV=mlab-dev && DEVELOPMENT=true browser-refresh server/index.js",
+    "dev": "export NODE_ENV=mlab-dev && DEVELOPMENT=true supervisor -e '.js,.html,.css' server/index.js",
     "start": "node server/index.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@daleighan/vanilla-js-router": "^0.1.2",
     "aws-sdk": "^2.663.0",
     "axios": "^0.19.2",
     "bcryptjs": "2.4.3",
@@ -27,6 +26,7 @@
     "express-session": "^1.17.1",
     "express-validator": "^6.2.0",
     "fs": "0.0.1-security",
+    "fuzzysort": "^1.1.4",
     "gifsicle": "^5.0.0",
     "imagemin": "^7.0.1",
     "imagemin-mozjpeg": "^8.0.0",
@@ -39,7 +39,8 @@
     "moment": "^2.24.0",
     "mongoose": "^5.9.9",
     "multer": "^1.4.2",
-    "node-osascript": "2.1.0"
+    "node-osascript": "2.1.0",
+    "supervisor": "^0.12.0"
   },
   "_comments": {
     "watch-sass": "node-sass --output-style expanded -w client/ -o dist/"

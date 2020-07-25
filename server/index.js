@@ -34,7 +34,7 @@ const app = express();
 
 const index = require('./routes/index');
 const registerRoute = require('./routes/registerRoute');
-const users = require('./routes/users');
+const user = require('./routes/user');
 const conversation = require('./routes/conversation');
 const messages = require('./routes/messages');
 
@@ -44,7 +44,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // Set static folder
-// app.use('/static', express.static(path.join(__dirname, '../../tutor')));
 app.use('/static', express.static(path.join(process.env.PWD)));
 
 // Catch all GET requests, and respond with an html file
@@ -75,7 +74,7 @@ app.get('*', (req, res, next) => {
           res.redirect('/signup');
           break;
         default:
-          res.sendFile(path.join(__dirname, '../client/landing-page/pages/home/index.html'));
+          res.redirect('/login');
       }
     } else {
       return next();
@@ -96,7 +95,7 @@ app.get('/api/authenticate', (req, res, next) => {
 // Use index.js for any routes beginning with '/'
 app.use('/', index);
 app.use('/register', registerRoute);
-app.use('/users', users);
+app.use('/user', user);
 app.use('/conversation', conversation);
 app.use('/messages', messages);
 

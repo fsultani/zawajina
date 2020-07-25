@@ -40,7 +40,7 @@ router.get('/api/signup-user-first-name', (req, res, next) => {
 
 router.get('/api/user-details', authenticateToken, (req, res, next) => {
   User.findOne({ _id: req.user._id }, (err, user) => {
-    res.status(201).send({ name: user.name });
+    res.status(201).send({ userId: user._id });
   })
 })
 

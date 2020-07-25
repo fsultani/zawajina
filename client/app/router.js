@@ -18,15 +18,12 @@ const checkAuthentication = async () => {
 const Router = async path => {
   const checkAuthenticationStatus = await checkAuthentication();
   if (checkAuthenticationStatus === 201) {
-    document.querySelector('#nav').innerHTML = NavBar();
-    document.querySelector('#logout').onclick = () => {
-      Cookies.remove('token');
-      window.location.pathname = '/login';
-    }
+    NavBar();
     if ((path === 'home') || (path === '/')) {
       Body();
-    } else if (path === 'profile') {
-      Profile();
+    } else if (path.startsWith('user/')) {
+      const userId = path.split('/')[1]
+      Profile(userId);
     } else if (path === 'about') {
       About();
     } else if (path === 'contact') {

@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Registration</title>
 
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js"></script>
 
     <!-- Global styles -->
@@ -25,7 +25,8 @@
       <section>
         <div class="signup-wrapper">
           <div class="signup-content">
-            <form name="signupForm" enctype="multipart/form-data" onsubmit="return false" novalidate>
+            <div id="signup-error"></div>
+            <form name="signupForm" enctype="multipart/form-data" onsubmit="return false" novalidate autocomplete="off">
               <h2 class="form-title"></h2>
               <p class="form-subtitle">Please answer a few short questions to find the right matches.</p>
 
@@ -35,18 +36,18 @@
                   <div class="dob-wrapper">
                     <select class="form-control form-control-sm" id="dob-month" onchange="handleBirthMonth(event)">
                       <option selected disabled>Month</option>
-                      <option value="january">January</option>
-                      <option value="february">February</option>
-                      <option value="march">March</option>
-                      <option value="april">April</option>
-                      <option value="may">May</option>
-                      <option value="june">June</option>
-                      <option value="july">July</option>
-                      <option value="august">August</option>
-                      <option value="september">September</option>
-                      <option value="october">October</option>
-                      <option value="november">November</option>
-                      <option value="december">December</option>
+                      <option value="01">January</option>
+                      <option value="02">February</option>
+                      <option value="03">March</option>
+                      <option value="04">April</option>
+                      <option value="05">May</option>
+                      <option value="06">June</option>
+                      <option value="07">July</option>
+                      <option value="08">August</option>
+                      <option value="09">September</option>
+                      <option value="10">October</option>
+                      <option value="11">November</option>
+                      <option value="12">December</option>
                     </select>
                     <select
                       class="form-control form-control-sm"
@@ -89,38 +90,23 @@
                   </div>
                 </div>
               </div>
-
-              <div class="form-row">
-                <select
-                  class="form-control form-control-md"
-                  id="countries-list"
-                  onchange="handleCountrySelection(event)"
-                >
-                  <script type="module">
-                    import { countriesList } from "/static/client/landing-page/pages/signup/step2/js/helpers.js";
-                    countriesList();
-                  </script>
-                </select>
+              <div class="form-row user-location">
+                <div class="autocomplete">
+                  <input
+                    id="myInput"
+                    class="location"
+                    type="text"
+                    name="myCountry"
+                    placeholder="City"
+                  >
+                  <div id="results"></div>
+                </div>
+                <script type="module">
+                  import { userLocation } from "/static/client/landing-page/pages/signup/step2/js/helpers.js";
+                  userLocation();
+                </script>
               </div>
-
-              <div class="form-row" id="displayStates">
-                <select
-                  class="form-control form-control-md"
-                  id="states-list"
-                  onchange="handleStateSelection(event)"
-                >
-                </select>
-              </div>
-
-              <div class="form-row">
-                <select
-                  class="form-control form-control-md"
-                  id="cities-list"
-                  onchange="handleCitySelection(event)"
-                >
-                  <option selected disabled>City</option>
-                </select>
-              </div>
+              <div id="city-error"></div>
 
               <h3 class="photos-header">Photos</h3>
               <div class="invalid-file-type">
@@ -190,7 +176,7 @@
                 </div>
               </div>
 
-              <div class="form-group">
+              <div class="form-group signup-button-wrapper">
                 <button
                   type="submit"
                   onclick="handleCreateNewAccount()"
