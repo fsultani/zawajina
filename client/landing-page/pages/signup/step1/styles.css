@@ -205,6 +205,7 @@ p {
 
 .form-submit {
   width: 100%;
+  height: 50px;
   border-radius: 5px;
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
@@ -291,5 +292,56 @@ p {
   }
   .password-helper-text {
     font-size: 10px
+  }
+}
+
+.submit-button {
+  position: relative;
+}
+
+.loading-spinner {
+  display: none;
+  position: absolute;
+  top: 2px;
+  left: 40%;
+}
+
+.loading-spinner div {
+  box-sizing: border-box;
+  display: block;
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  margin: 8px;
+  border: 3px solid #fff;
+  border-radius: 50%;
+  animation: loading-spinner 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  border-color: #fff transparent transparent transparent;
+}
+
+.loading-spinner div:nth-child(1) {
+  animation-delay: -0.45s;
+}
+
+.loading-spinner div:nth-child(2) {
+  animation-delay: -0.3s;
+}
+
+.loading-spinner div:nth-child(3) {
+  animation-delay: -0.15s;
+}
+
+@media (min-width: 600px) {
+  .loading-spinner {
+    left: 45%;
+  }
+}
+
+@keyframes loading-spinner {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
   }
 }
