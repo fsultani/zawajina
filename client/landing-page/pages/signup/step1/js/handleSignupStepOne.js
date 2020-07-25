@@ -111,25 +111,26 @@ const handleSignupStepOne = () => {
     submitButton.disabled = true;
     submitButton.style.cursor = 'not-allowed';
 
-    // axios.post('/register/api/personal-info', {
-    //   name,
-    //   email,
-    //   password
-    // }).then(res => {
-    //   if (res.status === 201) {
-    //     Cookies.set('userId', res.data.userId);
-    //     window.location.pathname = '/signup/profile';
-    //   }
-    // }).catch(error => {
-    //   console.log("error.response\n", error.response);
-    //   if (error.response.status === 403) {
-    //     loadingSpinner.style.display = 'none';
-    //     submitButton.innerHTML = "Create Account";
-    //     enableSubmitButton();
+    axios.post('/register/api/personal-info', {
+      name,
+      email,
+      password
+    }).then(res => {
+      if (res.status === 201) {
+        Cookies.set('userId', res.data.userId);
+        window.location.pathname = '/signup/profile';
+      }
+    }).catch(error => {
+      console.log("error.response\n", error.response);
+      if (error.response.status === 403) {
+        loadingSpinner.style.display = 'none';
+        submitButton.innerHTML = "Create Account";
+        submitButton.disabled = false;
+        submitButton.style.cursor = 'pointer';
 
-    //     document.getElementById('email-exists-error').innerHTML = error.response.data.error;
-    //     document.getElementById('email-exists-error').style.display = 'block';
-    //   }
-    // })
+        document.getElementById('email-exists-error').innerHTML = error.response.data.error;
+        document.getElementById('email-exists-error').style.display = 'block';
+      }
+    })
   }
 }
