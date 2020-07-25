@@ -104,13 +104,14 @@ export const userLocation = async () => {
 
   allCountries
     // Show closest matching cities first
-    .sort(location => location.city === userLocationData.city ? -1 : 1)
+    .sort(location => userLocationData && location.city === userLocationData.city ? -1 : 1)
     // Show exact matches based on city length
     .sort((a, b) => a.city.length - b.city.length)
     // Show closest matching countries
-    .sort(location => location.country === userLocationData.country ? -1 : 1)
+    .sort(location => userLocationData && location.country === userLocationData.country ? -1 : 1)
     // Show closest matching states
-    .sort(location => location.state === userLocationData.region ? -1 : 1);
+    .sort(location => userLocationData && location.state === userLocationData.region ? -1 : 1);
+
 
   const inputString = document.querySelector("#myInput")
   inputString.addEventListener("input", debounce(async event => {
