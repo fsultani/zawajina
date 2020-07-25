@@ -14,7 +14,7 @@ const handleLogin = event => {
   const email = document.login.elements.email.value;
   const password = document.login.elements.password.value;
   const loginButton = document.login.elements.loginButton;
-  const loadingSpinner = document.querySelector('.lds-ring')
+  const loadingSpinner = document.querySelector('.loading-spinner')
 
   const emailIsValid = handleEmailValidation();
   const passwordIsValid = handlePasswordValidation();
