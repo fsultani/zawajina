@@ -126,11 +126,9 @@ textarea:-ms-input-placeholder {
   color: #adadad
 }
 
-.no-account-footer {
-  font-family: Poppins-Regular;
-  font-size: 13px;
-  color: #666666;
-  line-height: 1.5
+.login-page-container {
+  width: 100%;
+  margin: 0 auto
 }
 
 .signup {
@@ -138,11 +136,6 @@ textarea:-ms-input-placeholder {
   font-size: 13px;
   color: #333333;
   line-height: 1.5
-}
-
-.limiter {
-  width: 100%;
-  margin: 0 auto
 }
 
 .logo {
