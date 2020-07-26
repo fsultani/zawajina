@@ -12,93 +12,56 @@ let handleNameValidationValue = false;
 let handleEmailValidationValue = false;
 let handlePasswordValidationValue = false;
 
-const disableSubmitButton = () => {
-  submitButton.disabled = true;
-  submitButton.style.opacity = 0.5;
-  submitButton.style.cursor = 'not-allowed';
-}
-
-const enableSubmitButton = () => {
-  submitButton.disabled = false;
-  submitButton.style.opacity = 1;
-  submitButton.style.cursor = 'pointer';
-}
-
-const handleNameValidation = () => {
-  if (!user_name.checkValidity()) {
-    user_name.classList.add('form-error');
-    disableSubmitButton();
-
-    signupFormElements.user_name.addEventListener("keyup", () => {
-      if (user_name.checkValidity()) {
-        document.signupForm.user_name.classList.remove('form-error');
-        signupFormElements.user_name.removeEventListener("keyup", () => {});
-        enableSubmitButton();
-      } else {
-        document.signupForm.user_name.classList.add('form-error');
-        disableSubmitButton();
-      }
-    })
-  } else {
+const handleNameValidation = name => {
+  if (name.length === 0) {
+    document.getElementById('name').classList.remove('animate-border-bottom');
+    document.getElementById('name-wrapper').classList.add('form-error');
+    handleNameValidationValue = false;
+  } else if (name.length > 0) {
+    if (document.getElementById('name-wrapper').classList.contains('form-error')) {
+      document.getElementById('name-wrapper').classList.remove('form-error');
+      document.getElementById('name').classList.add('animate-border-bottom');
+    }
     handleNameValidationValue = true;
   }
 }
 
-const handleEmailValidation = () => {
-  if (!emailRegex.test(user_email.value)) {
-    document.signupForm.user_email.classList.add('form-error');
-    disableSubmitButton();
-  } else {
-    document.signupForm.user_email.classList.remove('form-error');
-    enableSubmitButton();
+const handleEmailValidation = email => {
+  if (!emailRegex.test(email)) {
+    document.getElementById('email').classList.remove('animate-border-bottom');
+    document.getElementById('email-wrapper').classList.add('form-error');
+    handleEmailValidationValue = false;
+  } else if (emailRegex.test(email)) {
+    if (document.getElementById('email-wrapper').classList.contains('form-error')) {
+      document.getElementById('email-wrapper').classList.remove('form-error');
+      document.getElementById('email').classList.add('animate-border-bottom');
+    }
     handleEmailValidationValue = true;
   }
-
-  signupFormElements.user_email.addEventListener("keyup", () => {
-    if (!emailRegex.test(user_email.value)) {
-      document.signupForm.user_email.classList.add('form-error');
-      signupFormElements.user_name.removeEventListener("keyup", () => {});
-      disableSubmitButton();
-    } else {
-      document.signupForm.user_email.classList.remove('form-error');
-      signupFormElements.user_name.removeEventListener("keyup", () => {});
-      enableSubmitButton();
-      handleEmailValidationValue = true;
-    }
-  })
 }
 
-const handlePasswordValidation = () => {
-  if (document.signupForm.user_password.value.length < 8) {
-    document.signupForm.user_password.classList.add('form-error');
-    disableSubmitButton();
-  } else {
-    document.signupForm.user_password.classList.remove('form-error');
-    enableSubmitButton();
+const handlePasswordValidation = password => {
+  if (password.length < 8) {
+    document.getElementById('password').classList.remove('animate-border-bottom');
+    document.getElementById('password-wrapper').classList.add('form-error');
+    handlePasswordValidationValue = false;
+  } else if (password.length >= 8) {
+    if (document.getElementById('password-wrapper').classList.contains('form-error')) {
+      document.getElementById('password-wrapper').classList.remove('form-error');
+      document.getElementById('password').classList.add('animate-border-bottom');
+    }
     handlePasswordValidationValue = true;
   }
-
-  signupFormElements.user_password.addEventListener("keyup", () => {
-    if (document.signupForm.user_password.value.length < 8) {
-      document.signupForm.user_password.classList.add('form-error');
-      disableSubmitButton();
-    } else {
-      document.signupForm.user_password.classList.remove('form-error');
-      signupFormElements.user_password.removeEventListener("keyup", () => {});
-      enableSubmitButton();
-      handlePasswordValidationValue = true;
-    }
-  })
 }
 
 const handleSignupStepOne = () => {
-  handleNameValidation();
-  handleEmailValidation();
-  handlePasswordValidation();
-
   const name = user_name.value;
   const email = user_email.value;
   const password = user_password.value;
+
+  handleNameValidation(name);
+  handleEmailValidation(email);
+  handlePasswordValidation(password);
 
   if (
     handleNameValidationValue &&
