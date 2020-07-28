@@ -213,7 +213,7 @@ list-type-ulli {
   padding: 50px 85px
 }
 
-#signup-error {
+#signup-error, #slow-network-warning {
   display: none;
   position: relative;
   padding: 0.75rem 1.25rem;
@@ -222,9 +222,22 @@ list-type-ulli {
   border-radius: 0.25rem;
   text-align: center;
   font-size: 16px;
+}
+
+#signup-error {
   color: #721c24;
   background-color: #f8d7da;
   border-color: #f5c6cb
+}
+
+#slow-network-warning {
+  padding: 8px 0;
+  color: #000;
+  background-color: #fff5be;
+}
+
+#slow-network-warning p {
+  margin-bottom: 4px;
 }
 
 .form-title {

@@ -13,17 +13,6 @@ export const birthYear = () => {
   document.getElementById('dob-year').innerHTML = yearOptions;
 };
 
-export const countriesList = () => {
-  let countriesList = ["<option selected disabled>Country</option>"]
-  axios.get('/register/api/all-countries')
-  .then(countries => {
-    countries.data.map(country => countriesList.push(`
-      <option data-country-code=${country.country}>${country.country}</option>
-    `))
-    document.getElementById('countries-list').innerHTML = countriesList;
-  })
-}
-
 // https://davidwalsh.name/javascript-debounce-function
 const debounce = (func, wait, immediate) => {
   let timeout;
@@ -86,20 +75,35 @@ export const userLocation = async () => {
 
   const getAllCountries = async userInput => {
     try {
-      const response = await axios.get(`/register/api/cities-list`, {
+      let response;
+      setTimeout(() => {
+        if (!response) {
+          document.querySelector('.overlay').style.backgroundColor = 'rgba(0,0,0,0.5)';
+          document.querySelector('.overlay').style.opacity = 0.5;
+          document.querySelector('.user-location-loading-spinner').style.display = 'inline-block';
+        }
+      }, 1000)
+      response = await axios.get(`/register/api/cities-list`, {
         params: {
           userIPAddress,
           userInput
         }
       });
+      document.querySelector('.overlay').style.backgroundColor = '#ffffff';
+      document.querySelector('.overlay').style.opacity = 1;
+      document.querySelector('.user-location-loading-spinner').style.display = 'none';
       return response.data;
     } catch (err) {
       console.error(err)
+      document.querySelector('.overlay').style.backgroundColor = '#ffffff';
+      document.querySelector('.overlay').style.opacity = 1;
+      document.querySelector('.user-location-loading-spinner').style.display = 'none';
       return err.response;
     }
   }
 
   // const results = await getAllCountries();
+  // console.log('results:\n', results)
   const inputString = document.querySelector("#myInput");
   inputString.addEventListener("input", debounce(async event => {
     const userInput = inputString.value;
