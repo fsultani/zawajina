@@ -105,12 +105,12 @@ export const userLocation = async () => {
   const inputString = document.querySelector("#myInput");
   inputString.addEventListener("input", debounce(async event => {
     const userInput = inputString.value;
+    if (!userInput) {
+      closeAllLists();
+      return false;
+    }
+
     const results = await getAllCountries(userInput);
-    console.log('results:\n', results)
-
-    closeAllLists();
-
-    if (!userInput) return false;
     currentFocus = -1;
 
     let searchResultsWrapper = '<div class="autocomplete-items">';
