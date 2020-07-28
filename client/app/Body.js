@@ -39,7 +39,6 @@ const Body = () => {
 
     document.querySelector('#app').innerHTML = content;
   }).catch(err => {
-    console.error("err.response\n", err.response);
     Cookies.remove('token');
     window.location.pathname = '/login';
   })

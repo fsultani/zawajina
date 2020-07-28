@@ -12,7 +12,7 @@ const handleBirthYear = event => birthYear = event.target.value;
 const handleGender = value => gender = value;
 
 const createNewAccountButton = document.signupForm.createNewAccount;
-const loadingSpinner = document.querySelector('.loading-spinner');
+const loadingSpinner = document.querySelector('.submit-loading-spinner');
 
 const handleCreateNewAccount = () => {
   const data = document.querySelector("#myInput").dataset

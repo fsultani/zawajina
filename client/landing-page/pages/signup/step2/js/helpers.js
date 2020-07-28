@@ -80,7 +80,7 @@ export const userLocation = async () => {
         if (!response) {
           document.querySelector('.overlay').style.backgroundColor = 'rgba(0,0,0,0.5)';
           document.querySelector('.overlay').style.opacity = 0.5;
-          document.querySelector('.user-location-loading-spinner').style.display = 'inline-block';
+          document.querySelector('.full-page-loading-spinner').style.display = 'inline-block';
         }
       }, 1000)
       response = await axios.get(`/register/api/cities-list`, {
@@ -91,19 +91,17 @@ export const userLocation = async () => {
       });
       document.querySelector('.overlay').style.backgroundColor = '#ffffff';
       document.querySelector('.overlay').style.opacity = 1;
-      document.querySelector('.user-location-loading-spinner').style.display = 'none';
+      document.querySelector('.full-page-loading-spinner').style.display = 'none';
       return response.data;
     } catch (err) {
       console.error(err)
       document.querySelector('.overlay').style.backgroundColor = '#ffffff';
       document.querySelector('.overlay').style.opacity = 1;
-      document.querySelector('.user-location-loading-spinner').style.display = 'none';
+      document.querySelector('.full-page-loading-spinner').style.display = 'none';
       return err.response;
     }
   }
 
-  // const results = await getAllCountries();
-  // console.log('results:\n', results)
   const inputString = document.querySelector("#myInput");
   inputString.addEventListener("input", debounce(async event => {
     const userInput = inputString.value;
