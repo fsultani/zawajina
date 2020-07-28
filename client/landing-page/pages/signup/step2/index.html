@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Registration</title>
 
@@ -19,7 +19,7 @@
     <!-- Page styles -->
     <link rel="stylesheet" href="/static/client/landing-page/pages/signup/step2/styles.css">
   </head>
-  <body>
+  <body class="overlay">
     <div class="signup-container">
       <div w3-include-html="/static/client/landing-page/components/Nav/index.html"></div>
       <section>
@@ -91,6 +91,12 @@
                 </div>
               </div>
               <div class="form-row user-location">
+                <div class="user-location-loading-spinner">
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                </div>
                 <div class="autocomplete">
                   <input
                     id="myInput"
@@ -177,6 +183,12 @@
               </div>
 
               <div class="form-group signup-button-wrapper">
+                <div class="loading-spinner">
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                </div>
                 <button
                   type="submit"
                   onclick="handleCreateNewAccount()"

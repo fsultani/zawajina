@@ -11,6 +11,9 @@ const handleBirthDay = event => birthDay = event.target.value;
 const handleBirthYear = event => birthYear = event.target.value;
 const handleGender = value => gender = value;
 
+const createNewAccountButton = document.signupForm.createNewAccount;
+const loadingSpinner = document.querySelector('.loading-spinner');
+
 const handleCreateNewAccount = () => {
   const data = document.querySelector("#myInput").dataset
   city = data.city;
@@ -52,6 +55,11 @@ const handleCreateNewAccount = () => {
   }
 
   if (birthMonth && birthDay && birthYear && gender && city) {
+    loadingSpinner.style.display = 'inline-block';
+    createNewAccountButton.innerHTML = "";
+    createNewAccountButton.disabled = true;
+    createNewAccountButton.style.cursor = 'not-allowed';
+
     const userInfo = {
       birthMonth,
       birthDay,
@@ -79,6 +87,12 @@ const handleCreateNewAccount = () => {
       }
     }).catch(error => {
       console.error('error:\n', error)
+
+      loadingSpinner.style.display = 'none';
+      createNewAccountButton.innerHTML = "Create Account";
+      createNewAccountButton.disabled = false;
+      createNewAccountButton.style.cursor = 'pointer';
+
       document.querySelector('#signup-error').innerHTML = 'Unknown error.  Please try again later.'
       document.querySelector('#signup-error').style.display = 'block';
     })
