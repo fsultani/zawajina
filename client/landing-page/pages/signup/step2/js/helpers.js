@@ -110,6 +110,11 @@ export const userLocation = async () => {
     const results = await getAllCountries(userInput);
     console.log('results:\n', results)
 
+    closeAllLists();
+
+    if (!userInput) return false;
+    currentFocus = -1;
+
     let searchResultsWrapper = '<div class="autocomplete-items">';
 
     results.map(({ match, city, state, country }) => {
@@ -133,4 +138,51 @@ export const userLocation = async () => {
     searchResultsWrapper += '</div>';
     document.querySelector('#results').innerHTML = searchResultsWrapper;
   }, 250))
+
+  inputString.addEventListener("keydown", event => {
+    let element = document.querySelector('.autocomplete-items');
+    if (element) {
+      element = element.getElementsByTagName('div')
+    }
+    if (event.key === "ArrowDown") {
+      currentFocus++;
+      addActive(element, currentFocus)
+    } else if (event.key === "ArrowUp") {
+      currentFocus--;
+      addActive(element, currentFocus);
+    } else if (event.key === "Enter") {
+      event.preventDefault();
+      if (currentFocus > -1) {
+        if (element) {
+          const value = element[currentFocus].getElementsByTagName('input')[0];
+          const city = value.dataset.city
+          const state = value.dataset.state
+          const country = value.dataset.country
+          const selection = `${city}, ${state !== "null" ? `${state}, ${country}` : country}`
+          inputString.value = selection;
+          closeAllLists();
+
+          inputString.setAttribute('data-city', city)
+          inputString.setAttribute('data-state', state)
+          inputString.setAttribute('data-country', country)
+        }
+      }
+    }
+  })
+
+  document.addEventListener('click', event => {
+    const inputTag = event.target.dataset;
+    if (inputTag?.city) {
+      const city = inputTag.city
+      const state = inputTag.state
+      const country = inputTag.country
+      const selection = `${city}, ${state !== "null" ? `${state}, ${country}` : country}`
+      inputString.value = selection;
+      closeAllLists();
+
+      inputString.setAttribute('data-city', city)
+      inputString.setAttribute('data-state', state)
+      inputString.setAttribute('data-country', country)
+    }
+  })
 }
