@@ -75,12 +75,12 @@ router.post('/api/personal-info', [
 })
 
 router.get('/api/cities-list', async (req, res) => {
-  process.stdout.write('\033c\033[3J');
+  // process.stdout.write('\033c\033[3J');
   const { userIPAddress, userInput } = req.query;
   const allLocations = [];
   const allResults = [];
   try {
-    console.time("Location");
+    // console.time("Location");
     const userLocationData = await axios.get(`http://ip-api.com/json/${userIPAddress}`);
     const userCity = userLocationData.data.city;
     const userState = userLocationData.data.region;
@@ -125,7 +125,7 @@ router.get('/api/cities-list', async (req, res) => {
     }
 
     const results = allResults.slice(0, 7);
-    console.timeEnd("Location");
+    // console.timeEnd("Location");
     res.send(results);
   } catch (err) {
     return res.json({ error: err.response })
