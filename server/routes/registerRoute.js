@@ -82,8 +82,9 @@ let userCountry;
 let response;
 
 router.get('/api/cities-list', async (req, res) => {
-  // console.time("/api/cities-list");
   const { userIPAddress, userInput } = req.query;
+  // console.log(userInput);
+  // console.time("/api/cities-list");
   const allLocations = [];
   const allResults = [];
   try {
@@ -92,14 +93,24 @@ router.get('/api/cities-list', async (req, res) => {
       userCity = userLocationData.data.city;
       userState = userLocationData.data.region;
       userCountry = userLocationData.data.country;
-      // const userCity = "Orange"
-      // const userState = "CA"
-      // const userCountry = "United State"
       response = countries.default.getAllCities();
       wasCalled = true;
     }
 
-    response.sort((a, b) => {
+    const filteredResults = response.filter(element => {
+      const hasComma = userInput.indexOf(",") !== -1;
+      if (hasComma) {
+        if (element.state) {
+          return element.state.toLowerCase().startsWith(userInput.split(',')[1].toLowerCase().trim())
+        } else {
+          return element.country.toLowerCase().startsWith(userInput.split(',')[1].toLowerCase().trim())
+        }
+      } else {
+        return element.city.toLowerCase().startsWith(userInput.toLowerCase());;
+      }
+    })
+
+    filteredResults.sort((a, b) => {
       if (b.city.startsWith(userCity) > a.city.startsWith(userCity)) return 1;
       if (b.city.startsWith(userCity) < a.city.startsWith(userCity)) return -1;
 
@@ -117,17 +128,17 @@ router.get('/api/cities-list', async (req, res) => {
       }
     })
 
-    for (let i = 0; i < response.length; i++) {
-      const country = response[i].country === "United States" ? "USA" : response[i].country;
-      const fullLocation = `${response[i].city}, ${response[i].state ? `${response[i].state}, ${country}` : country}`;
+    for (let i = 0; i < filteredResults.length; i++) {
+      const country = filteredResults[i].country === "United States" ? "USA" : filteredResults[i].country;
+      const fullLocation = `${filteredResults[i].city}, ${filteredResults[i].state ? `${filteredResults[i].state}, ${country}` : country}`;
 
         if (fullLocation.substr(0, userInput.length).toUpperCase() == userInput.toUpperCase()) {
           const search = new RegExp(userInput, "gi")
           const match = fullLocation.replace(search, match => `<strong>${match}</strong>`)
           allResults.push({
             match,
-            city: response[i].city,
-            state: response[i].state,
+            city: filteredResults[i].city,
+            state: filteredResults[i].state,
             country: country,
           });
         }

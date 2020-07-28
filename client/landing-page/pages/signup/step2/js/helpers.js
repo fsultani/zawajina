@@ -110,7 +110,10 @@ export const userLocation = async () => {
       return false;
     }
 
+    console.log(userInput);
+    console.time("/api/cities-list");
     const results = await getAllCountries(userInput);
+    console.timeEnd("/api/cities-list");
     currentFocus = -1;
 
     let searchResultsWrapper = '<div class="autocomplete-items">';
