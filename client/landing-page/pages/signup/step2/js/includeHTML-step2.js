@@ -1,4 +1,10 @@
 !function includeHTML() {
+  const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+  const type = connection.effectiveType;
+  if (type === '2g' || type === '3g') {
+    document.querySelector('#slow-network-warning').style.display = 'block'
+  }
+
   let allElements, i, element, file;
   axios.get("/api/signup-user-first-name", {
     headers: {

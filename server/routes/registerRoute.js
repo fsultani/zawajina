@@ -104,7 +104,6 @@ router.get('/api/cities-list', async (req, res) => {
       } else if (b.state === null) {
         return -1;
       } else {
-        // return b.state < a.state ? 1 : -1;
         return b.state.startsWith(userState) - a.state.startsWith(userState);
       }
     })
