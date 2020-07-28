@@ -72,23 +72,32 @@ router.post('/api/personal-info', [
       }
     })
   }
-})
+});
+
+let wasCalled = false;
+let userLocationData;
+let userCity;
+let userState;
+let userCountry;
+let response;
 
 router.get('/api/cities-list', async (req, res) => {
-  // process.stdout.write('\033c\033[3J');
+  // console.time("/api/cities-list");
   const { userIPAddress, userInput } = req.query;
   const allLocations = [];
   const allResults = [];
   try {
-    // console.time("Location");
-    const userLocationData = await axios.get(`http://ip-api.com/json/${userIPAddress}`);
-    const userCity = userLocationData.data.city;
-    const userState = userLocationData.data.region;
-    const userCountry = userLocationData.data.country;
-    // const userCity = "Orange"
-    // const userState = "CA"
-    // const userCountry = "United State"
-    let response = countries.default.getAllCities();
+    if (!wasCalled) {
+      userLocationData = await axios.get(`http://ip-api.com/json/${userIPAddress}`);
+      userCity = userLocationData.data.city;
+      userState = userLocationData.data.region;
+      userCountry = userLocationData.data.country;
+      // const userCity = "Orange"
+      // const userState = "CA"
+      // const userCountry = "United State"
+      response = countries.default.getAllCities();
+      wasCalled = true;
+    }
 
     response.sort((a, b) => {
       if (b.city.startsWith(userCity) > a.city.startsWith(userCity)) return 1;
@@ -125,7 +134,7 @@ router.get('/api/cities-list', async (req, res) => {
     }
 
     const results = allResults.slice(0, 7);
-    // console.timeEnd("Location");
+    // console.timeEnd("/api/cities-list");
     res.send(results);
   } catch (err) {
     return res.json({ error: err.response })
