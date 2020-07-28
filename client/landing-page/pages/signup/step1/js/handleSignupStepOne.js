@@ -3,7 +3,7 @@ const signupFormElements = document.signupForm.elements;
 const user_name = document.signupForm.user_name;
 const user_email = document.signupForm.user_email;
 const user_password = document.signupForm.user_password;
-const submitButton = document.signupForm.signupButton;
+const signupButton = document.signupForm.signupButton;
 const loadingSpinner = document.querySelector('.loading-spinner');
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -69,9 +69,9 @@ const handleSignupStepOne = () => {
     handlePasswordValidationValue
   ) {
     loadingSpinner.style.display = 'inline-block';
-    submitButton.innerHTML = "";
-    submitButton.disabled = true;
-    submitButton.style.cursor = 'not-allowed';
+    signupButton.innerHTML = "";
+    signupButton.disabled = true;
+    signupButton.style.cursor = 'not-allowed';
 
     axios.post('/register/api/personal-info', {
       name,
@@ -86,9 +86,9 @@ const handleSignupStepOne = () => {
       console.log("error.response\n", error.response);
       if (error.response.status === 403) {
         loadingSpinner.style.display = 'none';
-        submitButton.innerHTML = "Create Account";
-        submitButton.disabled = false;
-        submitButton.style.cursor = 'pointer';
+        signupButton.innerHTML = "Create Account";
+        signupButton.disabled = false;
+        signupButton.style.cursor = 'pointer';
 
         document.getElementById('email-exists-error').innerHTML = error.response.data.error;
         document.getElementById('email-exists-error').style.display = 'block';

@@ -75,15 +75,63 @@ router.post('/api/personal-info', [
 })
 
 router.get('/api/cities-list', async (req, res) => {
-  const { userIPAddress } = req.query;
+  process.stdout.write('\033c\033[3J');
+  const { userIPAddress, userInput } = req.query;
+  const allLocations = [];
+  const allResults = [];
   try {
-    const response = await axios.get(`http://ip-api.com/json/${userIPAddress}`);
-    res.json({ allCountries: countries.default.getAllCities(), userLocationData: response.data })
+    console.time("Location");
+    const userLocationData = await axios.get(`http://ip-api.com/json/${userIPAddress}`);
+    const userCity = userLocationData.data.city;
+    const userState = userLocationData.data.region;
+    const userCountry = userLocationData.data.country;
+    // const userCity = "Orange"
+    // const userState = "CA"
+    // const userCountry = "United State"
+    let response = countries.default.getAllCities();
+
+    response.sort((a, b) => {
+      if (b.city.startsWith(userCity) > a.city.startsWith(userCity)) return 1;
+      if (b.city.startsWith(userCity) < a.city.startsWith(userCity)) return -1;
+
+      if (b.country.startsWith(userCountry) > a.country.startsWith(userCountry)) return 1;
+      if (b.country.startsWith(userCountry) < a.country.startsWith(userCountry)) return -1;
+
+      if (a.state === b.state) {
+        return 0;
+      } else if (a.state === null) {
+        return 1;
+      } else if (b.state === null) {
+        return -1;
+      } else {
+        // return b.state < a.state ? 1 : -1;
+        return b.state.startsWith(userState) - a.state.startsWith(userState);
+      }
+    })
+
+    for (let i = 0; i < response.length; i++) {
+      const country = response[i].country === "United States" ? "USA" : response[i].country;
+      const fullLocation = `${response[i].city}, ${response[i].state ? `${response[i].state}, ${country}` : country}`;
+
+        if (fullLocation.substr(0, userInput.length).toUpperCase() == userInput.toUpperCase()) {
+          const search = new RegExp(userInput, "gi")
+          const match = fullLocation.replace(search, match => `<strong>${match}</strong>`)
+          allResults.push({
+            match,
+            city: response[i].city,
+            state: response[i].state,
+            country: country,
+          });
+        }
+    }
+
+    const results = allResults.slice(0, 7);
+    console.timeEnd("Location");
+    res.send(results);
   } catch (err) {
     return res.json({ error: err.response })
   }
 });
-
 
 const s3 = new aws.S3({
   "accessKeyId": process.env.DEVELOPMENT ? require('./s3Credentials.json').accessKeyId : process.env.AWS_ACCESS_KEY_ID,

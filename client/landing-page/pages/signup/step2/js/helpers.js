@@ -84,146 +84,49 @@ export const userLocation = async () => {
   }
   const userIPAddress = await getUserIPAddress();
 
-  const getAllCountries = async () => {
+  const getAllCountries = async userInput => {
     try {
-      let response;
-      setTimeout(() => {
-        if (!response) {
-          document.querySelector('#results').innerHTML = 'Loading';
-        }
-      }, 3000)
-      response = await axios.get(`/register/api/cities-list`, {
+      const response = await axios.get(`/register/api/cities-list`, {
         params: {
-          userIPAddress
+          userIPAddress,
+          userInput
         }
       });
-      document.querySelector('#results').innerHTML = null;
       return response.data;
     } catch (err) {
+      console.error(err)
       return err.response;
     }
   }
 
-  const { allCountries, userLocationData } = await getAllCountries();
-  console.log('userLocationData:\n', userLocationData)
-
-  allCountries
-    // Show closest matching cities first
-    .sort(location => userLocationData && location.city === userLocationData.city ? -1 : 1)
-    // Show exact matches based on city length
-    .sort((a, b) => a.city.length - b.city.length)
-    // Show closest matching countries
-    .sort(location => userLocationData && location.country === userLocationData.country ? -1 : 1)
-    // Show closest matching states
-    .sort(location => userLocationData && location.state === userLocationData.region ? -1 : 1);
-
-
-  const inputString = document.querySelector("#myInput")
+  // const results = await getAllCountries();
+  const inputString = document.querySelector("#myInput");
   inputString.addEventListener("input", debounce(async event => {
-    const value = inputString.value;
-    const results = [];
-    closeAllLists();
-
-    if (!value) return false;
-    currentFocus = -1;
+    const userInput = inputString.value;
+    const results = await getAllCountries(userInput);
+    console.log('results:\n', results)
 
     let searchResultsWrapper = '<div class="autocomplete-items">';
 
-    // console.time("Location");
-    for (let i = 0; i < allCountries.length; i++) {
-      const country = allCountries[i].country === "United States" ? "USA" : allCountries[i].country;
-      const fullLocation = `${allCountries[i].city}, ${allCountries[i].state ? `${allCountries[i].state}, ${country}` : country}`;
-
-        if (fullLocation.substr(0, value.length).toUpperCase() == value.toUpperCase()) {
-          const search = new RegExp(value, "gi")
-          const match = fullLocation.replace(search, match => `<strong>${match}</strong>`)
-          results.push({
-            match,
-            city: allCountries[i].city,
-            state: allCountries[i].state,
-            country: country,
-          });
-        }
-    }
-
-    if (results.length > 0) {
-      const cityError = document.querySelector('#city-error');
-      const isCityError = window.getComputedStyle(cityError).display;
-      if (cityError !== 'none') {
-        document.querySelector('#city-error').style.display = 'none';
-      }
-      results.slice(0, 7).map(({ match, city, state, country }) => {
-        searchResultsWrapper += `
-          <div
+    results.map(({ match, city, state, country }) => {
+      searchResultsWrapper += `
+        <div
+          data-city=${JSON.stringify(city)}
+          data-state=${JSON.stringify(state)}
+          data-country=${JSON.stringify(country)}
+        >
+          ${match}
+          <input
+            type='hidden'
             data-city=${JSON.stringify(city)}
             data-state=${JSON.stringify(state)}
             data-country=${JSON.stringify(country)}
-          >
-            ${match}
-            <input
-              type='hidden'
-              data-city=${JSON.stringify(city)}
-              data-state=${JSON.stringify(state)}
-              data-country=${JSON.stringify(country)}
-            />
-          </div>
-        `
-      })
+          />
+        </div>
+      `
+    });
 
-      // console.timeEnd("Location");
-      searchResultsWrapper += '</div>';
-      document.querySelector('#results').innerHTML = searchResultsWrapper;
-    } else {
-      document.querySelector('#city-error').innerHTML = 'Please enter a valid city'
-      document.querySelector('#city-error').style.display = 'block'
-    }
-
+    searchResultsWrapper += '</div>';
+    document.querySelector('#results').innerHTML = searchResultsWrapper;
   }, 250))
-
-  inputString.addEventListener("keydown", event => {
-    let element = document.querySelector('.autocomplete-items');
-    if (element) {
-      element = element.getElementsByTagName('div')
-    }
-    if (event.key === "ArrowDown") {
-      currentFocus++;
-      addActive(element, currentFocus)
-    } else if (event.key === "ArrowUp") {
-      currentFocus--;
-      addActive(element, currentFocus);
-    } else if (event.key === "Enter") {
-      event.preventDefault();
-      if (currentFocus > -1) {
-        if (element) {
-          const value = element[currentFocus].getElementsByTagName('input')[0];
-          const city = value.dataset.city
-          const state = value.dataset.state
-          const country = value.dataset.country
-          const selection = `${city}, ${state !== "null" ? `${state}, ${country}` : country}`
-          inputString.value = selection;
-          closeAllLists();
-
-          inputString.setAttribute('data-city', city)
-          inputString.setAttribute('data-state', state)
-          inputString.setAttribute('data-country', country)
-        }
-      }
-    }
-  })
-
-  document.addEventListener('click', event => {
-    const inputTag = event.target.dataset;
-    if (inputTag?.city) {
-      const city = inputTag.city
-      const state = inputTag.state
-      const country = inputTag.country
-      const selection = `${city}, ${state !== "null" ? `${state}, ${country}` : country}`
-      inputString.value = selection;
-      closeAllLists();
-
-      inputString.setAttribute('data-city', city)
-      inputString.setAttribute('data-state', state)
-      inputString.setAttribute('data-country', country)
-    }
-  })
 }
