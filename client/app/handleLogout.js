@@ -1,4 +1,4 @@
-// const handleLogout = () => {
-//   Cookies.remove('token');
-//   window.location.pathname = '/login';
-// }
+const handleLogout = () => {
+  Cookies.remove('token');
+  window.location.pathname = '/login';
+}
