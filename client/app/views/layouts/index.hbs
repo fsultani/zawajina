@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+    <title></title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="/static/client/app/app-global-styles.css">
+    <link rel="stylesheet" type="text/css" href="/static/client/app/components/NavBar/nav-bar-styles.css">
+    <link rel="stylesheet" type="text/css" href="/static/client/app/body-styles.css">
+    <link rel="stylesheet" type="text/css" href="/static/client/app/profile-styles.css">
+  </head>
+  <body>
+    <div class="navbar--site-header">
+      <div class="navbar--container">
+        <div class="navbar--site-header-inner">
+          <a class="home-link" href="/"><img src="/static/client/landing-page/images/home.svg" alt="Home"></a>
+          <ul class="navbar--header-links margin-0">
+            <li>
+              <a href="/user">Profile</a>
+            </li>
+            <li>
+              <a href="/search">Search</a>
+            </li>
+            <li>
+              <a id="logout" style="cursor: pointer">Logout</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top: 100px;">
+      {{{ body }}}
+    </div>
+  </body>
+</html>
