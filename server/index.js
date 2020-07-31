@@ -16,7 +16,8 @@ const authenticateToken = require('./config/auth');
 
 if (process.env.NODE_ENV === 'mlab-dev') {
   // require('./db_credentials')
-  mongoose.connect('mongodb://farid:farid@ds139322.mlab.com:39322/my_match_dev', { useFindAndModify: false });
+  // mongoose.connect('mongodb://farid:farid@ds139322.mlab.com:39322/my_match_dev', { useFindAndModify: false });
+  mongoose.connect('mongodb+srv://fsultani:asdf@my-match.rxspi.mongodb.net/my-match-dev?retryWrites=true&w=majority', { useFindAndModify: false });
   console.log("Using mlab:", process.env.NODE_ENV);
 } else if (process.env.NODE_ENV === 'local') {
   require('./db_credentials');
@@ -58,19 +59,45 @@ app.use('/static', express.static(path.join(process.env.PWD)));
 // Catch all GET requests, and respond with an html file
 app.get('*', (req, res, next) => {
   const { userId, token } = req.cookies;
+  console.log('token:\n', token)
   if (token && req.url.indexOf('/api/') === -1) {
+    // res.sendFile(path.join(__dirname, '../client/app/index.html'));
     switch(req.url) {
       case '/':
-        res.render('home');
+        res.render('home', {
+          styles: [
+            '/static/client/app/body-styles.css',
+            '/static/client/app/components/NavBar/nav-bar-styles.css',
+            '/static/client/app/app-global-styles.css',
+          ],
+        });
         break;
       case '/user':
-        res.render('profile');
+        res.render('profile', {
+          styles: [
+            'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css',
+            '/static/client/app/app-global-styles.css',
+            '/static/client/app/components/NavBar/nav-bar-styles.css',
+            '/static/client/app/profile-styles.css',
+          ],
+        });
         break;
       case '/search':
-        res.render('search');
+        res.render('search', {
+          styles: [
+            '/static/client/app/app-global-styles.css',
+            '/static/client/app/components/NavBar/nav-bar-styles.css',
+          ],
+        });
         break;
       default:
-        res.render('home');
+        res.render('home', {
+          styles: [
+            '/static/client/app/body-styles.css',
+            '/static/client/app/components/NavBar/nav-bar-styles.css',
+            '/static/client/app/app-global-styles.css',
+          ],
+        });
     }
   } else {
     if (req.url.indexOf('/api/') === -1) {

@@ -7,11 +7,9 @@
     <title></title>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="/static/client/app/app-global-styles.css">
-    <link rel="stylesheet" type="text/css" href="/static/client/app/components/NavBar/nav-bar-styles.css">
-    <link rel="stylesheet" type="text/css" href="/static/client/app/body-styles.css">
-    <link rel="stylesheet" type="text/css" href="/static/client/app/profile-styles.css">
+    {{#each styles}}
+      <link rel="stylesheet" type="text/css" href={{this}}>
+    {{/each}}
   </head>
   <body>
     <div class="navbar--site-header">
@@ -26,15 +24,17 @@
               <a href="/search">Search</a>
             </li>
             <li>
-              <a id="logout" style="cursor: pointer">Logout</a>
+              <a id="logout" style="cursor: pointer" onclick="handleLogout()">Logout</a>
             </li>
           </ul>
         </div>
       </div>
     </div>
 
-    <div style="margin-top: 100px;">
+    <div style="margin-top: 75px;">
       {{{ body }}}
     </div>
+    <script type="text/javascript" src="/static/client/app/handleLogout.js"></script>
+    <script type="module" src="/static/client/app/authenticateUser.js"></script>
   </body>
 </html>
