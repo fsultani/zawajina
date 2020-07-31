@@ -1,5 +1,6 @@
 const http = require('http');
 const express = require('express');
+const expressHandlebars  = require('express-handlebars');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
@@ -43,6 +44,14 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
+app.engine('.hbs', expressHandlebars({
+  defaultLayout: 'index',
+  extname: '.hbs',
+  layoutsDir: path.join(__dirname, '../client/app/views/layouts')
+}));
+app.set('views', path.join(__dirname, '../client/app/views'));
+app.set('view engine', '.hbs');
+
 // Set static folder
 app.use('/static', express.static(path.join(process.env.PWD)));
 
@@ -50,7 +59,19 @@ app.use('/static', express.static(path.join(process.env.PWD)));
 app.get('*', (req, res, next) => {
   const { userId, token } = req.cookies;
   if (token && req.url.indexOf('/api/') === -1) {
-    res.sendFile(path.join(__dirname, '../client/app/index.html'));
+    switch(req.url) {
+      case '/':
+        res.render('home');
+        break;
+      case '/user':
+        res.render('profile');
+        break;
+      case '/search':
+        res.render('search');
+        break;
+      default:
+        res.render('home');
+    }
   } else {
     if (req.url.indexOf('/api/') === -1) {
       switch(req.url) {
