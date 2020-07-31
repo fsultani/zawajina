@@ -32,8 +32,8 @@ router.post('/api/personal-info', [
     return res.status(400).json({ error: getErrors.array() });
   } else {
     User.findOne({ email }, (err, userExists) => {
-      // User does not exist; create a new account
       if (!userExists) {
+        // User does not exist; create a new account
         const newUser = new User ({
           name,
           email,
@@ -49,7 +49,7 @@ router.post('/api/personal-info', [
           return res.status(201).send({ userId });
         })
       } else if (userExists.startedRegistration && !userExists.completedRegistration) {
-        // User started registration, but did not complete it
+        // User completed only step 1
         User.updateOne({ _id: userExists._id }, {
           $set: {
             name,
@@ -66,6 +66,7 @@ router.post('/api/personal-info', [
           }
         })
       } else if (userExists.startedRegistration && userExists.completedRegistration) {
+        // Email address already exists
         return res.status(403).json({ error: "Account already exists" });
       } else {
         return res.json({ error: "Unknown error" });
@@ -83,8 +84,6 @@ let response;
 
 router.get('/api/cities-list', async (req, res) => {
   const { userIPAddress, userInput } = req.query;
-  // console.log(userInput);
-  // console.time("/api/cities-list");
   const allLocations = [];
   const allResults = [];
   try {
@@ -145,7 +144,6 @@ router.get('/api/cities-list', async (req, res) => {
     }
 
     const results = allResults.slice(0, 7);
-    // console.timeEnd("/api/cities-list");
     res.send(results);
   } catch (err) {
     return res.json({ error: err.response })

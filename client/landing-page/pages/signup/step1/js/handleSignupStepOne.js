@@ -83,14 +83,24 @@ const handleSignupStepOne = () => {
         window.location.pathname = '/signup/profile';
       }
     }).catch(error => {
-      console.log("error.response\n", error.response);
+      console.error(error.response);
       if (error.response.status === 403) {
+        // Email address already exists
         loadingSpinner.style.display = 'none';
         signupButton.innerHTML = "Create Account";
         signupButton.disabled = false;
         signupButton.style.cursor = 'pointer';
 
         document.getElementById('email-exists-error').innerHTML = error.response.data.error;
+        document.getElementById('email-exists-error').style.display = 'block';
+      } else {
+        // Display generic error message
+        loadingSpinner.style.display = 'none';
+        signupButton.innerHTML = "Create Account";
+        signupButton.disabled = false;
+        signupButton.style.cursor = 'pointer';
+
+        document.getElementById('email-exists-error').innerHTML = "We could not complete your request at this time.";
         document.getElementById('email-exists-error').style.display = 'block';
       }
     })

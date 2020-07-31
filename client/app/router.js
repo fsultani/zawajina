@@ -1,6 +1,7 @@
 import NavBar from './components/NavBar/NavBar.js';
 import Body from './Body.js';
-import { Profile, About, Contact, Search } from './profile.js';
+import Profile from './Profile.js';
+import Search from './Search.js';
 
 const checkAuthentication = async () => {
   try {
@@ -24,10 +25,6 @@ const Router = async path => {
     } else if (path.startsWith('user/')) {
       const userId = path.split('/')[1]
       Profile(userId);
-    } else if (path === 'about') {
-      About();
-    } else if (path === 'contact') {
-      Contact();
     } else if (path === 'search') {
       Search();
     } else {

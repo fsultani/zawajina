@@ -20,11 +20,13 @@ const handleLogin = event => {
   const passwordIsValid = handlePasswordValidation();
 
   if (emailIsValid && passwordIsValid) {
-    loadingSpinner.style.display = 'inline-block';
+    loadingSpinner.style.cssText = `display: inline-block`;
     loginButton.innerHTML = "";
-    loginButton.disabled = true;
-    loginButton.style.opacity = 0.5;
-    loginButton.style.cursor = 'not-allowed';
+    loginButton.style.cssText = `
+      disabled: true;
+      opacity: 0.5;
+      cursor: not-allowed;
+    `;
 
     axios.post('/login', {
       email,
@@ -36,9 +38,11 @@ const handleLogin = event => {
     }).catch(error => {
       loadingSpinner.style.display = 'none';
       loginButton.innerHTML = "Login";
-      loginButton.disabled = false;
-      loginButton.style.opacity = 1;
-      loginButton.style.cursor = 'pointer';
+      loginButton.style.cssText = `
+        disabled: false;
+        opacity: 1;
+        cursor: pointer;
+      `;
 
       // For any login errors, only display 'Invalid password' for security purposes
       document.getElementById('invalid-password').style.display = 'block';
