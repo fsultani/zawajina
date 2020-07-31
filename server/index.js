@@ -64,10 +64,14 @@ app.get('*', (req, res, next) => {
           res.sendFile(path.join(__dirname, '../client/landing-page/pages/about/index.html'));
           break;
         case '/signup':
-          res.sendFile(path.join(__dirname, '../client/landing-page/pages/signup/step1/index.html'));
+          userId === undefined ?
+          res.sendFile(path.join(__dirname, '../client/landing-page/pages/signup/step1/index.html')) :
+          res.redirect('/signup/profile');
           break;
         case '/signup/profile':
-          res.sendFile(path.join(__dirname, '../client/landing-page/pages/signup/step2/index.html'));
+          userId !== undefined ?
+          res.sendFile(path.join(__dirname, '../client/landing-page/pages/signup/step2/index.html')) :
+          res.redirect('/signup');
           break;
         case '/terms':
           res.sendFile(path.join(__dirname, '../client/landing-page/pages/terms/index.html'));
