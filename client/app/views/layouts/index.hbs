@@ -18,7 +18,7 @@
           <a class="home-link" href="/"><img src="/static/client/landing-page/images/home.svg" alt="Home"></a>
           <ul class="navbar--header-links margin-0">
             <li>
-              <a href="/user">Profile</a>
+              <a href="/user/{{ user._id }}">Profile</a>
             </li>
             <li>
               <a href="/search">Search</a>
@@ -35,6 +35,6 @@
       {{{ body }}}
     </div>
     <script type="text/javascript" src="/static/client/app/handleLogout.js"></script>
-    <script type="module" src="/static/client/app/authenticateUser.js"></script>
+    {{!-- // <script type="module" src="/static/client/app/authenticateUser.js"></script> --}}
   </body>
 </html>

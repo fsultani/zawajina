@@ -1,17 +1,21 @@
 <div class="main">
   <h2 class="testimonials-header">Recently Active</h2>
   <div class="testimonials">
-    <a href="/user/${user._id}" style="text-decoration: none">
-      <div class="testimonial-wrapper">
-        <div class="testimonial-image">
-          <img src="https://img.lovehabibi.com/331442/l/161226191324e701.jpg" alt="Photo 1">
+    {{#each allUsers}}
+      <a href="/user/{{_id}}" style="text-decoration: none">
+        <div class="testimonial-wrapper">
+          {{#each photos}}
+            <div class="testimonial-image">
+              <img src="{{this}}" alt="Photo 1">
+            </div>
+          {{/each}}
+          <div class="testimonial-body">
+            <div class="testimonial-name">{{name}}, {{age}}</div>
+            <p class="location">{{city}}, {{state}}</p>
+            <p class="country">{{country}}</p>
+          </div>
         </div>
-        <div class="testimonial-body">
-          <div class="testimonial-name">Farid, 36</div>
-          <p class="location">Orange, CA</p>
-          <p class="country">USA</p>
-        </div>
-      </div>
-    </a>
+      </a>
+    {{/each}}
   </div>
 </div>

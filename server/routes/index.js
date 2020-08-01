@@ -31,6 +31,43 @@ router.post('/login', (req, res, next) => {
   })
 })
 
+router.get('/', (req, res, next) => {
+  User.findOne({ _id: req.user._id }, (err, user) => {
+    if (user && user.gender === 'male') {
+      User.find({ gender: 'female' }, (err, all) => {
+        // res.status(201).send({ userName: user.name, all });
+        res.render('home', {
+          user: user.toJSON(),
+          allUsers: all.map(users => users.toJSON()),
+          styles: [
+            '/static/client/app/body-styles.css',
+            '/static/client/app/components/NavBar/nav-bar-styles.css',
+            '/static/client/app/app-global-styles.css',
+          ],
+        });
+      })
+    }
+  })
+
+  // User.findOne({ _id: req.user._id }, (err, user) => {
+  //   const { name, age, city, state, country } = user;
+  //   res.render('home', {
+  //     styles: [
+  //       '/static/client/app/body-styles.css',
+  //       '/static/client/app/components/NavBar/nav-bar-styles.css',
+  //       '/static/client/app/app-global-styles.css',
+  //     ],
+  //     name,
+  //     age,
+  //     city,
+  //     state,
+  //     country,
+  //     // data: user.toObject(),
+  //   });
+  //   // res.status(201).send({ userId: user._id });
+  // })
+})
+
 router.get('/api/signup-user-first-name', (req, res, next) => {
   User.findOne({ _id: req.headers.userid }, (err, user) => {
     if (err) return res.sendStatus(403);

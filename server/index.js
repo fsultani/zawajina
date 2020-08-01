@@ -59,82 +59,46 @@ app.use('/static', express.static(path.join(process.env.PWD)));
 // Catch all GET requests, and respond with an html file
 app.get('*', (req, res, next) => {
   const { userId, token } = req.cookies;
-  console.log('token:\n', token)
-  if (token && req.url.indexOf('/api/') === -1) {
-    // res.sendFile(path.join(__dirname, '../client/app/index.html'));
+  if (!token && req.url.indexOf('/api/') === -1) {
     switch(req.url) {
       case '/':
-        res.render('home', {
-          styles: [
-            '/static/client/app/body-styles.css',
-            '/static/client/app/components/NavBar/nav-bar-styles.css',
-            '/static/client/app/app-global-styles.css',
-          ],
-        });
+        res.sendFile(path.join(__dirname, '../client/landing-page/pages/home/index.html'));
         break;
-      case '/user':
-        res.render('profile', {
-          styles: [
-            'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css',
-            '/static/client/app/app-global-styles.css',
-            '/static/client/app/components/NavBar/nav-bar-styles.css',
-            '/static/client/app/profile-styles.css',
-          ],
-        });
+      case '/login':
+        res.sendFile(path.join(__dirname, '../client/landing-page/pages/login/index.html'));
         break;
-      case '/search':
-        res.render('search', {
-          styles: [
-            '/static/client/app/app-global-styles.css',
-            '/static/client/app/components/NavBar/nav-bar-styles.css',
-          ],
-        });
+      case '/about':
+        res.sendFile(path.join(__dirname, '../client/landing-page/pages/about/index.html'));
+        break;
+      case '/signup':
+        res.sendFile(path.join(__dirname, '../client/landing-page/pages/signup/step1/index.html'));
+        break;
+      case '/signup/profile':
+        res.sendFile(path.join(__dirname, '../client/landing-page/pages/signup/step2/index.html'));
+        break;
+      case '/terms':
+        res.sendFile(path.join(__dirname, '../client/landing-page/pages/terms/index.html'));
         break;
       default:
-        res.render('home', {
-          styles: [
-            '/static/client/app/body-styles.css',
-            '/static/client/app/components/NavBar/nav-bar-styles.css',
-            '/static/client/app/app-global-styles.css',
-          ],
-        });
+        res.redirect('/login');
     }
   } else {
-    if (req.url.indexOf('/api/') === -1) {
-      switch(req.url) {
-        case '/':
-          res.sendFile(path.join(__dirname, '../client/landing-page/pages/home/index.html'));
-          break;
-        case '/login':
-          res.sendFile(path.join(__dirname, '../client/landing-page/pages/login/index.html'));
-          break;
-        case '/about':
-          res.sendFile(path.join(__dirname, '../client/landing-page/pages/about/index.html'));
-          break;
-        case '/signup':
-          res.sendFile(path.join(__dirname, '../client/landing-page/pages/signup/step1/index.html'));
-          break;
-        case '/signup/profile':
-          res.sendFile(path.join(__dirname, '../client/landing-page/pages/signup/step2/index.html'));
-          break;
-        case '/terms':
-          res.sendFile(path.join(__dirname, '../client/landing-page/pages/terms/index.html'));
-          break;
-        default:
-          res.redirect('/login');
-      }
-    } else {
-      return next();
-    }
+    if (userId) return next();
+    if (token === null) return res.sendStatus(401);
+    jwt.verify(token, JWT_SECRET, (err, user) => {
+      if (err) return res.sendStatus(403);
+      req.user = user.userDetails;
+      next();
+    })
   }
 })
 
-app.get('/api/authenticate', (req, res, next) => {
-  const { authorization } = req.headers;
-  if (authorization === null) return res.sendStatus(401);
-  jwt.verify(authorization, JWT_SECRET, (err, user) => {
+app.get('/random', (req, res, next) => {
+  const { token } = req.cookies;
+  if (token === null) return res.sendStatus(401);
+  jwt.verify(token, JWT_SECRET, (err, user) => {
     if (err) return res.sendStatus(403);
-    res.sendStatus(201);
+    req.user = user.userDetails;
     next();
   })
 });

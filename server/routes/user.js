@@ -11,7 +11,8 @@ const jwt = require('jwt-simple')
 const JWT_SECRET = Buffer.from('fe1a1915a379f3be5394b64d14794932', 'hex')
 
 // Grab the user from the db
-router.get('/api/info/:userId', authenticateToken, (req, res, next) => {
+router.get('/api/info/:userId', (req, res, next) => {
+  console.log('req.params:\n', req.params)
   const { userId } = req.params;
   User.findOne({ _id: userId }, (err, user) => {
     if (err || !user) return res.sendStatus(404);
