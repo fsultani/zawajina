@@ -35,13 +35,13 @@
                 onchange="handleBirthDay(event)"
               >
                 <script type="module">
-                  import { birthDay } from "/static/client/landing-page/pages/signup/step2/js/helpers.js";
+                  import { birthDay } from "/static/client/views/landing-pages/signup-profile/js/helpers.js";
                   birthDay();
                 </script>
               </select>
               <select class="form-control form-control-sm" id="dob-year" onchange="handleBirthYear(event)">
                 <script type="module">
-                  import { birthYear } from "/static/client/landing-page/pages/signup/step2/js/helpers.js";
+                  import { birthYear } from "/static/client/views/landing-pages/signup-profile/js/helpers.js";
                   birthYear();
                 </script>
               </select>
@@ -82,7 +82,7 @@
             <div id="results"></div>
           </div>
           <script type="module">
-            import { userLocation } from "/static/client/landing-page/pages/signup/step2/js/helpers.js";
+            import { userLocation } from "/static/client/views/landing-pages/signup-profile/js/helpers.js";
             userLocation();
           </script>
         </div>

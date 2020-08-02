@@ -17,13 +17,14 @@ router.get('/:userId', (req, res, next) => {
     if (err) return res.sendStatus(403);
     if (user !== null) {
       // res.status(201).send({ name: user.name })
-      res.render('app/profile', {
+      res.render('app/profile/profile', {
+        profilePhoto: user.photos[0],
         user: user.toJSON(),
         styles: [
           'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css',
-          '/static/client/app/app-global-styles.css',
-          '/static/client/app/components/NavBar/nav-bar-styles.css',
-          '/static/client/app/profile-styles.css',
+          '/static/client/views/partials/styles/app-nav.css',
+          '/static/client/views/layouts/app/app-global-styles.css',
+          '/static/client/views/app/profile/styles.css',
         ],
       });
     } else {
