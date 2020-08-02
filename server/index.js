@@ -166,6 +166,7 @@ app.get('*', (req, res, next) => {
     if (token === null) return res.sendStatus(401);
     jwt.verify(token, JWT_SECRET, (err, user) => {
       if (err) {
+        // return res.sendStatus(403);
         return res.render('landing-pages/login/login', {
           layout: 'landing-pages/index',
           title: 'Login - My Match',
