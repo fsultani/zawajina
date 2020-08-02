@@ -20,12 +20,12 @@ if (process.env.NODE_ENV === 'mlab-dev') {
   mongoose.connect('mongodb+srv://fsultani:asdf@my-match.rxspi.mongodb.net/my-match-dev?retryWrites=true&w=majority', { useFindAndModify: false });
   console.log("Using mlab:", process.env.NODE_ENV);
 } else if (process.env.NODE_ENV === 'local') {
-  require('./db_credentials');
-  mongoose.connect(process.env.LOCAL, { useFindAndModify: false });
-  console.log("Using local db - mongodb://localhost/my_match_local_dev")
+  // require('./db_credentials');
+  // mongoose.connect(process.env.LOCAL, { useFindAndModify: false });
+  // console.log("Using local db - mongodb://localhost/my_match_local_dev")
 } else {
   const mongodbConnect = process.env.DEVELOPMENT ?
-  'mongodb://farid:farid@ds139322.mlab.com:39322/my_match_dev' :
+  'mongodb+srv://fsultani:asdf@my-match.rxspi.mongodb.net/my-match-dev?retryWrites=true&w=majority' :
   process.env.HEROKU;
   mongoose.connect(mongodbConnect, { useFindAndModify: false });
   // mongoose.connect('mongodb://farid:farid@ds139322.mlab.com:39322/my_match_dev', { useFindAndModify: false });
