@@ -8,6 +8,7 @@
   <title>{{title}}</title>
 
   <script type="text/javascript">
+  console.log('Cookies.get("token"):\n', Cookies.get("token"))
     if (Cookies.get("token") !== undefined) {
       Cookies.remove('token');
       window.location.pathname = '/';
