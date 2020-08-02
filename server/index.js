@@ -15,20 +15,13 @@ const JWT_SECRET = Buffer.from('fe1a1915a379f3be5394b64d14794932', 'hex')
 const authenticateToken = require('./config/auth');
 
 if (process.env.NODE_ENV === 'mlab-dev') {
-  // require('./db_credentials')
-  // mongoose.connect('mongodb://farid:farid@ds139322.mlab.com:39322/my_match_dev', { useFindAndModify: false });
   mongoose.connect('mongodb+srv://fsultani:asdf@my-match.rxspi.mongodb.net/my-match-dev?retryWrites=true&w=majority', { useFindAndModify: false });
   console.log("Using mlab:", process.env.NODE_ENV);
-} else if (process.env.NODE_ENV === 'local') {
-  // require('./db_credentials');
-  // mongoose.connect(process.env.LOCAL, { useFindAndModify: false });
-  // console.log("Using local db - mongodb://localhost/my_match_local_dev")
 } else {
   const mongodbConnect = process.env.DEVELOPMENT ?
   'mongodb+srv://fsultani:asdf@my-match.rxspi.mongodb.net/my-match-dev?retryWrites=true&w=majority' :
   process.env.HEROKU;
   mongoose.connect(mongodbConnect, { useFindAndModify: false });
-  // mongoose.connect('mongodb://farid:farid@ds139322.mlab.com:39322/my_match_dev', { useFindAndModify: false });
   console.log("Heroku deployment");
 }
 
