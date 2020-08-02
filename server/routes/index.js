@@ -37,6 +37,7 @@ router.get('/', (req, res, next) => {
       User.find({ gender: 'female' }, (err, all) => {
         // res.status(201).send({ userName: user.name, all });
         res.render('app/home/home', {
+          title: 'Recently Active',
           user: user.toJSON(),
           allUsers: all.map(users => users.toJSON()),
           styles: [
