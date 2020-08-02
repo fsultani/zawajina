@@ -36,13 +36,13 @@ router.get('/', (req, res, next) => {
     if (user && user.gender === 'male') {
       User.find({ gender: 'female' }, (err, all) => {
         // res.status(201).send({ userName: user.name, all });
-        res.render('app/home', {
+        res.render('app/home/home', {
           user: user.toJSON(),
           allUsers: all.map(users => users.toJSON()),
           styles: [
-            '/static/client/app/body-styles.css',
-            '/static/client/app/components/NavBar/nav-bar-styles.css',
-            '/static/client/app/app-global-styles.css',
+            '/static/client/views/app/home/styles.css',
+            '/static/client/views/partials/styles/app-nav.css',
+            '/static/client/views/layouts/app/app-global-styles.css',
           ],
         });
       })
@@ -50,13 +50,13 @@ router.get('/', (req, res, next) => {
     if (user && user.gender === 'female') {
       User.find({ gender: 'male' }, (err, all) => {
         // res.status(201).send({ userName: user.name, all });
-        res.render('app/home', {
+        res.render('app/home/home', {
           user: user.toJSON(),
           allUsers: all.map(users => users.toJSON()),
           styles: [
-            '/static/client/app/body-styles.css',
-            '/static/client/app/components/NavBar/nav-bar-styles.css',
-            '/static/client/app/app-global-styles.css',
+            '/static/client/views/app/home/styles.css',
+            '/static/client/views/partials/styles/app-nav.css',
+            '/static/client/views/layouts/app/app-global-styles.css',
           ],
         });
       })
@@ -68,11 +68,11 @@ router.get('/search', (req, res, next) => {
   User.findOne({ _id: req.user._id }, (err, user) => {
     if (err) return res.sendStatus(403);
     if (user !== null) {
-      res.render('app/search', {
+      res.render('app/search/search', {
         user: user.toJSON(),
         styles: [
-          '/static/client/app/app-global-styles.css',
-          '/static/client/app/components/NavBar/nav-bar-styles.css',
+          '/static/client/views/partials/styles/app-nav.css',
+          '/static/client/views/layouts/app/app-global-styles.css',
         ],
       });
     } else {

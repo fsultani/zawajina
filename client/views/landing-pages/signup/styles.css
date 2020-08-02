@@ -1,0 +1,433 @@
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 300;
+  src: url("/static/client/fonts/montserrat/Montserrat-Light.ttf")
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 400;
+  src: url("/static/client/fonts/montserrat/Montserrat-Regular.ttf")
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  font-style: italic;
+  font-weight: 400;
+  src: url("/static/client/fonts/montserrat/Montserrat-Italic.ttf")
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 500;
+  src: url("/static/client/fonts/montserrat/Montserrat-Medium.ttf")
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 600;
+  src: url("/static/client/fonts/montserrat/Montserrat-SemiBold.ttf")
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 700;
+  src: url("/static/client/fonts/montserrat/Montserrat-Bold.ttf")
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  font-style: italic;
+  font-weight: 700;
+  src: url("/static/client/fonts/montserrat/Montserrat-BoldItalic.ttf")
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  font-style: italic;
+  font-weight: 900;
+  src: url("/static/client/fonts/montserrat/montserrat-v12-latin-900.ttf"), url("/static/client/fonts/montserrat/montserrat-v12-latin-900.eot") format("embedded-opentype"), url("/static/client/fonts/montserrat/montserrat-v12-latin-900.svg") format("woff2"), url("/static/client/fonts/montserrat/montserrat-v12-latin-900.woff") format("woff"), url("/static/client/fonts/montserrat/montserrat-v12-latin-900.woff2") format("truetype")
+}
+
+body {
+  font-size: 14px;
+  line-height: 1.8;
+  color: #222;
+  font-weight: 400;
+  background: #FFFFFF
+}
+
+section {
+  height: 100%;
+}
+
+p {
+  font-size: 15px;
+}
+
+input {
+  outline: none;
+  border: none
+}
+
+textarea {
+  outline: none;
+  border: none
+}
+
+textarea:focus,
+input:focus {
+  border-color: transparent !important
+}
+
+input:focus::-webkit-input-placeholder {
+  color: transparent
+}
+
+input:focus:-moz-placeholder {
+  color: transparent
+}
+
+input:focus::-moz-placeholder {
+  color: transparent
+}
+
+input:focus:-ms-input-placeholder {
+  color: transparent
+}
+
+textarea:focus::-webkit-input-placeholder {
+  color: transparent
+}
+
+textarea:focus:-moz-placeholder {
+  color: transparent
+}
+
+textarea:focus::-moz-placeholder {
+  color: transparent
+}
+
+textarea:focus:-ms-input-placeholder {
+  color: transparent
+}
+
+input::-webkit-input-placeholder {
+  color: #adadad
+}
+
+input:-moz-placeholder {
+  color: #adadad
+}
+
+input::-moz-placeholder {
+  color: #adadad
+}
+
+input:-ms-input-placeholder {
+  color: #adadad
+}
+
+textarea::-webkit-input-placeholder {
+  color: #adadad
+}
+
+textarea:-moz-placeholder {
+  color: #adadad
+}
+
+textarea::-moz-placeholder {
+  color: #adadad
+}
+
+textarea:-ms-input-placeholder {
+  color: #adadad
+}
+
+.signup-container {
+  height: 100vh;
+  padding-top: 115px;
+  background: linear-gradient(57deg, #00C6A7 0%, #1E4D92 100%);
+  background: -webkit-linear-gradient(57deg, #00C6A7 0%, #1E4D92 100%);
+  background: -o-linear-gradient(57deg, #00C6A7 0%, #1E4D92 100%);
+  background: -moz-linear-gradient(57deg, #00C6A7 0%, #1E4D92 100%)
+}
+
+.signup-wrapper {
+  width: 660px;
+  position: relative;
+  margin: 0 auto
+}
+
+.signup-content {
+  background: #fff;
+  border-radius: 10px;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  -o-border-radius: 10px;
+  -ms-border-radius: 10px;
+  padding: 50px 85px
+}
+
+.form-title {
+  line-height: 1.66;
+  margin: 0;
+  padding: 0;
+  font-weight: 900;
+  color: #222;
+  font-family: 'Montserrat';
+  font-size: 24px;
+  text-transform: uppercase;
+  text-align: center;
+  margin-bottom: 40px
+}
+
+#email-exists-error {
+  display: none;
+  position: relative;
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 1rem;
+  border: 1px solid transparent;
+  border-radius: 0.25rem;
+  text-align: center;
+  font-size: 16px;
+  color: #721c24;
+  background-color: #f8d7da;
+  border-color: #f5c6cb
+}
+
+.form-group {
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.input-wrapper {
+  width: 100%;
+  position: relative;
+  border-bottom: 2px solid #adadad;
+  margin-bottom: 37px;
+}
+
+.validate-input {
+  position: relative
+}
+
+.form-input {
+  color: #555555;
+  line-height: 1.2;
+  display: block;
+  width: 100%;
+  height: 45px;
+  background: transparent;
+  padding: 0 5px;
+}
+
+.input-focus {
+  position: absolute;
+  display: block;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none
+}
+
+.input-focus::before {
+  content: "";
+  display: block;
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+}
+
+.input-focus::after {
+  font-size: 15px;
+  color: #999999;
+  line-height: 1.2;
+  content: attr(data-placeholder);
+  display: block;
+  width: 100%;
+  position: absolute;
+  top: 16px;
+  left: 0px;
+  padding-left: 5px;
+  -webkit-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  -moz-transition: all 0.4s;
+  transition: all 0.4s
+}
+
+.form-input:focus+.input-focus::after {
+  top: -15px;
+}
+
+.form-input:focus+.input-focus::before {
+  width: 100%;
+}
+
+.has-value.form-input+.input-focus::after {
+  top: -15px;
+}
+
+.has-value.form-input+.input-focus::before {
+  width: 100%;
+}
+
+.animate-border-bottom::before {
+  -webkit-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  -moz-transition: all 0.4s;
+  transition: all 0.4s;
+  background: #6a7dfe;
+  background: -webkit-linear-gradient(left, #21d4fd, #b721ff);
+  background: -o-linear-gradient(left, #21d4fd, #b721ff);
+  background: -moz-linear-gradient(left, #21d4fd, #b721ff);
+  background: linear-gradient(left, #21d4fd, #b721ff);
+}
+
+/* Used in client/views/landing-pages/signup/js/handleSignupStepOne.js */
+.form-error {
+  background: transparent;
+  border-bottom: 2px solid red;
+}
+
+.form-submit {
+  width: 100%;
+  height: 50px;
+  border-radius: 5px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -o-border-radius: 5px;
+  -ms-border-radius: 5px;
+  padding: 17px 20px;
+  box-sizing: border-box;
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+  text-transform: uppercase;
+  border: none;
+  background-image: -moz-linear-gradient(to left, #74ebd5, #9face6);
+  background-image: -ms-linear-gradient(to left, #74ebd5, #9face6);
+  background-image: -o-linear-gradient(to left, #74ebd5, #9face6);
+  background-image: -webkit-linear-gradient(to left, #74ebd5, #9face6);
+  background-image: linear-gradient(to left, #74ebd5, #9face6)
+}
+
+.password-position {
+  position: relative;
+  margin-bottom: 5px
+}
+
+.password-helper-text {
+  font-size: 12px;
+  margin-bottom: 20px
+}
+
+.signup-button {
+  cursor: pointer
+}
+
+.term-service {
+  color: #555;
+  text-decoration: underline
+}
+
+.label-agree-term {
+  font-size: 12px;
+  font-weight: 600;
+  color: #555
+}
+
+.login {
+  color: #555;
+  font-weight: 500;
+  text-align: center;
+  margin-top: 91px;
+  margin-bottom: 5px
+}
+
+.login-link {
+  font-weight: 700;
+  color: #222
+}
+
+.field-icon {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  color: #555
+}
+
+@media screen and (max-width: 768px) {
+  .signup-container {
+    height: 100%
+  }
+  .signup-wrapper {
+    width: calc(100% - 40px);
+    max-width: 100%
+  }
+  .signup-content {
+    padding: 50px 25px
+  }
+  .password-helper-text {
+    font-size: 10px
+  }
+}
+
+.submit-button {
+  position: relative;
+}
+
+.loading-spinner {
+  display: none;
+  position: absolute;
+  top: 2px;
+  left: 40%;
+}
+
+.loading-spinner div {
+  box-sizing: border-box;
+  display: block;
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  margin: 8px;
+  border: 3px solid #fff;
+  border-radius: 50%;
+  animation: loading-spinner 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  border-color: #fff transparent transparent transparent;
+}
+
+.loading-spinner div:nth-child(1) {
+  animation-delay: -0.45s;
+}
+
+.loading-spinner div:nth-child(2) {
+  animation-delay: -0.3s;
+}
+
+.loading-spinner div:nth-child(3) {
+  animation-delay: -0.15s;
+}
+
+@media (min-width: 600px) {
+  .loading-spinner {
+    left: 45%;
+  }
+}
+
+@keyframes loading-spinner {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
