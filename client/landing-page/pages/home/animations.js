@@ -8,9 +8,9 @@
  t.classList.remove("no-js"),
  t.classList.add("js"),
  window.addEventListener("load", function() {
-  i.classList.add("is-loaded")
+  document.querySelector('.animate').classList.add('is-loaded')
  }),
- i.classList.contains("has-animations") && window.addEventListener("load", function() {
+ document.querySelector('.animate').classList.contains("has-animations") && window.addEventListener("load", function() {
   n.reveal(".features .section-title, .features-illustration, .feature", {
    delay: 300,
    duration: 600,

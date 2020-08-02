@@ -1,4 +1,4 @@
-!function includeHTML() {
+(() => {
   let documentReady = false;
 
   const loader = display => {
@@ -55,18 +55,18 @@
     window.location.pathname = '/';
   })
 
-  /* Loop through a collection of all HTML elements: */
-  allElements = document.getElementsByTagName("*");
+  // // Loop through a collection of all HTML elements
+  // allElements = document.getElementsByTagName("*");
 
-  /* Return an array from the HTMLCollections object */
-  allElements = Array.from(allElements);
-  allElements.map(element => {
-    file = element.getAttribute("w3-include-html");
-    if (file) {
-      element.removeAttribute("w3-include-html");
-      fetch(file)
-        .then(response => response.text())
-        .then(res => element.innerHTML = res);
-    }
-  })
-}();
+  // // Return an array from the HTMLCollections object
+  // allElements = Array.from(allElements);
+  // allElements.map(element => {
+  //   file = element.getAttribute("w3-include-html");
+  //   if (file) {
+  //     element.removeAttribute("w3-include-html");
+  //     fetch(file)
+  //       .then(response => response.text())
+  //       .then(res => element.innerHTML = res);
+  //   }
+  // })
+})();

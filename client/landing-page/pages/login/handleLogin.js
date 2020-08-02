@@ -33,7 +33,7 @@ const handleLogin = event => {
       password
     }).then(res => {
       const { token } = res.data;
-      Cookies.set('token', token);
+      Cookies.set('token', token, { sameSite: 'strict' });
       window.location.pathname = '/';
     }).catch(error => {
       loadingSpinner.style.display = 'none';

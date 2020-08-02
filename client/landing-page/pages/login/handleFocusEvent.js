@@ -1,4 +1,4 @@
-!function handleFocusEvent() {
+(() => {
   // Grab all class names of 'input-field'
   const elements = document.getElementsByClassName('input-field')
 
@@ -13,4 +13,4 @@
       }
     })
   })
-}();
+})();

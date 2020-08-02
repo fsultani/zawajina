@@ -62,6 +62,10 @@ body {
   background: #FFFFFF
 }
 
+section {
+  height: 100%;
+}
+
 p {
   font-size: 15px;
 }
