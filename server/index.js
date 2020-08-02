@@ -14,16 +14,8 @@ const jwt = require('jsonwebtoken');
 const JWT_SECRET = Buffer.from('fe1a1915a379f3be5394b64d14794932', 'hex')
 const authenticateToken = require('./config/auth');
 
-if (process.env.NODE_ENV === 'mlab-dev') {
-  mongoose.connect('mongodb+srv://fsultani:asdf@my-match.rxspi.mongodb.net/my-match-dev?retryWrites=true&w=majority', { useFindAndModify: false });
-  console.log("Using mlab:", process.env.NODE_ENV);
-} else {
-  const mongodbConnect = process.env.DEVELOPMENT ?
-  'mongodb+srv://fsultani:asdf@my-match.rxspi.mongodb.net/my-match-dev?retryWrites=true&w=majority' :
-  process.env.HEROKU;
-  mongoose.connect(mongodbConnect, { useFindAndModify: false });
-  console.log("Heroku deployment");
-}
+const mongodbConnect = process.env.DEVELOPMENT ? 'mongodb+srv://fsultani:asdf@my-match.rxspi.mongodb.net/my-match-dev?retryWrites=true&w=majority' : process.env.MONGODB_URI;
+mongoose.connect(mongodbConnect);
 
 const app = express();
 
