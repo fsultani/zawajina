@@ -4,7 +4,15 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js"></script>
   <title>{{title}}</title>
+
+  <script type="text/javascript">
+    if (Cookies.get("token") !== undefined) {
+      Cookies.remove('token');
+      window.location.pathname = '/';
+    }
+  </script>
 
   <!-- Page styles -->
   {{#each styles}}
