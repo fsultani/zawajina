@@ -78,7 +78,7 @@ const handleCreateNewAccount = () => {
     axios.post('/register/api/about', userData)
     .then(res => {
       if (res.status === 201 || res.status === 200) {
-        Cookies.set('token', res.data.token);
+        Cookies.set('token', res.data.token, { sameSite: 'strict' });
         Cookies.remove('userId');
         window.location.pathname = '/';
       } else {

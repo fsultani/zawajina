@@ -45,16 +45,16 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-app.engine('.hbs', expressHandlebars({
-  defaultLayout: 'index',
-  extname: '.hbs',
-  layoutsDir: path.join(__dirname, '../client/app/views/layouts')
-}));
-app.set('views', path.join(__dirname, '../client/app/views'));
-app.set('view engine', '.hbs');
-
 // Set static folder
 app.use('/static', express.static(path.join(process.env.PWD)));
+
+app.engine('.hbs', expressHandlebars({
+  defaultLayout: 'app',
+  extname: '.hbs',
+  layoutsDir: path.join(__dirname, '../client/views/layouts')
+}));
+app.set('views', path.join(__dirname, '../client/views'));
+app.set('view engine', '.hbs');
 
 // Catch all GET requests, and respond with an html file
 app.get('*', (req, res, next) => {
@@ -62,22 +62,112 @@ app.get('*', (req, res, next) => {
   if (!token && req.url.indexOf('/api/') === -1) {
     switch(req.url) {
       case '/':
-        res.sendFile(path.join(__dirname, '../client/landing-page/pages/home/index.html'));
-        break;
-      case '/login':
-        res.sendFile(path.join(__dirname, '../client/landing-page/pages/login/index.html'));
+        res.render('landing-pages/home', {
+          layout: 'index',
+          title: 'My Match',
+          styles: [
+            'https://fonts.googleapis.com/css?family=Heebo:400,700|Playfair+Display:700',
+            '/static/client/landing-page/global-css/styles.css',
+            '/static/client/landing-page/components/Nav/styles.css',
+            '/static/client/landing-page/pages/home/styles.css',
+          ],
+          scripts: [
+            'https://unpkg.com/scrollreveal',
+            'https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js',
+            '/static/client/landing-page/pages/home/animations.js',
+            '/static/client/landing-page/pages/home/includeHTML.js',
+          ],
+        })
         break;
       case '/about':
-        res.sendFile(path.join(__dirname, '../client/landing-page/pages/about/index.html'));
+        res.render('landing-pages/about', {
+          layout: 'index',
+          title: 'About Us - My Match',
+          styles: [
+            'https://fonts.googleapis.com/css?family=Heebo:400,700|Playfair+Display:700',
+            '/static/client/landing-page/global-css/styles.css',
+            '/static/client/landing-page/components/Nav/styles.css',
+            '/static/client/landing-page/pages/about/styles.css',
+          ],
+          scripts: [
+            'https://unpkg.com/scrollreveal@4.0.5/dist/scrollreveal.min.js',
+            '/static/client/landing-page/pages/about/main.js',
+            '/static/client/landing-page/pages/about/includeHTML.js',
+          ],
+        })
+        break;
+      case '/login':
+        res.render('landing-pages/login', {
+          layout: 'index',
+          title: 'Login - My Match',
+          styles: [
+            'https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css',
+            'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css',
+            '/static/client/landing-page/global-css/styles.css',
+            '/static/client/landing-page/components/Nav/styles.css',
+            '/static/client/landing-page/pages/login/css/styles.css',
+          ],
+          scripts: [
+            'https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js',
+            'https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js',
+            '/static/client/landing-page/pages/login/handleFocusEvent.js',
+            '/static/client/landing-page/pages/login/handleLogin.js',
+          ],
+          divContainerClasses: 'login-page-container',
+        })
         break;
       case '/signup':
-        res.sendFile(path.join(__dirname, '../client/landing-page/pages/signup/step1/index.html'));
+        res.render('landing-pages/signup', {
+          layout: 'index',
+          title: 'Sign Up - My Match',
+          styles: [
+            'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css',
+            '/static/client/landing-page/global-css/styles.css',
+            '/static/client/landing-page/components/Nav/styles.css',
+            '/static/client/landing-page/pages/signup/step1/styles.css',
+          ],
+          scripts: [
+            'https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js',
+            'https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js',
+            '/static/client/landing-page/pages/signup/step1/js/includeHTML.js',
+            '/static/client/landing-page/pages/signup/step1/js/togglePassword.js',
+            '/static/client/landing-page/pages/signup/step1/js/handleSignupStepOne.js',
+          ],
+          divContainerClasses: 'signup-container',
+        })
         break;
       case '/signup/profile':
-        res.sendFile(path.join(__dirname, '../client/landing-page/pages/signup/step2/index.html'));
+        res.render('landing-pages/signup-profile', {
+          layout: 'index',
+          title: 'Sign Up - My Match',
+          styles: [
+            'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css',
+            '/static/client/landing-page/global-css/styles.css',
+            '/static/client/landing-page/components/Nav/styles.css',
+            '/static/client/landing-page/pages/signup/step2/styles.css',
+          ],
+          scripts: [
+            'https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js',
+            'https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js',
+            '/static/client/landing-page/pages/signup/step2/js/signupProfileInit.js',
+            '/static/client/landing-page/pages/signup/step2/js/handleCreateNewAccount.js',
+            '/static/client/landing-page/pages/signup/step2/js/imageUpload.js',
+          ],
+          bodyClasses: 'overlay',
+          divContainerClasses: 'signup-container',
+        })
         break;
       case '/terms':
-        res.sendFile(path.join(__dirname, '../client/landing-page/pages/terms/index.html'));
+        res.render('landing-pages/terms', {
+          layout: 'index',
+          title: 'Terms of Service - My Match',
+          styles: [
+            'https://fonts.googleapis.com/css?family=Heebo:400,700|Playfair+Display:700',
+            '/static/client/landing-page/global-css/styles.css',
+            '/static/client/landing-page/components/Nav/styles.css',
+            '/static/client/landing-page/pages/terms/styles.css',
+          ],
+        })
         break;
       default:
         res.redirect('/login');
@@ -92,16 +182,6 @@ app.get('*', (req, res, next) => {
     })
   }
 })
-
-app.get('/random', (req, res, next) => {
-  const { token } = req.cookies;
-  if (token === null) return res.sendStatus(401);
-  jwt.verify(token, JWT_SECRET, (err, user) => {
-    if (err) return res.sendStatus(403);
-    req.user = user.userDetails;
-    next();
-  })
-});
 
 // Use index.js for any routes beginning with '/'
 app.use('/', index);

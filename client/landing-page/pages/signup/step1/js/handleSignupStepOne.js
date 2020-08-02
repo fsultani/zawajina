@@ -79,7 +79,7 @@ const handleSignupStepOne = () => {
       password
     }).then(res => {
       if (res.status === 201) {
-        Cookies.set('userId', res.data.userId);
+        Cookies.set('userId', res.data.userId, { sameSite: 'strict' });
         window.location.pathname = '/signup/profile';
       }
     }).catch(error => {

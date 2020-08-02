@@ -36,7 +36,21 @@ router.get('/', (req, res, next) => {
     if (user && user.gender === 'male') {
       User.find({ gender: 'female' }, (err, all) => {
         // res.status(201).send({ userName: user.name, all });
-        res.render('home', {
+        res.render('app/home', {
+          user: user.toJSON(),
+          allUsers: all.map(users => users.toJSON()),
+          styles: [
+            '/static/client/app/body-styles.css',
+            '/static/client/app/components/NavBar/nav-bar-styles.css',
+            '/static/client/app/app-global-styles.css',
+          ],
+        });
+      })
+    }
+    if (user && user.gender === 'female') {
+      User.find({ gender: 'male' }, (err, all) => {
+        // res.status(201).send({ userName: user.name, all });
+        res.render('app/home', {
           user: user.toJSON(),
           allUsers: all.map(users => users.toJSON()),
           styles: [
@@ -48,24 +62,23 @@ router.get('/', (req, res, next) => {
       })
     }
   })
+});
 
-  // User.findOne({ _id: req.user._id }, (err, user) => {
-  //   const { name, age, city, state, country } = user;
-  //   res.render('home', {
-  //     styles: [
-  //       '/static/client/app/body-styles.css',
-  //       '/static/client/app/components/NavBar/nav-bar-styles.css',
-  //       '/static/client/app/app-global-styles.css',
-  //     ],
-  //     name,
-  //     age,
-  //     city,
-  //     state,
-  //     country,
-  //     // data: user.toObject(),
-  //   });
-  //   // res.status(201).send({ userId: user._id });
-  // })
+router.get('/search', (req, res, next) => {
+  User.findOne({ _id: req.user._id }, (err, user) => {
+    if (err) return res.sendStatus(403);
+    if (user !== null) {
+      res.render('app/search', {
+        user: user.toJSON(),
+        styles: [
+          '/static/client/app/app-global-styles.css',
+          '/static/client/app/components/NavBar/nav-bar-styles.css',
+        ],
+      });
+    } else {
+      res.sendStatus(403);
+    }
+  })
 })
 
 router.get('/api/signup-user-first-name', (req, res, next) => {
