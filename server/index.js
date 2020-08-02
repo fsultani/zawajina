@@ -165,7 +165,28 @@ app.get('*', (req, res, next) => {
     if (userId) return next();
     if (token === null) return res.sendStatus(401);
     jwt.verify(token, JWT_SECRET, (err, user) => {
-      if (err) return res.sendStatus(403);
+      if (err) {
+        return res.render('landing-pages/login/login', {
+          layout: 'landing-pages/index',
+          title: 'Login - My Match',
+          removeToken: true,
+          styles: [
+            'https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css',
+            'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css',
+            '/static/client/views/layouts/landing-pages/global-styles.css',
+            '/static/client/views/partials/styles/landing-page-nav.css',
+            '/static/client/views/partials/styles/footer.css',
+            '/static/client/views/landing-pages/login/styles.css',
+          ],
+          scripts: [
+            'https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js',
+            'https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js',
+            '/static/client/views/landing-pages/login/handleFocusEvent.js',
+            '/static/client/views/landing-pages/login/handleLogin.js',
+          ],
+          divContainerClasses: 'login-page-container',
+        })
+      }
       req.user = user.userDetails;
       next();
     })
