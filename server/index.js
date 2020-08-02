@@ -64,7 +64,7 @@ app.get('*', (req, res, next) => {
           ],
         })
         break;
-      case '/about':
+      case '/about' || 'about':
         res.render('landing-pages/about/about', {
           layout: 'landing-pages/index',
           title: 'About Us - My Match',
