@@ -1,6 +1,7 @@
 import NavBar from './components/NavBar/NavBar.js';
 import Body from './Body.js';
-import { Profile, About, Contact, Search } from './profile.js';
+import Profile from './Profile.js';
+import Search from './Search.js';
 
 const checkAuthentication = async () => {
   try {
@@ -16,6 +17,7 @@ const checkAuthentication = async () => {
 };
 
 const Router = async path => {
+  console.log('path:\n', path)
   const checkAuthenticationStatus = await checkAuthentication();
   if (checkAuthenticationStatus === 201) {
     document.querySelector('#nav').innerHTML = NavBar();
@@ -29,12 +31,6 @@ const Router = async path => {
     } else if (path === 'profile') {
       history.replaceState({ page: 'profile'}, null, '/profile');
       Profile();
-    } else if (path === 'about') {
-      history.replaceState({ page: 'about'}, null, '/about');
-      About();
-    } else if (path === 'contact') {
-      history.replaceState({ page: 'contact'}, null, '/contact');
-      Contact();
     } else if (path === 'search') {
       history.replaceState({ page: 'search'}, null, '/search');
       Search();
