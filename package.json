@@ -4,7 +4,6 @@
   "engines": {
     "node": "8.9.3"
   },
-  "type": "module",
   "description": "",
   "main": "server.js",
   "scripts": {
