@@ -24,6 +24,16 @@ const Profile = userId => {
   document.head.appendChild(navBarStyles);
   document.head.appendChild(profileStylesTag);
 
+  let content = `
+  <div class="container">
+    <div class="main-body">
+      <div class="row gutters-sm">
+        <div class="col-md-4 mb-3">
+          <div class="card">
+            <div class="card-body">
+              <div class="d-flex flex-column align-items-center text-center">
+              `
+
   axios.get(`/users/api/info`, {
     headers: {
       Authorization: Cookies.get('token')
@@ -32,14 +42,7 @@ const Profile = userId => {
     console.log('data:\n', data)
     const { photos, name, age, city, state, country } = data;
 
-    const content = `
-      <div class="container">
-        <div class="main-body">
-          <div class="row gutters-sm">
-            <div class="col-md-4 mb-3">
-              <div class="card">
-                <div class="card-body">
-                  <div class="d-flex flex-column align-items-center text-center">
+    content += `
                     <img src="${photos[0]}" alt="Farid" class="profile-image" width="150" height="150">
                     <div class="mt-3">
                       <h4>${name}</h4>
