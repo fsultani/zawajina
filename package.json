@@ -7,7 +7,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "dev": "export NODE_ENV=mlab-dev && DEVELOPMENT=true supervisor -e '.js,.html,.css' server/index.js",
+    "dev": "DEVELOPMENT=true supervisor -e '.js,.html,.css' server/index.js",
     "start": "node server/index.js"
   },
   "author": "",
