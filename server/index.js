@@ -33,13 +33,14 @@ app.use(cookieParser());
 // Set static folder
 app.use('/static', express.static(path.join(process.env.PWD)));
 
-app.engine('.hbs', expressHandlebars({
-  defaultLayout: 'app/app',
-  extname: '.hbs',
-  layoutsDir: path.join(__dirname, '../client/views/layouts')
-}));
+// app.engine('.hbs', expressHandlebars({
+//   defaultLayout: 'app/app',
+//   extname: '.hbs',
+//   layoutsDir: path.join(__dirname, '../client/views/layouts')
+// }));
 app.set('views', path.join(__dirname, '../client/views'));
-app.set('view engine', '.hbs');
+app.set('view engine', 'ejs');
+// app.set('view engine', '.hbs');
 
 // Catch all GET requests, and respond with an html file
 app.get('*', (req, res, next) => {

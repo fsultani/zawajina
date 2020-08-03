@@ -40,6 +40,7 @@ router.get('/', (req, res, next) => {
           title: 'Recently Active',
           user: user.toJSON(),
           allUsers: all.map(users => users.toJSON()),
+          // allUsers: all,
           styles: [
             '/static/client/views/app/home/styles.css',
             '/static/client/views/partials/styles/app-nav.css',
@@ -53,7 +54,7 @@ router.get('/', (req, res, next) => {
         // res.status(201).send({ userName: user.name, all });
         res.render('app/home/home', {
           user: user.toJSON(),
-          allUsers: all.map(users => users.toJSON()),
+          // allUsers: all.map(users => users.toJSON()),
           styles: [
             '/static/client/views/app/home/styles.css',
             '/static/client/views/partials/styles/app-nav.css',
@@ -99,11 +100,12 @@ router.get('/api/user-details', authenticateToken, (req, res, next) => {
   })
 })
 
-router.get('/api/all-members', authenticateToken, (req, res, next) => {
+router.get('/api/all-members', (req, res, next) => {
   User.findOne({ _id: req.user._id }, (err, user) => {
     if (user && user.gender === 'male') {
       User.find({ gender: 'female' }, (err, all) => {
-        res.status(201).send({ userName: user.name, all });
+        res.status(201).send({ user, all });
+        // setTimeout(() => {}, 3000)
       })
     } else {
       User.find({ gender: 'female' }, (err, all) => {

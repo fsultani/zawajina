@@ -1,0 +1,18 @@
+<div class="navbar--site-header">
+  <div class="navbar--container">
+    <div class="navbar--site-header-inner">
+      <a class="home-link" href="/"><img src="/static/client/images/home.svg" alt="Home"></a>
+      <ul class="navbar--header-links margin-0">
+        <li>
+          <a id="profile" href="/user/<%= user._id %>">Profile</a>
+        </li>
+        <li>
+          <a href="/search">Search</a>
+        </li>
+        <li>
+          <a id="logout" style="cursor: pointer" onclick="handleLogout()">Logout</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

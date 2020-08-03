@@ -2,7 +2,7 @@ const puppeteer = require('puppeteer');
 const names = require('./names');
 const countries = require('./routes/world-cities');
 
-const numberOfUsers = 10;
+const numberOfUsers = 5;
 
 (async () => {
   const browser = await puppeteer.launch({
@@ -19,19 +19,22 @@ const numberOfUsers = 10;
 
   const createFaridsUser = async () => {
     await page.waitForSelector('#name_id');
-    await page.focus('#name_id');
+    // await page.focus('#name_id');
+    await page.focus('input[name="user_name"]');
     await page.keyboard.type("Farid");
 
-    await page.focus('#email_id');
+    // await page.focus('#email_id');
+    await page.focus('input[name="user_email"]');
     await page.keyboard.type('farid@me.com');
 
-    await page.focus('#password');
+    // await page.focus('#password');
+    await page.focus('input[name="user_password"]');
     await page.keyboard.type('asdfasdf');
 
     await page.click('button[name=signupButton]');
 
     await page.waitForSelector('#dob-month');
-    await page.select('#dob-month', 'october');
+    await page.select('#dob-month', '10');
     await page.waitFor(250);
     await page.select('#dob-day', '14');
     await page.select('#dob-year', '1983');
@@ -101,7 +104,8 @@ const numberOfUsers = 10;
           gender: 'female'
         }
 
-        const birthMonths = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
+        // const birthMonths = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
+        const birthMonths = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
         const birthMonth = birthMonths[Math.floor(Math.random() * birthMonths.length)];
         const birthDay = Math.floor(Math.random() * 31).toString();
         const birthYear = (1999 - (Math.floor(Math.random() * 30))).toString();
@@ -109,13 +113,16 @@ const numberOfUsers = 10;
         await page.goto('http://localhost:3000/signup');
 
         await page.waitForSelector('#name_id');
-        await page.focus('#name_id');
+        // await page.focus('#name_id');
+        await page.focus('input[name="user_name"]');
         await page.keyboard.type(nameChoice.name);
 
-        await page.focus('#email_id');
+        // await page.focus('#email_id');
+        await page.focus('input[name="user_email"]');
         await page.keyboard.type(`${nameChoice.name.toLowerCase()}@me.com`);
 
-        await page.focus('#password');
+        // await page.focus('#password');
+        await page.focus('input[name="user_password"]');
         await page.keyboard.type('asdfasdf');
 
         await page.click('button[name=signupButton]');
@@ -136,6 +143,7 @@ const numberOfUsers = 10;
           }
         })
 
+        await page.waitFor(500);
         await page.waitForSelector('#dob-month');
         await page.select('#dob-month', birthMonth);
         await page.waitFor(250);
@@ -178,45 +186,45 @@ const numberOfUsers = 10;
         await fileChoose1.accept(['/Users/farid/Downloads/trees/butterfly-1127666__480.jpg']);
         await page.waitFor(250);
 
-        const [fileChoose2] = await Promise.all([
-          page.waitForFileChooser(),
-          page.evaluate(() => document.querySelector('.image-2').click()),
-        ])
+        // const [fileChoose2] = await Promise.all([
+        //   page.waitForFileChooser(),
+        //   page.evaluate(() => document.querySelector('.image-2').click()),
+        // ])
 
-        await fileChoose2.accept(['/Users/farid/Downloads/trees/dandelion-445228__480.jpg']);
-        await page.waitFor(250);
+        // await fileChoose2.accept(['/Users/farid/Downloads/trees/dandelion-445228__480.jpg']);
+        // await page.waitFor(250);
 
-        const [fileChoose3] = await Promise.all([
-          page.waitForFileChooser(),
-          page.evaluate(() => document.querySelector('.image-3').click()),
-        ])
+        // const [fileChoose3] = await Promise.all([
+        //   page.waitForFileChooser(),
+        //   page.evaluate(() => document.querySelector('.image-3').click()),
+        // ])
 
-        await fileChoose3.accept(['/Users/farid/Downloads/trees/forest-931706__480.jpg']);
-        await page.waitFor(250);
+        // await fileChoose3.accept(['/Users/farid/Downloads/trees/forest-931706__480.jpg']);
+        // await page.waitFor(250);
 
-        const [fileChoose4] = await Promise.all([
-          page.waitForFileChooser(),
-          page.evaluate(() => document.querySelector('.image-4').click()),
-        ])
+        // const [fileChoose4] = await Promise.all([
+        //   page.waitForFileChooser(),
+        //   page.evaluate(() => document.querySelector('.image-4').click()),
+        // ])
 
-        await fileChoose4.accept(['/Users/farid/Downloads/trees/road-1072823__480.jpg']);
-        await page.waitFor(250);
+        // await fileChoose4.accept(['/Users/farid/Downloads/trees/road-1072823__480.jpg']);
+        // await page.waitFor(250);
 
-        const [fileChoose5] = await Promise.all([
-          page.waitForFileChooser(),
-          page.evaluate(() => document.querySelector('.image-5').click()),
-        ])
+        // const [fileChoose5] = await Promise.all([
+        //   page.waitForFileChooser(),
+        //   page.evaluate(() => document.querySelector('.image-5').click()),
+        // ])
 
-        await fileChoose5.accept(['/Users/farid/Downloads/trees/the-road-815297__480.jpg']);
-        await page.waitFor(250);
+        // await fileChoose5.accept(['/Users/farid/Downloads/trees/the-road-815297__480.jpg']);
+        // await page.waitFor(250);
 
-        const [fileChoose6] = await Promise.all([
-          page.waitForFileChooser(),
-          page.evaluate(() => document.querySelector('.image-6').click()),
-        ])
+        // const [fileChoose6] = await Promise.all([
+        //   page.waitForFileChooser(),
+        //   page.evaluate(() => document.querySelector('.image-6').click()),
+        // ])
 
-        await fileChoose6.accept(['/Users/farid/Downloads/trees/tree-736885_1280.jpg']);
-        await page.waitFor(500);
+        // await fileChoose6.accept(['/Users/farid/Downloads/trees/tree-736885_1280.jpg']);
+        // await page.waitFor(500);
 
         await page.waitForSelector('.signup-button');
         await page.click('button[name=createNewAccount]');

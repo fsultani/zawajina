@@ -18,6 +18,7 @@ router.get('/:userId', (req, res, next) => {
     if (user !== null) {
       // res.status(201).send({ name: user.name })
       res.render('app/profile/profile', {
+        title: user.name,
         profilePhoto: user.photos[0],
         user: user.toJSON(),
         styles: [

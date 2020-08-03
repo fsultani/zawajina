@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+
+  <title><%= title %></title>
+
+  <% styles.map(style => { %>
+    <link rel="stylesheet" type="text/css" href="<%= style %>">
+  <% }) %>
+</head>
+<body>
+  <div class="login-page-container">
+    <%- include('../../partials/landing-page-nav') %>
+    <section>
+      <div class="login-container">
+        <div class="login-wrapper">
+          <form class="login-form validate-form" name="login" onsubmit="handleLogin(event)" novalidate>
+            <span class="login-form-title">
+              Login
+            </span>
+            <div class="input-wrapper validate-input" id="email-wrapper">
+              <input class="input-field" type="email" name="email">
+              <span class="input-focus" id="email" data-placeholder="Email"></span>
+              <div class="invalid-email" id="invalid-email">Invalid email</div>
+            </div>
+            <div class="input-wrapper validate-input" id="password">
+              <span class="password-icon-wrapper">
+                <i class="zmdi zmdi-lock"></i>
+              </span>
+              <input class="input-field" type="password" name="password">
+              <span class="input-focus" data-placeholder="Password"></span>
+              <div class="invalid-password" id="invalid-password">Invalid password</div>
+            </div>
+            <div class="login-button-container">
+              <div class="login-button-wrapper">
+                <div class="login-button-background"></div>
+                <div class="loading-spinner">
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                </div>
+                <button class="login-button" type="submit" name="loginButton">
+                  Login
+                </button>
+              </div>
+            </div>
+            <div class="no-account-container">
+              <a class="signup" href="/signup">
+                Don’t have an account?
+              </a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <%- include('../../partials/footer') %>
+
+  <% scripts.map(script => { %>
+    <script type="text/javascript" src="<%= script %>"></script>
+  <% }) %>
+</body>
+</html>
