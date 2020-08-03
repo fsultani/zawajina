@@ -38,7 +38,7 @@ app.get('*', (req, res, next) => {
   const { userId, token } = req.cookies;
   if (token && req.url.indexOf('/api/') === -1) {
     // res.writeHead(200, { "Content-Type": 'module' });
-    res.set('Content-Type', 'text/html')
+    res.set('Content-Type', 'module')
     res.sendFile(path.join(__dirname, '../client/app/index.html'));
   } else {
     if (req.url.indexOf('/api/') === -1) {
