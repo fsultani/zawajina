@@ -33,6 +33,13 @@ body {
   padding: 1rem;
 }
 
+.profile-image {
+  width: 190px;
+  height: 190px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
 .gutters-sm {
   margin-right: -8px;
   margin-left: -8px;
