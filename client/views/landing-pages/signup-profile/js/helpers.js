@@ -78,8 +78,8 @@ export const userLocation = async () => {
       let response;
       setTimeout(() => {
         if (!response) {
-          document.querySelector('.overlay').style.backgroundColor = 'rgba(0,0,0,0.5)';
-          document.querySelector('.overlay').style.opacity = 0.5;
+          document.querySelector('body').style.backgroundColor = 'rgba(0,0,0,0.5)';
+          document.querySelector('body').style.opacity = 0.5;
           document.querySelector('.full-page-loading-spinner').style.display = 'inline-block';
         }
       }, 1000)
@@ -89,14 +89,14 @@ export const userLocation = async () => {
           userInput
         }
       });
-      document.querySelector('.overlay').style.backgroundColor = '#ffffff';
-      document.querySelector('.overlay').style.opacity = 1;
+      document.querySelector('body').style.backgroundColor = '#ffffff';
+      document.querySelector('body').style.opacity = 1;
       document.querySelector('.full-page-loading-spinner').style.display = 'none';
       return response.data;
     } catch (err) {
       console.error(err)
-      document.querySelector('.overlay').style.backgroundColor = '#ffffff';
-      document.querySelector('.overlay').style.opacity = 1;
+      document.querySelector('body').style.backgroundColor = '#ffffff';
+      document.querySelector('body').style.opacity = 1;
       document.querySelector('.full-page-loading-spinner').style.display = 'none';
       return err.response;
     }
