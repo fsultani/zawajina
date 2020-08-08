@@ -2,9 +2,9 @@
   let documentReady = false;
 
   const loader = display => {
-    document.querySelector('.overlay').style.backgroundColor = display ? 'rgba(0,0,0,0.5)' : '#ffffff';
-    document.querySelector('.overlay').style.opacity = display ? 0.5 : 1;
-    document.querySelector('.overlay').style.position = 'relative';
+    document.querySelector('body').style.backgroundColor = display ? 'rgba(0,0,0,0.5)' : '#ffffff';
+    document.querySelector('body').style.opacity = display ? 0.5 : 1;
+    document.querySelector('body').style.position = 'relative';
     document.querySelector('.full-page-loading-spinner').style.display = display ? 'inline-block' : 'none';
   }
 
@@ -51,22 +51,11 @@
     document.querySelector('#slow-network-warning').style.display = 'none';
     document.querySelector('.form-title').innerHTML = `Welcome, ${res.data.name}`
   }).catch(err => {
-    Cookies.remove('token');
-    window.location.pathname = '/';
+    if (err instanceof TypeError) {
+      console.error(err)
+    } else {
+      Cookies.remove('token');
+      window.location.pathname = '/';
+    }
   })
-
-  // // Loop through a collection of all HTML elements
-  // allElements = document.getElementsByTagName("*");
-
-  // // Return an array from the HTMLCollections object
-  // allElements = Array.from(allElements);
-  // allElements.map(element => {
-  //   file = element.getAttribute("w3-include-html");
-  //   if (file) {
-  //     element.removeAttribute("w3-include-html");
-  //     fetch(file)
-  //       .then(response => response.text())
-  //       .then(res => element.innerHTML = res);
-  //   }
-  // })
 })();

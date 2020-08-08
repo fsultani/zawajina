@@ -11,35 +11,37 @@ const Conversation = require('../models/conversation')
 const jwt = require('jwt-simple')
 const JWT_SECRET = Buffer.from('fe1a1915a379f3be5394b64d14794932', 'hex')
 
-router.get('/:userId', (req, res, next) => {
-  const { userId } = req.params;
+router.get('/userId', (req, res, next) => {
+  const { userId } = req.query;
   User.findOne({ _id: userId }, (err, user) => {
     if (err) return res.sendStatus(403);
     if (user !== null) {
-      // res.status(201).send({ name: user.name })
-      res.render('app/profile/profile', {
-        profilePhoto: user.photos[0],
-        user: user.toJSON(),
-        styles: [
-          'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css',
-          '/static/client/views/partials/styles/app-nav.css',
-          '/static/client/views/layouts/app/app-global-styles.css',
-          '/static/client/views/app/profile/styles.css',
-        ],
+      res.render('layouts/app/index', {
+        locals: {
+          title: 'My Match',
+          styles: [
+            'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css',
+            '/static/client/views/partials/styles/app-nav.css',
+            '/static/client/views/layouts/app/app-global-styles.css',
+            '/static/client/views/app/profile/styles.css',
+          ],
+          scripts: [
+            'https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js',
+            'https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js',
+            '/static/client/views/layouts/app/handleLogout.js',
+            '/static/client/views/app/profile/main.js',
+          ],
+          user,
+        },
+        partials: {
+          nav: 'partials/app-nav',
+          body: 'app/profile/index',
+        }
       });
     } else {
       res.sendStatus(403);
     }
   })
 })
-
-// Grab the user from the db
-router.get('/api/info/:userId', (req, res, next) => {
-  const { userId } = req.params;
-  User.findOne({ _id: userId }, (err, user) => {
-    if (err || !user) return res.sendStatus(404);
-    res.status(201).send({ user });
-  })
-});
 
 module.exports = router;

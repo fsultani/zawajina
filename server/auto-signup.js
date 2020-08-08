@@ -83,25 +83,25 @@ const numberOfUsers = 10;
         const coinToss = Math.round(Math.random());
         let nameChoice;
         // Create a random mix of male and female users
-        // if (coinToss === 0) {
-        //   nameChoice = {
-        //     name: names.male[Math.floor(Math.random() * names.male.length)],
-        //     gender: 'male'
-        //   };
-        // } else {
-        //   nameChoice = {
-        //     name: names.female[Math.floor(Math.random() * names.female.length)],
-        //     gender: 'female'
-        //   }
-        // }
-
-        // Create only female users
-        nameChoice = {
-          name: names.female[Math.floor(Math.random() * names.female.length)],
-          gender: 'female'
+        if (coinToss === 0) {
+          nameChoice = {
+            name: names.male[Math.floor(Math.random() * names.male.length)],
+            gender: 'male'
+          };
+        } else {
+          nameChoice = {
+            name: names.female[Math.floor(Math.random() * names.female.length)],
+            gender: 'female'
+          }
         }
 
-        const birthMonths = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
+        // Create only female users
+        // nameChoice = {
+        //   name: names.female[Math.floor(Math.random() * names.female.length)],
+        //   gender: 'female'
+        // }
+
+        const birthMonths = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
         const birthMonth = birthMonths[Math.floor(Math.random() * birthMonths.length)];
         const birthDay = Math.floor(Math.random() * 31).toString();
         const birthYear = (1999 - (Math.floor(Math.random() * 30))).toString();
@@ -170,53 +170,53 @@ const numberOfUsers = 10;
           window.scrollBy(0, window.innerHeight);
         });
 
-        const [fileChoose1] = await Promise.all([
-          page.waitForFileChooser(),
-          page.evaluate(() => document.querySelector('.image-1').click()),
-        ])
+        // const [fileChoose1] = await Promise.all([
+        //   page.waitForFileChooser(),
+        //   page.evaluate(() => document.querySelector('.image-1').click()),
+        // ])
 
-        await fileChoose1.accept(['/Users/farid/Downloads/trees/butterfly-1127666__480.jpg']);
-        await page.waitFor(250);
+        // await fileChoose1.accept(['/Users/farid/Downloads/trees/butterfly-1127666__480.jpg']);
+        // await page.waitFor(250);
 
-        const [fileChoose2] = await Promise.all([
-          page.waitForFileChooser(),
-          page.evaluate(() => document.querySelector('.image-2').click()),
-        ])
+        // const [fileChoose2] = await Promise.all([
+        //   page.waitForFileChooser(),
+        //   page.evaluate(() => document.querySelector('.image-2').click()),
+        // ])
 
-        await fileChoose2.accept(['/Users/farid/Downloads/trees/dandelion-445228__480.jpg']);
-        await page.waitFor(250);
+        // await fileChoose2.accept(['/Users/farid/Downloads/trees/dandelion-445228__480.jpg']);
+        // await page.waitFor(250);
 
-        const [fileChoose3] = await Promise.all([
-          page.waitForFileChooser(),
-          page.evaluate(() => document.querySelector('.image-3').click()),
-        ])
+        // const [fileChoose3] = await Promise.all([
+        //   page.waitForFileChooser(),
+        //   page.evaluate(() => document.querySelector('.image-3').click()),
+        // ])
 
-        await fileChoose3.accept(['/Users/farid/Downloads/trees/forest-931706__480.jpg']);
-        await page.waitFor(250);
+        // await fileChoose3.accept(['/Users/farid/Downloads/trees/forest-931706__480.jpg']);
+        // await page.waitFor(250);
 
-        const [fileChoose4] = await Promise.all([
-          page.waitForFileChooser(),
-          page.evaluate(() => document.querySelector('.image-4').click()),
-        ])
+        // const [fileChoose4] = await Promise.all([
+        //   page.waitForFileChooser(),
+        //   page.evaluate(() => document.querySelector('.image-4').click()),
+        // ])
 
-        await fileChoose4.accept(['/Users/farid/Downloads/trees/road-1072823__480.jpg']);
-        await page.waitFor(250);
+        // await fileChoose4.accept(['/Users/farid/Downloads/trees/road-1072823__480.jpg']);
+        // await page.waitFor(250);
 
-        const [fileChoose5] = await Promise.all([
-          page.waitForFileChooser(),
-          page.evaluate(() => document.querySelector('.image-5').click()),
-        ])
+        // const [fileChoose5] = await Promise.all([
+        //   page.waitForFileChooser(),
+        //   page.evaluate(() => document.querySelector('.image-5').click()),
+        // ])
 
-        await fileChoose5.accept(['/Users/farid/Downloads/trees/the-road-815297__480.jpg']);
-        await page.waitFor(250);
+        // await fileChoose5.accept(['/Users/farid/Downloads/trees/the-road-815297__480.jpg']);
+        // await page.waitFor(250);
 
-        const [fileChoose6] = await Promise.all([
-          page.waitForFileChooser(),
-          page.evaluate(() => document.querySelector('.image-6').click()),
-        ])
+        // const [fileChoose6] = await Promise.all([
+        //   page.waitForFileChooser(),
+        //   page.evaluate(() => document.querySelector('.image-6').click()),
+        // ])
 
-        await fileChoose6.accept(['/Users/farid/Downloads/trees/tree-736885_1280.jpg']);
-        await page.waitFor(500);
+        // await fileChoose6.accept(['/Users/farid/Downloads/trees/tree-736885_1280.jpg']);
+        // await page.waitFor(500);
 
         await page.waitForSelector('.signup-button');
         await page.click('button[name=createNewAccount]');

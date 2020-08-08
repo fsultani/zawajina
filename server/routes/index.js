@@ -34,36 +34,80 @@ router.post('/login', (req, res, next) => {
 router.get('/', (req, res, next) => {
   User.findOne({ _id: req.user._id }, (err, user) => {
     if (user && user.gender === 'male') {
-      User.find({ gender: 'female' }, (err, all) => {
-        // res.status(201).send({ userName: user.name, all });
-        res.render('app/home/home', {
-          title: 'Recently Active',
-          user: user.toJSON(),
-          allUsers: all.map(users => users.toJSON()),
-          styles: [
-            '/static/client/views/app/home/styles.css',
-            '/static/client/views/partials/styles/app-nav.css',
-            '/static/client/views/layouts/app/app-global-styles.css',
-          ],
-        });
+      User.find({ gender: 'female' }, (err, allUsers) => {
+        res.render('layouts/app/index', {
+          locals: {
+            title: 'My Match',
+            styles: [
+              '/static/client/views/app/home/styles.css',
+              '/static/client/views/partials/styles/app-nav.css',
+              '/static/client/views/layouts/app/app-global-styles.css',
+            ],
+            scripts: [
+              'https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js',
+              'https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js',
+              '/static/client/views/layouts/app/handleLogout.js',
+              '/static/client/views/app/home/main.js',
+            ],
+            user,
+            allUsers,
+          },
+          partials: {
+            nav: 'partials/app-nav',
+            body: 'app/home/index',
+          }
+        })
       })
-    }
-    if (user && user.gender === 'female') {
-      User.find({ gender: 'male' }, (err, all) => {
-        // res.status(201).send({ userName: user.name, all });
-        res.render('app/home/home', {
-          user: user.toJSON(),
-          allUsers: all.map(users => users.toJSON()),
-          styles: [
-            '/static/client/views/app/home/styles.css',
-            '/static/client/views/partials/styles/app-nav.css',
-            '/static/client/views/layouts/app/app-global-styles.css',
-          ],
-        });
+    } else {
+      User.find({ gender: 'male' }, (err, allUsers) => {
+        res.render('layouts/app/index', {
+          locals: {
+            title: 'My Match',
+            styles: [
+              '/static/client/views/app/home/styles.css',
+              '/static/client/views/partials/styles/app-nav.css',
+              '/static/client/views/layouts/app/app-global-styles.css',
+            ],
+            scripts: [
+              'https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js',
+              'https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js',
+              '/static/client/views/layouts/app/handleLogout.js',
+            ],
+            user,
+            allUsers,
+          },
+          partials: {
+            nav: 'partials/app-nav',
+            body: 'app/home/index',
+          }
+        })
       })
     }
   })
 });
+
+// router.get('/', (req, res, next) => {
+//   res.render('layouts/app/index', {
+//     locals: {
+//       title: 'My Match',
+//       styles: [
+//         '/static/client/views/app/home/styles.css',
+//         '/static/client/views/partials/styles/app-nav.css',
+//         '/static/client/views/layouts/app/app-global-styles.css',
+//       ],
+//       scripts: [
+//         'https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js',
+//         'https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js',
+//         '/static/client/views/layouts/app/handleLogout.js',
+//         '/static/client/views/app/home/main.js',
+//       ],
+//     },
+//     partials: {
+//       nav: 'partials/app-nav',
+//       body: 'app/home/index',
+//     }
+//   })
+// });
 
 router.get('/search', (req, res, next) => {
   User.findOne({ _id: req.user._id }, (err, user) => {
@@ -102,8 +146,8 @@ router.get('/api/user-details', authenticateToken, (req, res, next) => {
 router.get('/api/all-members', authenticateToken, (req, res, next) => {
   User.findOne({ _id: req.user._id }, (err, user) => {
     if (user && user.gender === 'male') {
-      User.find({ gender: 'female' }, (err, all) => {
-        res.status(201).send({ userName: user.name, all });
+      User.find({ gender: 'female' }, (err, allUsers) => {
+        res.status(201).json({ user, allUsers });
       })
     } else {
       User.find({ gender: 'female' }, (err, all) => {
