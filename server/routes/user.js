@@ -11,8 +11,8 @@ const Conversation = require('../models/conversation')
 const jwt = require('jwt-simple')
 const JWT_SECRET = Buffer.from('fe1a1915a379f3be5394b64d14794932', 'hex')
 
-router.get('/userId', (req, res, next) => {
-  const { userId } = req.query;
+router.get('/:userId', (req, res, next) => {
+  const { userId } = req.params;
   User.findOne({ _id: userId }, (err, user) => {
     if (err) return res.sendStatus(403);
     if (user !== null) {
@@ -29,7 +29,7 @@ router.get('/userId', (req, res, next) => {
             'https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js',
             'https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js',
             '/static/client/views/layouts/app/handleLogout.js',
-            '/static/client/views/app/profile/main.js',
+            // '/static/client/views/app/profile/main.js',
           ],
           user,
         },
