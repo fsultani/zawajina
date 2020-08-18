@@ -213,7 +213,7 @@ router.post('/api/about', upload.fields([
 
   const userId = req.body.userId;
 
-  Object.values(req.files).length > 0 && Object.values(req.files).map(async image => {
+  req.files && Object.values(req.files).length > 0 && Object.values(req.files).map(async image => {
     const compressedFile = await imagemin(
       [image[0].path],
       {

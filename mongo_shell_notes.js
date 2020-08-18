@@ -20,6 +20,12 @@ db.users.find().forEach(user => {if (user.name === "Farid") db.users.remove({"_i
 // Find last user
 db.users.find().limit(1).sort({ $natural: -1 }).pretty()
 
+// Find all users with an email that includes a number
+db.users.find({ "email": {$regex: /[0-9]/g} }).pretty()
+
+// Count all users with an email that includes a number
+db.users.find({ "email": {$regex: /[0-9]/g} }).count()
+
 // Return a count of all users with a given name
 db.users.find().count()
 db.users.find({ name: "John"}).count()

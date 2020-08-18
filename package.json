@@ -25,6 +25,7 @@
     "express-es6-template-engine": "^2.2.3",
     "express-session": "^1.17.1",
     "express-validator": "^6.2.0",
+    "form-data": "^3.0.0",
     "fs": "0.0.1-security",
     "gifsicle": "^5.0.0",
     "imagemin": "^7.0.1",
@@ -44,6 +45,7 @@
     "watch-sass": "node-sass --output-style expanded -w client/ -o dist/"
   },
   "devDependencies": {
+    "prettier": "2.0.5",
     "puppeteer": "^4.0.0"
   }
 }
