@@ -14,15 +14,12 @@
 .navbar--container {
   width: 100%;
   margin: 0 auto;
-  padding: 0 16px;
   max-width: 1200px;
 }
 
 .navbar--site-header-inner {
-  position: relative;
   display: flex;
   justify-content: space-between;
-  align-items: center;
 }
 
 .home-link {
@@ -30,12 +27,13 @@
 }
 
 .navbar--header-links {
-  display: flex;
   margin: 0;
+  padding-left: 8px;
 }
 
 .navbar--header-links li {
   display: inline-flex;
+  padding: 8px;
 }
 
 .navbar--header-links a:not(.button) {
@@ -47,7 +45,6 @@
   text-transform: uppercase;
   text-decoration: none;
   line-height: 16px;
-  padding: 8px 16px;
 }
 
 .navbar--header-links a:not(.button):hover,
@@ -56,6 +53,11 @@
 }
 
 @media (min-width: 481px) {
+  .navbar--site-header-inner {
+    position: relative;
+    align-items: center;
+  }
+
   .navbar--container {
     padding: 0 24px;
   }
