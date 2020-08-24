@@ -6,19 +6,12 @@ p {
 .container {
   max-width: 1200px;
   padding: 0;
-  margin: 0 auto;
-  margin-top: -75px;
+  margin: -75px auto 0;
 }
 
 .wrapper {
   display: grid;
   grid-template-columns: 1fr;
-}
-
-.profile-photos-container,
-.user-info-container {
-  /*height: 390px;*/
-  /*margin-bottom: 32px;*/
 }
 
 .profile-photos-container {
@@ -35,14 +28,9 @@ p {
 .user-about {
   display: grid;
   align-items: center;
-  /*border: 1px solid rgba(22, 30, 42, 0.16);*/
 }
 
 .user-info-container {
-  /*display: flex;
-  justify-content: flex-start;
-  flex-direction: column;*/
-  /*height: 200px;*/
   margin: 10px 0 25px;
 }
 
@@ -52,16 +40,7 @@ p {
 
 .user-info {
   font-size: 14px;
-  /*margin-bottom: 20px;*/
   padding: 8px 20px 20px;
-  /*padding: 8px 20px;*/
-  /*padding-bottom: 10px;*/
-  /*border-bottom: 1px solid rgba(22, 30, 42, 0.16);*/
-}
-
-.user-info p {
-  /*border-bottom: 1px solid rgba(22, 30, 42, 0.16);*/
-  /*padding: 10px 0;*/
 }
 
 .contact-wrapper {
@@ -106,17 +85,10 @@ p {
   font-size: 20px;
 }
 
-/*@media (max-width: 320px) {
-  .user-info-container,
-  .user-about {
-    border: none;
-    border-top: 1px solid rgba(22, 30, 42, 0.16);
-  }
-}*/
-
-/*@media (min-width: 768px) {
+@media (min-width: 768px) {
   .container {
     padding: 0 15px;
+    margin-top: 75px;
   }
 
   .wrapper {
@@ -131,6 +103,50 @@ p {
   .user-about {
     border-radius: 12px;
   }
+
+  .user-info-container,
+  .user-about {
+    border: 1px solid rgba(22, 30, 42, 0.16);
+  }
+
+  .user-info-container {
+  }
+
+  .user-info-container {
+    margin: 0;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-direction: row;
+    height: 120px;
+  }
+
+  .user-name-age {
+    font-size: 27px;
+    margin-bottom: 20px;
+  }
+
+  .user-info {
+    flex: 1 1 100%;
+    padding: 8px 20px 0;
+    height: 100%;
+  }
+
+  .contact-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+    padding: 8px 20px 20px;
+  }
+
+  .contact-wrapper button {
+    height: 100%;
+  }
+
+  .contact-wrapper button:first-child {
+    margin-bottom: 12px;
+  }
 }
 
 @media (min-width: 1300px) {
@@ -138,4 +154,3 @@ p {
     margin: 0 100px;
   }
 }
-*/
