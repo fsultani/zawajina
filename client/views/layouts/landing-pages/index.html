@@ -1,23 +1,22 @@
 <!DOCTYPE html>
 <html lang="en" class="no-js">
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-  <title>${title}</title>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
+    />
+    <title>${title}</title>
 
-  <!-- Page styles -->
-  ${styles.map(style => `
-    <link rel="stylesheet" type="text/css" href=${style}>
-  `).join('')}
-</head>
-<body>
-  ${nav}
-  ${body}
-  ${footer}
-
-  ${scripts.map(script => `
-    <script type="text/javascript" src=${script}></script>
-  `).join('')}
-</body>
+    <!-- Page styles -->
+    ${styles.map(style => `
+    <link rel="stylesheet" type="text/css" href="${style}" />
+    `).join('')}
+  </head>
+  <body>
+    ${nav} ${body} ${footer} ${scripts.map(script => `
+    <script type="text/javascript" src="${script}"></script>
+    `).join('')}
+  </body>
 </html>

@@ -1,12 +1,17 @@
 <section>
   <div class="login-container">
     <div class="login-wrapper">
-      <form class="login-form validate-form" name="login" onsubmit="handleLogin(event)" novalidate>
+      <form
+        class="login-form validate-form"
+        name="login"
+        onsubmit="handleLogin(event)"
+        novalidate
+      >
         <span class="login-form-title">
           Login
         </span>
         <div class="input-wrapper validate-input" id="email-wrapper">
-          <input class="input-field" type="email" name="email">
+          <input class="input-field" type="email" name="email" />
           <span class="input-focus" id="email" data-placeholder="Email"></span>
           <div class="invalid-email" id="invalid-email">Invalid email</div>
         </div>
@@ -14,9 +19,11 @@
           <span class="password-icon-wrapper">
             <i class="zmdi zmdi-lock"></i>
           </span>
-          <input class="input-field" type="password" name="password">
+          <input class="input-field" type="password" name="password" />
           <span class="input-focus" data-placeholder="Password"></span>
-          <div class="invalid-password" id="invalid-password">Invalid password</div>
+          <div class="invalid-password" id="invalid-password">
+            Invalid password
+          </div>
         </div>
         <div class="login-button-container">
           <div class="login-button-wrapper">

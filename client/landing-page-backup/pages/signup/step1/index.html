@@ -1,27 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
+    />
     <title>Registration - My Match</title>
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js"></script>
 
     <!-- Font Icon -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
 
     <!-- Global styles -->
-    <link rel="stylesheet" type="text/css" href="/static/client/landing-page/global-css/styles.css">
-    <link rel="stylesheet" type="text/css" href="/static/client/landing-page/components/Nav/styles.css">
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/static/client/landing-page/global-css/styles.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/static/client/landing-page/components/Nav/styles.css"
+    />
 
     <!-- Page styles -->
-    <link rel="stylesheet" href="/static/client/landing-page/pages/signup/step1/styles.css">
+    <link
+      rel="stylesheet"
+      href="/static/client/landing-page/pages/signup/step1/styles.css"
+    />
   </head>
   <body>
     <div class="signup-container">
-      <div w3-include-html="/static/client/landing-page/components/Nav/index.html"></div>
+      <div
+        w3-include-html="/static/client/landing-page/components/Nav/index.html"
+      ></div>
       <section>
         <div class="signup-wrapper">
           <div class="signup-content">
@@ -30,17 +49,52 @@
               <h2 class="form-title">Create account</h2>
 
               <div class="input-wrapper validate-input" id="name-wrapper">
-                <input class="form-input" type="text" name="user_name" id="name_id" required />
-                <span class="input-focus animate-border-bottom" id="name" data-placeholder="Name"></span>
+                <input
+                  class="form-input"
+                  type="text"
+                  name="user_name"
+                  id="name_id"
+                  required
+                />
+                <span
+                  class="input-focus animate-border-bottom"
+                  id="name"
+                  data-placeholder="Name"
+                ></span>
               </div>
               <div class="input-wrapper validate-input" id="email-wrapper">
-                <input type="email" class="form-input" name="user_email" id="email_id" required />
-                <span class="input-focus animate-border-bottom" id="email" data-placeholder="Email"></span>
+                <input
+                  type="email"
+                  class="form-input"
+                  name="user_email"
+                  id="email_id"
+                  required
+                />
+                <span
+                  class="input-focus animate-border-bottom"
+                  id="email"
+                  data-placeholder="Email"
+                ></span>
               </div>
-              <div class="input-wrapper password-position" id="password-wrapper">
-                <input class="form-input" type="password" name="user_password">
-                <span class="input-focus animate-border-bottom" id="password" data-placeholder="Password"></span>
-                <span toggle="#password" class="field-icon" onclick="togglePassword()">
+              <div
+                class="input-wrapper password-position"
+                id="password-wrapper"
+              >
+                <input
+                  class="form-input"
+                  type="password"
+                  name="user_password"
+                />
+                <span
+                  class="input-focus animate-border-bottom"
+                  id="password"
+                  data-placeholder="Password"
+                ></span>
+                <span
+                  toggle="#password"
+                  class="field-icon"
+                  onclick="togglePassword()"
+                >
                   <i class="fa fa-eye" id="passwordEye"></i>
                 </span>
               </div>
@@ -65,19 +119,35 @@
               </div>
             </form>
             <div class="form-group">
-              <label for="agree-term" class="label-agree-term"><span><span></span></span>By signing up, you agree to all statements in <a href="/terms" class="term-service">Terms of Service</a></label>
+              <label for="agree-term" class="label-agree-term"
+                ><span><span></span></span>By signing up, you agree to all
+                statements in
+                <a href="/terms" class="term-service"
+                  >Terms of Service</a
+                ></label
+              >
             </div>
             <p class="login">
-              Already have an account? <a href="#" class="login-link">Login here</a>
+              Already have an account?
+              <a href="#" class="login-link">Login here</a>
             </p>
           </div>
         </div>
       </section>
     </div>
 
-    <script type="text/javascript" src="/static/client/landing-page/pages/signup/step1/js/includeHTML.js"></script>
-    <script type="text/javascript" src="/static/client/landing-page/pages/signup/step1/js/togglePassword.js"></script>
-    <script type="text/javascript" src="/static/client/landing-page/pages/signup/step1/js/handleSignupStepOne.js"></script>
+    <script
+      type="text/javascript"
+      src="/static/client/landing-page/pages/signup/step1/js/includeHTML.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="/static/client/landing-page/pages/signup/step1/js/togglePassword.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="/static/client/landing-page/pages/signup/step1/js/handleSignupStepOne.js"
+    ></script>
   </body>
   <!-- This templates was made by Colorlib (https://colorlib.com) -->
 </html>

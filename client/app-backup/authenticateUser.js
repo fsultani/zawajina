@@ -2,9 +2,9 @@ const checkAuthentication = async () => {
   try {
     const isAuthenticated = await axios.get("/api/authenticate", {
       headers: {
-        Authorization: Cookies.get('token')
-      }
-    })
+        Authorization: Cookies.get("token"),
+      },
+    });
     return isAuthenticated.status;
   } catch (err) {
     return err.response;
@@ -16,7 +16,7 @@ const checkAuthentication = async () => {
   if (checkAuthenticationStatus === 200 || checkAuthenticationStatus === 201) {
     return;
   } else {
-    Cookies.remove('token');
-    window.location.assign('/login');
+    Cookies.remove("token");
+    window.location.assign("/login");
   }
-})()
+})();

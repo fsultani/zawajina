@@ -1,29 +1,31 @@
-const http = require('http');
-const express = require('express');
-const es6Renderer = require('express-es6-template-engine');
-const path = require('path');
-const cookieParser = require('cookie-parser');
-const bodyParser = require('body-parser');
-const session = require('express-session');
-const osascript = require('node-osascript');
-const flash = require('connect-flash');
-const mongo = require('mongodb');
-const mongoose = require('mongoose');
+const http = require("http");
+const express = require("express");
+const es6Renderer = require("express-es6-template-engine");
+const path = require("path");
+const cookieParser = require("cookie-parser");
+const bodyParser = require("body-parser");
+const session = require("express-session");
+const osascript = require("node-osascript");
+const flash = require("connect-flash");
+const mongo = require("mongodb");
+const mongoose = require("mongoose");
 
-const jwt = require('jsonwebtoken');
-const JWT_SECRET = Buffer.from('fe1a1915a379f3be5394b64d14794932', 'hex')
-const authenticateToken = require('./config/auth');
+const jwt = require("jsonwebtoken");
+const JWT_SECRET = Buffer.from("fe1a1915a379f3be5394b64d14794932", "hex");
+const authenticateToken = require("./config/auth");
 
-const mongodbConnect = process.env.DEVELOPMENT ? 'mongodb+srv://fsultani:asdf@my-match.rxspi.mongodb.net/my-match-dev?retryWrites=true&w=majority' : process.env.MONGODB_URI;
+const mongodbConnect = process.env.DEVELOPMENT
+  ? "mongodb+srv://fsultani:asdf@my-match.rxspi.mongodb.net/my-match-dev?retryWrites=true&w=majority"
+  : process.env.MONGODB_URI;
 mongoose.connect(mongodbConnect);
 
 const app = express();
 
-const index = require('./routes/index');
-const registerRoute = require('./routes/registerRoute');
-const user = require('./routes/user');
-const conversation = require('./routes/conversation');
-const messages = require('./routes/messages');
+const index = require("./routes/index");
+const registerRoute = require("./routes/registerRoute");
+const user = require("./routes/user");
+const conversation = require("./routes/conversation");
+const messages = require("./routes/messages");
 
 // Body Parser Middleware
 app.use(bodyParser.json());
@@ -31,163 +33,163 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // Set static folder
-app.use('/static', express.static(path.join(process.env.PWD)));
+app.use("/static", express.static(path.join(process.env.PWD)));
 
-app.engine('html', es6Renderer);
-app.set('views', path.join(__dirname, '../client/views'));
-app.set('view engine', 'html');
+app.engine("html", es6Renderer);
+app.set("views", path.join(__dirname, "../client/views"));
+app.set("view engine", "html");
 
 // Catch all GET requests, and respond with an html file
-app.get('*', (req, res, next) => {
+app.get("*", (req, res, next) => {
   const { userId, token } = req.cookies;
-  if (!token && req.url.indexOf('/api/') === -1) {
-    switch(req.url) {
-      case '/':
-        res.render('layouts/landing-pages/index', {
+  if (!token && req.url.indexOf("/api/") === -1) {
+    switch (req.url) {
+      case "/":
+        res.render("layouts/landing-pages/index", {
           locals: {
-            title: 'My Match',
+            title: "My Match",
             styles: [
-              'https://fonts.googleapis.com/css?family=Heebo:400,700|Playfair+Display:700',
-              '/static/client/views/layouts/landing-pages/global-styles.css',
-              '/static/client/views/partials/styles/landing-page-nav.css',
-              '/static/client/views/partials/styles/footer.css',
-              '/static/client/views/landing-pages/home/styles.css',
+              "https://fonts.googleapis.com/css?family=Heebo:400,700|Playfair+Display:700",
+              "/static/client/views/layouts/landing-pages/global-styles.css",
+              "/static/client/views/partials/styles/landing-page-nav.css",
+              "/static/client/views/partials/styles/footer.css",
+              "/static/client/views/landing-pages/home/styles.css",
             ],
             scripts: [
-              'https://unpkg.com/scrollreveal',
-              'https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js',
-              '/static/client/views/landing-pages/home/animations.js',
+              "https://unpkg.com/scrollreveal",
+              "https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js",
+              "/static/client/views/landing-pages/home/animations.js",
             ],
           },
           partials: {
-            nav: 'partials/landing-page-nav',
-            body: 'landing-pages/home/index',
-            footer: 'partials/footer',
-          }
-        })
+            nav: "partials/landing-page-nav",
+            body: "landing-pages/home/index",
+            footer: "partials/footer",
+          },
+        });
         break;
-      case '/about':
-        res.render('layouts/landing-pages/index', {
+      case "/about":
+        res.render("layouts/landing-pages/index", {
           locals: {
-            title: 'About Us - My Match',
+            title: "About Us - My Match",
             styles: [
-              'https://fonts.googleapis.com/css?family=Heebo:400,700|Playfair+Display:700',
-              '/static/client/views/layouts/landing-pages/global-styles.css',
-              '/static/client/views/partials/styles/landing-page-nav.css',
-              '/static/client/views/partials/styles/footer.css',
-              '/static/client/views/landing-pages/about/styles.css',
+              "https://fonts.googleapis.com/css?family=Heebo:400,700|Playfair+Display:700",
+              "/static/client/views/layouts/landing-pages/global-styles.css",
+              "/static/client/views/partials/styles/landing-page-nav.css",
+              "/static/client/views/partials/styles/footer.css",
+              "/static/client/views/landing-pages/about/styles.css",
             ],
             scripts: [
-              'https://unpkg.com/scrollreveal@4.0.5/dist/scrollreveal.min.js',
-              '/static/client/views/landing-pages/home/animations.js',
+              "https://unpkg.com/scrollreveal@4.0.5/dist/scrollreveal.min.js",
+              "/static/client/views/landing-pages/home/animations.js",
             ],
           },
           partials: {
-            nav: 'partials/landing-page-nav',
-            body: 'landing-pages/about/index',
-            footer: 'partials/footer',
-          }
-        })
+            nav: "partials/landing-page-nav",
+            body: "landing-pages/about/index",
+            footer: "partials/footer",
+          },
+        });
         break;
-      case '/login':
-        res.render('layouts/landing-pages/index', {
+      case "/login":
+        res.render("layouts/landing-pages/index", {
           locals: {
-            title: 'Login - My Match',
+            title: "Login - My Match",
             styles: [
-              'https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css',
-              'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css',
-              '/static/client/views/layouts/landing-pages/global-styles.css',
-              '/static/client/views/partials/styles/landing-page-nav.css',
-              '/static/client/views/partials/styles/footer.css',
-              '/static/client/views/landing-pages/login/styles.css',
+              "https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css",
+              "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css",
+              "/static/client/views/layouts/landing-pages/global-styles.css",
+              "/static/client/views/partials/styles/landing-page-nav.css",
+              "/static/client/views/partials/styles/footer.css",
+              "/static/client/views/landing-pages/login/styles.css",
             ],
             scripts: [
-              'https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js',
-              'https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js',
-              '/static/client/views/landing-pages/login/handleFocusEvent.js',
-              '/static/client/views/landing-pages/login/handleLogin.js',
+              "https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js",
+              "https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js",
+              "/static/client/views/landing-pages/login/handleFocusEvent.js",
+              "/static/client/views/landing-pages/login/handleLogin.js",
             ],
           },
           partials: {
-            nav: 'partials/landing-page-nav',
-            body: 'landing-pages/login/index',
-            footer: 'partials/footer',
-          }
-        })
+            nav: "partials/landing-page-nav",
+            body: "landing-pages/login/index",
+            footer: "partials/footer",
+          },
+        });
         break;
-      case '/signup':
-        res.render('layouts/landing-pages/index', {
+      case "/signup":
+        res.render("layouts/landing-pages/index", {
           locals: {
-            title: 'Sign Up - My Match',
+            title: "Sign Up - My Match",
             styles: [
-              'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css',
-              '/static/client/views/layouts/landing-pages/global-styles.css',
-              '/static/client/views/partials/styles/landing-page-nav.css',
-              '/static/client/views/partials/styles/footer.css',
-              '/static/client/views/landing-pages/signup/styles.css',
+              "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css",
+              "/static/client/views/layouts/landing-pages/global-styles.css",
+              "/static/client/views/partials/styles/landing-page-nav.css",
+              "/static/client/views/partials/styles/footer.css",
+              "/static/client/views/landing-pages/signup/styles.css",
             ],
             scripts: [
-              'https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js',
-              'https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js',
-              '/static/client/views/landing-pages/signup/js/includeHTML.js',
-              '/static/client/views/landing-pages/signup/js/togglePassword.js',
-              '/static/client/views/landing-pages/signup/js/handleSignupStepOne.js',
+              "https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js",
+              "https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js",
+              "/static/client/views/landing-pages/signup/js/includeHTML.js",
+              "/static/client/views/landing-pages/signup/js/togglePassword.js",
+              "/static/client/views/landing-pages/signup/js/handleSignupStepOne.js",
             ],
           },
           partials: {
-            nav: 'partials/landing-page-nav',
-            body: 'landing-pages/signup/index',
-            footer: 'partials/footer',
-          }
-        })
+            nav: "partials/landing-page-nav",
+            body: "landing-pages/signup/index",
+            footer: "partials/footer",
+          },
+        });
         break;
-      case '/signup/profile':
-        res.render('layouts/landing-pages/index', {
+      case "/signup/profile":
+        res.render("layouts/landing-pages/index", {
           locals: {
-            title: 'Sign Up - My Match',
+            title: "Sign Up - My Match",
             styles: [
-              'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css',
-              '/static/client/views/layouts/landing-pages/global-styles.css',
-              '/static/client/views/partials/styles/landing-page-nav.css',
-              '/static/client/views/partials/styles/footer.css',
-              '/static/client/views/landing-pages/signup-profile/styles.css',
+              "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css",
+              "/static/client/views/layouts/landing-pages/global-styles.css",
+              "/static/client/views/partials/styles/landing-page-nav.css",
+              "/static/client/views/partials/styles/footer.css",
+              "/static/client/views/landing-pages/signup-profile/styles.css",
             ],
             scripts: [
-              'https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js',
-              'https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js',
-              '/static/client/views/landing-pages/signup-profile/js/signupProfileInit.js',
-              '/static/client/views/landing-pages/signup-profile/js/handleCreateNewAccount.js',
-              '/static/client/views/landing-pages/signup-profile/js/imageUpload.js',
+              "https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js",
+              "https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js",
+              "/static/client/views/landing-pages/signup-profile/js/signupProfileInit.js",
+              "/static/client/views/landing-pages/signup-profile/js/handleCreateNewAccount.js",
+              "/static/client/views/landing-pages/signup-profile/js/imageUpload.js",
             ],
           },
           partials: {
-            nav: 'partials/landing-page-nav',
-            body: 'landing-pages/signup-profile/index',
-            footer: 'partials/footer',
-          }
-        })
+            nav: "partials/landing-page-nav",
+            body: "landing-pages/signup-profile/index",
+            footer: "partials/footer",
+          },
+        });
         break;
-      case '/terms':
-        res.render('layouts/landing-pages/index', {
+      case "/terms":
+        res.render("layouts/landing-pages/index", {
           locals: {
-            title: 'Terms of Service - My Match',
+            title: "Terms of Service - My Match",
             styles: [
-              'https://fonts.googleapis.com/css?family=Heebo:400,700|Playfair+Display:700',
-              '/static/client/views/layouts/landing-pages/global-styles.css',
-              '/static/client/views/partials/styles/landing-page-nav.css',
-              '/static/client/views/partials/styles/footer.css',
-              '/static/client/views/landing-pages/terms/styles.css',
+              "https://fonts.googleapis.com/css?family=Heebo:400,700|Playfair+Display:700",
+              "/static/client/views/layouts/landing-pages/global-styles.css",
+              "/static/client/views/partials/styles/landing-page-nav.css",
+              "/static/client/views/partials/styles/footer.css",
+              "/static/client/views/landing-pages/terms/styles.css",
             ],
           },
           partials: {
-            nav: 'partials/landing-page-nav',
-            body: 'landing-pages/terms/index',
-            footer: 'partials/footer',
-          }
-        })
+            nav: "partials/landing-page-nav",
+            body: "landing-pages/terms/index",
+            footer: "partials/footer",
+          },
+        });
         break;
       default:
-        res.redirect('/login');
+        res.redirect("/login");
     }
   } else {
     if (userId) return next();
@@ -195,43 +197,43 @@ app.get('*', (req, res, next) => {
     jwt.verify(token, JWT_SECRET, (err, user) => {
       if (err) {
         // return res.sendStatus(403);
-        return res.render('layouts/landing-pages/index', {
+        return res.render("layouts/landing-pages/index", {
           locals: {
-            title: 'Login - My Match',
+            title: "Login - My Match",
             styles: [
-              'https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css',
-              'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css',
-              '/static/client/views/layouts/landing-pages/global-styles.css',
-              '/static/client/views/partials/styles/landing-page-nav.css',
-              '/static/client/views/partials/styles/footer.css',
-              '/static/client/views/landing-pages/login/styles.css',
+              "https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css",
+              "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css",
+              "/static/client/views/layouts/landing-pages/global-styles.css",
+              "/static/client/views/partials/styles/landing-page-nav.css",
+              "/static/client/views/partials/styles/footer.css",
+              "/static/client/views/landing-pages/login/styles.css",
             ],
             scripts: [
-              'https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js',
-              'https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js',
-              '/static/client/views/landing-pages/login/handleFocusEvent.js',
-              '/static/client/views/landing-pages/login/handleLogin.js',
+              "https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js",
+              "https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js",
+              "/static/client/views/landing-pages/login/handleFocusEvent.js",
+              "/static/client/views/landing-pages/login/handleLogin.js",
             ],
           },
           partials: {
-            nav: 'partials/landing-page-nav',
-            body: 'landing-pages/login/index',
-            footer: 'partials/footer',
-          }
-        })
+            nav: "partials/landing-page-nav",
+            body: "landing-pages/login/index",
+            footer: "partials/footer",
+          },
+        });
       }
       req.user = user.userDetails;
       next();
-    })
+    });
   }
-})
+});
 
 // Use index.js for any routes beginning with '/'
-app.use('/', index);
-app.use('/register', registerRoute);
-app.use('/user', user);
-app.use('/conversation', conversation);
-app.use('/messages', messages);
+app.use("/", index);
+app.use("/register", registerRoute);
+app.use("/user", user);
+app.use("/conversation", conversation);
+app.use("/messages", messages);
 
 const port = process.env.PORT || 3000;
 
@@ -254,18 +256,19 @@ if (process.env.DEVELOPMENT) {
       end if
     end tell
 
-    `, (err, result, raw) => {
-      if (err) return console.error(err)
-      }
+    `,
+    (err, result, raw) => {
+      if (err) return console.error(err);
+    }
   );
 }
 
 app.listen(port, () => {
   if (process.send) {
     // process.send({ event:'online', url:'http://localhost:' + port})
-    process.send('online');
+    process.send("online");
     console.log(`Listening on port ${port}`);
   }
-})
+});
 
 module.exports = app;

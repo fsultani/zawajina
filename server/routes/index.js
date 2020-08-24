@@ -1,17 +1,17 @@
-const express = require('express')
-const jwt = require('jsonwebtoken');
-const Cookies = require('js-cookie');
-const path = require('path');
-const JWT_SECRET = Buffer.from('fe1a1915a379f3be5394b64d14794932', 'hex')
+const express = require("express");
+const jwt = require("jsonwebtoken");
+const Cookies = require("js-cookie");
+const path = require("path");
+const JWT_SECRET = Buffer.from("fe1a1915a379f3be5394b64d14794932", "hex");
 
-const authenticateToken = require('../config/auth');
-const User = require('../models/user');
-const Message = require('../models/message');
-const Conversation = require('../models/conversation');
+const authenticateToken = require("../config/auth");
+const User = require("../models/user");
+const Message = require("../models/message");
+const Conversation = require("../models/conversation");
 
 const router = express.Router();
 
-router.post('/login', (req, res, next) => {
+router.post("/login", (req, res, next) => {
   User.findOne({ email: req.body.email }, (err, user) => {
     if (err) throw new Error(err);
     if (!user) return res.sendStatus(403);
@@ -19,70 +19,69 @@ router.post('/login', (req, res, next) => {
     User.comparePassword(req.body.password, user.password, (err, isMatch) => {
       if (err) throw err;
       if (isMatch) {
-        const token = jwt.sign(
-          { userDetails: user },
-          JWT_SECRET,
-          { expiresIn: '1 day' });
-        res.json({ token })
+        const token = jwt.sign({ userDetails: user }, JWT_SECRET, {
+          expiresIn: "1 day",
+        });
+        res.json({ token });
       } else {
         res.sendStatus(403);
       }
-    })
-  })
-})
+    });
+  });
+});
 
-router.get('/', (req, res, next) => {
+router.get("/", (req, res, next) => {
   User.findOne({ _id: req.user._id }, (err, user) => {
-    if (user && user.gender === 'male') {
-      User.find({ gender: 'female' }, (err, allUsers) => {
-        res.render('layouts/app/index', {
+    if (user && user.gender === "male") {
+      User.find({ gender: "female" }, (err, allUsers) => {
+        res.render("layouts/app/index", {
           locals: {
-            title: 'My Match',
+            title: "My Match",
             styles: [
-              '/static/client/views/app/home/styles.css',
-              '/static/client/views/partials/styles/app-nav.css',
-              '/static/client/views/layouts/app/app-global-styles.css',
+              "/static/client/views/app/home/styles.css",
+              "/static/client/views/partials/styles/app-nav.css",
+              "/static/client/views/layouts/app/app-global-styles.css",
             ],
             scripts: [
-              'https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js',
-              'https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js',
-              '/static/client/views/layouts/app/handleLogout.js',
+              "https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js",
+              "https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js",
+              "/static/client/views/layouts/app/handleLogout.js",
             ],
             user,
             allUsers,
           },
           partials: {
-            nav: 'partials/app-nav',
-            body: 'app/home/index',
-          }
-        })
-      })
+            nav: "partials/app-nav",
+            body: "app/home/index",
+          },
+        });
+      });
     } else {
-      User.find({ gender: 'male' }, (err, allUsers) => {
-        res.render('layouts/app/index', {
+      User.find({ gender: "male" }, (err, allUsers) => {
+        res.render("layouts/app/index", {
           locals: {
-            title: 'My Match',
+            title: "My Match",
             styles: [
-              '/static/client/views/app/home/styles.css',
-              '/static/client/views/partials/styles/app-nav.css',
-              '/static/client/views/layouts/app/app-global-styles.css',
+              "/static/client/views/app/home/styles.css",
+              "/static/client/views/partials/styles/app-nav.css",
+              "/static/client/views/layouts/app/app-global-styles.css",
             ],
             scripts: [
-              'https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js',
-              'https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js',
-              '/static/client/views/layouts/app/handleLogout.js',
+              "https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js",
+              "https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js",
+              "/static/client/views/layouts/app/handleLogout.js",
             ],
             user,
             allUsers,
           },
           partials: {
-            nav: 'partials/app-nav',
-            body: 'app/home/index',
-          }
-        })
-      })
+            nav: "partials/app-nav",
+            body: "app/home/index",
+          },
+        });
+      });
     }
-  })
+  });
 });
 
 // router.get('/', (req, res, next) => {
@@ -122,47 +121,51 @@ router.get('/', (req, res, next) => {
 //   })
 // });
 
-router.get('/search', (req, res, next) => {
+router.get("/search", (req, res, next) => {
   User.findOne({ _id: req.user._id }, (err, user) => {
     if (err) return res.sendStatus(403);
     if (user !== null) {
-      res.render('app/search/search', {
+      res.render("app/search/search", {
         user: user.toJSON(),
         styles: [
-          '/static/client/views/partials/styles/app-nav.css',
-          '/static/client/views/layouts/app/app-global-styles.css',
+          "/static/client/views/partials/styles/app-nav.css",
+          "/static/client/views/layouts/app/app-global-styles.css",
         ],
       });
     } else {
       res.sendStatus(403);
     }
-  })
-})
+  });
+});
 
-router.get('/api/signup-user-first-name', (req, res, next) => {
+router.get("/api/signup-user-first-name", (req, res, next) => {
   User.findOne({ _id: req.headers.userid }, (err, user) => {
     if (err) return res.sendStatus(403);
     if (user !== null) {
-      res.status(201).send({ name: user.name })
+      res.status(201).send({ name: user.name });
     } else {
       res.sendStatus(403);
     }
-  })
-})
+  });
+});
 
-router.get('/api/user-details', authenticateToken, (req, res, next) => {
+router.get("/api/user-details", authenticateToken, (req, res, next) => {
   User.findOne({ _id: req.user._id }, (err, user) => {
     res.status(201).send({ userId: user._id });
-  })
-})
+  });
+});
 
-router.put('/api/profile-info', (req, res) => {
-  const token = req.headers['authorization']
-  const decodedUser = jwt.decode(token, JWT_SECRET)
-  User.findOneAndUpdate({ username: decodedUser.username}, { profilePicture: req.body.data }, (err, member) => {
-    res.json({ member })
-  })
-})
+router.put("/api/profile-info", (req, res) => {
+  const token = req.headers["authorization"];
+  const decodedUser = jwt.decode(token, JWT_SECRET);
+  User.findOneAndUpdate(
+    { username: decodedUser.username },
+    { profilePicture: req.body.data },
+    (err, member) => {
+      res.json({ member });
+    }
+  );
+});
 
 module.exports = router;
 

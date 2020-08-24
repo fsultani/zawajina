@@ -8,7 +8,7 @@
   height: 55px;
   padding: 10px;
   z-index: 1;
-  background: linear-gradient(57deg, #00C6A7 0%, #1E4D92 100%);
+  background: linear-gradient(57deg, #00c6a7 0%, #1e4d92 100%);
 }
 
 .navbar--container {
@@ -22,7 +22,7 @@
   position: relative;
   display: flex;
   justify-content: space-between;
-  align-items: center
+  align-items: center;
 }
 
 .home-link {
@@ -35,7 +35,7 @@
 }
 
 .navbar--header-links li {
-  display: inline-flex
+  display: inline-flex;
 }
 
 .navbar--header-links a:not(.button) {
@@ -52,7 +52,7 @@
 
 .navbar--header-links a:not(.button):hover,
 .navbar--header-links a:not(.button):active {
-  color: #FFF
+  color: #fff;
 }
 
 @media (min-width: 481px) {

@@ -1,23 +1,24 @@
-const Profile = userId => {
-  const bootstrap = document.createElement('link');
+const Profile = (userId) => {
+  const bootstrap = document.createElement("link");
   bootstrap.rel = "stylesheet";
   bootstrap.type = "text/css";
-  bootstrap.href = 'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css';
+  bootstrap.href =
+    "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css";
 
-  const profileStylesTag = document.createElement('link');
+  const profileStylesTag = document.createElement("link");
   profileStylesTag.rel = "stylesheet";
   profileStylesTag.type = "text/css";
-  profileStylesTag.href = '/static/client/app/profile-styles.css';
+  profileStylesTag.href = "/static/client/app/profile-styles.css";
 
-  const navBarStyles = document.createElement('link');
+  const navBarStyles = document.createElement("link");
   navBarStyles.rel = "stylesheet";
   navBarStyles.type = "text/css";
-  navBarStyles.href = '/static/client/app/components/NavBar/nav-bar-styles.css';
+  navBarStyles.href = "/static/client/app/components/NavBar/nav-bar-styles.css";
 
-  const appGlobalStyles = document.createElement('link');
+  const appGlobalStyles = document.createElement("link");
   appGlobalStyles.rel = "stylesheet";
   appGlobalStyles.type = "text/css";
-  appGlobalStyles.href = '/static/client/app/app-global-styles.css';
+  appGlobalStyles.href = "/static/client/app/app-global-styles.css";
 
   document.head.appendChild(bootstrap);
   document.head.appendChild(appGlobalStyles);
@@ -208,19 +209,22 @@ const Profile = userId => {
     </div>
   `;
 
-  document.querySelector('#app').innerHTML = content;
+  document.querySelector("#app").innerHTML = content;
 
-  axios.get(`/user/api/info/${userId}`, {
-    headers: {
-      Authorization: Cookies.get('token')
-    }
-  }).then(({ data }) => {
-    const { user } = data;
-    console.log('user:\n', user)
-    const { photos, name, age, city, state, country } = user;
-  }).catch(err => {
-    window.location.pathname = '/';
-  })
+  axios
+    .get(`/user/api/info/${userId}`, {
+      headers: {
+        Authorization: Cookies.get("token"),
+      },
+    })
+    .then(({ data }) => {
+      const { user } = data;
+      console.log("user:\n", user);
+      const { photos, name, age, city, state, country } = user;
+    })
+    .catch((err) => {
+      window.location.pathname = "/";
+    });
 };
 
 export default Profile;

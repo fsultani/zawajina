@@ -1,18 +1,18 @@
 const Body = () => {
-  const profileStylesTag = document.createElement('link');
+  const profileStylesTag = document.createElement("link");
   profileStylesTag.rel = "stylesheet";
   profileStylesTag.type = "text/css";
-  profileStylesTag.href = '/static/client/app/body-styles.css';
+  profileStylesTag.href = "/static/client/app/body-styles.css";
 
-  const navBarStyles = document.createElement('link');
+  const navBarStyles = document.createElement("link");
   navBarStyles.rel = "stylesheet";
   navBarStyles.type = "text/css";
-  navBarStyles.href = '/static/client/app/components/NavBar/nav-bar-styles.css';
+  navBarStyles.href = "/static/client/app/components/NavBar/nav-bar-styles.css";
 
-  const appGlobalStyles = document.createElement('link');
+  const appGlobalStyles = document.createElement("link");
   appGlobalStyles.rel = "stylesheet";
   appGlobalStyles.type = "text/css";
-  appGlobalStyles.href = '/static/client/app/app-global-styles.css';
+  appGlobalStyles.href = "/static/client/app/app-global-styles.css";
 
   document.head.appendChild(profileStylesTag);
   document.head.appendChild(appGlobalStyles);
@@ -23,19 +23,24 @@ const Body = () => {
       <h2 class="testimonials-header">Recently Active</h2>
   `;
 
-  axios.get("/api/all-members", {
-    headers: {
-      Authorization: Cookies.get('token')
-    }
-  }).then(res => {
-    content += `
+  axios
+    .get("/api/all-members", {
+      headers: {
+        Authorization: Cookies.get("token"),
+      },
+    })
+    .then((res) => {
+      content += `
       <div class="testimonials">
-        ${
-          res.data.all.map(user => (`
+        ${res.data.all
+          .map(
+            (user) => `
             <a href="/user/${user._id}" style="text-decoration: none">
               <div class="testimonial-wrapper">
                 <div class="testimonial-image">
-                  <img src=${user.photos[Math.floor(Math.random() * user.photos.length)]} alt="Photo 1">
+                  <img src=${
+                    user.photos[Math.floor(Math.random() * user.photos.length)]
+                  } alt="Photo 1">
                 </div>
                 <div class="testimonial-body">
                   <div class="testimonial-name">${user.name}, ${user.age}</div>
@@ -44,17 +49,19 @@ const Body = () => {
                 </div>
               </div>
             </a>
-          `)).join('')
-        }
+          `
+          )
+          .join("")}
       </div>
       </div>
     `;
 
-    document.querySelector('#app').innerHTML = content;
-  }).catch(err => {
-    Cookies.remove('token');
-    window.location.pathname = '/login';
-  })
-}
+      document.querySelector("#app").innerHTML = content;
+    })
+    .catch((err) => {
+      Cookies.remove("token");
+      window.location.pathname = "/login";
+    });
+};
 
 export default Body;

@@ -35,6 +35,7 @@
   line-height: 16px;
   padding: 8px 24px;
 }
-.navbar--header-links a:not(.button):hover, .navbar--header-links a:not(.button):active {
-  color: #FFF;
+.navbar--header-links a:not(.button):hover,
+.navbar--header-links a:not(.button):active {
+  color: #fff;
 }
