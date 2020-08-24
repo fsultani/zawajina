@@ -22,44 +22,53 @@
     </div>
   `;
 
-  const profile = '<h1>Profile page</h1>';
+  const profile = "<h1>Profile page</h1>";
 
-  if (window.location.pathname === '/') {
-    axios.get("/api/all-members", {
-      headers: {
-        Authorization: Cookies.get('token')
-      }
-    }).then(res => {
-      const content = `
+  if (window.location.pathname === "/") {
+    axios
+      .get("/api/all-members", {
+        headers: {
+          Authorization: Cookies.get("token"),
+        },
+      })
+      .then((res) => {
+        const content = `
         <h2 class="testimonials-header">Recently Active</h2>
         <div class="testimonials">
-          ${
-            res.data.all.map(member => (`
+          ${res.data.all
+            .map(
+              (member) => `
               <div class="testimonial-wrapper">
                 <div class="testimonial-image">
-                  <img src="/static/client/app/images/girl-${Math.floor(Math.random() * 5) + 1}.jpg" alt="Girl 1">
+                  <img src="/static/client/app/images/girl-${
+                    Math.floor(Math.random() * 5) + 1
+                  }.jpg" alt="Girl 1">
                 </div>
                 <div class="testimonial-body">
-                  <div class="testimonial-name">${member.name}, ${member.age}</div>
+                  <div class="testimonial-name">${member.name}, ${
+                member.age
+              }</div>
                   <p class="location">${member.city}</p>
                   <p class="country">${member.country}</p>
                 </div>
               </div>
-            `)).join('')
-          }
+            `
+            )
+            .join("")}
         </div>
-      `
-      document.querySelector('#app').innerHTML = NavBar + content;
+      `;
+        document.querySelector("#app").innerHTML = NavBar + content;
 
-      document.querySelector('#logout').onclick = () => {
+        document.querySelector("#logout").onclick = () => {
+          // Cookies.remove('token');
+          // window.location.pathname = '/login';
+        };
+      })
+      .catch((err) => {
+        console.error("err.response\n", err.response);
         // Cookies.remove('token');
         // window.location.pathname = '/login';
-      }
-    }).catch(err => {
-      console.error("err.response\n", err.response);
-      // Cookies.remove('token');
-      // window.location.pathname = '/login';
-    })
+      });
   }
 
   // if (window.location.pathname === '/profile') {

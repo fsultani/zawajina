@@ -1,5 +1,5 @@
-const jwt = require('jsonwebtoken');
-const JWT_SECRET = Buffer.from('fe1a1915a379f3be5394b64d14794932', 'hex')
+const jwt = require("jsonwebtoken");
+const JWT_SECRET = Buffer.from("fe1a1915a379f3be5394b64d14794932", "hex");
 
 const authenticateToken = (req, res, next) => {
   const { authorization } = req.headers;
@@ -8,7 +8,7 @@ const authenticateToken = (req, res, next) => {
     if (err) return res.sendStatus(403);
     req.user = user.userDetails;
     next();
-  })
-}
+  });
+};
 
 module.exports = authenticateToken;

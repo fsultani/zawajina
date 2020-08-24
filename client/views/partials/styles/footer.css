@@ -2,22 +2,22 @@
   font-size: 14px;
   line-height: 20px;
   letter-spacing: 0px;
-  background: #161E2A
+  background: #161e2a;
 }
 
 .site-footer a {
-  color: #6B7A90;
-  text-decoration: none
+  color: #6b7a90;
+  text-decoration: none;
 }
 
 .site-footer a:hover,
 .site-footer a:active {
-  text-decoration: underline
+  text-decoration: underline;
 }
 
 .site-footer-inner {
   padding-top: 48px;
-  padding-bottom: 32px
+  padding-bottom: 32px;
 }
 
 .footer-brand,
@@ -25,94 +25,94 @@
 .footer-bottom-links,
 .footer-copyright {
   display: flex;
-  justify-content: center
+  justify-content: center;
 }
 
-.footer-social-links li+li,
-.footer-bottom-links li+li {
-  margin-left: 16px
+.footer-social-links li + li,
+.footer-bottom-links li + li {
+  margin-left: 16px;
 }
 
 .footer-social-links {
-  margin-left: -8px
+  margin-left: -8px;
 }
 
 .footer-social-links li {
-  display: inline-flex
+  display: inline-flex;
 }
 
 .footer-social-links li a {
-  padding: 8px
+  padding: 8px;
 }
 
 .site-footer-unit-inner {
   padding-top: 32px;
-  border-top: 2px solid #252E3B
+  border-top: 2px solid #252e3b;
 }
 
 .footer-title {
   color: #fff;
   font-weight: 700;
-  text-transform: uppercase
+  text-transform: uppercase;
 }
 
 .footer-top-links ul {
-  margin-bottom: 32px
+  margin-bottom: 32px;
 }
 
 .footer-top-links li {
-  margin-bottom: 12px
+  margin-bottom: 12px;
 }
 
 .footer-top-links a {
-  color: #9EABC0
+  color: #9eabc0;
 }
 
 .site-footer-bottom {
-  margin-top: 48px
+  margin-top: 48px;
 }
 
 @media (max-width: 640px) {
   .site-footer-unit:first-of-type .site-footer-unit-inner {
     padding-top: 0;
-    border-top: none
+    border-top: none;
   }
 }
 
 @media (min-width: 641px) {
   .site-footer-inner {
-    padding-top: 56px
+    padding-top: 56px;
   }
   .site-footer-top {
     display: flex;
     flex-wrap: wrap;
     margin-right: -12px;
     margin-left: -12px;
-    margin-top: -12px
+    margin-top: -12px;
   }
   .site-footer-top:last-of-type {
-    margin-bottom: -12px
+    margin-bottom: -12px;
   }
   .site-footer-top:not(:last-of-type) {
-    margin-bottom: 12px
+    margin-bottom: 12px;
   }
   .site-footer-unit {
     padding: 12px;
     flex-basis: 276px;
-    flex-grow: 1
+    flex-grow: 1;
   }
   .footer-brand,
   .footer-social-links {
-    justify-content: flex-start
+    justify-content: flex-start;
   }
   .site-footer-bottom {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    margin-top: 20px
+    margin-top: 20px;
   }
   .footer-bottom-links {
     margin-bottom: 0;
-    order: 1
+    order: 1;
   }
 }

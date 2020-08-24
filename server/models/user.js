@@ -1,18 +1,18 @@
-var mongoose = require('mongoose');
-var bcrypt = require('bcryptjs');
+var mongoose = require("mongoose");
+var bcrypt = require("bcryptjs");
 
 const UserSchema = mongoose.Schema({
   name: {
     type: String,
-    required: true
+    required: true,
   },
   email: {
     type: String,
-    required: true
+    required: true,
   },
   password: {
     type: String,
-    required: true
+    required: true,
   },
   startedRegistration: {
     type: Boolean,
@@ -24,27 +24,27 @@ const UserSchema = mongoose.Schema({
   },
   fullDob: {
     type: String,
-    required: () => (
-      typeof this.fullDob === undefined || (this.fullDob !== undefined && typeof this.fullDob !== 'string')
-    )
+    required: () =>
+      typeof this.fullDob === undefined ||
+      (this.fullDob !== undefined && typeof this.fullDob !== "string"),
   },
   age: {
     type: Number,
-    required: () => (
-      typeof this.userAge === undefined || (this.userAge !== undefined && typeof this.userAge !== 'string')
-    )
+    required: () =>
+      typeof this.userAge === undefined ||
+      (this.userAge !== undefined && typeof this.userAge !== "string"),
   },
   gender: {
     type: String,
-    required: () => (
-      typeof this.gender === undefined || (this.gender !== undefined && typeof this.gender !== 'string')
-    )
+    required: () =>
+      typeof this.gender === undefined ||
+      (this.gender !== undefined && typeof this.gender !== "string"),
   },
   country: {
     type: String,
-    required: () => (
-      typeof this.country === undefined || (this.country !== undefined && typeof this.country !== 'string')
-    )
+    required: () =>
+      typeof this.country === undefined ||
+      (this.country !== undefined && typeof this.country !== "string"),
   },
   state: {
     type: String,
@@ -53,9 +53,9 @@ const UserSchema = mongoose.Schema({
   },
   city: {
     type: String,
-    required: () => (
-      typeof this.city === undefined || (this.city !== undefined && typeof this.city !== 'string')
-    )
+    required: () =>
+      typeof this.city === undefined ||
+      (this.city !== undefined && typeof this.city !== "string"),
   },
   isUserSessionValid: {
     type: Boolean,
@@ -67,28 +67,28 @@ const UserSchema = mongoose.Schema({
   },
 });
 
-const User = module.exports = mongoose.model('Users', UserSchema);
+const User = (module.exports = mongoose.model("Users", UserSchema));
 
 module.exports.createUser = (newUser, callback) => {
   bcrypt.genSalt(10, (err, salt) => {
-      bcrypt.hash(newUser.password, salt, (err, hash) => {
-          newUser.password = hash;
-          newUser.save(callback);
-      });
+    bcrypt.hash(newUser.password, salt, (err, hash) => {
+      newUser.password = hash;
+      newUser.save(callback);
+    });
   });
-}
+};
 
 module.exports.getUserByEmail = (email, callback) => {
   User.findOne({ email }, callback);
-}
+};
 
 module.exports.getUserById = (id, callback) => {
   User.findById(id, callback);
-}
+};
 
 module.exports.comparePassword = (candidatePassword, hash, callback) => {
   bcrypt.compare(candidatePassword, hash, (err, isMatch) => {
-      if(err) console.log(err)
-      callback(null, isMatch);
+    if (err) console.log(err);
+    callback(null, isMatch);
   });
-}
+};

@@ -1,4 +1,9 @@
-<div class="full-page-loading-spinner"><div></div><div></div><div></div><div></div></div>
+<div class="full-page-loading-spinner">
+  <div></div>
+  <div></div>
+  <div></div>
+  <div></div>
+</div>
 <div class="signup-container">
   <section>
     <div class="signup-wrapper">
@@ -6,16 +11,28 @@
         <div id="signup-error"></div>
         <div id="slow-network-warning">
           <p class="slow-network-message"></p>
-      </div>
-        <form name="signupForm" enctype="multipart/form-data" onsubmit="return false" novalidate autocomplete="off">
+        </div>
+        <form
+          name="signupForm"
+          enctype="multipart/form-data"
+          onsubmit="return false"
+          novalidate
+          autocomplete="off"
+        >
           <h2 class="form-title"></h2>
-          <p class="form-subtitle">Please answer a few short questions to find the right matches.</p>
+          <p class="form-subtitle">
+            Please answer a few short questions to find the right matches.
+          </p>
 
           <div class="form-row">
             <div class="dob-container form-group form-icon">
               <label for="birth_date">Birth date</label>
               <div class="dob-wrapper">
-                <select class="form-control form-control-sm" id="dob-month" onchange="handleBirthMonth(event)">
+                <select
+                  class="form-control form-control-sm"
+                  id="dob-month"
+                  onchange="handleBirthMonth(event)"
+                >
                   <option selected disabled>Month</option>
                   <option value="01">January</option>
                   <option value="02">February</option>
@@ -40,7 +57,11 @@
                     birthDay();
                   </script>
                 </select>
-                <select class="form-control form-control-sm" id="dob-year" onchange="handleBirthYear(event)">
+                <select
+                  class="form-control form-control-sm"
+                  id="dob-year"
+                  onchange="handleBirthYear(event)"
+                >
                   <script type="module">
                     import { birthYear } from "/static/client/views/landing-pages/signup-profile/js/helpers.js";
                     birthYear();
@@ -79,7 +100,7 @@
                 type="text"
                 name="myCountry"
                 placeholder="City"
-              >
+              />
               <div id="results"></div>
             </div>
             <script type="module">
@@ -94,62 +115,98 @@
             Please upload only JPEG or PNG
           </div>
           <div class="images-wrapper">
-            <input type="file" name="image-1" class="image-1" hidden="hidden" accept=".jpg,.jpeg,.png" />
+            <input
+              type="file"
+              name="image-1"
+              class="image-1"
+              hidden="hidden"
+              accept=".jpg,.jpeg,.png"
+            />
             <div class="image-upload-container">
               <div class="custom-button-1"></div>
               <div class="image-upload-1">
-                <img src="" class="image-preview-1">
+                <img src="" class="image-preview-1" />
               </div>
               <div class="remove-image-1"></div>
               <div class="processing-bar-1"></div>
               <div class="success-box-1"></div>
             </div>
-            <input type="file" name="image-2" class="image-2" hidden="hidden" accept=".jpg,.jpeg,.png" />
+            <input
+              type="file"
+              name="image-2"
+              class="image-2"
+              hidden="hidden"
+              accept=".jpg,.jpeg,.png"
+            />
             <div class="image-upload-container">
               <div class="custom-button-2"></div>
               <div class="image-upload-2">
-                <img src="" class="image-preview-2">
+                <img src="" class="image-preview-2" />
               </div>
               <div class="remove-image-2"></div>
               <div class="processing-bar-2"></div>
               <div class="success-box-2"></div>
             </div>
-            <input type="file" name="image-3" class="image-3" hidden="hidden" accept=".jpg,.jpeg,.png" />
+            <input
+              type="file"
+              name="image-3"
+              class="image-3"
+              hidden="hidden"
+              accept=".jpg,.jpeg,.png"
+            />
             <div class="image-upload-container">
               <div class="custom-button-3"></div>
               <div class="image-upload-3">
-                <img src="" class="image-preview-3">
+                <img src="" class="image-preview-3" />
               </div>
               <div class="remove-image-3"></div>
               <div class="processing-bar-3"></div>
               <div class="success-box-3"></div>
             </div>
 
-            <input type="file" name="image-4" class="image-4" hidden="hidden" accept=".jpg,.jpeg,.png" />
+            <input
+              type="file"
+              name="image-4"
+              class="image-4"
+              hidden="hidden"
+              accept=".jpg,.jpeg,.png"
+            />
             <div class="image-upload-container">
               <div class="custom-button-4"></div>
               <div class="image-upload-4">
-                <img src="" class="image-preview-4">
+                <img src="" class="image-preview-4" />
               </div>
               <div class="remove-image-4"></div>
               <div class="processing-bar-4"></div>
               <div class="success-box-4"></div>
             </div>
-            <input type="file" name="image-5" class="image-5" hidden="hidden" accept=".jpg,.jpeg,.png" />
+            <input
+              type="file"
+              name="image-5"
+              class="image-5"
+              hidden="hidden"
+              accept=".jpg,.jpeg,.png"
+            />
             <div class="image-upload-container">
               <div class="custom-button-5"></div>
               <div class="image-upload-5">
-                <img src="" class="image-preview-5">
+                <img src="" class="image-preview-5" />
               </div>
               <div class="remove-image-5"></div>
               <div class="processing-bar-5"></div>
               <div class="success-box-5"></div>
             </div>
-            <input type="file" name="image-6" class="image-6" hidden="hidden" accept=".jpg,.jpeg,.png" />
+            <input
+              type="file"
+              name="image-6"
+              class="image-6"
+              hidden="hidden"
+              accept=".jpg,.jpeg,.png"
+            />
             <div class="image-upload-container">
               <div class="custom-button-6"></div>
               <div class="image-upload-6">
-                <img src="" class="image-preview-6">
+                <img src="" class="image-preview-6" />
               </div>
               <div class="remove-image-6"></div>
               <div class="processing-bar-6"></div>
@@ -158,7 +215,12 @@
           </div>
 
           <div class="form-group signup-button-wrapper">
-            <div class="submit-loading-spinner"><div></div><div></div><div></div><div></div></div>
+            <div class="submit-loading-spinner">
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+            </div>
             <button
               type="submit"
               onclick="handleCreateNewAccount()"

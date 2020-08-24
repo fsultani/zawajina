@@ -1,3 +1,8 @@
 # Ignore artifacts:
 build
 coverage
+*.json
+*.min.css
+*.hbs
+fonts
+mongo_shell_notes.js

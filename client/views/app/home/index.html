@@ -2,19 +2,23 @@
   <h2 class="testimonials-header">Recently Active</h2>
   <div class="testimonials">
     ${allUsers.map(user => `
-      <a href="/user/${user._id}" style="text-decoration: none">
-        <div class="testimonial-wrapper">
-          <div class="testimonial-image">
-            <img src="${user.photos.length > 0 ? user.photos[0] : user.gender === 'male' ? 'https://my-match.s3.amazonaws.com/male.png' : 'https://my-match.s3.amazonaws.com/female.png'}" alt="Photo 1">
-          </div>
-          <div class="testimonial-body">
-            <div class="testimonial-name">${user.name}, ${user.age}</div>
-            <p class="location">
-              ${user.city}, ${user.state ? `${user.state}, ${user.country}` : user.country}
-            </p>
-          </div>
+    <a href="/user/${user._id}" style="text-decoration: none;">
+      <div class="testimonial-wrapper">
+        <div class="testimonial-image">
+          <img
+            src="${user.photos.length > 0 ? user.photos[0] : user.gender === 'male' ? 'https://my-match.s3.amazonaws.com/male.png' : 'https://my-match.s3.amazonaws.com/female.png'}"
+            alt="Photo 1"
+          />
         </div>
-      </a>
+        <div class="testimonial-body">
+          <div class="testimonial-name">${user.name}, ${user.age}</div>
+          <p class="location">
+            ${user.city}, ${user.state ? `${user.state}, ${user.country}` :
+            user.country}
+          </p>
+        </div>
+      </div>
+    </a>
     `).join('')}
   </div>
 </div>

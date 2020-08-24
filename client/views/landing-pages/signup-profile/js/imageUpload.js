@@ -7,11 +7,11 @@ const processingBar1 = document.querySelector(".processing-bar-1");
 const successBox1 = document.querySelector(".success-box-1");
 
 customButton1.addEventListener("click", () => {
-  if (image1.value) image1.value = '';
+  if (image1.value) image1.value = "";
   image1.click();
-})
+});
 
-image1.addEventListener("change", event => {
+image1.addEventListener("change", (event) => {
   const uploadedFile = URL.createObjectURL(event.target.files[0]);
   imagePreview1.src = uploadedFile;
   imagePreview1.style.display = "block";
@@ -34,12 +34,12 @@ image1.addEventListener("change", event => {
       setTimeout(() => {
         successBox1.style.display = "none";
         removeImageButton1.style.display = "block";
-      }, 3000)
+      }, 3000);
     }
   }
-})
+});
 
-removeImageButton1.addEventListener("click", event => {
+removeImageButton1.addEventListener("click", (event) => {
   imagePreview1.src = "";
   imagePreview1.style.display = "none";
   imageUpload1.classList.remove("display-image-1");
@@ -50,7 +50,7 @@ removeImageButton1.addEventListener("click", event => {
   processingBar1.style.width = "";
 
   removeImageButton1.style.display = "none";
-})
+});
 
 /* *************************************************************************************************** */
 
@@ -63,11 +63,11 @@ const processingBar2 = document.querySelector(".processing-bar-2");
 const successBox2 = document.querySelector(".success-box-2");
 
 customButton2.addEventListener("click", () => {
-  if (image2.value) image2.value = '';
+  if (image2.value) image2.value = "";
   image2.click();
-})
+});
 
-image2.addEventListener("change", event => {
+image2.addEventListener("change", (event) => {
   const uploadedFile = URL.createObjectURL(event.target.files[0]);
   imagePreview2.src = uploadedFile;
   imagePreview2.style.display = "block";
@@ -90,12 +90,12 @@ image2.addEventListener("change", event => {
       setTimeout(() => {
         successBox2.style.display = "none";
         removeImageButton2.style.display = "block";
-      }, 3000)
+      }, 3000);
     }
   }
-})
+});
 
-removeImageButton2.addEventListener("click", event => {
+removeImageButton2.addEventListener("click", (event) => {
   imagePreview2.src = "";
   imagePreview2.style.display = "none";
   imageUpload2.classList.remove("display-image-2");
@@ -106,7 +106,7 @@ removeImageButton2.addEventListener("click", event => {
   processingBar2.style.width = "";
 
   removeImageButton2.style.display = "none";
-})
+});
 
 /* *************************************************************************************************** */
 
@@ -119,11 +119,11 @@ const processingBar3 = document.querySelector(".processing-bar-3");
 const successBox3 = document.querySelector(".success-box-3");
 
 customButton3.addEventListener("click", () => {
-  if (image3.value) image3.value = '';
+  if (image3.value) image3.value = "";
   image3.click();
-})
+});
 
-image3.addEventListener("change", event => {
+image3.addEventListener("change", (event) => {
   const uploadedFile = URL.createObjectURL(event.target.files[0]);
   imagePreview3.src = uploadedFile;
   imagePreview3.style.display = "block";
@@ -146,12 +146,12 @@ image3.addEventListener("change", event => {
       setTimeout(() => {
         successBox3.style.display = "none";
         removeImageButton3.style.display = "block";
-      }, 3000)
+      }, 3000);
     }
   }
-})
+});
 
-removeImageButton3.addEventListener("click", event => {
+removeImageButton3.addEventListener("click", (event) => {
   imagePreview3.src = "";
   imagePreview3.style.display = "none";
   imageUpload3.classList.remove("display-image-3");
@@ -162,7 +162,7 @@ removeImageButton3.addEventListener("click", event => {
   processingBar3.style.width = "";
 
   removeImageButton3.style.display = "none";
-})
+});
 
 /* *************************************************************************************************** */
 
@@ -175,11 +175,11 @@ const processingBar4 = document.querySelector(".processing-bar-4");
 const successBox4 = document.querySelector(".success-box-4");
 
 customButton4.addEventListener("click", () => {
-  if (image4.value) image4.value = '';
+  if (image4.value) image4.value = "";
   image4.click();
-})
+});
 
-image4.addEventListener("change", event => {
+image4.addEventListener("change", (event) => {
   const uploadedFile = URL.createObjectURL(event.target.files[0]);
   imagePreview4.src = uploadedFile;
   imagePreview4.style.display = "block";
@@ -202,12 +202,12 @@ image4.addEventListener("change", event => {
       setTimeout(() => {
         successBox4.style.display = "none";
         removeImageButton4.style.display = "block";
-      }, 3000)
+      }, 3000);
     }
   }
-})
+});
 
-removeImageButton4.addEventListener("click", event => {
+removeImageButton4.addEventListener("click", (event) => {
   imagePreview4.src = "";
   imagePreview4.style.display = "none";
   imageUpload4.classList.remove("display-image-4");
@@ -218,7 +218,7 @@ removeImageButton4.addEventListener("click", event => {
   processingBar4.style.width = "";
 
   removeImageButton4.style.display = "none";
-})
+});
 
 /* *************************************************************************************************** */
 
@@ -231,11 +231,11 @@ const processingBar5 = document.querySelector(".processing-bar-5");
 const successBox5 = document.querySelector(".success-box-5");
 
 customButton5.addEventListener("click", () => {
-  if (image5.value) image5.value = '';
+  if (image5.value) image5.value = "";
   image5.click();
-})
+});
 
-image5.addEventListener("change", event => {
+image5.addEventListener("change", (event) => {
   const uploadedFile = URL.createObjectURL(event.target.files[0]);
   imagePreview5.src = uploadedFile;
   imagePreview5.style.display = "block";
@@ -258,12 +258,12 @@ image5.addEventListener("change", event => {
       setTimeout(() => {
         successBox5.style.display = "none";
         removeImageButton5.style.display = "block";
-      }, 3000)
+      }, 3000);
     }
   }
-})
+});
 
-removeImageButton5.addEventListener("click", event => {
+removeImageButton5.addEventListener("click", (event) => {
   imagePreview5.src = "";
   imagePreview5.style.display = "none";
   imageUpload5.classList.remove("display-image-5");
@@ -274,7 +274,7 @@ removeImageButton5.addEventListener("click", event => {
   processingBar5.style.width = "";
 
   removeImageButton5.style.display = "none";
-})
+});
 
 /* *************************************************************************************************** */
 
@@ -287,11 +287,11 @@ const processingBar6 = document.querySelector(".processing-bar-6");
 const successBox6 = document.querySelector(".success-box-6");
 
 customButton6.addEventListener("click", () => {
-  if (image6.value) image6.value = '';
+  if (image6.value) image6.value = "";
   image6.click();
-})
+});
 
-image6.addEventListener("change", event => {
+image6.addEventListener("change", (event) => {
   const uploadedFile = URL.createObjectURL(event.target.files[0]);
   imagePreview6.src = uploadedFile;
   imagePreview6.style.display = "block";
@@ -314,12 +314,12 @@ image6.addEventListener("change", event => {
       setTimeout(() => {
         successBox6.style.display = "none";
         removeImageButton6.style.display = "block";
-      }, 3000)
+      }, 3000);
     }
   }
-})
+});
 
-removeImageButton6.addEventListener("click", event => {
+removeImageButton6.addEventListener("click", (event) => {
   imagePreview6.src = "";
   imagePreview6.style.display = "none";
   imageUpload6.classList.remove("display-image-6");
@@ -330,4 +330,4 @@ removeImageButton6.addEventListener("click", event => {
   processingBar6.style.width = "";
 
   removeImageButton6.style.display = "none";
-})
+});
