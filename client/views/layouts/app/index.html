@@ -14,7 +14,11 @@
     `).join('')}
   </head>
   <body>
-    ${nav} ${body} ${scripts.map(script => `
+    ${nav}
+    <div style="margin-top: 75px;">
+      ${body}
+    </div>
+    ${scripts.map(script => `
     <script type="text/javascript" src="${script}"></script>
     `).join('')}
   </body>
