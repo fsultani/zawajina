@@ -6,7 +6,7 @@ p {
 .container {
   max-width: 1200px;
   padding: 0;
-  margin: -75px auto 0;
+  margin: 0 auto;
 }
 
 .wrapper {
@@ -16,31 +16,48 @@ p {
 
 .profile-photos-container {
   box-shadow: 0 8px 8px rgba(22, 30, 42, 0.16);
+  width: 100vw;
+  height: 100vw;
 }
 
 .profile-image {
   width: 100%;
-  height: 390px;
+  height: 100%;
   object-fit: cover;
 }
 
-.user-info-container,
-.user-about {
+.user-basic-info-container,
+.about-me,
+.about-match {
   display: grid;
   align-items: center;
 }
 
-.user-info-container {
+.user-basic-info-container {
   margin: 10px 0 25px;
+}
+
+.user-basic-info-wrapper,
+.user-details-wrapper {
+  font-size: 14px;
+}
+
+.user-basic-info-wrapper {
+  padding: 8px 20px 20px;
 }
 
 .user-name-age {
   font-size: 25px;
+  margin-bottom: 20px;
 }
 
-.user-info {
-  font-size: 14px;
-  padding: 8px 20px 20px;
+.user-details-container {
+  padding: 20px 0 0;
+  border-top: 1px solid rgba(22, 30, 42, 0.16);
+}
+
+.user-details-wrapper {
+  padding: 0 20px;
 }
 
 .contact-wrapper {
@@ -75,50 +92,140 @@ p {
     0 7px 10px -5px rgba(0, 140, 255, 0.5);
 }
 
-.user-about {
-  padding: 8px 20px;
+.about-me, .about-match {
+  height: 100%;
+  padding: 20px 32px 20px 20px;
   font-size: 16px;
   border-top: 1px solid rgba(22, 30, 42, 0.16);
 }
 
-.user-about h5 {
+.about-me h5, .about-match h5 {
   font-size: 20px;
 }
 
-@media (min-width: 768px) {
+.details-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.details-grid div:not(:nth-last-child(-n+2)) {
+  border-bottom: 1px solid rgba(22, 30, 42, 0.16);
+  padding: 10px 0;
+}
+
+.details-grid div:nth-last-child(-n+2) {
+  padding: 10px 0;
+}
+
+@media (min-width: 800px) {
   .container {
-    padding: 0 15px;
-    margin-top: 75px;
+    max-width: 1200px;
+    margin: 75px auto 0;
+    padding: 0 10px;
   }
 
   .wrapper {
-    grid-template-columns: 1.5fr 2fr;
-    grid-gap: 32px;
+    display: grid;
+    grid-column-gap: 32px;
+    grid-row-gap: 12px;
+    grid-template-columns: 390px auto;
+    grid-template-rows: repeat(5, auto);
     margin: 0 10px;
   }
 
+  .profile-photos-container {
+    width: 100%;
+    height: 390px;
+    margin-bottom: 18px;
+    grid-row: 1 / 3;
+    grid-column: 1 / 2;
+  }
+
+  .user-basic-info-container {
+    grid-row: 1 / 1;
+    grid-column: 2 / -1;
+  }
+
+  .about-me {
+    grid-row: 3;
+    grid-column: 1 / 2;
+  }
+
+  .about-match {
+    grid-row: 4;
+    grid-column: 1 / 2;
+  }
+
+  .user-details-container {
+    grid-row: 3 / -1;
+    grid-column: 2 / -1;
+    height: fit-content;
+  }
+
   .profile-photos-container,
-  .user-info-container,
+  .user-basic-info-container,
+  .user-details-container,
   .profile-image,
-  .user-about {
+  .about-me,
+  .about-match {
     border-radius: 12px;
   }
 
-  .user-info-container,
-  .user-about {
+  .user-basic-info-container,
+  .user-details-container,
+  .about-me,
+  .about-match {
     border: 1px solid rgba(22, 30, 42, 0.16);
   }
 
-  .user-info-container {
+  .user-info {
+    font-size: 14px;
+    flex: 1 1 100%;
+    padding: 8px 20px;
   }
 
-  .user-info-container {
+  .user-basic-info-container {
     margin: 0;
+    padding-bottom: 8px;
     display: flex;
     justify-content: flex-start;
     align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .contact-wrapper {
+    display: flex;
+    justify-content: center;
     flex-direction: row;
-    height: 120px;
+    width: 100%;
+    height: 60px;
+    padding: 8px 10px;
+  }
+
+  .contact-wrapper button {
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    background-color: #008cff;
+    border: transparent;
+    outline: none;
+    color: #ffffff;
+    box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.14),
+      0 4px 5px -5px rgba(0, 140, 255, 0.5);
+    letter-spacing: 1px;
+    font-size: 16px;
+  }
+
+  .contact-wrapper button:first-child {
+    margin-bottom: 12px;
+    margin-right: 12px;
+  }
+
+  .contact-wrapper button:hover {
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.14),
+      0 7px 10px -5px rgba(0, 140, 255, 0.5);
   }
 
   .user-name-age {
@@ -126,31 +233,46 @@ p {
     margin-bottom: 20px;
   }
 
-  .user-info {
-    flex: 1 1 100%;
-    padding: 8px 20px 0;
-    height: 100%;
+  .user-details-header {
+    font-size: 25px;
   }
 
-  .contact-wrapper {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    height: 100%;
-    padding: 8px 20px 20px;
+  .details-grid {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
   }
 
-  .contact-wrapper button {
-    height: 100%;
+  .details-grid div:nth-child(even) {
+    padding-left: 50px;
   }
 
-  .contact-wrapper button:first-child {
-    margin-bottom: 12px;
+  .details-grid div:not(:nth-last-child(-n+2)) {
+    border-bottom: 1px solid rgba(22, 30, 42, 0.16);
+  }
+
+  .about-me {
+    padding: 8px 20px;
+    font-size: 16px;
+    border-top: 1px solid rgba(22, 30, 42, 0.16);
+  }
+
+  .about-me h5 {
+    font-size: 20px;
   }
 }
 
-@media (min-width: 1300px) {
-  .wrapper {
-    margin: 0 100px;
+@media (min-width: 1024px) {
+  .container {
+    padding: 0 50px;
+  }
+
+  .contact-wrapper {
+    padding: 8px 50px;
+  }
+}
+
+@media (min-width: 1112px) {
+  .container {
+    padding: 0 100px;
   }
 }

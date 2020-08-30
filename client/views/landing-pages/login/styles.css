@@ -391,8 +391,23 @@ textarea:-ms-input-placeholder {
 }
 
 @media (max-width: 576px) {
+  .login-wrapper {
+    margin-top: 32px;
+  }
+
   .wrap-login {
     padding: 77px 15px 33px 15px;
+  }
+}
+
+@media (max-width: 325px) {
+  .login-wrapper {
+    margin-top: 32px;
+    padding: 32px 15px;
+  }
+
+  .no-account-container {
+    padding-top: 32px;
   }
 }
 
