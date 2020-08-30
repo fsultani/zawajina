@@ -72,5 +72,11 @@ git merge branch
 git push
 
 // AWS notes
-// Empty s3 bucket via command line
+// Get s3 total size
+aws s3 ls s3://my-match --recursive --human-readable --summarize
+
+// Empty s3 bucket
 aws s3 rm s3://my-match --recursive
+
+// Empty select files in s3 bucket
+aws s3 rm s3://my-match --recursive --exclude "male.png" --exclude "female.png"
