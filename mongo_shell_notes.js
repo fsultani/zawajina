@@ -1,4 +1,4 @@
-mongo ds139322.mlab.com:39322/my_match_dev -u farid -p farid
+mongo "mongodb+srv://my-match.rxspi.mongodb.net/my-match-dev" --username fsultani
 
 // Find all users
 db.users.find().pretty()
@@ -17,6 +17,12 @@ db.users.find().forEach(user => {if (user.name === "Farid") db.users.remove({"_i
 
 // Find last user
 db.users.find().limit(1).sort({ $natural: -1 }).pretty()
+
+// Find all users with an email that includes a number
+db.users.find({ "email": {$regex: /[0-9]/g} }).pretty()
+
+// Count all users with an email that includes a number
+db.users.find({ "email": {$regex: /[0-9]/g} }).count()
 
 // Return a count of all users with a given name
 db.users.find().count()
@@ -64,5 +70,11 @@ git merge branch
 git push
 
 // AWS notes
-// Empty s3 bucket via command line
+// Get s3 total size
+aws s3 ls s3://my-match --recursive --human-readable --summarize
+
+// Empty s3 bucket
 aws s3 rm s3://my-match --recursive
+
+// Empty select files in s3 bucket
+aws s3 rm s3://my-match --recursive --exclude "male.png" --exclude "female.png"
