@@ -1,7 +1,5 @@
 mongo "mongodb+srv://my-match.rxspi.mongodb.net/my-match-dev" --username fsultani
 
-mongo ds139322.mlab.com:39322/my_match_dev -u farid -p farid
-
 // Find all users
 db.users.find().pretty()
 
