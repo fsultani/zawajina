@@ -1,5 +1,4 @@
 .navbar--site-header {
-  display: flex;
   align-items: center;
   position: fixed;
   top: 0;
@@ -9,12 +8,6 @@
   padding: 10px;
   z-index: 1;
   background: linear-gradient(57deg, #00c6a7 0%, #1e4d92 100%);
-}
-
-.navbar--container {
-  width: 100%;
-  margin: 0 auto;
-  max-width: 1200px;
 }
 
 .navbar--site-header-inner {
@@ -53,6 +46,16 @@
 }
 
 @media (min-width: 481px) {
+  .navbar--site-header {
+    display: flex;
+  }
+
+  .navbar--container {
+    width: 100%;
+    margin: 0 auto;
+    max-width: 1200px;
+  }
+
   .navbar--site-header-inner {
     position: relative;
     align-items: center;
