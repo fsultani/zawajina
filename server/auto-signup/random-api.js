@@ -20,22 +20,8 @@ let counter = 0;
       gender: "female",
     };
 
-    const birthMonths = [
-      "01",
-      "02",
-      "03",
-      "04",
-      "05",
-      "06",
-      "07",
-      "08",
-      "09",
-      "10",
-      "11",
-      "12",
-    ];
-    const birthMonth =
-      birthMonths[Math.floor(Math.random() * birthMonths.length)];
+    const birthMonths = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];
+    const birthMonth = birthMonths[Math.floor(Math.random() * birthMonths.length)];
     const birthDay = Math.floor(Math.random() * 31).toString();
     const birthYear = (1999 - Math.floor(Math.random() * 30)).toString();
 
@@ -48,8 +34,7 @@ let counter = 0;
       birthDay,
       birthYear,
       gender: nameChoice.gender,
-      country:
-        randomCity.country === "United States" ? "USA" : randomCity.country,
+      country: randomCity.country === "United States" ? "USA" : randomCity.country,
       state: randomCity.state,
       city: randomCity.city,
     };
@@ -62,16 +47,13 @@ let counter = 0;
   const makeApiCalls = async () => {
     try {
       console.log("createUser().nameChoice:\n", createUser().nameChoice);
-      const personalInfo = await axios.post(
-        "http://localhost:3000/register/api/personal-info",
-        {
-          name: createUser().nameChoice.name,
-          email: `${createUser().nameChoice.name.toLowerCase()}@me.com`,
-          password: "asdfasdf",
-        }
-      );
+      const personalInfo = await axios.post("http://localhost:3000/register/api/personal-info", {
+        name: createUser().nameChoice.name,
+        email: `${createUser().nameChoice.name.toLowerCase()}@me.com`,
+        password: "asdfasdf",
+      });
 
-      const shuffleImages = (array) => {
+      const shuffleImages = array => {
         for (let i = array.length - 1; i > 0; i--) {
           const number = Math.floor(Math.random() * (i + 1));
           [array[i], array[number]] = [array[number], array[i]];
@@ -98,13 +80,9 @@ let counter = 0;
       // await formData.append('image-5', fs.createReadStream(shuffleImages(imagesArray)[4]));
       // await formData.append('image-6', fs.createReadStream(shuffleImages(imagesArray)[5]));
 
-      const aboutResponse = await axios.post(
-        "http://localhost:3000/register/api/about",
-        formData,
-        {
-          headers: formData.getHeaders(),
-        }
-      );
+      const aboutResponse = await axios.post("http://localhost:3000/register/api/about", formData, {
+        headers: formData.getHeaders(),
+      });
       counter++;
     } catch (err) {
       console.log("err:\n", err);
@@ -117,9 +95,7 @@ let counter = 0;
     }
 
     console.log(`counter: ${counter}/${numberOfUsers}`);
-    console.log(
-      "************************************************************\n"
-    );
+    console.log("************************************************************\n");
   };
   makeApiCalls();
   const repeatFunction = setInterval(async () => {

@@ -33,9 +33,7 @@ const numberOfUsers = 10;
     await page.select("#dob-day", "14");
     await page.select("#dob-year", "1983");
 
-    await page.evaluate(() =>
-      document.querySelector('input[type="radio"][id="male"]').click()
-    );
+    await page.evaluate(() => document.querySelector('input[type="radio"][id="male"]').click());
 
     await page.focus("#myInput");
     await page.waitFor(250);

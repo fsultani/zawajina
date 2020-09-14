@@ -21,6 +21,7 @@ router.get("/:userId", (req, res, next) => {
           title: "My Match",
           styles: [
             "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css",
+            "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css",
             "/static/client/views/partials/styles/app-nav.css",
             "/static/client/views/layouts/app/app-global-styles.css",
             "/static/client/views/app/profile/styles.css",
@@ -29,7 +30,7 @@ router.get("/:userId", (req, res, next) => {
             "https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js",
             "https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js",
             "/static/client/views/layouts/app/handleLogout.js",
-            // '/static/client/views/app/profile/main.js',
+            "/static/client/views/app/profile/main.js",
           ],
           user,
         },

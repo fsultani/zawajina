@@ -1,9 +1,8 @@
-const Profile = (userId) => {
+const Profile = userId => {
   const bootstrap = document.createElement("link");
   bootstrap.rel = "stylesheet";
   bootstrap.type = "text/css";
-  bootstrap.href =
-    "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css";
+  bootstrap.href = "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css";
 
   const profileStylesTag = document.createElement("link");
   profileStylesTag.rel = "stylesheet";
@@ -222,7 +221,7 @@ const Profile = (userId) => {
       console.log("user:\n", user);
       const { photos, name, age, city, state, country } = user;
     })
-    .catch((err) => {
+    .catch(err => {
       window.location.pathname = "/";
     });
 };

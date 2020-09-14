@@ -54,8 +54,7 @@ const UserSchema = mongoose.Schema({
   city: {
     type: String,
     required: () =>
-      typeof this.city === undefined ||
-      (this.city !== undefined && typeof this.city !== "string"),
+      typeof this.city === undefined || (this.city !== undefined && typeof this.city !== "string"),
   },
   isUserSessionValid: {
     type: Boolean,

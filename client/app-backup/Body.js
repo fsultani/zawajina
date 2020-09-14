@@ -29,12 +29,12 @@ const Body = () => {
         Authorization: Cookies.get("token"),
       },
     })
-    .then((res) => {
+    .then(res => {
       content += `
       <div class="testimonials">
         ${res.data.all
           .map(
-            (user) => `
+            user => `
             <a href="/user/${user._id}" style="text-decoration: none">
               <div class="testimonial-wrapper">
                 <div class="testimonial-image">
@@ -58,7 +58,7 @@ const Body = () => {
 
       document.querySelector("#app").innerHTML = content;
     })
-    .catch((err) => {
+    .catch(err => {
       Cookies.remove("token");
       window.location.pathname = "/login";
     });

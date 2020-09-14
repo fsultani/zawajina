@@ -1,8 +1,6 @@
 export const birthDay = () => {
   const dayOptions = ["<option selected disabled>Day</option>"];
-  const res = [...Array(31)].map((_, i) =>
-    dayOptions.push(`<option>${i + 1}</option>`)
-  );
+  const res = [...Array(31)].map((_, i) => dayOptions.push(`<option>${i + 1}</option>`));
   document.getElementById("dob-day").innerHTML = dayOptions;
 };
 
@@ -11,9 +9,7 @@ export const birthYear = () => {
   const age18 = today.getFullYear() - 18;
 
   let yearOptions = ["<option selected disabled>Year</option>"];
-  const res = [...Array(100)].map((_, i) =>
-    yearOptions.push(`<option>${age18 - i}</option>`)
-  );
+  const res = [...Array(100)].map((_, i) => yearOptions.push(`<option>${age18 - i}</option>`));
   document.getElementById("dob-year").innerHTML = yearOptions;
 };
 
@@ -34,7 +30,7 @@ const debounce = (func, wait, immediate) => {
   };
 };
 
-const closeAllLists = (element) => {
+const closeAllLists = element => {
   const inputString = document.querySelector("#myInput");
   /*close all autocomplete lists in the document,
   except the one passed as an argument:*/
@@ -46,7 +42,7 @@ const closeAllLists = (element) => {
   }
 };
 
-const removeActive = (x) => {
+const removeActive = x => {
   /*a function to remove the "active" class from all autocomplete items:*/
   for (var i = 0; i < x.length; i++) {
     x[i].classList.remove("autocomplete-active");
@@ -78,16 +74,14 @@ export const userLocation = async () => {
   };
   const userIPAddress = await getUserIPAddress();
 
-  const getAllCountries = async (userInput) => {
+  const getAllCountries = async userInput => {
     try {
       let response;
       setTimeout(() => {
         if (!response) {
-          document.querySelector(".overlay").style.backgroundColor =
-            "rgba(0,0,0,0.5)";
+          document.querySelector(".overlay").style.backgroundColor = "rgba(0,0,0,0.5)";
           document.querySelector(".overlay").style.opacity = 0.5;
-          document.querySelector(".full-page-loading-spinner").style.display =
-            "inline-block";
+          document.querySelector(".full-page-loading-spinner").style.display = "inline-block";
         }
       }, 1000);
       response = await axios.get(`/register/api/cities-list`, {
@@ -98,15 +92,13 @@ export const userLocation = async () => {
       });
       document.querySelector(".overlay").style.backgroundColor = "#ffffff";
       document.querySelector(".overlay").style.opacity = 1;
-      document.querySelector(".full-page-loading-spinner").style.display =
-        "none";
+      document.querySelector(".full-page-loading-spinner").style.display = "none";
       return response.data;
     } catch (err) {
       console.error(err);
       document.querySelector(".overlay").style.backgroundColor = "#ffffff";
       document.querySelector(".overlay").style.opacity = 1;
-      document.querySelector(".full-page-loading-spinner").style.display =
-        "none";
+      document.querySelector(".full-page-loading-spinner").style.display = "none";
       return err.response;
     }
   };
@@ -114,7 +106,7 @@ export const userLocation = async () => {
   const inputString = document.querySelector("#myInput");
   inputString.addEventListener(
     "input",
-    debounce(async (event) => {
+    debounce(async event => {
       const userInput = inputString.value;
       if (!userInput) {
         closeAllLists();
@@ -152,7 +144,7 @@ export const userLocation = async () => {
     }, 250)
   );
 
-  inputString.addEventListener("keydown", (event) => {
+  inputString.addEventListener("keydown", event => {
     let element = document.querySelector(".autocomplete-items");
     if (element) {
       element = element.getElementsByTagName("div");
@@ -171,9 +163,7 @@ export const userLocation = async () => {
           const city = value.dataset.city;
           const state = value.dataset.state;
           const country = value.dataset.country;
-          const selection = `${city}, ${
-            state !== "null" ? `${state}, ${country}` : country
-          }`;
+          const selection = `${city}, ${state !== "null" ? `${state}, ${country}` : country}`;
           inputString.value = selection;
           closeAllLists();
 
@@ -185,15 +175,13 @@ export const userLocation = async () => {
     }
   });
 
-  document.addEventListener("click", (event) => {
+  document.addEventListener("click", event => {
     const inputTag = event.target.dataset;
     if (inputTag?.city) {
       const city = inputTag.city;
       const state = inputTag.state;
       const country = inputTag.country;
-      const selection = `${city}, ${
-        state !== "null" ? `${state}, ${country}` : country
-      }`;
+      const selection = `${city}, ${state !== "null" ? `${state}, ${country}` : country}`;
       inputString.value = selection;
       closeAllLists();
 

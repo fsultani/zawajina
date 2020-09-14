@@ -10,7 +10,7 @@ customButton1.addEventListener("click", () => {
   image1.click();
 });
 
-image1.addEventListener("change", (event) => {
+image1.addEventListener("change", event => {
   const uploadedFile = URL.createObjectURL(event.target.files[0]);
   imagePreview1.src = uploadedFile;
   imagePreview1.style.display = "block";
@@ -38,7 +38,7 @@ image1.addEventListener("change", (event) => {
   }
 });
 
-removeImageButtom1.addEventListener("click", (event) => {
+removeImageButtom1.addEventListener("click", event => {
   imagePreview1.src = "";
   imagePreview1.style.display = "none";
   imageUpload1.classList.remove("display-image-1");
@@ -65,7 +65,7 @@ customButton2.addEventListener("click", () => {
   image2.click();
 });
 
-image2.addEventListener("change", (event) => {
+image2.addEventListener("change", event => {
   const uploadedFile = URL.createObjectURL(event.target.files[0]);
   imagePreview2.src = uploadedFile;
   imagePreview2.style.display = "block";
@@ -93,7 +93,7 @@ image2.addEventListener("change", (event) => {
   }
 });
 
-removeImageButtom2.addEventListener("click", (event) => {
+removeImageButtom2.addEventListener("click", event => {
   imagePreview2.src = "";
   imagePreview2.style.display = "none";
   imageUpload2.classList.remove("display-image-2");
@@ -120,7 +120,7 @@ customButton3.addEventListener("click", () => {
   image3.click();
 });
 
-image3.addEventListener("change", (event) => {
+image3.addEventListener("change", event => {
   const uploadedFile = URL.createObjectURL(event.target.files[0]);
   imagePreview3.src = uploadedFile;
   imagePreview3.style.display = "block";
@@ -148,7 +148,7 @@ image3.addEventListener("change", (event) => {
   }
 });
 
-removeImageButtom3.addEventListener("click", (event) => {
+removeImageButtom3.addEventListener("click", event => {
   imagePreview3.src = "";
   imagePreview3.style.display = "none";
   imageUpload3.classList.remove("display-image-3");
@@ -175,7 +175,7 @@ customButton4.addEventListener("click", () => {
   image4.click();
 });
 
-image4.addEventListener("change", (event) => {
+image4.addEventListener("change", event => {
   const uploadedFile = URL.createObjectURL(event.target.files[0]);
   imagePreview4.src = uploadedFile;
   imagePreview4.style.display = "block";
@@ -203,7 +203,7 @@ image4.addEventListener("change", (event) => {
   }
 });
 
-removeImageButtom4.addEventListener("click", (event) => {
+removeImageButtom4.addEventListener("click", event => {
   imagePreview4.src = "";
   imagePreview4.style.display = "none";
   imageUpload4.classList.remove("display-image-4");
@@ -230,7 +230,7 @@ customButton5.addEventListener("click", () => {
   image5.click();
 });
 
-image5.addEventListener("change", (event) => {
+image5.addEventListener("change", event => {
   const uploadedFile = URL.createObjectURL(event.target.files[0]);
   imagePreview5.src = uploadedFile;
   imagePreview5.style.display = "block";
@@ -258,7 +258,7 @@ image5.addEventListener("change", (event) => {
   }
 });
 
-removeImageButtom5.addEventListener("click", (event) => {
+removeImageButtom5.addEventListener("click", event => {
   imagePreview5.src = "";
   imagePreview5.style.display = "none";
   imageUpload5.classList.remove("display-image-5");
@@ -285,7 +285,7 @@ customButton6.addEventListener("click", () => {
   image6.click();
 });
 
-image6.addEventListener("change", (event) => {
+image6.addEventListener("change", event => {
   const uploadedFile = URL.createObjectURL(event.target.files[0]);
   imagePreview6.src = uploadedFile;
   imagePreview6.style.display = "block";
@@ -313,7 +313,7 @@ image6.addEventListener("change", (event) => {
   }
 });
 
-removeImageButtom6.addEventListener("click", (event) => {
+removeImageButtom6.addEventListener("click", event => {
   imagePreview6.src = "";
   imagePreview6.style.display = "none";
   imageUpload6.classList.remove("display-image-6");

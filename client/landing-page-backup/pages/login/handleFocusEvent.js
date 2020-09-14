@@ -4,7 +4,7 @@
 
   /* Return an array from the HTMLCollections object */
   allElements = Array.from(elements);
-  allElements.map((element) => {
+  allElements.map(element => {
     element.addEventListener("blur", () => {
       if (element.value.trim() !== "") {
         element.classList.add("has-value");

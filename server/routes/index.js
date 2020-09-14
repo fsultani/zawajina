@@ -22,7 +22,7 @@ router.post("/login", (req, res, next) => {
         const token = jwt.sign({ userDetails: user }, JWT_SECRET, {
           expiresIn: "1 day",
         });
-        res.json({ token });
+        res.json({ token, user });
       } else {
         res.sendStatus(403);
       }

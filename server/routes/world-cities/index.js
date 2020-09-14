@@ -8,12 +8,10 @@ const country_json_1 = __importDefault(require("./countries.json"));
 const state_json_1 = __importDefault(require("./unitedStates.json"));
 const city_json_1 = __importDefault(require("./cities.json"));
 exports.default = {
-  getStatesOfUSA: (countryId) => state_json_1.default,
-  getCitiesOfState: (name) => {
+  getStatesOfUSA: countryId => state_json_1.default,
+  getCitiesOfState: name => {
     if (name.state) {
-      const cities = city_json_1.default.filter(
-        (value, index) => value.state === name.state
-      );
+      const cities = city_json_1.default.filter((value, index) => value.state === name.state);
       return cities.sort(compare);
     } else {
       const cities = city_json_1.default.filter(

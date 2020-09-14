@@ -52,14 +52,10 @@
   font-style: italic;
   font-weight: 900;
   src: url("/static/client/fonts/montserrat/montserrat-v12-latin-900.ttf"),
-    url("/static/client/fonts/montserrat/montserrat-v12-latin-900.eot")
-      format("embedded-opentype"),
-    url("/static/client/fonts/montserrat/montserrat-v12-latin-900.svg")
-      format("woff2"),
-    url("/static/client/fonts/montserrat/montserrat-v12-latin-900.woff")
-      format("woff"),
-    url("/static/client/fonts/montserrat/montserrat-v12-latin-900.woff2")
-      format("truetype");
+    url("/static/client/fonts/montserrat/montserrat-v12-latin-900.eot") format("embedded-opentype"),
+    url("/static/client/fonts/montserrat/montserrat-v12-latin-900.svg") format("woff2"),
+    url("/static/client/fonts/montserrat/montserrat-v12-latin-900.woff") format("woff"),
+    url("/static/client/fonts/montserrat/montserrat-v12-latin-900.woff2") format("truetype");
 }
 
 body {
@@ -371,6 +367,11 @@ textarea:-ms-input-placeholder {
   top: 20px;
   right: 20px;
   color: #555;
+}
+
+.fa-eye:hover,
+.fa-eye-slash:hover {
+  cursor: pointer;
 }
 
 @media screen and (max-width: 768px) {

@@ -1,11 +1,35 @@
 <div class="container">
   <div class="wrapper">
-    <div class="profile-photos-container">
-      <img
-        src="${user.photos.length > 0 ? user.photos[0] : user.gender === 'male' ? 'https://my-match.s3.amazonaws.com/male.png' : 'https://my-match.s3.amazonaws.com/female.png'}"
-        alt="Profile Photo"
-        class="profile-image"
-      />
+    <div class="profile-photos-container" data-user-photos="${user.photos.length}">
+      <div class="slider">
+        <div class="photos-container">
+          <div class="slider-wrapper">
+            ${user.photos.length > 0 ? user.photos.map(photo => `
+            <div class="slide" style="background-image: url(${photo});">&nbsp;</div>
+            `).join('') : `<img
+              src="${user.gender === 'male' ?
+              'https://my-match.s3.amazonaws.com/male.png' :
+              'https://my-match.s3.amazonaws.com/female.png'}"
+            />
+            `}
+          </div>
+          <div class="dots-wrapper">
+            ${user.photos.length > 1 ? user.photos.map((photo, index) => `
+            <span class="dot"></span>
+            `).join('') : ''}
+          </div>
+        </div>
+
+        ${user.photos.length > 1 ? `
+        <div class="image-previews-container">
+          ${user.photos.map((photo, index) => `
+          <div class="image-preview-wrapper">
+            <img src="${photo}" class="user-photo" onclick="goToImage(${index})" />
+          </div>
+          `).join('')}
+        </div>
+        ` : ''}
+      </div>
     </div>
 
     <div class="user-basic-info-container">
@@ -15,8 +39,8 @@
         <p class="user-last-active">Last Active: 10 minutes</p>
       </div>
       <div class="contact-wrapper">
-        <button>Message</button>
-        <button>Like</button>
+        <button><i class="far fa-envelope fa-2x"></i></button>
+        <button><i class="far fa-star fa-2x"></i></button>
       </div>
     </div>
 
@@ -55,7 +79,9 @@
           <div class="details-key">Diet:</div>
           <div class="details-value">Halal when possible</div>
           <div class="details-key">Interests:</div>
-          <div class="details-value">Computers <span>&#9679;</span> Nature <span>&#9679;</span> Beach</div>
+          <div class="details-value">
+            Computers <span>&#9679;</span> Nature <span>&#9679;</span> Beach
+          </div>
         </div>
       </div>
     </div>
@@ -63,14 +89,34 @@
     <div class="about-me">
       <h5>About me</h5>
       <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Amet facilisis magna etiam tempor orci eu. A iaculis at erat pellentesque. Ornare lectus sit amet est placerat in egestas. Nunc id cursus metus aliquam. Sit amet porttitor eget dolor morbi non arcu. Lectus magna fringilla urna porttitor rhoncus dolor. Placerat in egestas erat imperdiet. Sit amet luctus venenatis lectus magna fringilla urna porttitor rhoncus. Mi quis hendrerit dolor magna eget. Justo eget magna fermentum iaculis. Egestas purus viverra accumsan in. Et molestie ac feugiat sed lectus. Lorem donec massa sapien faucibus et molestie ac feugiat sed. Consectetur adipiscing elit ut aliquam. Eu facilisis sed odio morbi quis commodo odio aenean. Sollicitudin nibh sit amet commodo nulla facilisi nullam vehicula. Quis auctor elit sed vulputate mi. Porttitor leo a diam sollicitudin tempor id eu. Arcu odio ut sem nulla pharetra.
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+        labore et dolore magna aliqua. Amet facilisis magna etiam tempor orci eu. A iaculis at erat
+        pellentesque. Ornare lectus sit amet est placerat in egestas. Nunc id cursus metus aliquam.
+        Sit amet porttitor eget dolor morbi non arcu. Lectus magna fringilla urna porttitor rhoncus
+        dolor. Placerat in egestas erat imperdiet. Sit amet luctus venenatis lectus magna fringilla
+        urna porttitor rhoncus. Mi quis hendrerit dolor magna eget. Justo eget magna fermentum
+        iaculis. Egestas purus viverra accumsan in. Et molestie ac feugiat sed lectus. Lorem donec
+        massa sapien faucibus et molestie ac feugiat sed. Consectetur adipiscing elit ut aliquam. Eu
+        facilisis sed odio morbi quis commodo odio aenean. Sollicitudin nibh sit amet commodo nulla
+        facilisi nullam vehicula. Quis auctor elit sed vulputate mi. Porttitor leo a diam
+        sollicitudin tempor id eu. Arcu odio ut sem nulla pharetra.
       </p>
     </div>
 
     <div class="about-match">
       <h5>About my match</h5>
       <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Amet facilisis magna etiam tempor orci eu. A iaculis at erat pellentesque. Ornare lectus sit amet est placerat in egestas. Nunc id cursus metus aliquam. Sit amet porttitor eget dolor morbi non arcu. Lectus magna fringilla urna porttitor rhoncus dolor. Placerat in egestas erat imperdiet. Sit amet luctus venenatis lectus magna fringilla urna porttitor rhoncus. Mi quis hendrerit dolor magna eget. Justo eget magna fermentum iaculis. Egestas purus viverra accumsan in. Et molestie ac feugiat sed lectus. Lorem donec massa sapien faucibus et molestie ac feugiat sed. Consectetur adipiscing elit ut aliquam. Eu facilisis sed odio morbi quis commodo odio aenean. Sollicitudin nibh sit amet commodo nulla facilisi nullam vehicula. Quis auctor elit sed vulputate mi. Porttitor leo a diam sollicitudin tempor id eu. Arcu odio ut sem nulla pharetra.
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+        labore et dolore magna aliqua. Amet facilisis magna etiam tempor orci eu. A iaculis at erat
+        pellentesque. Ornare lectus sit amet est placerat in egestas. Nunc id cursus metus aliquam.
+        Sit amet porttitor eget dolor morbi non arcu. Lectus magna fringilla urna porttitor rhoncus
+        dolor. Placerat in egestas erat imperdiet. Sit amet luctus venenatis lectus magna fringilla
+        urna porttitor rhoncus. Mi quis hendrerit dolor magna eget. Justo eget magna fermentum
+        iaculis. Egestas purus viverra accumsan in. Et molestie ac feugiat sed lectus. Lorem donec
+        massa sapien faucibus et molestie ac feugiat sed. Consectetur adipiscing elit ut aliquam. Eu
+        facilisis sed odio morbi quis commodo odio aenean. Sollicitudin nibh sit amet commodo nulla
+        facilisi nullam vehicula. Quis auctor elit sed vulputate mi. Porttitor leo a diam
+        sollicitudin tempor id eu. Arcu odio ut sem nulla pharetra.
       </p>
     </div>
   </div>
