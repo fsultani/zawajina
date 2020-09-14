@@ -12,15 +12,13 @@ let handleNameValidationValue = false;
 let handleEmailValidationValue = false;
 let handlePasswordValidationValue = false;
 
-const handleNameValidation = (name) => {
+const handleNameValidation = name => {
   if (name.length === 0) {
     document.getElementById("name").classList.remove("animate-border-bottom");
     document.getElementById("name-wrapper").classList.add("form-error");
     handleNameValidationValue = false;
   } else if (name.length > 0) {
-    if (
-      document.getElementById("name-wrapper").classList.contains("form-error")
-    ) {
+    if (document.getElementById("name-wrapper").classList.contains("form-error")) {
       document.getElementById("name-wrapper").classList.remove("form-error");
       document.getElementById("name").classList.add("animate-border-bottom");
     }
@@ -28,15 +26,13 @@ const handleNameValidation = (name) => {
   }
 };
 
-const handleEmailValidation = (email) => {
+const handleEmailValidation = email => {
   if (!emailRegex.test(email)) {
     document.getElementById("email").classList.remove("animate-border-bottom");
     document.getElementById("email-wrapper").classList.add("form-error");
     handleEmailValidationValue = false;
   } else if (emailRegex.test(email)) {
-    if (
-      document.getElementById("email-wrapper").classList.contains("form-error")
-    ) {
+    if (document.getElementById("email-wrapper").classList.contains("form-error")) {
       document.getElementById("email-wrapper").classList.remove("form-error");
       document.getElementById("email").classList.add("animate-border-bottom");
     }
@@ -44,25 +40,15 @@ const handleEmailValidation = (email) => {
   }
 };
 
-const handlePasswordValidation = (password) => {
+const handlePasswordValidation = password => {
   if (password.length < 8) {
-    document
-      .getElementById("password")
-      .classList.remove("animate-border-bottom");
+    document.getElementById("password").classList.remove("animate-border-bottom");
     document.getElementById("password-wrapper").classList.add("form-error");
     handlePasswordValidationValue = false;
   } else if (password.length >= 8) {
-    if (
-      document
-        .getElementById("password-wrapper")
-        .classList.contains("form-error")
-    ) {
-      document
-        .getElementById("password-wrapper")
-        .classList.remove("form-error");
-      document
-        .getElementById("password")
-        .classList.add("animate-border-bottom");
+    if (document.getElementById("password-wrapper").classList.contains("form-error")) {
+      document.getElementById("password-wrapper").classList.remove("form-error");
+      document.getElementById("password").classList.add("animate-border-bottom");
     }
     handlePasswordValidationValue = true;
   }
@@ -77,11 +63,7 @@ const handleSignupStepOne = () => {
   handleEmailValidation(email);
   handlePasswordValidation(password);
 
-  if (
-    handleNameValidationValue &&
-    handleEmailValidationValue &&
-    handlePasswordValidationValue
-  ) {
+  if (handleNameValidationValue && handleEmailValidationValue && handlePasswordValidationValue) {
     loadingSpinner.style.display = "inline-block";
     signupButton.innerHTML = "";
     signupButton.disabled = true;
@@ -93,13 +75,13 @@ const handleSignupStepOne = () => {
         email,
         password,
       })
-      .then((res) => {
+      .then(res => {
         if (res.status === 201) {
           Cookies.set("userId", res.data.userId, { sameSite: "strict" });
           window.location.pathname = "/signup/profile";
         }
       })
-      .catch((error) => {
+      .catch(error => {
         console.error(error.response);
         if (error.response.status === 403) {
           // Email address already exists
@@ -108,8 +90,7 @@ const handleSignupStepOne = () => {
           signupButton.disabled = false;
           signupButton.style.cursor = "pointer";
 
-          document.getElementById("email-exists-error").innerHTML =
-            error.response.data.error;
+          document.getElementById("email-exists-error").innerHTML = error.response.data.error;
           document.getElementById("email-exists-error").style.display = "block";
         } else {
           // Display generic error message

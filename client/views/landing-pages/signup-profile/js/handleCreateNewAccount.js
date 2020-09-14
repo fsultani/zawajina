@@ -6,10 +6,10 @@ let city;
 let state;
 let country;
 
-const handleBirthMonth = (event) => (birthMonth = event.target.value);
-const handleBirthDay = (event) => (birthDay = event.target.value);
-const handleBirthYear = (event) => (birthYear = event.target.value);
-const handleGender = (value) => (gender = value);
+const handleBirthMonth = event => (birthMonth = event.target.value);
+const handleBirthDay = event => (birthDay = event.target.value);
+const handleBirthYear = event => (birthYear = event.target.value);
+const handleGender = value => (gender = value);
 
 const createNewAccountButton = document.signupForm.createNewAccount;
 const loadingSpinner = document.querySelector(".submit-loading-spinner");
@@ -20,9 +20,8 @@ const handleCreateNewAccount = () => {
   state = data.state;
   country = data.country;
 
-  const addErrorClass = (element) =>
-    document.querySelector(`${element}`).classList.add("form-error");
-  const removeErrorClass = (element) =>
+  const addErrorClass = element => document.querySelector(`${element}`).classList.add("form-error");
+  const removeErrorClass = element =>
     document.querySelector(`${element}`).classList.remove("form-error");
 
   if (!birthMonth) {
@@ -79,7 +78,7 @@ const handleCreateNewAccount = () => {
 
     axios
       .post("/register/api/about", userData)
-      .then((res) => {
+      .then(res => {
         if (res.status === 201 || res.status === 200) {
           Cookies.set("token", res.data.token, { sameSite: "strict" });
           Cookies.remove("userId");
@@ -90,7 +89,7 @@ const handleCreateNewAccount = () => {
           document.querySelector("#signup-error").style.display = "block";
         }
       })
-      .catch((error) => {
+      .catch(error => {
         console.error("error:\n", error);
 
         loadingSpinner.style.display = "none";

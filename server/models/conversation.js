@@ -17,7 +17,4 @@ var Conversation = mongoose.Schema({
   ],
 });
 
-var Conversation = (module.exports = mongoose.model(
-  "Conversation",
-  Conversation
-));
+var Conversation = (module.exports = mongoose.model("Conversation", Conversation));

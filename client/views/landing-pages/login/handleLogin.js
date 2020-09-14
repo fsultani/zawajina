@@ -9,7 +9,7 @@ const handlePasswordValidation = () => {
   return password.length > 0;
 };
 
-const handleLogin = (event) => {
+const handleLogin = event => {
   event.preventDefault();
   const email = document.login.elements.email.value;
   const password = document.login.elements.password.value;
@@ -33,12 +33,12 @@ const handleLogin = (event) => {
         email,
         password,
       })
-      .then((res) => {
-        const { token } = res.data;
+      .then(res => {
+        const { token, user } = res.data;
         Cookies.set("token", token, { sameSite: "strict" });
-        window.location.pathname = "/";
+        window.location.pathname = `/user/${user._id}`;
       })
-      .catch((error) => {
+      .catch(error => {
         loadingSpinner.style.display = "none";
         loginButton.innerHTML = "Login";
         loginButton.style.cssText = `
@@ -57,9 +57,7 @@ const handleLogin = (event) => {
       document.getElementById("email-wrapper").classList.add("form-error");
     }
 
-    const emailHasError = document
-      .getElementById("email")
-      .classList.contains("email-error");
+    const emailHasError = document.getElementById("email").classList.contains("email-error");
     if (emailIsValid && emailHasError) {
       document.getElementById("email").classList.remove("email-error");
       document.getElementById("email-wrapper").classList.remove("form-error");

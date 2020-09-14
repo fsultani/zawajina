@@ -1,10 +1,8 @@
 (() => {
   let documentReady = false;
 
-  const loader = (display) => {
-    document.querySelector("body").style.backgroundColor = display
-      ? "rgba(0,0,0,0.5)"
-      : "#ffffff";
+  const loader = display => {
+    document.querySelector("body").style.backgroundColor = display ? "rgba(0,0,0,0.5)" : "#ffffff";
     document.querySelector("body").style.opacity = display ? 0.5 : 1;
     document.querySelector("body").style.position = "relative";
     document.querySelector(".full-page-loading-spinner").style.display = display
@@ -18,16 +16,13 @@
     }
 
     const connection =
-      navigator.connection ||
-      navigator.mozConnection ||
-      navigator.webkitConnection;
+      navigator.connection || navigator.mozConnection || navigator.webkitConnection;
     setTimeout(() => {
       // Display slow network message for non Safari users after 5 seconds
       if (connection) {
         const type = connection.effectiveType;
         if (type === "2g" || type === "3g") {
-          document.querySelector("#slow-network-warning").style.display =
-            "block";
+          document.querySelector("#slow-network-warning").style.display = "block";
           document.querySelector("#slow-network-warning").innerHTML = `
             <p>Looks like you're on a slow network.</p>
             <p>Data may take longer to load.</p>
@@ -54,15 +49,13 @@
         userId: Cookies.get("userId"),
       },
     })
-    .then((res) => {
+    .then(res => {
       documentReady = true;
       loader(false);
       document.querySelector("#slow-network-warning").style.display = "none";
-      document.querySelector(
-        ".form-title"
-      ).innerHTML = `Welcome, ${res.data.name}`;
+      document.querySelector(".form-title").innerHTML = `Welcome, ${res.data.name}`;
     })
-    .catch((err) => {
+    .catch(err => {
       if (err instanceof TypeError) {
         console.error(err);
       } else {

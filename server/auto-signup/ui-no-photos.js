@@ -61,8 +61,7 @@ const numberOfUsers = 10;
           "11",
           "12",
         ];
-        const birthMonth =
-          birthMonths[Math.floor(Math.random() * birthMonths.length)];
+        const birthMonth = birthMonths[Math.floor(Math.random() * birthMonths.length)];
         const birthDay = Math.floor(Math.random() * 31).toString();
         const birthYear = (1999 - Math.floor(Math.random() * 30)).toString();
 
@@ -80,7 +79,7 @@ const numberOfUsers = 10;
 
         await page.click("button[name=signupButton]");
 
-        await page.on("response", async (response) => {
+        await page.on("response", async response => {
           if (response._status === 403) {
             console.log("response._status\n", response._status);
             await page.waitForSelector("#name_id");
@@ -115,9 +114,7 @@ const numberOfUsers = 10;
             );
 
         const allCities = countries.default.getAllCities();
-        const randomCityIndex = Math.floor(
-          Math.random() * allCities.length - 1
-        );
+        const randomCityIndex = Math.floor(Math.random() * allCities.length - 1);
         const randomCity = allCities[randomCityIndex];
         console.log("randomCity:\n", randomCity);
         const { city } = randomCity;
@@ -142,9 +139,7 @@ const numberOfUsers = 10;
 
         await page.waitForSelector("#logout");
         await page.evaluate(() => document.querySelector("#logout").click());
-        console.log(
-          "\n************************************************************"
-        );
+        console.log("\n************************************************************");
       }
     } catch (error) {
       console.log("error:\n", error);

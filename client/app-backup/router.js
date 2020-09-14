@@ -16,7 +16,7 @@ const checkAuthentication = async () => {
   }
 };
 
-const Router = async (path) => {
+const Router = async path => {
   const checkAuthenticationStatus = await checkAuthentication();
   if (checkAuthenticationStatus === 201) {
     NavBar();
@@ -38,7 +38,6 @@ const Router = async (path) => {
 
 (() => {
   const { pathname } = window.location;
-  const path =
-    pathname.length > 1 ? pathname.slice(1, pathname.length) : pathname;
+  const path = pathname.length > 1 ? pathname.slice(1, pathname.length) : pathname;
   Router(path);
 })();

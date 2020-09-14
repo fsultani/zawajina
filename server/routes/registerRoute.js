@@ -51,10 +51,7 @@ router.post(
             const userId = user._id;
             return res.status(201).send({ userId });
           });
-        } else if (
-          userExists.startedRegistration &&
-          !userExists.completedRegistration
-        ) {
+        } else if (userExists.startedRegistration && !userExists.completedRegistration) {
           // User completed only step 1
           User.updateOne(
             { _id: userExists._id },
@@ -75,10 +72,7 @@ router.post(
               }
             }
           );
-        } else if (
-          userExists.startedRegistration &&
-          userExists.completedRegistration
-        ) {
+        } else if (userExists.startedRegistration && userExists.completedRegistration) {
           // Email address already exists
           return res.status(403).json({ error: "Account already exists" });
         } else {
@@ -102,9 +96,7 @@ router.get("/api/cities-list", async (req, res) => {
   const allResults = [];
   try {
     if (!wasCalled) {
-      userLocationData = await axios.get(
-        `http://ip-api.com/json/${userIPAddress}`
-      );
+      userLocationData = await axios.get(`http://ip-api.com/json/${userIPAddress}`);
       userCity = userLocationData.data.city;
       userState = userLocationData.data.region;
       userCountry = userLocationData.data.country;
@@ -112,7 +104,7 @@ router.get("/api/cities-list", async (req, res) => {
       wasCalled = true;
     }
 
-    const filteredResults = response.filter((element) => {
+    const filteredResults = response.filter(element => {
       const hasComma = userInput.indexOf(",") !== -1;
       if (hasComma) {
         if (element.state) {
@@ -133,10 +125,8 @@ router.get("/api/cities-list", async (req, res) => {
       if (b.city.startsWith(userCity) > a.city.startsWith(userCity)) return 1;
       if (b.city.startsWith(userCity) < a.city.startsWith(userCity)) return -1;
 
-      if (b.country.startsWith(userCountry) > a.country.startsWith(userCountry))
-        return 1;
-      if (b.country.startsWith(userCountry) < a.country.startsWith(userCountry))
-        return -1;
+      if (b.country.startsWith(userCountry) > a.country.startsWith(userCountry)) return 1;
+      if (b.country.startsWith(userCountry) < a.country.startsWith(userCountry)) return -1;
 
       if (a.state === b.state) {
         return 0;
@@ -151,24 +141,14 @@ router.get("/api/cities-list", async (req, res) => {
 
     for (let i = 0; i < filteredResults.length; i++) {
       const country =
-        filteredResults[i].country === "United States"
-          ? "USA"
-          : filteredResults[i].country;
+        filteredResults[i].country === "United States" ? "USA" : filteredResults[i].country;
       const fullLocation = `${filteredResults[i].city}, ${
-        filteredResults[i].state
-          ? `${filteredResults[i].state}, ${country}`
-          : country
+        filteredResults[i].state ? `${filteredResults[i].state}, ${country}` : country
       }`;
 
-      if (
-        fullLocation.substr(0, userInput.length).toUpperCase() ==
-        userInput.toUpperCase()
-      ) {
+      if (fullLocation.substr(0, userInput.length).toUpperCase() == userInput.toUpperCase()) {
         const search = new RegExp(userInput, "gi");
-        const match = fullLocation.replace(
-          search,
-          (match) => `<strong>${match}</strong>`
-        );
+        const match = fullLocation.replace(search, match => `<strong>${match}</strong>`);
         allResults.push({
           match,
           city: filteredResults[i].city,
@@ -198,8 +178,7 @@ const storage = multer.diskStorage({
   destination: "uploads",
   filename: (req, file, cb) => {
     const random =
-      Math.random().toString(36).substring(2, 15) +
-      Math.random().toString(36).substring(2, 15);
+      Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
     const fileExtension = file.originalname.split(".")[1];
     cb(null, `${random}.${fileExtension}`);
   },
@@ -235,15 +214,9 @@ router.post(
     },
   ]),
   (req, res) => {
-    const {
-      birthMonth,
-      birthDay,
-      birthYear,
-      gender,
-      country,
-      state,
-      city,
-    } = JSON.parse(req.body.userInfo);
+    const { birthMonth, birthDay, birthYear, gender, country, state, city } = JSON.parse(
+      req.body.userInfo
+    );
 
     const fullDob = `${birthMonth}/${birthDay}/${birthYear}`;
     const today = new Date();
@@ -259,7 +232,7 @@ router.post(
 
     req.files &&
       Object.values(req.files).length > 0 &&
-      Object.values(req.files).map(async (image) => {
+      Object.values(req.files).map(async image => {
         const compressedFile = await imagemin([image[0].path], {
           destination: "compressed",
           plugins: [imageminMozjpeg({ quality: 30 }), imageminPngquant()],
@@ -275,9 +248,9 @@ router.post(
           },
           (err, data) => {
             if (err) return console.log("err\n", err);
-            fs.unlink(compressedFile[0].sourcePath, (err) => {
+            fs.unlink(compressedFile[0].sourcePath, err => {
               if (err) return console.error(err);
-              fs.unlink(compressedFile[0].destinationPath, (err) => {
+              fs.unlink(compressedFile[0].destinationPath, err => {
                 if (err) return console.error(err);
               });
             });

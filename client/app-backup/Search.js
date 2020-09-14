@@ -12,9 +12,7 @@ const Search = () => {
   document.head.appendChild(appGlobalStyles);
   document.head.appendChild(navBarStyles);
 
-  document.querySelector(
-    "#app"
-  ).innerHTML = `<h1 style="text-align: center">Search page</h1>`;
+  document.querySelector("#app").innerHTML = `<h1 style="text-align: center">Search page</h1>`;
 };
 
 export default Search;

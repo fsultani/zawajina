@@ -1,5 +1,5 @@
 (async () => {
-  const loader = (display) => {
+  const loader = display => {
     document.querySelector(".full-page-loading-spinner").style.display = display
       ? "inline-block"
       : "none";
@@ -19,7 +19,7 @@
     <div class="testimonials">
       ${allUsers
         .map(
-          (user) => `
+          user => `
         <a href="/user/${user._id}" style="text-decoration: none">
           <div class="testimonial-wrapper">
             <div class="testimonial-image">

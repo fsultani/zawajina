@@ -120,54 +120,47 @@ router.post("/api/new-message", (req, res, next) => {
 router.post("/api/reply", (req, res, next) => {
   const token = req.headers["authorization"];
   const decodedUser = jwt.decode(token, JWT_SECRET);
-  Conversation.findOne(
-    { _id: req.body.conversationId },
-    (err, conversation) => {
-      const to =
-        conversation.sent_to_user_id === req.body.memberId
-          ? conversation.created_by_user_first_name
-          : conversation.sent_to_user_first_name;
-      const from_user_id =
-        conversation.sent_to_user_id === req.body.memberId
-          ? conversation.sent_to_user_id
-          : conversation.created_by_user_id;
-      const to_user_id =
-        conversation.sent_to_user_id === req.body.memberId
-          ? conversation.created_by_user_id
-          : conversation.sent_to_user_id;
+  Conversation.findOne({ _id: req.body.conversationId }, (err, conversation) => {
+    const to =
+      conversation.sent_to_user_id === req.body.memberId
+        ? conversation.created_by_user_first_name
+        : conversation.sent_to_user_first_name;
+    const from_user_id =
+      conversation.sent_to_user_id === req.body.memberId
+        ? conversation.sent_to_user_id
+        : conversation.created_by_user_id;
+    const to_user_id =
+      conversation.sent_to_user_id === req.body.memberId
+        ? conversation.created_by_user_id
+        : conversation.sent_to_user_id;
 
-      Message.create(
-        {
-          message: req.body.reply,
-          from: req.body.memberFirstName,
-          to,
-          from_user_id,
-          to_user_id,
-          created_at: Date.now(),
-          unread: true,
-          conversation: conversation,
-        },
-        (err, message) => {
-          if (err) {
-            console.log(err);
-          } else {
-            message.save();
-            res.status(201).json({ reply: message });
-          }
+    Message.create(
+      {
+        message: req.body.reply,
+        from: req.body.memberFirstName,
+        to,
+        from_user_id,
+        to_user_id,
+        created_at: Date.now(),
+        unread: true,
+        conversation: conversation,
+      },
+      (err, message) => {
+        if (err) {
+          console.log(err);
+        } else {
+          message.save();
+          res.status(201).json({ reply: message });
         }
-      );
-    }
-  );
+      }
+    );
+  });
 });
 
 router.put("/api/:conversationId/:messageId", (req, res) => {
-  Message.findByIdAndUpdate(
-    req.params.messageId,
-    { $set: { unread: false } },
-    (err, message) => {
-      res.status(201).end();
-    }
-  );
+  Message.findByIdAndUpdate(req.params.messageId, { $set: { unread: false } }, (err, message) => {
+    res.status(201).end();
+  });
   Conversation.findByIdAndUpdate(
     req.params.conversationId,
     { $set: { unread: false } },

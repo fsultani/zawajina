@@ -31,13 +31,13 @@
           Authorization: Cookies.get("token"),
         },
       })
-      .then((res) => {
+      .then(res => {
         const content = `
         <h2 class="testimonials-header">Recently Active</h2>
         <div class="testimonials">
           ${res.data.all
             .map(
-              (member) => `
+              member => `
               <div class="testimonial-wrapper">
                 <div class="testimonial-image">
                   <img src="/static/client/app/images/girl-${
@@ -45,9 +45,7 @@
                   }.jpg" alt="Girl 1">
                 </div>
                 <div class="testimonial-body">
-                  <div class="testimonial-name">${member.name}, ${
-                member.age
-              }</div>
+                  <div class="testimonial-name">${member.name}, ${member.age}</div>
                   <p class="location">${member.city}</p>
                   <p class="country">${member.country}</p>
                 </div>
@@ -64,7 +62,7 @@
           // window.location.pathname = '/login';
         };
       })
-      .catch((err) => {
+      .catch(err => {
         console.error("err.response\n", err.response);
         // Cookies.remove('token');
         // window.location.pathname = '/login';

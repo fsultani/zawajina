@@ -78,3 +78,6 @@ aws s3 rm s3://my-match --recursive
 
 // Empty select files in s3 bucket
 aws s3 rm s3://my-match --recursive --exclude "male.png" --exclude "female.png"
+
+// Run prettier with printWidth = 100
+npx prettier --write . --print-width 100 --arrow-parens avoid
