@@ -194,7 +194,7 @@ app.get("*", (req, res, next) => {
   } else {
     if (userId) return next();
     if (token === null) return res.sendStatus(401);
-    jwt.verify(token, JWT_SECRET, (err, user) => {
+    jwt.verify(token, JWT_SECRET, (err, authUser) => {
       if (err) {
         // return res.sendStatus(403);
         return res.render("layouts/landing-pages/index", {
@@ -222,7 +222,7 @@ app.get("*", (req, res, next) => {
           },
         });
       }
-      req.user = user.userDetails;
+      req.authUser = authUser.authUserDetails;
       next();
     });
   }

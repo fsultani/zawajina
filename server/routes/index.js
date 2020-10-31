@@ -12,17 +12,17 @@ const Conversation = require("../models/conversation");
 const router = express.Router();
 
 router.post("/login", (req, res, next) => {
-  User.findOne({ email: req.body.email }, (err, user) => {
+  User.findOne({ email: req.body.email }, (err, authUser) => {
     if (err) throw new Error(err);
-    if (!user) return res.sendStatus(403);
+    if (!authUser) return res.sendStatus(403);
 
-    User.comparePassword(req.body.password, user.password, (err, isMatch) => {
+    User.comparePassword(req.body.password, authUser.password, (err, isMatch) => {
       if (err) throw err;
       if (isMatch) {
-        const token = jwt.sign({ userDetails: user }, JWT_SECRET, {
+        const token = jwt.sign({ authUserDetails: authUser }, JWT_SECRET, {
           expiresIn: "1 day",
         });
-        res.json({ token, user });
+        res.json({ token, authUser });
       } else {
         res.sendStatus(403);
       }
@@ -31,8 +31,8 @@ router.post("/login", (req, res, next) => {
 });
 
 router.get("/", (req, res, next) => {
-  User.findOne({ _id: req.user._id }, (err, user) => {
-    if (user && user.gender === "male") {
+  User.findOne({ _id: req.authUser._id }, (err, authUser) => {
+    if (authUser && authUser.gender === "male") {
       User.find({ gender: "female" }, (err, allUsers) => {
         res.render("layouts/app/index", {
           locals: {
@@ -47,7 +47,7 @@ router.get("/", (req, res, next) => {
               "https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js",
               "/static/client/views/layouts/app/handleLogout.js",
             ],
-            user,
+            authUser,
             allUsers,
           },
           partials: {
@@ -71,7 +71,7 @@ router.get("/", (req, res, next) => {
               "https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js",
               "/static/client/views/layouts/app/handleLogout.js",
             ],
-            user,
+            authUser,
             allUsers,
           },
           partials: {
@@ -121,22 +121,22 @@ router.get("/", (req, res, next) => {
 //   })
 // });
 
-router.get("/search", (req, res, next) => {
-  User.findOne({ _id: req.user._id }, (err, user) => {
-    if (err) return res.sendStatus(403);
-    if (user !== null) {
-      res.render("app/search/search", {
-        user: user.toJSON(),
-        styles: [
-          "/static/client/views/partials/styles/app-nav.css",
-          "/static/client/views/layouts/app/app-global-styles.css",
-        ],
-      });
-    } else {
-      res.sendStatus(403);
-    }
-  });
-});
+// router.get("/search", (req, res, next) => {
+//   User.findOne({ _id: req.authUser._id }, (err, authUser) => {
+//     if (err) return res.sendStatus(403);
+//     if (authUser !== null) {
+//       res.render("app/search/search", {
+//         authUser: authUser.toJSON(),
+//         styles: [
+//           "/static/client/views/partials/styles/app-nav.css",
+//           "/static/client/views/layouts/app/app-global-styles.css",
+//         ],
+//       });
+//     } else {
+//       res.sendStatus(403);
+//     }
+//   });
+// });
 
 router.get("/api/signup-user-first-name", (req, res, next) => {
   User.findOne({ _id: req.headers.userid }, (err, user) => {
