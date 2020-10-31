@@ -11,7 +11,7 @@ const multer = require("multer");
 const connectMultipart = require("connect-multiparty");
 const imagemin = require("imagemin");
 const imageminMozjpeg = require("imagemin-mozjpeg");
-const imageminPngquant = require("imagemin-pngquant");
+// const imageminPngquant = require("imagemin-pngquant");
 
 const JWT_SECRET = Buffer.from("fe1a1915a379f3be5394b64d14794932", "hex");
 
