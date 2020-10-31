@@ -14,10 +14,10 @@ const jwt = require("jsonwebtoken");
 const JWT_SECRET = Buffer.from("fe1a1915a379f3be5394b64d14794932", "hex");
 const authenticateToken = require("./config/auth");
 
-// const mongodbConnect = process.env.DEVELOPMENT
-//   ? "mongodb+srv://fsultani:asdf@my-match.rxspi.mongodb.net/my-match-dev?retryWrites=true&w=majority"
-//   : process.env.MONGODB_URI;
-// mongoose.connect(mongodbConnect);
+const mongodbConnect = process.env.DEVELOPMENT
+  ? "mongodb+srv://fsultani:asdf@my-match.rxspi.mongodb.net/my-match-dev?retryWrites=true&w=majority"
+  : process.env.MONGODB_URI;
+mongoose.connect(mongodbConnect);
 
 const app = express();
 
@@ -236,7 +236,6 @@ app.use("/conversation", conversation);
 app.use("/messages", messages);
 
 const port = process.env.PORT || 3000;
-console.log('process.env:\n', process.env);
 
 // Reload the app on every file change in development mode only
 if (process.env.DEVELOPMENT) {
