@@ -286,7 +286,7 @@ router.post(
       { new: true },
       (err, user) => {
         if (err) return res.send({ error: err });
-        const token = jwt.sign({ userDetails: user }, JWT_SECRET, {
+        const token = jwt.sign({ authUserDetails: user }, JWT_SECRET, {
           expiresIn: "1 day",
         });
         res.status(201).json({ token, userId });

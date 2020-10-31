@@ -2,15 +2,35 @@
   <div class="navbar--container">
     <div class="navbar--site-header-inner">
       <a class="home-link" href="/"><img src="/static/client/images/home.svg" alt="Home" /></a>
+      <div class="mask"></div>
+      <div class="open-nav" onclick="openNav()">
+        <hr class="menu-line" />
+        <hr class="menu-line" />
+        <hr class="menu-line" />
+      </div>
+
+      <div id="open-side-menu" class="side-menu">
+        <div class="close-menu-button" onclick="closeNav()">&times;</div>
+        <a href="/user/${authUser._id}">Profile</a>
+        <a href="/user/${authUser._id}">Search</a>
+        <a id="logout" class="dropdown-item" style="cursor: pointer;" onclick="handleLogout()">Logout</a>
+      </div>
+
       <ul class="navbar--header-links margin-0">
-        <li>
-          <a href="/user/${user._id}">Profile</a>
-        </li>
         <li>
           <a href="/search">Search</a>
         </li>
         <li>
-          <a id="logout" style="cursor: pointer;" onclick="handleLogout()">Logout</a>
+          <div class="dropdown-menu">
+            <button onclick="openDropdownMenu()" class="dropdown-button">
+              ${authUser.name}
+              <span id="menu-arrow" class="down-arrow"></span>
+            </button>
+            <div class="dropdown-content">
+              <a href="/user/${authUser._id}">Profile</a>
+              <a id="logout" class="dropdown-item" style="cursor: pointer;" onclick="handleLogout()">Logout</a>
+            </div>
+          </div>
         </li>
       </ul>
     </div>

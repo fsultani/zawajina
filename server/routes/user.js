@@ -13,6 +13,7 @@ const JWT_SECRET = Buffer.from("fe1a1915a379f3be5394b64d14794932", "hex");
 
 router.get("/:userId", (req, res, next) => {
   const { userId } = req.params;
+  const authUser = req.authUser;
   User.findOne({ _id: userId }, (err, user) => {
     if (err) return res.sendStatus(403);
     if (user !== null) {
@@ -20,7 +21,6 @@ router.get("/:userId", (req, res, next) => {
         locals: {
           title: "My Match",
           styles: [
-            "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css",
             "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css",
             "/static/client/views/partials/styles/app-nav.css",
             "/static/client/views/layouts/app/app-global-styles.css",
@@ -32,6 +32,7 @@ router.get("/:userId", (req, res, next) => {
             "/static/client/views/layouts/app/handleLogout.js",
             "/static/client/views/app/profile/main.js",
           ],
+          authUser,
           user,
         },
         partials: {
