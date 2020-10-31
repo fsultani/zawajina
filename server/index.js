@@ -236,6 +236,7 @@ app.use("/conversation", conversation);
 app.use("/messages", messages);
 
 const port = process.env.PORT || 3000;
+console.log('process.env:\n', process.env);
 
 // Reload the app on every file change in development mode only
 if (process.env.DEVELOPMENT) {
