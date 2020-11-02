@@ -84,7 +84,7 @@ let counter = 0;
       });
     } catch (err) {
       if (err.response && err.response.status === 403) {
-        console.log("err.response.config:\n", err.response.config);
+        console.error(err.response.config);
         makeApiCalls(true);
       } else {
         return;

@@ -84,7 +84,7 @@ let counter = 0;
       });
       counter++;
     } catch (err) {
-      console.log("err:\n", err);
+      console.error(err);
       if (err.response.data) {
         makeApiCalls();
         if (counter > 0) {
