@@ -9,9 +9,7 @@ const aws = require("aws-sdk");
 const fs = require("fs");
 const multer = require("multer");
 const connectMultipart = require("connect-multiparty");
-const imagemin = require("imagemin");
-const imageminMozjpeg = require("imagemin-mozjpeg");
-// const imageminPngquant = require("imagemin-pngquant");
+const Jimp = require("jimp")
 
 const JWT_SECRET = Buffer.from("fe1a1915a379f3be5394b64d14794932", "hex");
 
@@ -233,40 +231,47 @@ router.post(
     req.files &&
       Object.values(req.files).length > 0 &&
       Object.values(req.files).map(async image => {
-        const compressedFile = await imagemin([image[0].path], {
-          destination: "compressed",
-          plugins: [imageminMozjpeg({ quality: 30 }), imageminPngquant()],
-        });
+        const file = image[0];
+        Jimp.read(file.path, function (err, jpgImage) {
+          if (err) {
+            console.log(err)
+          } else {
+            const fileName = file.filename.split(".")[0];
+            const compressedFilePath = `compressed/${file.filename.split('.')[0]}.jpg`
+            jpgImage.resize(640, 640).quality(100).write(compressedFilePath, async () => {
+              const stream = fs.createReadStream(compressedFilePath);
+              s3.upload(
+                {
+                  Bucket: "my-match",
+                  Key: `${userId}/${fileName}.jpg`,
+                  Body: stream,
+                  ACL: "public-read",
+                  ContentType: 'image/jpg',
+                },
+                (err, data) => {
+                  if (err) return console.error(err);
+                  fs.unlink(file.path, err => {
+                    if (err) return console.error(err);
+                    fs.unlink(compressedFilePath, err => {
+                      if (err) return console.error(err);
+                    });
+                  });
 
-        s3.upload(
-          {
-            Bucket: "my-match",
-            Key: `${userId}/${compressedFile[0].sourcePath.split("/")[1]}`,
-            Body: compressedFile[0].data,
-            ACL: "public-read",
-            ContentType: image[0].mimetype,
-          },
-          (err, data) => {
-            if (err) return console.log("err\n", err);
-            fs.unlink(compressedFile[0].sourcePath, err => {
-              if (err) return console.error(err);
-              fs.unlink(compressedFile[0].destinationPath, err => {
-                if (err) return console.error(err);
-              });
-            });
-
-            User.findOneAndUpdate(
-              { _id: userId },
-              {
-                $push: { photos: data.Location },
-              },
-              { new: true },
-              (err, user) => {
-                if (err) return res.send({ error: err });
-              }
-            );
+                  User.findOneAndUpdate(
+                    { _id: userId },
+                    {
+                      $push: { photos: data.Location },
+                    },
+                    { new: true },
+                    (err, user) => {
+                      if (err) return res.send({ error: err });
+                    }
+                  );
+                }
+              );
+            })
           }
-        );
+        })
       });
 
     User.findOneAndUpdate(
