@@ -191,7 +191,7 @@ const numberOfUsers = 1;
         console.log("\n************************************************************");
       }
     } catch (error) {
-      console.log("error:\n", error);
+      console.error(error);
       return browser.close();
     }
   };
