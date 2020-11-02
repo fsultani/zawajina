@@ -60,10 +60,16 @@ const UserSchema = mongoose.Schema({
     type: Boolean,
     required: true,
   },
+  // photos: {
+  //   type: Array,
+  //   required: false,
+  // },
   photos: {
     type: Array,
+    // data: Buffer,
+    // contentType: String,
     required: false,
-  },
+  }
 });
 
 const User = (module.exports = mongoose.model("Users", UserSchema));

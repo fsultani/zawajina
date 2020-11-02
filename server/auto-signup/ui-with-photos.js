@@ -184,7 +184,7 @@ const numberOfUsers = 1;
 
         await page.waitForSelector(".signup-button");
         await page.click("button[name=createNewAccount]");
-        await page.waitFor(500);
+        await page.waitFor(5000);
 
         await page.waitForSelector("#logout");
         await page.evaluate(() => document.querySelector("#logout").click());
