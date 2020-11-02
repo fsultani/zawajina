@@ -143,7 +143,7 @@ const numberOfUsers = 10;
         console.log("\n************************************************************");
       }
     } catch (error) {
-      console.log("error:\n", error);
+      console.error(error);
       return browser.close();
     }
   };
