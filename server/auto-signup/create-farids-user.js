@@ -1,5 +1,4 @@
 const puppeteer = require("puppeteer");
-const names = require("./names");
 const countries = require("../routes/world-cities");
 
 const numberOfUsers = 10;

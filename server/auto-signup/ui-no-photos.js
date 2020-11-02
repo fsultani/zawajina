@@ -1,5 +1,6 @@
 const puppeteer = require("puppeteer");
-const names = require("./names");
+const names = require("./female-names");
+// const names = require("./male-names");
 const countries = require("../routes/world-cities");
 
 const numberOfUsers = 10;
@@ -43,7 +44,7 @@ const numberOfUsers = 10;
 
         // Create only female users
         nameChoice = {
-          name: names.female[Math.floor(Math.random() * names.female.length)],
+          name: names[Math.floor(Math.random() * names.length)],
           gender: "female",
         };
 

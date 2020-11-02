@@ -1,6 +1,5 @@
 // Create fixed number of random users using api
 
-const puppeteer = require("puppeteer");
 const axios = require("axios");
 const fs = require("fs");
 const FormData = require("form-data");
