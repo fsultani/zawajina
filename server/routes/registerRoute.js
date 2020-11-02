@@ -238,7 +238,7 @@ router.post(
           } else {
             const fileName = file.filename.split(".")[0];
             const compressedFilePath = `compressed/${file.filename.split('.')[0]}.jpg`
-            jpgImage.resize(640, 640).quality(100).write(compressedFilePath, async () => {
+            jpgImage.cover(640, 640).quality(100).write(compressedFilePath, async () => {
               const stream = fs.createReadStream(compressedFilePath);
               s3.upload(
                 {
