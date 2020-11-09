@@ -187,8 +187,11 @@ list-type-ulli {
 }
 
 .signup-container {
-  min-height: 100vh;
-  padding: 115px 0 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding: 60px 0;
   background: linear-gradient(57deg, #00c6a7 0%, #1e4d92 100%);
   background: -webkit-linear-gradient(57deg, #00c6a7 0%, #1e4d92 100%);
   background: -o-linear-gradient(57deg, #00c6a7 0%, #1e4d92 100%);
