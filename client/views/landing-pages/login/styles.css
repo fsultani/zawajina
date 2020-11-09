@@ -31,6 +31,10 @@ html {
   font-family: Poppins-Regular, sans-serif;
 }
 
+section {
+  height: 100%;
+}
+
 a {
   font-family: Poppins-Regular;
   font-size: 14px;
@@ -146,7 +150,7 @@ textarea:-ms-input-placeholder {
 
 .login-container {
   width: 100%;
-  min-height: 100vh;
+  height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
   display: -moz-box;
@@ -155,7 +159,7 @@ textarea:-ms-input-placeholder {
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  padding: 15px;
+  padding: 60px 0;
   background: linear-gradient(-135deg, #c850c0, #4158d0);
   background: linear-gradient(57deg, #00c6a7 0%, #1e4d92 100%);
 }

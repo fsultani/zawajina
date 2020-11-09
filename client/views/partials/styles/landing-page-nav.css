@@ -2,7 +2,9 @@
 # Header
 --------------------------------------------------------------*/
 .navbar--site-header {
-  padding: 24px 0;
+  height: 50px;
+  display: flex;
+  align-items: center;
   position: absolute;
   top: 0;
   left: 0;

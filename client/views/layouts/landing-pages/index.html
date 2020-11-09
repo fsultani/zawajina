@@ -12,7 +12,11 @@
     `).join('')}
   </head>
   <body>
-    ${nav} ${body} ${footer} ${scripts.map(script => `
+    ${nav}
+    <div class="main-content">
+      ${body} ${footer}
+    </div>
+    ${scripts.map(script => `
     <script type="text/javascript" src="${script}"></script>
     `).join('')}
   </body>
