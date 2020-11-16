@@ -159,7 +159,7 @@ textarea:-ms-input-placeholder {
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  padding: 60px 0;
+  padding: 60px 20px;
   background: linear-gradient(-135deg, #c850c0, #4158d0);
   background: linear-gradient(57deg, #00c6a7 0%, #1e4d92 100%);
 }
@@ -391,10 +391,10 @@ textarea:-ms-input-placeholder {
 
 .no-account-container {
   text-align: center;
-  padding-top: 115px;
+  padding-top: 8px;
 }
 
-@media (max-width: 576px) {
+@media screen and (max-width: 768px) {
   .login-wrapper {
     margin-top: 32px;
   }
@@ -406,7 +406,6 @@ textarea:-ms-input-placeholder {
 
 @media (max-width: 325px) {
   .login-wrapper {
-    margin-top: 32px;
     padding: 32px 15px;
   }
 

@@ -6,8 +6,8 @@ const User = require("../models/user");
 const mongodbConnect = mongoose.connect("mongodb+srv://fsultani:asdf@my-match.rxspi.mongodb.net/my-match-dev?retryWrites=true&w=majority");
 
 const s3 = new aws.S3({
-  accessKeyId: require("/Users/farid/_repos/tutor/server/routes/s3Credentials.json").accessKeyId,
-  secretAccessKey: require("/Users/farid/_repos/tutor/server/routes/s3Credentials.json").SECRETACCESSKEY,
+  accessKeyId: require("/Users/farid/_repos/tutor/server/routes/credentials.json").s3accessKeyId,
+  secretAccessKey: require("/Users/farid/_repos/tutor/server/routes/credentials.json").s3secretAccessKey,
 });
 
 function emptyBucket(bucketName){
