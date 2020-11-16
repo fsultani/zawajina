@@ -175,7 +175,7 @@ module.exports = router;
 // const imagemin = require('imagemin');
 // const imageminMozjpeg = require("imagemin-mozjpeg");
 // const imageminPngquant = require('imagemin-pngquant');
-// const s3Credentials = require('./s3Credentials.json');
+// const s3Credentials = require('./credentials.json');
 
 // const s3 = new aws.S3(s3Credentials);
 // const multipartMiddleware = connectMultipart();

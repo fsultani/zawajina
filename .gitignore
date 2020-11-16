@@ -1,6 +1,6 @@
 node_modules
 db_credentials
 .DS_Store
-s3Credentials.json
+credentials.json
 uploads/
 compressed/

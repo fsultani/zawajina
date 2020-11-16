@@ -1,6 +1,7 @@
 const express = require("express");
 const axios = require("axios");
 const { check, body, validationResult } = require("express-validator/check");
+const cloudinary = require('cloudinary').v2;
 const countries = require("./world-cities");
 
 const jwt = require("jsonwebtoken");
@@ -165,11 +166,17 @@ router.get("/api/cities-list", async (req, res) => {
 
 const s3 = new aws.S3({
   accessKeyId: process.env.DEVELOPMENT
-    ? require("./s3Credentials.json").accessKeyId
+    ? require("./credentials.json").s3accessKeyId
     : process.env.AWS_ACCESS_KEY_ID,
   secretAccessKey: process.env.DEVELOPMENT
-    ? require("./s3Credentials.json").SECRETACCESSKEY
+    ? require("./credentials.json").s3secretAccessKey
     : process.env.AWS_SECRET_ACCESS_KEY,
+});
+
+cloudinary.config({ 
+  cloud_name: require("./credentials.json").cloudinaryCloudName,
+  api_key: require("./credentials.json").cloudinaryApiKey,
+  api_secret: require("./credentials.json").cloudinaryApiSecret,
 });
 
 const storage = multer.diskStorage({
@@ -239,36 +246,29 @@ router.post(
             const fileName = file.filename.split(".")[0];
             const compressedFilePath = `compressed/${file.filename.split('.')[0]}.jpg`
             jpgImage.cover(640, 640).quality(100).write(compressedFilePath, async () => {
-              const stream = fs.createReadStream(compressedFilePath);
-              s3.upload(
-                {
-                  Bucket: "my-match",
-                  Key: `${userId}/${fileName}.jpg`,
-                  Body: stream,
-                  ACL: "public-read",
-                  ContentType: 'image/jpg',
-                },
-                (err, data) => {
+              // const stream = fs.createReadStream(compressedFilePath);
+              cloudinary.uploader.upload(compressedFilePath, {
+                folder: userId,
+              }, (error, result) => {
+                if (error) return console.error(error);
+                fs.unlink(file.path, err => {
                   if (err) return console.error(err);
-                  fs.unlink(file.path, err => {
+                  fs.unlink(compressedFilePath, err => {
                     if (err) return console.error(err);
-                    fs.unlink(compressedFilePath, err => {
-                      if (err) return console.error(err);
-                    });
                   });
+                });
 
-                  User.findOneAndUpdate(
-                    { _id: userId },
-                    {
-                      $push: { photos: data.Location },
-                    },
-                    { new: true },
-                    (err, user) => {
-                      if (err) return res.send({ error: err });
-                    }
-                  );
-                }
-              );
+                User.findOneAndUpdate(
+                  { _id: userId },
+                  {
+                    $push: { photos: result.url },
+                  },
+                  { new: true },
+                  (err, user) => {
+                    if (err) return res.send({ error: err });
+                  }
+                );
+              });
             })
           }
         })

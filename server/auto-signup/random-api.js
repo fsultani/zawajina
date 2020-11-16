@@ -10,6 +10,14 @@ const countries = require("../routes/world-cities");
 const numberOfUsers = 1;
 let counter = 0;
 
+function sleep(milliseconds) {
+  const date = Date.now();
+  let currentDate = null;
+  do {
+    currentDate = Date.now();
+  } while (currentDate - date < milliseconds);
+}
+
 (() => {
   const createUser = () => {
     let nameChoice;
@@ -72,12 +80,12 @@ let counter = 0;
       const formData = new FormData();
       await formData.append("userInfo", JSON.stringify(createUser().data));
       await formData.append("userId", personalInfo.data.userId);
-      // await formData.append('image-1', fs.createReadStream(shuffleImages(imagesArray)[0]));
-      // await formData.append('image-2', fs.createReadStream(shuffleImages(imagesArray)[1]));
-      // await formData.append('image-3', fs.createReadStream(shuffleImages(imagesArray)[2]));
-      // await formData.append('image-4', fs.createReadStream(shuffleImages(imagesArray)[3]));
-      // await formData.append('image-5', fs.createReadStream(shuffleImages(imagesArray)[4]));
-      // await formData.append('image-6', fs.createReadStream(shuffleImages(imagesArray)[5]));
+      await formData.append('image-1', fs.createReadStream(shuffleImages(imagesArray)[0]));
+      await formData.append('image-2', fs.createReadStream(shuffleImages(imagesArray)[1]));
+      await formData.append('image-3', fs.createReadStream(shuffleImages(imagesArray)[2]));
+      await formData.append('image-4', fs.createReadStream(shuffleImages(imagesArray)[3]));
+      await formData.append('image-5', fs.createReadStream(shuffleImages(imagesArray)[4]));
+      await formData.append('image-6', fs.createReadStream(shuffleImages(imagesArray)[5]));
 
       const aboutResponse = await axios.post("http://localhost:3000/register/api/about", formData, {
         headers: formData.getHeaders(),
@@ -86,6 +94,7 @@ let counter = 0;
     } catch (err) {
       console.error(err);
       if (err.response.data) {
+        sleep(2000);
         makeApiCalls();
         if (counter > 0) {
           --counter;
@@ -96,9 +105,11 @@ let counter = 0;
     console.log(`counter: ${counter}/${numberOfUsers}`);
     console.log("************************************************************\n");
   };
+  sleep(2000);
   makeApiCalls();
   const repeatFunction = setInterval(async () => {
     if (counter < numberOfUsers) {
+      sleep(2000);
       makeApiCalls();
     } else {
       clearInterval(repeatFunction);
