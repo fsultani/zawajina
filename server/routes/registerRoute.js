@@ -164,19 +164,19 @@ router.get("/api/cities-list", async (req, res) => {
   }
 });
 
-const s3 = new aws.S3({
-  accessKeyId: process.env.DEVELOPMENT
-    ? require("./credentials.json").s3accessKeyId
-    : process.env.AWS_ACCESS_KEY_ID,
-  secretAccessKey: process.env.DEVELOPMENT
-    ? require("./credentials.json").s3secretAccessKey
-    : process.env.AWS_SECRET_ACCESS_KEY,
-});
+// const s3 = new aws.S3({
+//   accessKeyId: process.env.DEVELOPMENT
+//     ? require("./credentials.json").s3accessKeyId
+//     : process.env.AWS_ACCESS_KEY_ID,
+//   secretAccessKey: process.env.DEVELOPMENT
+//     ? require("./credentials.json").s3secretAccessKey
+//     : process.env.AWS_SECRET_ACCESS_KEY,
+// });
 
 cloudinary.config({ 
-  cloud_name: require("./credentials.json").cloudinaryCloudName,
-  api_key: require("./credentials.json").cloudinaryApiKey,
-  api_secret: require("./credentials.json").cloudinaryApiSecret,
+  cloud_name: process.env.DEVELOPMENT ? require("./credentials.json").cloudinaryCloudName : process.env.cloudinaryCloudName,
+  api_key: process.env.DEVELOPMENT ? require("./credentials.json").cloudinaryApiKey : process.env.cloudinaryApiKey,
+  api_secret: process.env.DEVELOPMENT ? require("./credentials.json").cloudinaryApiSecret : process.env.cloudinaryApiSecret,
 });
 
 const storage = multer.diskStorage({
