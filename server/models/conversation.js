@@ -1,4 +1,4 @@
-var mongoose = require("mongoose");
+var mongoose = require('mongoose');
 
 var Conversation = mongoose.Schema({
   created_at: Date,
@@ -12,9 +12,9 @@ var Conversation = mongoose.Schema({
   users: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Users",
+      ref: 'Users',
     },
   ],
 });
 
-var Conversation = (module.exports = mongoose.model("Conversation", Conversation));
+var Conversation = (module.exports = mongoose.model('Conversation', Conversation));

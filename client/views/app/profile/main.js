@@ -2,10 +2,10 @@ let slideWidth;
 let index = 0;
 let translateValue = 0;
 
-const userPhotosLength = document.querySelector(".profile-photos-container").dataset.userPhotos;
+const userPhotosLength = parseInt(document.querySelector(".profile-photos-container").dataset.userPhotos);
 const profilePhotosContainer = document.querySelector(".profile-photos-container");
 
-if (userPhotosLength > 0) {
+if (userPhotosLength > 1) {
   document.querySelector(".profile-photos-container").style.height = "390px";
   slideWidth = document.querySelector(".slide").clientWidth;
 
@@ -45,7 +45,7 @@ if (userPhotosLength > 0) {
     observer.observe(elements[i]);
   }
 } else {
-  document.querySelector(".profile-photos-container").style.height = "340px";
+  document.querySelector(".profile-photos-container").style.height = "390px";
 }
 
 const sliderWrapper = translateValue => {

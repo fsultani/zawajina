@@ -1,3 +1,8 @@
+if (window.location.pathname !== '/login') {
+  Cookies.remove("token");
+  window.location.pathname = "/login";
+}
+
 const handleEmailValidation = () => {
   const email = document.login.elements.email.value;
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -34,9 +39,9 @@ const handleLogin = event => {
         password,
       })
       .then(res => {
-        const { token, authUser } = res.data;
+        const { token, userId } = res.data;
         Cookies.set("token", token, { sameSite: "strict" });
-        // window.location.pathname = `/user/${authUser._id}`;
+        // window.location.pathname = `/user/${userId}`;
         window.location.pathname = `/`;
       })
       .catch(error => {

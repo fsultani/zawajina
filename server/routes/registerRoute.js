@@ -1,30 +1,34 @@
-const express = require("express");
-const axios = require("axios");
-const { check, body, validationResult } = require("express-validator/check");
+const express = require('express');
+const { ObjectId } = require('mongodb');
+var bcrypt = require('bcryptjs');
+const axios = require('axios');
+const { check, body, validationResult } = require('express-validator/check');
 const cloudinary = require('cloudinary').v2;
-const countries = require("./world-cities");
+const jwt = require('jsonwebtoken');
+const moment = require('moment');
+const aws = require('aws-sdk');
+const fs = require('fs');
+const multer = require('multer');
+const connectMultipart = require('connect-multiparty');
+const Jimp = require('jimp')
 
-const jwt = require("jsonwebtoken");
-const moment = require("moment");
-const aws = require("aws-sdk");
-const fs = require("fs");
-const multer = require("multer");
-const connectMultipart = require("connect-multiparty");
-const Jimp = require("jimp")
+const JWT_SECRET = Buffer.from('fe1a1915a379f3be5394b64d14794932', 'hex');
 
-const JWT_SECRET = Buffer.from("fe1a1915a379f3be5394b64d14794932", "hex");
-
-const User = require("../models/user");
+const { mongoDb } = require('../db.js');
+const { createUser } = require('../models/user');
+const countries = require('./world-cities');
+const ethnicities = require('./ethnicities');
+const User = require('../models/user');
 
 const router = express.Router();
 
 router.post(
-  "/api/personal-info",
+  '/api/personal-info',
   [
-    check("name").not().isEmpty().withMessage("Enter your name"),
-    check("email").isEmail().withMessage("Enter a valid email address"),
-    check("password").not().isEmpty().withMessage("Enter a password"),
-    check("password").isLength({ min: 8 }),
+    check('name').not().isEmpty().withMessage('Enter your name'),
+    check('email').isEmail().withMessage('Enter a valid email address'),
+    check('password').not().isEmpty().withMessage('Enter a password'),
+    check('password').isLength({ min: 8 }),
   ],
   (req, res) => {
     const { name, email, password } = req.body;
@@ -33,26 +37,32 @@ router.post(
     if (!getErrors.isEmpty()) {
       return res.status(400).json({ error: getErrors.array() });
     } else {
-      User.findOne({ email }, (err, userExists) => {
+      mongoDb().collection('users').findOne({ email }, (err, userExists) => {
         if (!userExists) {
           // User does not exist; create a new account
-          const newUser = new User({
+          const newUser = {
             name,
             email,
             password,
-            startedRegistration: true,
+            startedRegistrationAt: new Date(),
             completedRegistration: false,
             isUserSessionValid: false,
+          };
+
+          bcrypt.genSalt(10, (err, salt) => {
+            bcrypt.hash(newUser.password, salt, (err, hash) => {
+              newUser.password = hash;
+              mongoDb().collection('users').insertOne(newUser, (err, user) => {
+                if (err) throw Error(err);
+                const userId = user.insertedId;
+                return res.status(201).send({ userId });
+              });
+            });
           });
 
-          User.createUser(newUser, (err, user) => {
-            if (err) throw new Error(err);
-            const userId = user._id;
-            return res.status(201).send({ userId });
-          });
         } else if (userExists.startedRegistration && !userExists.completedRegistration) {
-          // User completed only step 1
-          User.updateOne(
+          // User completed step 1 only
+          mongoDb().collection('users').findOneAndUpdate(
             { _id: userExists._id },
             {
               $set: {
@@ -62,7 +72,7 @@ router.post(
             },
             (err, user) => {
               if (err) {
-                return res.json({ error: "Unknown error" });
+                return res.json({ error: 'Unknown error' });
               } else {
                 return res.status(201).json({
                   startedRegistration: userExists.startedRegistration,
@@ -73,47 +83,47 @@ router.post(
           );
         } else if (userExists.startedRegistration && userExists.completedRegistration) {
           // Email address already exists
-          return res.status(403).json({ error: "Account already exists" });
+          return res.status(403).json({ error: 'Account already exists' });
         } else {
-          return res.json({ error: "Unknown error" });
+          return res.json({ error: 'Unknown error' });
         }
       });
     }
   }
 );
 
-let wasCalled = false;
+let locationDataWasCalled = false;
 let userLocationData;
 let userCity;
 let userState;
 let userCountry;
-let response;
+let locationResponse;
 
-router.get("/api/cities-list", async (req, res) => {
+router.get('/api/cities-list', async (req, res) => {
   const { userIPAddress, userInput } = req.query;
   const allLocations = [];
   const allResults = [];
   try {
-    if (!wasCalled) {
+    if (!locationDataWasCalled) {
       userLocationData = await axios.get(`http://ip-api.com/json/${userIPAddress}`);
       userCity = userLocationData.data.city;
       userState = userLocationData.data.region;
       userCountry = userLocationData.data.country;
-      response = countries.default.getAllCities();
-      wasCalled = true;
+      locationResponse = countries.default.getAllCities();
+      locationDataWasCalled = true;
     }
 
-    const filteredResults = response.filter(element => {
-      const hasComma = userInput.indexOf(",") !== -1;
+    const filteredResults = locationResponse.filter(element => {
+      const hasComma = userInput.indexOf(',') !== -1;
       if (hasComma) {
         if (element.state) {
           return element.state
             .toLowerCase()
-            .startsWith(userInput.split(",")[1].toLowerCase().trim());
+            .startsWith(userInput.split(',')[1].toLowerCase().trim());
         } else {
           return element.country
             .toLowerCase()
-            .startsWith(userInput.split(",")[1].toLowerCase().trim());
+            .startsWith(userInput.split(',')[1].toLowerCase().trim());
         }
       } else {
         return element.city.toLowerCase().startsWith(userInput.toLowerCase());
@@ -140,13 +150,13 @@ router.get("/api/cities-list", async (req, res) => {
 
     for (let i = 0; i < filteredResults.length; i++) {
       const country =
-        filteredResults[i].country === "United States" ? "USA" : filteredResults[i].country;
+        filteredResults[i].country === 'United States' ? 'USA' : filteredResults[i].country;
       const fullLocation = `${filteredResults[i].city}, ${
         filteredResults[i].state ? `${filteredResults[i].state}, ${country}` : country
       }`;
 
       if (fullLocation.substr(0, userInput.length).toUpperCase() == userInput.toUpperCase()) {
-        const search = new RegExp(userInput, "gi");
+        const search = new RegExp(userInput, 'gi');
         const match = fullLocation.replace(search, match => `<strong>${match}</strong>`);
         allResults.push({
           match,
@@ -160,66 +170,86 @@ router.get("/api/cities-list", async (req, res) => {
     const results = allResults.slice(0, 7);
     res.send(results);
   } catch (err) {
-    return res.json({ error: err.response });
+    return res.json({ error: err.locationResponse });
+  }
+});
+
+let ethnicityWasCalled = false;
+let ethnicityResponse;
+router.get('/api/ethnicities-list', async (req, res) => {
+  const { userInput } = req.query;
+
+  try {
+    if (!ethnicityWasCalled) {
+      ethnicityResponse = ethnicities.default.getAllEthnicities();
+      ethnicityWasCalled = true;
+    }
+
+    const filteredResults = ethnicityResponse.filter(element => element.toLowerCase().startsWith(userInput.toLowerCase()));
+    filteredResults.sort((a, b) => b < a)
+    res.send(filteredResults);
+  } catch (err) {
+    return res.json({ error: err.ethnicityResponse });
   }
 });
 
 // const s3 = new aws.S3({
 //   accessKeyId: process.env.DEVELOPMENT
-//     ? require("./credentials.json").s3accessKeyId
+//     ? require('./credentials.json').s3accessKeyId
 //     : process.env.AWS_ACCESS_KEY_ID,
 //   secretAccessKey: process.env.DEVELOPMENT
-//     ? require("./credentials.json").s3secretAccessKey
+//     ? require('./credentials.json').s3secretAccessKey
 //     : process.env.AWS_SECRET_ACCESS_KEY,
 // });
 
-cloudinary.config({ 
-  cloud_name: process.env.DEVELOPMENT ? require("./credentials.json").cloudinaryCloudName : process.env.cloudinaryCloudName,
-  api_key: process.env.DEVELOPMENT ? require("./credentials.json").cloudinaryApiKey : process.env.cloudinaryApiKey,
-  api_secret: process.env.DEVELOPMENT ? require("./credentials.json").cloudinaryApiSecret : process.env.cloudinaryApiSecret,
+cloudinary.config({
+  cloud_name: process.env.DEVELOPMENT ? require('./credentials.json').cloudinaryCloudName : process.env.cloudinaryCloudName,
+  api_key: process.env.DEVELOPMENT ? require('./credentials.json').cloudinaryApiKey : process.env.cloudinaryApiKey,
+  api_secret: process.env.DEVELOPMENT ? require('./credentials.json').cloudinaryApiSecret : process.env.cloudinaryApiSecret,
 });
 
 const storage = multer.diskStorage({
-  destination: "uploads",
+  destination: 'uploads',
   filename: (req, file, cb) => {
     const random =
       Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-    const fileExtension = file.originalname.split(".")[1];
+    const fileExtension = file.originalname.split('.')[1];
     cb(null, `${random}.${fileExtension}`);
   },
 });
 
 const upload = multer({ storage: storage });
 router.post(
-  "/api/about",
+  '/api/about',
   upload.fields([
     {
-      name: "image-1",
+      name: 'image-1',
       maxCount: 1,
     },
     {
-      name: "image-2",
+      name: 'image-2',
       maxCount: 1,
     },
     {
-      name: "image-3",
+      name: 'image-3',
       maxCount: 1,
     },
     {
-      name: "image-4",
+      name: 'image-4',
       maxCount: 1,
     },
     {
-      name: "image-5",
+      name: 'image-5',
       maxCount: 1,
     },
     {
-      name: "image-6",
+      name: 'image-6',
       maxCount: 1,
     },
   ]),
   (req, res) => {
-    const { birthMonth, birthDay, birthYear, gender, country, state, city } = JSON.parse(
+    const userId = req.body.userId;
+    const { birthMonth, birthDay, birthYear, gender, country, state, city, ethnicity } = JSON.parse(
       req.body.userInfo
     );
 
@@ -229,74 +259,85 @@ router.post(
     let age = today.getFullYear() - dob.getFullYear();
     const month = today.getMonth() - dob.getMonth();
 
+    const ethnicitySelection = ethnicity.split()
+
     if (month < 0 || (month === 0 && today.getDate() < dob.getDate())) {
       age = age - 1;
     }
 
-    const userId = req.body.userId;
-
-    req.files &&
-      Object.values(req.files).length > 0 &&
-      Object.values(req.files).map(async image => {
+    if (req.files && Object.values(req.files).length > 0) {
+      const allImages = [];
+      const userImages = Object.values(req.files).map(async (image, index) => {
         const file = image[0];
-        Jimp.read(file.path, function (err, jpgImage) {
-          if (err) {
-            console.log(err)
-          } else {
-            const fileName = file.filename.split(".")[0];
-            const compressedFilePath = `compressed/${file.filename.split('.')[0]}.jpg`
-            jpgImage.cover(640, 640).quality(100).write(compressedFilePath, async () => {
-              // const stream = fs.createReadStream(compressedFilePath);
-              cloudinary.uploader.upload(compressedFilePath, {
-                folder: userId,
-              }, (error, result) => {
-                if (error) return console.error(error);
-                fs.unlink(file.path, err => {
-                  if (err) return console.error(err);
-                  fs.unlink(compressedFilePath, err => {
-                    if (err) return console.error(err);
-                  });
-                });
-
-                User.findOneAndUpdate(
-                  { _id: userId },
-                  {
-                    $push: { photos: result.url },
-                  },
-                  { new: true },
-                  (err, user) => {
-                    if (err) return res.send({ error: err });
-                  }
-                );
-              });
-            })
-          }
+        const fileName = file.filename.split('.')[0];
+        const compressedFilePath = `compressed/${file.filename.split('.')[0]}.jpg`;
+        const jpgImage = await Jimp.read(file.path);
+        await jpgImage.cover(640, 640).quality(100).write(compressedFilePath);
+        const uploadToCloudinary = await cloudinary.uploader.upload(compressedFilePath, {
+          folder: userId,
         })
-      });
-
-    User.findOneAndUpdate(
-      { _id: userId },
-      {
-        $set: {
-          fullDob,
-          age,
-          gender,
-          country,
-          state,
-          city,
-          completedRegistration: true,
-          isUserSessionValid: true,
-        },
-      },
-      { new: true },
-      (err, user) => {
-        if (err) return res.send({ error: err });
-        const token = jwt.sign({ authUserDetails: user }, JWT_SECRET, {
-          expiresIn: "1 day",
+        allImages.push(uploadToCloudinary.secure_url);
+        fs.unlink(file.path, err => {
+          if (err) return console.error(err);
+          fs.unlink(compressedFilePath, err => {
+            if (err) return console.error(err);
+          });
         });
-        res.status(201).json({ token, userId });
-      }
-    );
+      })
+
+      Promise.all(userImages).then(() => {
+        mongoDb().collection('users').findOneAndUpdate(
+          { _id: ObjectId(userId) },
+          {
+            $set: {
+              fullDob,
+              age,
+              gender,
+              country,
+              state,
+              city,
+              photos: allImages,
+              ethnicity: ethnicitySelection,
+              completedRegistrationAt: new Date(),
+              isUserSessionValid: true,
+              lastLogin: new Date(),
+            },
+          },
+          { new: true }, (err, user) => {
+            const token = jwt.sign({ userId: user.value._id }, JWT_SECRET, {
+              expiresIn: '1 day',
+            });
+            res.status(201).json({ token });
+          });
+      })
+    } else {
+      mongoDb().collection('users').findOneAndUpdate(
+        { _id: ObjectId(userId) },
+        {
+          $set: {
+            fullDob,
+            age,
+            gender,
+            country,
+            state,
+            city,
+            photos: [],
+            ethnicitySelection,
+            completedRegistrationAt: new Date(),
+            isUserSessionValid: true,
+            lastLogin: new Date(),
+          },
+        },
+        { new: true },
+        (err, user) => {
+          if (err) return res.send({ error: err });
+          const token = jwt.sign({ userId: user.value._id }, JWT_SECRET, {
+            expiresIn: '1 day',
+          });
+          res.status(201).json({ token });
+        }
+      );
+    }
   }
 );
 

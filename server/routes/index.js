@@ -1,9 +1,12 @@
 const express = require("express");
+const { ObjectId } = require('mongodb');
 const jwt = require("jsonwebtoken");
 const Cookies = require("js-cookie");
 const path = require("path");
 const JWT_SECRET = Buffer.from("fe1a1915a379f3be5394b64d14794932", "hex");
 
+const { mongoDb } = require('../db.js');
+const { comparePassword } = require('../models/user');
 const authenticateToken = require("../config/auth");
 const User = require("../models/user");
 const Message = require("../models/message");
@@ -12,14 +15,17 @@ const Conversation = require("../models/conversation");
 const router = express.Router();
 
 router.post("/login", (req, res, next) => {
-  User.findOne({ email: req.body.email }, (err, authUser) => {
+  const email = req.body.email;
+  const password = req.body.password;
+
+  mongoDb().collection('users').findOne({ email }, (err, authUser) => {
     if (err) throw new Error(err);
     if (!authUser) return res.sendStatus(403);
 
-    User.comparePassword(req.body.password, authUser.password, (err, isMatch) => {
+    comparePassword(password, authUser.password, (err, isMatch) => {
       if (err) throw err;
       if (isMatch) {
-        const token = jwt.sign({ authUserDetails: authUser }, JWT_SECRET, {
+        const token = jwt.sign({ userId: authUser._id }, JWT_SECRET, {
           expiresIn: "1 day",
         });
         res.json({ token, authUser });
@@ -30,57 +36,33 @@ router.post("/login", (req, res, next) => {
   });
 });
 
-router.get("/", (req, res, next) => {
-  User.findOne({ _id: req.authUser._id }, (err, authUser) => {
-    if (authUser && authUser.gender === "male") {
-      User.find({ gender: "female" }, (err, allUsers) => {
-        res.render("layouts/app/index", {
-          locals: {
-            title: "My Match",
-            styles: [
-              "/static/client/views/app/home/styles.css",
-              "/static/client/views/partials/styles/app-nav.css",
-              "/static/client/views/layouts/app/app-global-styles.css",
-            ],
-            scripts: [
-              "https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js",
-              "https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js",
-              "/static/client/views/layouts/app/handleLogout.js",
-            ],
-            authUser,
-            allUsers,
-          },
-          partials: {
-            nav: "partials/app-nav",
-            body: "app/home/index",
-          },
-        });
-      });
-    } else {
-      User.find({ gender: "male" }, (err, allUsers) => {
-        res.render("layouts/app/index", {
-          locals: {
-            title: "My Match",
-            styles: [
-              "/static/client/views/app/home/styles.css",
-              "/static/client/views/partials/styles/app-nav.css",
-              "/static/client/views/layouts/app/app-global-styles.css",
-            ],
-            scripts: [
-              "https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js",
-              "https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js",
-              "/static/client/views/layouts/app/handleLogout.js",
-            ],
-            authUser,
-            allUsers,
-          },
-          partials: {
-            nav: "partials/app-nav",
-            body: "app/home/index",
-          },
-        });
-      });
-    }
+router.get('/', async (req, res, next) => {
+  const authUser = req.authUser;
+  const allUsers = await mongoDb().collection('users')
+    .find({ gender: authUser.gender === 'male' ? 'female' : 'male' })
+    .sort({ lastLogin: -1})
+    .toArray();
+
+  res.render('layouts/app/index', {
+    locals: {
+      title: 'My Match',
+      styles: [
+        '/static/client/views/app/home/styles.css',
+        '/static/client/views/partials/styles/app-nav.css',
+        '/static/client/views/layouts/app/app-global-styles.css',
+      ],
+      scripts: [
+        'https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js',
+        'https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js',
+        '/static/client/views/layouts/app/handleLogout.js',
+      ],
+      authUser,
+      allUsers,
+    },
+    partials: {
+      nav: 'partials/app-nav',
+      body: 'app/home/index',
+    },
   });
 });
 
@@ -139,7 +121,7 @@ router.get("/", (req, res, next) => {
 // });
 
 router.get("/api/signup-user-first-name", (req, res, next) => {
-  User.findOne({ _id: req.headers.userid }, (err, user) => {
+  mongoDb().collection('users').findOne({ _id: ObjectId(req.headers.userid)}, (err, user) => {
     if (err) return res.sendStatus(403);
     if (user !== null) {
       res.status(201).send({ name: user.name });
@@ -149,23 +131,23 @@ router.get("/api/signup-user-first-name", (req, res, next) => {
   });
 });
 
-router.get("/api/user-details", authenticateToken, (req, res, next) => {
-  User.findOne({ _id: req.user._id }, (err, user) => {
-    res.status(201).send({ userId: user._id });
-  });
-});
+// router.get("/api/user-details", authenticateToken, (req, res, next) => {
+//   User.findOne({ _id: req.user._id }, (err, user) => {
+//     res.status(201).send({ userId: user._id });
+//   });
+// });
 
-router.put("/api/profile-info", (req, res) => {
-  const token = req.headers["authorization"];
-  const decodedUser = jwt.decode(token, JWT_SECRET);
-  User.findOneAndUpdate(
-    { username: decodedUser.username },
-    { profilePicture: req.body.data },
-    (err, member) => {
-      res.json({ member });
-    }
-  );
-});
+// router.put("/api/profile-info", (req, res) => {
+//   const token = req.headers["authorization"];
+//   const decodedUser = jwt.decode(token, JWT_SECRET);
+//   User.findOneAndUpdate(
+//     { username: decodedUser.username },
+//     { profilePicture: req.body.data },
+//     (err, member) => {
+//       res.json({ member });
+//     }
+//   );
+// });
 
 module.exports = router;
 

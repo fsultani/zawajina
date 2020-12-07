@@ -113,10 +113,9 @@ export const userLocation = async () => {
         return false;
       }
 
-      console.log(userInput);
-      console.time("/api/cities-list");
+      // console.time("/api/cities-list");
       const results = await getAllCountries(userInput);
-      console.timeEnd("/api/cities-list");
+      // console.timeEnd("/api/cities-list");
       currentFocus = -1;
 
       let searchResultsWrapper = '<div class="autocomplete-items">';
@@ -188,6 +187,111 @@ export const userLocation = async () => {
       inputString.setAttribute("data-city", city);
       inputString.setAttribute("data-state", state);
       inputString.setAttribute("data-country", country);
+    }
+  });
+};
+
+export const userEthnicity = async () => {
+  let currentFocus;
+
+  const getAllEthnicities = async userInput => {
+    try {
+      let response;
+      setTimeout(() => {
+        if (!response) {
+          document.querySelector("body").style.backgroundColor = "rgba(0,0,0,0.5)";
+          document.querySelector("body").style.opacity = 0.5;
+          document.querySelector(".full-page-loading-spinner").style.display = "inline-block";
+        }
+      }, 1000);
+      response = await axios.get(`/register/api/ethnicities-list`, {
+        params: {
+          userInput,
+        },
+      });
+      document.querySelector("body").style.backgroundColor = "#ffffff";
+      document.querySelector("body").style.opacity = 1;
+      document.querySelector(".full-page-loading-spinner").style.display = "none";
+      return response.data;
+    } catch (err) {
+      console.error(err);
+      document.querySelector("body").style.backgroundColor = "#ffffff";
+      document.querySelector("body").style.opacity = 1;
+      document.querySelector(".full-page-loading-spinner").style.display = "none";
+      return err.response;
+    }
+  };
+
+  const inputString = document.querySelector("#ethnicityInput");
+  inputString.addEventListener(
+    "input",
+    debounce(async event => {
+      const userInput = inputString.value;
+      if (!userInput) {
+        closeAllLists();
+        return false;
+      }
+
+      // console.time("/api/cities-list");
+      const results = await getAllEthnicities(userInput);
+      // console.timeEnd("/api/cities-list");
+      currentFocus = -1;
+
+      let searchResultsWrapper = '<div class="autocomplete-items">';
+
+      results.map((ethnicity) => {
+        searchResultsWrapper += `
+        <div
+          data-ethnicity=${JSON.stringify(ethnicity)}
+        >
+          ${ethnicity}
+          <input
+            type='hidden'
+            data-ethnicity=${JSON.stringify(ethnicity)}
+          />
+        </div>
+      `;
+      });
+
+      searchResultsWrapper += "</div>";
+      document.querySelector("#ethnicityResults").innerHTML = searchResultsWrapper;
+    }, 250)
+  );
+
+  inputString.addEventListener("keydown", event => {
+    let element = document.querySelector(".autocomplete-items");
+    if (element) {
+      element = element.getElementsByTagName("div");
+    }
+    if (event.key === "ArrowDown") {
+      currentFocus++;
+      addActive(element, currentFocus);
+    } else if (event.key === "ArrowUp") {
+      currentFocus--;
+      addActive(element, currentFocus);
+    } else if (event.key === "Enter") {
+      event.preventDefault();
+      if (currentFocus > -1) {
+        if (element) {
+          const value = element[currentFocus].getElementsByTagName("input")[0];
+          const ethnicity = value.dataset.ethnicity;
+          inputString.value = ethnicity;
+          closeAllLists();
+
+          inputString.setAttribute("data-ethnicity", ethnicity);
+        }
+      }
+    }
+  });
+
+  document.addEventListener("click", event => {
+    const inputTag = event.target.dataset;
+    if (inputTag?.ethnicity) {
+      const ethnicity = inputTag.ethnicity;
+      inputString.value = ethnicity
+      closeAllLists();
+
+      inputString.setAttribute("data-ethnicity", ethnicity);
     }
   });
 };

@@ -8,19 +8,15 @@ const session = require("express-session");
 const osascript = require("node-osascript");
 const flash = require("connect-flash");
 const mongo = require("mongodb");
-const mongoose = require("mongoose");
-
+const { MongoClient, ObjectId } = require('mongodb');
 const jwt = require("jsonwebtoken");
 const JWT_SECRET = Buffer.from("fe1a1915a379f3be5394b64d14794932", "hex");
-const authenticateToken = require("./config/auth");
-
-const mongodbConnect = process.env.DEVELOPMENT
-  ? "mongodb+srv://fsultani:asdf@my-match.rxspi.mongodb.net/my-match-dev?retryWrites=true&w=majority"
-  : process.env.MONGODB_URI;
-mongoose.connect(mongodbConnect);
 
 const app = express();
 
+const { connectToServer, mongoDb } = require('./db.js');
+const authenticateToken = require("./config/auth");
+const User = require("./models/user");
 const index = require("./routes/index");
 const registerRoute = require("./routes/registerRoute");
 const user = require("./routes/user");
@@ -38,6 +34,13 @@ app.use("/static", express.static(path.join(process.env.PWD)));
 app.engine("html", es6Renderer);
 app.set("views", path.join(__dirname, "../client/views"));
 app.set("view engine", "html");
+
+app.use((req, res, next) => {
+  connectToServer(err => {
+    if (err) throw err;
+    next();
+  })
+})
 
 // Catch all GET requests, and respond with an html file
 app.get("*", (req, res, next) => {
@@ -196,7 +199,6 @@ app.get("*", (req, res, next) => {
     if (token === null) return res.sendStatus(401);
     jwt.verify(token, JWT_SECRET, (err, authUser) => {
       if (err) {
-        // return res.sendStatus(403);
         return res.render("layouts/landing-pages/index", {
           locals: {
             title: "Login - My Match",
@@ -222,8 +224,11 @@ app.get("*", (req, res, next) => {
           },
         });
       }
-      req.authUser = authUser.authUserDetails;
-      next();
+      mongoDb().collection('users').findOne({ _id: ObjectId(authUser.userId)}, (err, user) => {
+        if (err) throw err;
+        req.authUser = user;
+        next();
+      })
     });
   }
 });
