@@ -1,20 +1,25 @@
 (async () => {
-  const loader = display => {
-    document.querySelector(".full-page-loading-spinner").style.display = display
-      ? "inline-block"
-      : "none";
-  };
+  // const loader = display => {
+  //   document.querySelector(".full-page-loading-spinner").style.display = display
+  //     ? "inline-block"
+  //     : "none";
+  // };
 
-  loader(true);
+  // loader(true);
 
   const response = await axios.get("/api/all-members", {
     headers: {
       Authorization: Cookies.get("token"),
     },
   });
-  loader(false);
+  // loader(false);
 
-  const { user, allUsers } = response.data;
+  const { authUser, allUsers } = response.data;
+  console.log('authUser:\n', authUser);
+  const img = document.createElement('img');
+  img.src = authUser.photos[0]
+  document.querySelector(".user-profile").appendChild(img)
+
   const content = `
     <div class="testimonials">
       ${allUsers

@@ -9,8 +9,9 @@
         <hr class="menu-line" />
       </div>
 
-      <div id="open-side-menu" class="side-menu">
+      <div id="open-side-menu-mobile" class="side-menu-mobile">
         <div class="close-menu-button" onclick="closeNav()">&times;</div>
+        <a href="/">Home</a>
         <a href="/user/${authUser._id}">Profile</a>
         <a href="/user/${authUser._id}">Search</a>
         <a id="logout" class="dropdown-item" style="cursor: pointer;" onclick="handleLogout()">Logout</a>
@@ -22,11 +23,12 @@
         </li>
         <li>
           <div class="dropdown-menu">
-            <button onclick="openDropdownMenu()" class="dropdown-button">
-              ${authUser.name}
+            <div onclick="openDropdownMenu()" class="dropdown-button" role="button">
+              <img src="${authUser.photos.length > 0 ? authUser.photos[0] : authUser.gender === 'male' ? 'https://my-match.s3.amazonaws.com/male.png' : 'https://my-match.s3.amazonaws.com/female.png'}" class="user-avatar-menu">
               <span id="menu-arrow" class="down-arrow"></span>
-            </button>
+            </div>
             <div class="dropdown-content">
+              <a href="/">Home</a>
               <a href="/user/${authUser._id}">Profile</a>
               <a id="logout" class="dropdown-item" style="cursor: pointer;" onclick="handleLogout()">Logout</a>
             </div>

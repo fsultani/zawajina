@@ -5,6 +5,7 @@ let gender;
 let city;
 let state;
 let country;
+let ethnicity;
 
 const handleBirthMonth = event => (birthMonth = event.target.value);
 const handleBirthDay = event => (birthDay = event.target.value);
@@ -19,6 +20,9 @@ const handleCreateNewAccount = () => {
   city = data.city;
   state = data.state;
   country = data.country;
+
+  const ethnicityData = document.querySelector("#ethnicityInput").dataset;
+  ethnicity = ethnicityData.ethnicity
 
   const addErrorClass = element => document.querySelector(`${element}`).classList.add("form-error");
   const removeErrorClass = element =>
@@ -55,7 +59,14 @@ const handleCreateNewAccount = () => {
     document.querySelector("#city-error").style.display = "none";
   }
 
-  if (birthMonth && birthDay && birthYear && gender && city) {
+  if (!ethnicity) {
+    document.querySelector("#ethnicity-error").innerHTML = "Please enter your ethnicity"
+    document.querySelector("#ethnicity-error").style.display = "block";
+  } else {
+    document.querySelector("#ethnicity-error").style.display = "none";
+  }
+
+  if (birthMonth && birthDay && birthYear && gender && city && ethnicity) {
     loadingSpinner.style.display = "inline-block";
     createNewAccountButton.innerHTML = "";
     createNewAccountButton.disabled = true;
@@ -69,6 +80,7 @@ const handleCreateNewAccount = () => {
       city,
       state,
       country,
+      ethnicity,
     };
 
     const images = document.forms.namedItem("signupForm");

@@ -82,14 +82,14 @@
               </div>
             </div>
           </div>
+
           <div class="form-row user-location">
             <div class="autocomplete">
               <input
                 id="myInput"
                 class="location"
                 type="text"
-                name="myCountry"
-                placeholder="City"
+                placeholder="Your city"
               />
               <div id="results"></div>
             </div>
@@ -99,6 +99,23 @@
             </script>
           </div>
           <div id="city-error"></div>
+
+          <div class="form-row user-location">
+            <div class="autocomplete">
+              <input
+                id="ethnicityInput"
+                class="location"
+                type="text"
+                placeholder="Family background"
+              />
+              <div id="ethnicityResults"></div>
+            </div>
+            <script type="module">
+              import { userEthnicity } from "/static/client/views/landing-pages/signup-profile/js/helpers.js";
+              userEthnicity();
+            </script>
+          </div>
+          <div id="ethnicity-error"></div>
 
           <h3 class="photos-header">Photos</h3>
           <div class="invalid-file-type">
