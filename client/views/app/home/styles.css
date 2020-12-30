@@ -1,5 +1,108 @@
+/* *********************************** Avatar loader *********************************** */
+
+.user-avatar-menu {
+  display: none;
+}
+
+.profile-menu-loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 30px;
+  height: 100%;
+}
+
+.profile-menu-loader div {
+  box-sizing: border-box;
+  display: block;
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  margin: 8px;
+  border: 1px solid #fff;
+  border-radius: 50%;
+  animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  border-color: #fff transparent transparent transparent;
+}
+
+.profile-menu-loader div:nth-child(1) {
+  animation-delay: -0.45s;
+}
+
+.profile-menu-loader div:nth-child(2) {
+  animation-delay: -0.3s;
+}
+
+.profile-menu-loader div:nth-child(3) {
+  animation-delay: -0.15s;
+}
+
+@keyframes lds-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* *********************************** Main app loader *********************************** */
+
+.loader {
+  width: 100%;
+  height: 50vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.lds-ring {
+  display: inline-block;
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+
+.lds-ring div {
+  box-sizing: border-box;
+  display: block;
+  position: absolute;
+  width: 64px;
+  height: 64px;
+  margin: 8px;
+  border: 8px solid #fff;
+  border-radius: 50%;
+  animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  border-color: #00c6a7 transparent transparent transparent;
+}
+
+.lds-ring div:nth-child(1) {
+  animation-delay: -0.45s;
+}
+
+.lds-ring div:nth-child(2) {
+  animation-delay: -0.3s;
+}
+
+.lds-ring div:nth-child(3) {
+  animation-delay: -0.15s;
+}
+
+@keyframes lds-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* **************************************************************************** */
+
 .main {
   max-width: 1200px;
+  height: 100%;
   margin: 0 auto;
 }
 
@@ -9,7 +112,7 @@
   padding: 24px 0;
 }
 
-.testimonials {
+.users-container {
   display: grid;
   grid-gap: 1rem;
   grid-template-columns: 1fr;
@@ -66,8 +169,56 @@
   padding-bottom: 4px;
 }
 
+/* *********************************** Pagination *********************************** */
+
+.pagination-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 50px 0;
+}
+
+.pagination {
+  display: flex;
+}
+
+.pagination a {
+  color: black;
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+  border: 1px solid #ddd;
+}
+
+.pagination a.active {
+  background: linear-gradient(57deg, #00c6a7 0%, #1e4d92 100%);
+  color: white;
+  border: none;
+}
+
+.pagination a:hover:not(.active) {
+  color: green;
+  box-shadow: 0 0 11px rgba(33,33,33,.2);
+}
+
+.pagination a:active:not(.active) {
+  color: green;
+  box-shadow: 0 0 4px rgba(33,33,33,.2);
+  transform: scale(0.98);
+}
+
+.pagination a:first-child {
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+
+.pagination a:last-child {
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
 @media (min-width: 600px) {
-  .testimonials {
+  .users-container {
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     grid-auto-rows: auto;
   }

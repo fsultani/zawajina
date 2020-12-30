@@ -45,7 +45,7 @@ router.post(
             email,
             password,
             startedRegistrationAt: new Date(),
-            completedRegistration: false,
+            completedRegistrationAt: false,
             isUserSessionValid: false,
           };
 
@@ -60,7 +60,7 @@ router.post(
             });
           });
 
-        } else if (userExists.startedRegistration && !userExists.completedRegistration) {
+        } else if (userExists.startedRegistrationAt && !userExists.completedRegistrationAt) {
           // User completed step 1 only
           mongoDb().collection('users').findOneAndUpdate(
             { _id: userExists._id },
@@ -75,13 +75,13 @@ router.post(
                 return res.json({ error: 'Unknown error' });
               } else {
                 return res.status(201).json({
-                  startedRegistration: userExists.startedRegistration,
+                  startedRegistrationAt: userExists.startedRegistrationAt,
                   userId: userExists._id,
                 });
               }
             }
           );
-        } else if (userExists.startedRegistration && userExists.completedRegistration) {
+        } else if (userExists.startedRegistrationAt && userExists.completedRegistrationAt) {
           // Email address already exists
           return res.status(403).json({ error: 'Account already exists' });
         } else {
@@ -311,6 +311,20 @@ router.post(
           });
       })
     } else {
+      const allImagesArray = [
+        'https://res.cloudinary.com/dnjhw5rv2/image/upload/v1608951248/5fe6a54a2f3fa93aad83aa49/zfucr4bfuoff4aibwvio.jpg',
+        'https://res.cloudinary.com/dnjhw5rv2/image/upload/v1608951248/5fe6a54a2f3fa93aad83aa49/tmfvnssdmpoz0ct7pq2s.jpg',
+        'https://res.cloudinary.com/dnjhw5rv2/image/upload/v1608951250/5fe6a54a2f3fa93aad83aa49/m8ygr6hz9i6jvuqig1tv.jpg',
+        'https://res.cloudinary.com/dnjhw5rv2/image/upload/v1608951250/5fe6a54a2f3fa93aad83aa49/nuyegob47msffx6lzhva.jpg',
+        'https://res.cloudinary.com/dnjhw5rv2/image/upload/v1608951250/5fe6a54a2f3fa93aad83aa49/h0s34njkv4o7c6krpvms.jpg',
+        'https://res.cloudinary.com/dnjhw5rv2/image/upload/v1608951251/5fe6a54a2f3fa93aad83aa49/jekn1peld8nzaan5jgsy.jpg'
+      ]
+
+      const images = Array(allImagesArray.length).fill().map((_, index) => index);
+      images.sort(() => Math.random() - 0.5);
+      const allImages = []
+      images.map(number => allImages.push(allImagesArray[number]))
+
       mongoDb().collection('users').findOneAndUpdate(
         { _id: ObjectId(userId) },
         {
@@ -321,7 +335,7 @@ router.post(
             country,
             state,
             city,
-            photos: [],
+            photos: allImages,
             ethnicitySelection,
             completedRegistrationAt: new Date(),
             isUserSessionValid: true,

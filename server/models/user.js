@@ -90,9 +90,14 @@ module.exports.getUserById = (id, callback) => {
   User.findById(id, callback);
 };
 
-module.exports.comparePassword = (userPassword, hash, callback) => {
-  bcrypt.compare(userPassword, hash, (err, isMatch) => {
-    if (err) console.log(err);
-    callback(null, isMatch);
-  });
-};
+module.exports.comparePassword = (userPassword, hash, callback) => (
+  new Promise((resolve, reject) => {
+    bcrypt.compare(userPassword, hash, (err, isMatch) => {
+      if (err) {
+        console.log(err);
+        reject(err);
+      }
+      resolve(isMatch)
+    });
+  })
+);
