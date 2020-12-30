@@ -70,14 +70,14 @@ let counter = 0;
       ];
 
       const formData = new FormData();
-      await formData.append('userInfo', JSON.stringify(createUser().data));
-      await formData.append('userId', personalInfo.data.userId);
-      // await formData.append('image-1', fs.createReadStream(shuffleImages(imagesArray)[0]));
-      // await formData.append('image-2', fs.createReadStream(shuffleImages(imagesArray)[1]));
-      // await formData.append('image-3', fs.createReadStream(shuffleImages(imagesArray)[2]));
-      // await formData.append('image-4', fs.createReadStream(shuffleImages(imagesArray)[3]));
-      // await formData.append('image-5', fs.createReadStream(shuffleImages(imagesArray)[4]));
-      // await formData.append('image-6', fs.createReadStream(shuffleImages(imagesArray)[5]));
+      formData.append('userInfo', JSON.stringify(createUser().data));
+      formData.append('userId', personalInfo.data.userId);
+      formData.append('image-1', fs.createReadStream(shuffleImages(imagesArray)[0]));
+      formData.append('image-2', fs.createReadStream(shuffleImages(imagesArray)[1]));
+      formData.append('image-3', fs.createReadStream(shuffleImages(imagesArray)[2]));
+      formData.append('image-4', fs.createReadStream(shuffleImages(imagesArray)[3]));
+      formData.append('image-5', fs.createReadStream(shuffleImages(imagesArray)[4]));
+      formData.append('image-6', fs.createReadStream(shuffleImages(imagesArray)[5]));
 
       const aboutResponse = await axios.post('http://localhost:3000/register/api/about', formData, {
         headers: formData.getHeaders(),

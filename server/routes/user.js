@@ -7,6 +7,31 @@ const router = express.Router();
 const { mongoDb } = require('../db.js');
 
 router.get('/:userId', (req, res, next) => {
+  res.render('layouts/app/index', {
+    locals: {
+      title: 'My Match',
+      styles: [
+        'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css',
+        '/static/client/views/partials/styles/app-nav.css',
+        '/static/client/views/layouts/app/app-global-styles.css',
+        '/static/client/views/app/profile/styles.css',
+      ],
+      scripts: [
+        'https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js',
+        'https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js',
+        '/static/client/views/layouts/app/handleLogout.js',
+        '/static/client/views/partials/app-nav.js',
+        '/static/client/views/app/profile/index.js'
+      ],
+    },
+    partials: {
+      nav: 'partials/app-nav',
+      body: 'app/profile/index',
+    },
+  });
+})
+
+router.get('/api/profile-data/:userId', (req, res, next) => {
   const { userId } = req.params;
   const authUser = req.authUser;
 
@@ -16,7 +41,6 @@ router.get('/:userId', (req, res, next) => {
       res.sendStatus(403);
     } else {
       const lastLogin = new Date(user.lastLogin);
-      // const lastLogin = new Date('2020-11-27T00:00:00.000Z');
       const today = new Date();
       const minutesSinceLastLogin = Math.floor(((today.getTime() - lastLogin.getTime()) / 1000 / 60));
 
@@ -43,32 +67,17 @@ router.get('/:userId', (req, res, next) => {
         lastActive = '12+ months ago';
       }
 
-      res.render('layouts/app/index', {
-        locals: {
-          title: 'My Match',
-          styles: [
-            'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css',
-            '/static/client/views/partials/styles/app-nav.css',
-            '/static/client/views/layouts/app/app-global-styles.css',
-            '/static/client/views/app/profile/styles.css',
-          ],
-          scripts: [
-            'https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js',
-            'https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js',
-            '/static/client/views/layouts/app/handleLogout.js',
-            '/static/client/views/app/profile/main.js',
-          ],
-          authUser,
-          lastActive,
-          user,
-        },
-        partials: {
-          nav: 'partials/app-nav',
-          body: 'app/profile/index',
-        },
-      });
+      res.status(201).json({ authUser, lastActive, user })
     }
   })
+})
+
+router.get('/api/user-photo', (req, res, next) => {
+  const authUser = req.authUser;
+  const authUserId = authUser._id;
+  const authUserProfilePhoto = authUser.photos[0];
+
+  res.status(201).json({ authUserId, authUserProfilePhoto })
 })
 
 module.exports = router;

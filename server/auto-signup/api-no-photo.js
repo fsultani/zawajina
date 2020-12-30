@@ -8,8 +8,16 @@ const names = require('./female-names');
 const countries = require('../routes/world-cities');
 const ethnicities = require('../routes/ethnicities');
 
-const numberOfUsers = 1;
+const numberOfUsers = 10;
 let counter = 1;
+
+function sleep(milliseconds) {
+  const date = Date.now();
+  let currentDate = null;
+  do {
+    currentDate = Date.now();
+  } while (currentDate - date < milliseconds);
+}
 
 const createUser = () => {
   let nameChoice;
@@ -57,26 +65,9 @@ const makeApiCalls = () => {
       console.log('api/personal-info status:\n', res.status);
       console.log('res.config.data:\n', res.config.data);
 
-      const imagesArray = [
-        '/Users/farid/Downloads/temp/IMG_0041.jpg',
-        '/Users/farid/Downloads/temp/IMG_0047.jpg',
-        '/Users/farid/Downloads/temp/IMG_0048.jpg',
-        '/Users/farid/Downloads/temp/IMG_0051.jpg',
-        '/Users/farid/Downloads/temp/IMG_0053.jpg',
-        '/Users/farid/Downloads/temp/IMG_0063.jpg',
-      ];
-
       const formData = new FormData();
       formData.append('userInfo', JSON.stringify(createUser().data));
       formData.append('userId', res.data.userId);
-
-      const images = Array(imagesArray.length).fill().map((_, index) => index + 1);
-      images.sort(() => Math.random() - 0.5);
-
-      // for (let i = 0; i < imagesArray.length; i++) {
-      //   formData.append(`image-${i + 1}`, fs.createReadStream(imagesArray[i]));
-      // }
-      formData.append(`image-1`, fs.createReadStream(imagesArray[Math.floor(Math.random() * imagesArray.length)]));
 
       axios.post('http://localhost:3000/register/api/about', formData, {
         maxBodyLength: Infinity,
@@ -85,14 +76,12 @@ const makeApiCalls = () => {
         console.log('api/about status:\n', res.status);
         console.log('res.data:\n', res.data);
         console.log(`${counter} of ${numberOfUsers}\n`);
-        // return makeApiCalls();
         if (counter < numberOfUsers) {
           counter += 1;
+          sleep(500);
           return makeApiCalls();
-        } else {
-          return;
         }
-        // return;
+        return;
       }).catch(error => {
         console.log('error.message:\n', error.message);
         return;
@@ -103,6 +92,7 @@ const makeApiCalls = () => {
     }
   }).catch(error => {
     console.log('error.message:\n', error.message);
+    sleep(500);
     return makeApiCalls();
   })
 };

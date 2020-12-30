@@ -39,10 +39,16 @@ const handleLogin = event => {
         password,
       })
       .then(res => {
-        const { token, userId } = res.data;
+        const { token } = res.data;
         Cookies.set("token", token, { sameSite: "strict" });
+        const { protocol, host, pathname } = window.location;
+        // const pathname = 'users';
+        // const search = '?page=1';
+        // window.location.href = `${protocol}//${host}/${pathname}${search}`;
+        window.location.pathname = '/users';
+
+        // const { token, userId } = res.data;
         // window.location.pathname = `/user/${userId}`;
-        window.location.pathname = `/`;
       })
       .catch(error => {
         loadingSpinner.style.display = "none";
