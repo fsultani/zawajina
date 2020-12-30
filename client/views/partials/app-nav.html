@@ -12,8 +12,8 @@
       <div id="open-side-menu-mobile" class="side-menu-mobile">
         <div class="close-menu-button" onclick="closeNav()">&times;</div>
         <a href="/users">Home</a>
-        <a href="profile">Profile</a>
-        <a href="/" class="search">Search</a>
+        <a href="/user/${authUser._id}">Profile</a>
+        <a href="/user/${authUser._id}">Search</a>
         <a id="logout" class="dropdown-item" style="cursor: pointer;" onclick="handleLogout()">Logout</a>
       </div>
 
@@ -24,13 +24,12 @@
         <li>
           <div class="dropdown-menu">
             <div onclick="openDropdownMenu()" class="dropdown-button" role="button">
-              <img src="#" class="user-avatar-menu">
-              <div class="profile-menu-loader"><div></div><div></div><div></div><div></div></div>
+              <img src="${authUser.photos.length > 0 ? authUser.photos[0] : authUser.gender === 'male' ? 'https://my-match.s3.amazonaws.com/male.png' : 'https://my-match.s3.amazonaws.com/female.png'}" class="user-avatar-menu">
               <span id="menu-arrow" class="down-arrow"></span>
             </div>
             <div class="dropdown-content">
               <a href="/users">Home</a>
-              <a href="#profile">Profile</a>
+              <a href="/user/${authUser._id}">Profile</a>
               <a id="logout" class="dropdown-item" style="cursor: pointer;" onclick="handleLogout()">Logout</a>
             </div>
           </div>

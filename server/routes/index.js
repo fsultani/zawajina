@@ -40,34 +40,14 @@ router.post("/login", async (req, res, next) => {
   res.status(201).json({ token });
 });
 
-router.get('/users', (req, res, next) => {
-  res.render('layouts/app/index', {
-    locals: {
-      title: 'My Match',
-      styles: [
-        '/static/client/views/app/home/styles.css',
-        '/static/client/views/partials/styles/app-nav.css',
-        '/static/client/views/layouts/app/app-global-styles.css',
-      ],
-      scripts: [
-        'https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js',
-        'https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js',
-        '/static/client/views/layouts/app/handleLogout.js',
-        '/static/client/views/app/home/main.js',
-        '/static/client/views/partials/app-nav.js',
-      ],
-    },
-    partials: {
-      nav: 'partials/app-nav',
-      body: 'app/home/index',
-    }
-  })
-});
-
-router.get('/api/all-members', async (req, res, next) => {
+router.get('/users', async (req, res, next) => {
   const authUser = req.authUser;
-  const { page } = req.query
+  const page = parseInt(req.query.page)
   const skipRecords = page > 1 ? (page - 1) * 20 : 0;
+
+  const allUsersCount = await mongoDb().collection('users')
+    .find({ gender: authUser.gender === 'male' ? 'female' : 'male' })
+    .count()
 
   const allUsers = await mongoDb().collection('users')
     .find({ gender: authUser.gender === 'male' ? 'female' : 'male' })
@@ -76,11 +56,41 @@ router.get('/api/all-members', async (req, res, next) => {
     .limit(20)
     .toArray();
 
-  const allUsersCount = await mongoDb().collection('users')
-    .find({ gender: authUser.gender === 'male' ? 'female' : 'male' })
-    .count()
+  const numberOfPages = Math.ceil(allUsersCount / 20);
+  const currentPage = page || 1;
+  const previousPage = currentPage > 1 ? currentPage - 1 : null;
+  const nextPage = currentPage < numberOfPages ? currentPage + 1 : null;
 
-  res.status(201).json({ allUsersCount, allUsers })
+  if (currentPage <= numberOfPages) {
+    res.render('layouts/app/index', {
+      locals: {
+        title: 'My Match',
+        styles: [
+          '/static/client/views/app/home/styles.css',
+          '/static/client/views/partials/styles/app-nav.css',
+          '/static/client/views/layouts/app/app-global-styles.css',
+        ],
+        scripts: [
+          'https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js',
+          'https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js',
+          '/static/client/views/layouts/app/handleLogout.js',
+        ],
+        authUser,
+        allUsers,
+        allUsersCount,
+        previousPage,
+        numberOfPages,
+        currentPage,
+        nextPage,
+      },
+      partials: {
+        nav: 'partials/app-nav',
+        body: 'app/home/index',
+      },
+    });
+  } else {
+    res.redirect(`/users?page=${numberOfPages}`)
+  }
 });
 
 router.get("/api/signup-user-first-name", (req, res, next) => {
@@ -93,52 +103,5 @@ router.get("/api/signup-user-first-name", (req, res, next) => {
     }
   });
 });
-
-// router.get('/', async (req, res, next) => {
-//   const authUser = req.authUser;
-//   const allUsers = await mongoDb().collection('users')
-//     .find({ gender: authUser.gender === 'male' ? 'female' : 'male' })
-//     .sort({ lastLogin: -1})
-//     .toArray();
-
-//   res.render('layouts/app/index', {
-//     locals: {
-//       title: 'My Match',
-//       styles: [
-//         '/static/client/views/app/home/styles.css',
-//         '/static/client/views/partials/styles/app-nav.css',
-//         '/static/client/views/layouts/app/app-global-styles.css',
-//       ],
-//       scripts: [
-//         'https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js',
-//         'https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js',
-//         '/static/client/views/layouts/app/handleLogout.js',
-//       ],
-//       authUser,
-//       allUsers,
-//     },
-//     partials: {
-//       nav: 'partials/app-nav',
-//       body: 'app/home/index',
-//     },
-//   });
-// });
-
-// router.get("/search", (req, res, next) => {
-//   User.findOne({ _id: req.authUser._id }, (err, authUser) => {
-//     if (err) return res.sendStatus(403);
-//     if (authUser !== null) {
-//       res.render("app/search/search", {
-//         authUser: authUser.toJSON(),
-//         styles: [
-//           "/static/client/views/partials/styles/app-nav.css",
-//           "/static/client/views/layouts/app/app-global-styles.css",
-//         ],
-//       });
-//     } else {
-//       res.sendStatus(403);
-//     }
-//   });
-// });
 
 module.exports = router;
