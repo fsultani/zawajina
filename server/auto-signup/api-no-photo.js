@@ -5,10 +5,11 @@ const fs = require('fs');
 const FormData = require('form-data');
 
 const names = require('./female-names');
+// const names = require('./male-names');
 const countries = require('../routes/world-cities');
 const ethnicities = require('../routes/ethnicities');
 
-const numberOfUsers = 10;
+const numberOfUsers = 100;
 let counter = 1;
 
 function sleep(milliseconds) {
@@ -26,6 +27,12 @@ const createUser = () => {
     name: names[Math.floor(Math.random() * names.length)],
     gender: 'female',
   };
+
+  // Create only male users at random
+  // nameChoice = {
+  //   name: names[Math.floor(Math.random() * names.length)],
+  //   gender: 'male',
+  // };
 
   const birthMonths = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
   const birthMonth = birthMonths[Math.floor(Math.random() * birthMonths.length)];

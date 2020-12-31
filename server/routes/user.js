@@ -71,12 +71,12 @@ router.get('/:userId', (req, res, next) => {
   })
 })
 
-router.get('/api/user-photo', (req, res, next) => {
-  const authUser = req.authUser;
-  const authUserId = authUser._id;
-  const authUserProfilePhoto = authUser.photos[0];
+// router.get('/api/user-photo', (req, res, next) => {
+//   const authUser = req.authUser;
+//   const authUserId = authUser._id;
+//   const authUserProfilePhoto = authUser.photos[0];
 
-  res.status(201).json({ authUserId, authUserProfilePhoto })
-})
+//   res.status(201).json({ authUserId, authUserProfilePhoto })
+// })
 
 module.exports = router;
