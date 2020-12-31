@@ -94,7 +94,7 @@ const handleCreateNewAccount = () => {
         if (res.status === 201 || res.status === 200) {
           Cookies.set("token", res.data.token, { sameSite: "strict" });
           Cookies.remove("userId");
-          window.location.pathname = "/";
+          window.location.pathname = "/users";
         } else {
           document.querySelector("#signup-error").innerHTML =
             "Unknown error.  Please try again later.";

@@ -4,9 +4,9 @@ const mongoose = require('mongoose');
 const User = require('../models/user');
 
 cloudinary.config({
-  cloud_name: require('/Users/farid/_repos/tutor/server/routes/credentials.json').cloudinaryCloudName,
-  api_key: require('/Users/farid/_repos/tutor/server/routes/credentials.json').cloudinaryApiKey,
-  api_secret: require('/Users/farid/_repos/tutor/server/routes/credentials.json').cloudinaryApiSecret,
+  cloud_name: require('/Users/farid/_repos/tutor/server/credentials.json').cloudinaryCloudName,
+  api_key: require('/Users/farid/_repos/tutor/server/credentials.json').cloudinaryApiKey,
+  api_secret: require('/Users/farid/_repos/tutor/server/credentials.json').cloudinaryApiSecret,
 });
 
 const uri = 'mongodb+srv://fsultani:asdf@my-match.rxspi.mongodb.net/my-match-dev?retryWrites=true&w=majority';
