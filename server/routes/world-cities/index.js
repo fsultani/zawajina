@@ -20,8 +20,8 @@ exports.default = {
       return cities.sort(compare);
     }
   },
-  // getAllCities: () => city_json_1.default,
-  getAllCities: () => city_json_1.default.filter(value => value.country === 'United States'),
+  getAllCities: () => city_json_1.default,
+  // getAllCities: () => city_json_1.default.filter(value => value.country === 'United States'),
   getAllCountries: () => country_json_1.default,
 };
 function compare(a, b) {
