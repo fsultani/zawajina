@@ -102,8 +102,7 @@ const handleCreateNewAccount = () => {
         }
       })
       .catch(error => {
-        console.error("error:\n", error);
-        console.log('error.message:\n', error.message);
+        console.error('error.message:\n', error.message);
 
         loadingSpinner.style.display = "none";
         createNewAccountButton.innerHTML = "Create Account";
