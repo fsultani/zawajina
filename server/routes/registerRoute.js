@@ -268,14 +268,18 @@ router.post(
     if (req.files && Object.values(req.files).length > 0) {
       const allImages = [];
       const userImages = Object.values(req.files).map(async (image, index) => {
+        console.log('image:\n', image);
         const file = image[0];
         const fileName = file.filename.split('.')[0];
         const compressedFilePath = `compressed/${file.filename.split('.')[0]}.jpg`;
+        console.log('compressedFilePath:\n', compressedFilePath);
         const jpgImage = await Jimp.read(file.path);
+        console.log('jpgImage:\n', jpgImage);
         await jpgImage.cover(640, 640).quality(100).write(compressedFilePath);
         const uploadToCloudinary = await cloudinary.uploader.upload(compressedFilePath, {
           folder: userId,
         })
+        console.log('uploadToCloudinary:\n', uploadToCloudinary);
         allImages.push(uploadToCloudinary.secure_url);
         fs.unlink(file.path, err => {
           if (err) return console.error(err);
