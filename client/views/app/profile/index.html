@@ -37,7 +37,7 @@
       <div class="top-row">
         <div class="user-basic-info-wrapper">
           <h5 class="user-name-age">${user.name}, ${user.age}</h5>
-          <p class="user-location">Lives in ${user.city}, ${user.state !== null ? `${user.state}, ${user.country}` : user.country}</p>
+          <p class="user-location">Lives in ${user.city}, ${user.state !== 'null' ? `${user.state}, ${user.country}` : user.country}</p>
           <p class="user-last-active">Last Active: ${lastActive}</p>
         </div>
         <div class="block-report-user-dropdown">
