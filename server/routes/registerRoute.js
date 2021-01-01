@@ -193,19 +193,10 @@ router.get('/api/ethnicities-list', async (req, res) => {
   }
 });
 
-// const s3 = new aws.S3({
-//   accessKeyId: process.env.DEVELOPMENT
-//     ? require('./credentials.json').s3accessKeyId
-//     : process.env.AWS_ACCESS_KEY_ID,
-//   secretAccessKey: process.env.DEVELOPMENT
-//     ? require('./credentials.json').s3secretAccessKey
-//     : process.env.AWS_SECRET_ACCESS_KEY,
-// });
-
 cloudinary.config({
-  cloud_name: process.env.DEVELOPMENT ? require('../credentials.json').cloudinaryCloudName : process.env.cloudinaryCloudName,
-  api_key: process.env.DEVELOPMENT ? require('../credentials.json').cloudinaryApiKey : process.env.cloudinaryApiKey,
-  api_secret: process.env.DEVELOPMENT ? require('../credentials.json').cloudinaryApiSecret : process.env.cloudinaryApiSecret,
+  cloud_name: process.env.DEVELOPMENT ? require('../credentials.json').cloudinaryCloudName : process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.DEVELOPMENT ? require('../credentials.json').cloudinaryApiKey : process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.DEVELOPMENT ? require('../credentials.json').cloudinaryApiSecret : process.env.CLOUDINARY_API_SECRET,
 });
 
 const storage = multer.diskStorage({
@@ -268,18 +259,14 @@ router.post(
     if (req.files && Object.values(req.files).length > 0) {
       const allImages = [];
       const userImages = Object.values(req.files).map(async (image, index) => {
-        console.log('image:\n', image);
         const file = image[0];
         const fileName = file.filename.split('.')[0];
         const compressedFilePath = `compressed/${file.filename.split('.')[0]}.jpg`;
-        console.log('compressedFilePath:\n', compressedFilePath);
         const jpgImage = await Jimp.read(file.path);
-        console.log('jpgImage:\n', jpgImage);
         await jpgImage.cover(640, 640).quality(100).write(compressedFilePath);
         const uploadToCloudinary = await cloudinary.uploader.upload(compressedFilePath, {
           folder: userId,
         })
-        console.log('uploadToCloudinary:\n', uploadToCloudinary);
         allImages.push(uploadToCloudinary.secure_url);
         fs.unlink(file.path, err => {
           if (err) return console.error(err);
