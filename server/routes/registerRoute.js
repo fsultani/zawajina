@@ -194,9 +194,9 @@ router.get('/api/ethnicities-list', async (req, res) => {
 });
 
 cloudinary.config({
-  cloud_name: process.env.DEVELOPMENT ? require('../credentials.json').cloudinaryCloudName : process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.DEVELOPMENT ? require('../credentials.json').cloudinaryApiKey : process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.DEVELOPMENT ? require('../credentials.json').cloudinaryApiSecret : process.env.CLOUDINARY_API_SECRET,
+  cloud_name: process.env.DEVELOPMENT ? require('../credentials.json').CLOUDINARY_CLOUD_NAME : process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.DEVELOPMENT ? require('../credentials.json').CLOUDINARY_API_KEY : process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.DEVELOPMENT ? require('../credentials.json').CLOUDINARY_API_SECRET : process.env.CLOUDINARY_API_SECRET,
 });
 
 const storage = multer.diskStorage({
