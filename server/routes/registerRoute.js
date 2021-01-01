@@ -6,7 +6,6 @@ const { check, body, validationResult } = require('express-validator/check');
 const cloudinary = require('cloudinary').v2;
 const jwt = require('jsonwebtoken');
 const moment = require('moment');
-const aws = require('aws-sdk');
 const fs = require('fs');
 const multer = require('multer');
 const connectMultipart = require('connect-multiparty');
