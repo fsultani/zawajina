@@ -5,7 +5,7 @@ const fs = require('fs');
 const FormData = require('form-data');
 
 const names = require('./female-names');
-const countries = require('../routes/world-cities');
+const countries = require('../data/world-cities');
 
 let counter = 0;
 

@@ -1,5 +1,5 @@
 const puppeteer = require('puppeteer');
-const countries = require('../routes/world-cities');
+const countries = require('../data/world-cities');
 
 const numberOfUsers = 10;
 

@@ -15,8 +15,8 @@ const JWT_SECRET = Buffer.from('fe1a1915a379f3be5394b64d14794932', 'hex');
 
 const { mongoDb } = require('../db.js');
 const { createUser } = require('../models/user');
-const countries = require('./world-cities');
-const ethnicities = require('./ethnicities');
+const countries = require('../data/world-cities');
+const ethnicities = require('../data/ethnicities');
 const User = require('../models/user');
 
 const router = express.Router();

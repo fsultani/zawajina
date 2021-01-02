@@ -6,6 +6,9 @@ db.users.find().pretty()
 // Find user "Farid"
 db.users.find({ name: "Farid"}).pretty()
 
+// Fuzzy search for a user
+db.users.find({ name:  { $regex: "Katrina" }}).pretty()
+
 // Remove all users
 db.users.drop()
 
