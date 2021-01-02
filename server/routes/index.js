@@ -62,18 +62,18 @@ router.get('/users', async (req, res, next) => {
   const nextPage = currentPage < numberOfPages ? currentPage + 1 : null;
 
   if (currentPage <= numberOfPages) {
-    res.render('layouts/app/index', {
+    res.render('app/_layouts/index', {
       locals: {
         title: 'My Match',
         styles: [
           '/static/client/views/app/home/styles.css',
-          '/static/client/views/partials/styles/app-nav.css',
-          '/static/client/views/layouts/app/app-global-styles.css',
+          '/static/client/views/app/_partials/app-nav.css',
+          '/static/client/views/app/_layouts/app-global-styles.css',
         ],
         scripts: [
           'https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js',
           'https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js',
-          '/static/client/views/layouts/app/handleLogout.js',
+          '/static/client/views/app/_layouts/handleLogout.js',
         ],
         authUser,
         allUsersCount,
@@ -84,7 +84,7 @@ router.get('/users', async (req, res, next) => {
         nextPage,
       },
       partials: {
-        nav: 'partials/app-nav',
+        nav: 'app/_partials/app-nav',
         body: 'app/home/index',
       },
     });

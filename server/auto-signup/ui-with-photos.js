@@ -1,7 +1,7 @@
 const puppeteer = require('puppeteer');
 const names = require('./female-names');
 // const names = require('./male-names');
-const countries = require('../routes/world-cities');
+const countries = require('../data/world-cities');
 
 const numberOfUsers = 1;
 

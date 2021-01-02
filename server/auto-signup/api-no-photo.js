@@ -6,8 +6,8 @@ const FormData = require('form-data');
 
 const names = require('./female-names');
 // const names = require('./male-names');
-const countries = require('../routes/world-cities');
-const ethnicities = require('../routes/ethnicities');
+const countries = require('../data/world-cities');
+const ethnicities = require('../data/ethnicities');
 
 const numberOfUsers = 100;
 let counter = 1;

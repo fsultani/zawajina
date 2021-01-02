@@ -42,41 +42,32 @@ router.get('/:userId', (req, res, next) => {
         lastActive = '12+ months ago';
       }
 
-      res.render('layouts/app/index', {
+      res.render('app/_layouts/index', {
         locals: {
           title: 'My Match',
           styles: [
             'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css',
-            '/static/client/views/partials/styles/app-nav.css',
-            '/static/client/views/layouts/app/app-global-styles.css',
+            '/static/client/views/app/_partials/app-nav.css',
+            '/static/client/views/app/_layouts/app-global-styles.css',
             '/static/client/views/app/profile/styles.css',
           ],
           scripts: [
             'https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js',
             'https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js',
-            '/static/client/views/layouts/app/handleLogout.js',
+            '/static/client/views/app/_layouts/handleLogout.js',
             '/static/client/views/app/profile/main.js',
-            '/static/client/views/partials/app-nav.js',
           ],
           authUser,
           lastActive,
           user,
         },
         partials: {
-          nav: 'partials/app-nav',
+          nav: 'app/_partials/app-nav',
           body: 'app/profile/index',
         },
       });
     }
   })
 })
-
-// router.get('/api/user-photo', (req, res, next) => {
-//   const authUser = req.authUser;
-//   const authUserId = authUser._id;
-//   const authUserProfilePhoto = authUser.photos[0];
-
-//   res.status(201).json({ authUserId, authUserProfilePhoto })
-// })
 
 module.exports = router;

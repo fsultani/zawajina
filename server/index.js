@@ -48,14 +48,14 @@ app.get("*", (req, res, next) => {
   if (!token && req.url.indexOf("/api/") === -1) {
     switch (req.url) {
       case "/":
-        res.render("layouts/landing-pages/index", {
+        res.render("landing-pages/_layouts/index", {
           locals: {
             title: "My Match",
             styles: [
               "https://fonts.googleapis.com/css?family=Heebo:400,700|Playfair+Display:700",
-              "/static/client/views/layouts/landing-pages/global-styles.css",
-              "/static/client/views/partials/styles/landing-page-nav.css",
-              "/static/client/views/partials/styles/footer.css",
+              "/static/client/views/landing-pages/_layouts/global-styles.css",
+              "/static/client/views/landing-pages/_partials/styles/landing-page-nav.css",
+              "/static/client/views/landing-pages/_partials/styles/footer.css",
               "/static/client/views/landing-pages/home/styles.css",
             ],
             scripts: [
@@ -65,21 +65,21 @@ app.get("*", (req, res, next) => {
             ],
           },
           partials: {
-            nav: "partials/landing-page-nav",
+            nav: "landing-pages/_partials/landing-page-nav",
             body: "landing-pages/home/index",
-            footer: "partials/footer",
+            footer: "landing-pages/_partials/footer",
           },
         });
         break;
       case "/about":
-        res.render("layouts/landing-pages/index", {
+        res.render("landing-pages/_layouts/index", {
           locals: {
             title: "About Us - My Match",
             styles: [
               "https://fonts.googleapis.com/css?family=Heebo:400,700|Playfair+Display:700",
-              "/static/client/views/layouts/landing-pages/global-styles.css",
-              "/static/client/views/partials/styles/landing-page-nav.css",
-              "/static/client/views/partials/styles/footer.css",
+              "/static/client/views/landing-pages/_layouts/global-styles.css",
+              "/static/client/views/landing-pages/_partials/styles/landing-page-nav.css",
+              "/static/client/views/landing-pages/_partials/styles/footer.css",
               "/static/client/views/landing-pages/about/styles.css",
             ],
             scripts: [
@@ -88,22 +88,22 @@ app.get("*", (req, res, next) => {
             ],
           },
           partials: {
-            nav: "partials/landing-page-nav",
+            nav: "landing-pages/_partials/landing-page-nav",
             body: "landing-pages/about/index",
-            footer: "partials/footer",
+            footer: "landing-pages/_partials/footer",
           },
         });
         break;
       case "/login":
-        res.render("layouts/landing-pages/index", {
+        res.render("landing-pages/_layouts/index", {
           locals: {
             title: "Login - My Match",
             styles: [
               "https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css",
               "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css",
-              "/static/client/views/layouts/landing-pages/global-styles.css",
-              "/static/client/views/partials/styles/landing-page-nav.css",
-              "/static/client/views/partials/styles/footer.css",
+              "/static/client/views/landing-pages/_layouts/global-styles.css",
+              "/static/client/views/landing-pages/_partials/styles/landing-page-nav.css",
+              "/static/client/views/landing-pages/_partials/styles/footer.css",
               "/static/client/views/landing-pages/login/styles.css",
             ],
             scripts: [
@@ -114,21 +114,21 @@ app.get("*", (req, res, next) => {
             ],
           },
           partials: {
-            nav: "partials/landing-page-nav",
+            nav: "landing-pages/_partials/landing-page-nav",
             body: "landing-pages/login/index",
-            footer: "partials/footer",
+            footer: "landing-pages/_partials/footer",
           },
         });
         break;
       case "/signup":
-        res.render("layouts/landing-pages/index", {
+        res.render("landing-pages/_layouts/index", {
           locals: {
             title: "Sign Up - My Match",
             styles: [
               "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css",
-              "/static/client/views/layouts/landing-pages/global-styles.css",
-              "/static/client/views/partials/styles/landing-page-nav.css",
-              "/static/client/views/partials/styles/footer.css",
+              "/static/client/views/landing-pages/_layouts/global-styles.css",
+              "/static/client/views/landing-pages/_partials/styles/landing-page-nav.css",
+              "/static/client/views/landing-pages/_partials/styles/footer.css",
               "/static/client/views/landing-pages/signup/styles.css",
             ],
             scripts: [
@@ -140,21 +140,21 @@ app.get("*", (req, res, next) => {
             ],
           },
           partials: {
-            nav: "partials/landing-page-nav",
+            nav: "landing-pages/_partials/landing-page-nav",
             body: "landing-pages/signup/index",
-            footer: "partials/footer",
+            footer: "landing-pages/_partials/footer",
           },
         });
         break;
       case "/signup/profile":
-        res.render("layouts/landing-pages/index", {
+        res.render("landing-pages/_layouts/index", {
           locals: {
             title: "Sign Up - My Match",
             styles: [
               "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css",
-              "/static/client/views/layouts/landing-pages/global-styles.css",
-              "/static/client/views/partials/styles/landing-page-nav.css",
-              "/static/client/views/partials/styles/footer.css",
+              "/static/client/views/landing-pages/_layouts/global-styles.css",
+              "/static/client/views/landing-pages/_partials/styles/landing-page-nav.css",
+              "/static/client/views/landing-pages/_partials/styles/footer.css",
               "/static/client/views/landing-pages/signup-profile/styles.css",
             ],
             scripts: [
@@ -166,28 +166,28 @@ app.get("*", (req, res, next) => {
             ],
           },
           partials: {
-            nav: "partials/landing-page-nav",
+            nav: "landing-pages/_partials/landing-page-nav",
             body: "landing-pages/signup-profile/index",
-            footer: "partials/footer",
+            footer: "landing-pages/_partials/footer",
           },
         });
         break;
       case "/terms":
-        res.render("layouts/landing-pages/index", {
+        res.render("landing-pages/_layouts/index", {
           locals: {
             title: "Terms of Service - My Match",
             styles: [
               "https://fonts.googleapis.com/css?family=Heebo:400,700|Playfair+Display:700",
-              "/static/client/views/layouts/landing-pages/global-styles.css",
-              "/static/client/views/partials/styles/landing-page-nav.css",
-              "/static/client/views/partials/styles/footer.css",
+              "/static/client/views/landing-pages/_layouts/global-styles.css",
+              "/static/client/views/landing-pages/_partials/styles/landing-page-nav.css",
+              "/static/client/views/landing-pages/_partials/styles/footer.css",
               "/static/client/views/landing-pages/terms/styles.css",
             ],
           },
           partials: {
-            nav: "partials/landing-page-nav",
+            nav: "landing-pages/_partials/landing-page-nav",
             body: "landing-pages/terms/index",
-            footer: "partials/footer",
+            footer: "landing-pages/_partials/footer",
           },
         });
         break;
@@ -199,15 +199,15 @@ app.get("*", (req, res, next) => {
     if (token === null) return res.sendStatus(401);
     jwt.verify(token, JWT_SECRET, (err, authUser) => {
       if (err) {
-        return res.render("layouts/landing-pages/index", {
+        return res.render("landing-pages/_layouts/index", {
           locals: {
             title: "Login - My Match",
             styles: [
               "https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css",
               "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css",
-              "/static/client/views/layouts/landing-pages/global-styles.css",
-              "/static/client/views/partials/styles/landing-page-nav.css",
-              "/static/client/views/partials/styles/footer.css",
+              "/static/client/views/landing-pages/_layouts/global-styles.css",
+              "/static/client/views/landing-pages/_partials/styles/landing-page-nav.css",
+              "/static/client/views/landing-pages/_partials/styles/footer.css",
               "/static/client/views/landing-pages/login/styles.css",
             ],
             scripts: [
@@ -218,14 +218,14 @@ app.get("*", (req, res, next) => {
             ],
           },
           partials: {
-            nav: "partials/landing-page-nav",
+            nav: "landing-pages/_partials/landing-page-nav",
             body: "landing-pages/login/index",
-            footer: "partials/footer",
+            footer: "landing-pages/_partials/footer",
           },
         });
       }
-      mongoDb().collection('users').findOne({ _id: ObjectId(authUser.userId)}, (err, user) => {
-        if (err) throw err;
+      mongoDb().collection('users').findOne({ _id: ObjectId(authUser.userId)}, (error, user) => {
+        if (err) console.error(error)
         req.authUser = user;
         next();
       })
