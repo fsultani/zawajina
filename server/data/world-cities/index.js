@@ -1,9 +1,13 @@
-const __importDefault = (this && this.__importDefault) || mod => mod && mod.__esModule ? mod : { default: mod };
+const __importDefault =
+  (this && this.__importDefault) ||
+  function (mod) {
+    return mod && mod.__esModule ? mod : { default: mod };
+  };
 
 Object.defineProperty(exports, '__esModule', { value: true });
-const country_json = __importDefault(require('./countries.json'));
-const state_json = __importDefault(require('./unitedStates.json'));
-const city_json = __importDefault(require('./cities.json'));
+const country_json_1 = __importDefault(require('./countries.json'));
+const state_json_1 = __importDefault(require('./unitedStates.json'));
+const city_json_1 = __importDefault(require('./cities.json'));
 
 const compare = (a, b) => {
   if (a.name < b.name) return -1;
