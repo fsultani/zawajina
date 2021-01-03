@@ -1,6 +1,6 @@
-Object.defineProperty(exports, '__esModule', { value: true });
-
 const __importDefault = (this && this.__importDefault) || mod => mod && mod.__esModule ? mod : { default: mod };
+
+Object.defineProperty(exports, '__esModule', { value: true });
 const country_json = __importDefault(require('./countries.json'));
 const state_json = __importDefault(require('./unitedStates.json'));
 const city_json = __importDefault(require('./cities.json'));
