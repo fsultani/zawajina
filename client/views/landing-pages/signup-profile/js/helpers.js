@@ -31,7 +31,7 @@ const debounce = (func, wait, immediate) => {
 };
 
 const closeAllLists = element => {
-  const inputString = document.querySelector("#myInput");
+  const inputString = document.querySelector(element);
   /*close all autocomplete lists in the document,
   except the one passed as an argument:*/
   var x = document.getElementsByClassName("autocomplete-items");
@@ -103,13 +103,16 @@ export const userLocation = async () => {
     }
   };
 
-  const inputString = document.querySelector("#myInput");
+  const inputString = document.querySelector("#locationInput");
   inputString.addEventListener(
     "input",
     debounce(async event => {
       const userInput = inputString.value;
       if (!userInput) {
-        closeAllLists();
+        closeAllLists("#locationInput");
+        inputString.setAttribute("data-city", "");
+        inputString.setAttribute("data-state", "");
+        inputString.setAttribute("data-country", "");
         return false;
       }
 
@@ -164,13 +167,23 @@ export const userLocation = async () => {
           const country = value.dataset.country;
           const selection = `${city}, ${state !== "null" ? `${state}, ${country}` : country}`;
           inputString.value = selection;
-          closeAllLists();
+          closeAllLists("#locationInput");
 
           inputString.setAttribute("data-city", city);
           inputString.setAttribute("data-state", state);
           inputString.setAttribute("data-country", country);
         }
       }
+    }
+  });
+
+  inputString.addEventListener('blur', event => {
+    const inputTag = event.target.dataset;
+    if (window.event.relatedTarget && (!inputString.value || !inputTag.city)) {
+      closeAllLists("#locationInput");
+      inputString.setAttribute("data-city", "");
+      inputString.setAttribute("data-state", "");
+      inputString.setAttribute("data-country", "");
     }
   });
 
@@ -182,7 +195,7 @@ export const userLocation = async () => {
       const country = inputTag.country;
       const selection = `${city}, ${state !== "null" ? `${state}, ${country}` : country}`;
       inputString.value = selection;
-      closeAllLists();
+      closeAllLists("#locationInput");
 
       inputString.setAttribute("data-city", city);
       inputString.setAttribute("data-state", state);
@@ -228,7 +241,8 @@ export const userEthnicity = async () => {
     debounce(async event => {
       const userInput = inputString.value;
       if (!userInput) {
-        closeAllLists();
+        closeAllLists("#ethnicityInput");
+        inputString.setAttribute("data-ethnicity", "");
         return false;
       }
 
@@ -276,11 +290,19 @@ export const userEthnicity = async () => {
           const value = element[currentFocus].getElementsByTagName("input")[0];
           const ethnicity = value.dataset.ethnicity;
           inputString.value = ethnicity;
-          closeAllLists();
+          closeAllLists("#ethnicityInput");
 
           inputString.setAttribute("data-ethnicity", ethnicity);
         }
       }
+    }
+  });
+
+  inputString.addEventListener('blur', event => {
+    const inputTag = event.target.dataset;
+    if (window.event.relatedTarget && (!inputString.value || !inputTag.ethnicity)) {
+      closeAllLists("#ethnicityInput");
+      inputString.setAttribute("data-ethnicity", "");
     }
   });
 
@@ -289,7 +311,7 @@ export const userEthnicity = async () => {
     if (inputTag?.ethnicity) {
       const ethnicity = inputTag.ethnicity;
       inputString.value = ethnicity
-      closeAllLists();
+      closeAllLists("#ethnicityInput");
 
       inputString.setAttribute("data-ethnicity", ethnicity);
     }

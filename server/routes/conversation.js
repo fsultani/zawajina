@@ -1,10 +1,10 @@
-var express = require('express');
-var router = express.Router();
-var mongoose = require('mongoose');
+const express = require('express');
+const router = express.Router();
+const mongoose = require('mongoose');
 
-var User = require('../models/user');
-var Message = require('../models/message');
-var Conversation = require('../models/conversation');
+const User = require('../models/user');
+const Message = require('../models/message');
+const Conversation = require('../models/conversation');
 
 // public/javascripts/views/conversation.js
 router.get('/api/:id', (req, res) => {

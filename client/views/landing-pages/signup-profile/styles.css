@@ -278,9 +278,11 @@ list-type-ulli {
   position: relative;
 }
 
-#city-error {
+#city-error,
+#ethnicity-error {
   display: none;
   color: red;
+  padding-bottom: 16px;
 }
 
 input {
@@ -310,12 +312,13 @@ input[type="submit"] {
   top: 100%;
   left: 0;
   right: 0;
+  border-radius: 5px;
 }
 
 .autocomplete-items div {
   padding: 10px;
   cursor: pointer;
-  background-color: #fff;
+  background-color: #f2f2f2;
   border-bottom: 1px solid #d4d4d4;
 }
 
@@ -386,7 +389,7 @@ input[type="submit"] {
 }
 
 .user-location {
-  padding-bottom: 8px;
+  padding-bottom: 4px;
 }
 
 label,
