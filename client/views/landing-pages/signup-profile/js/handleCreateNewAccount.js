@@ -15,12 +15,26 @@ const handleGender = value => (gender = value);
 const createNewAccountButton = document.signupForm.createNewAccount;
 const loadingSpinner = document.querySelector(".submit-loading-spinner");
 
-const handleCreateNewAccount = () => {
-  const data = document.querySelector("#myInput").dataset;
-  city = data.city;
-  state = data.state;
-  country = data.country;
+const closeAllLists = element => {
+  const inputString = document.querySelector(element);
+  /*close all autocomplete lists in the document,
+  except the one passed as an argument:*/
+  var x = document.getElementsByClassName("autocomplete-items");
+  for (var i = 0; i < x.length; i++) {
+    if (element != x[i] && element != inputString) {
+      x[i].parentNode.removeChild(x[i]);
+    }
+  }
+};
 
+const handleCreateNewAccount = () => {
+  const locationValue = document.querySelector("#locationInput");
+  const locationData = document.querySelector("#locationInput").dataset;
+  city = locationData.city;
+  state = locationData.state;
+  country = locationData.country;
+
+  const ethnicityValue = document.querySelector("#ethnicityInput");
   const ethnicityData = document.querySelector("#ethnicityInput").dataset;
   ethnicity = ethnicityData.ethnicity
 
@@ -52,21 +66,35 @@ const handleCreateNewAccount = () => {
     removeErrorClass(".form-flex");
   }
 
-  if (!city) {
-    document.querySelector("#city-error").innerHTML = "Please enter your city";
+  if (!city || !locationValue.value) {
+    closeAllLists("#locationInput");
+    document.querySelector("#city-error").innerHTML = "Please select your city from the dropdown";
     document.querySelector("#city-error").style.display = "block";
   } else {
     document.querySelector("#city-error").style.display = "none";
   }
 
-  if (!ethnicity) {
-    document.querySelector("#ethnicity-error").innerHTML = "Please enter your ethnicity"
+  if (!locationValue.value) {
+    closeAllLists("#locationInput");
+    locationValue.setAttribute("data-city", "");
+    locationValue.setAttribute("data-state", "");
+    locationValue.setAttribute("data-country", "");
+  }
+
+  if (!ethnicity || !ethnicityValue.value) {
+    closeAllLists("#ethnicityInput");
+    document.querySelector("#ethnicity-error").innerHTML = "Please select your ethnicity from the dropdown"
     document.querySelector("#ethnicity-error").style.display = "block";
   } else {
     document.querySelector("#ethnicity-error").style.display = "none";
   }
 
-  if (birthMonth && birthDay && birthYear && gender && city && ethnicity) {
+  if (!ethnicityValue.value) {
+    closeAllLists("#ethnicityInput");
+    ethnicityValue.setAttribute("data-ethnicity", "");
+  }
+
+  if (birthMonth && birthDay && birthYear && gender && city && locationValue.value && ethnicity && ethnicityValue.value) {
     loadingSpinner.style.display = "inline-block";
     createNewAccountButton.innerHTML = "";
     createNewAccountButton.disabled = true;

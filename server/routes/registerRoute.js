@@ -1,6 +1,6 @@
 const express = require('express');
 const { ObjectId } = require('mongodb');
-var bcrypt = require('bcryptjs');
+const bcrypt = require('bcryptjs');
 const axios = require('axios');
 const { check, body, validationResult } = require('express-validator/check');
 const cloudinary = require('cloudinary').v2;
