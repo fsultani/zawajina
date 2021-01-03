@@ -13,7 +13,7 @@ const Jimp = require('jimp')
 
 const JWT_SECRET = Buffer.from('fe1a1915a379f3be5394b64d14794932', 'hex');
 
-const { mongoDb } = require('../db.js');
+const { usersCollection } = require('../db.js');
 const { createUser } = require('../models/user');
 const countries = require('../data/world-cities');
 const ethnicities = require('../data/ethnicities');
@@ -24,19 +24,20 @@ const router = express.Router();
 router.post(
   '/api/personal-info',
   [
-    check('name').not().isEmpty().withMessage('Enter your name'),
-    check('email').isEmail().withMessage('Enter a valid email address'),
+    check('nameValue').not().isEmpty().trim().escape().withMessage('Enter your name'),
+    check('email').isEmail().normalizeEmail().withMessage('Enter a valid email address'),
     check('password').not().isEmpty().withMessage('Enter a password'),
     check('password').isLength({ min: 8 }),
   ],
   (req, res) => {
-    const { name, email, password } = req.body;
+    const { nameValue, email, password } = req.body;
     const getErrors = validationResult(req);
+    const name = nameValue.split(',').map(group => group.replace('_', ' ').replace(/\w\S*/g,word => word.charAt(0).toUpperCase()+ word.substr(1).toLowerCase())).join(', ')
 
     if (!getErrors.isEmpty()) {
       return res.status(400).json({ error: getErrors.array() });
     } else {
-      mongoDb().collection('users').findOne({ email }, (err, userExists) => {
+      usersCollection().findOne({ email }, (err, userExists) => {
         if (!userExists) {
           // User does not exist; create a new account
           const newUser = {
@@ -51,7 +52,7 @@ router.post(
           bcrypt.genSalt(10, (err, salt) => {
             bcrypt.hash(newUser.password, salt, (err, hash) => {
               newUser.password = hash;
-              mongoDb().collection('users').insertOne(newUser, (err, user) => {
+              usersCollection().insertOne(newUser, (err, user) => {
                 if (err) throw Error(err);
                 const userId = user.insertedId;
                 return res.status(201).send({ userId });
@@ -61,7 +62,7 @@ router.post(
 
         } else if (userExists.startedRegistrationAt && !userExists.completedRegistrationAt) {
           // User completed step 1 only
-          mongoDb().collection('users').findOneAndUpdate(
+          usersCollection().findOneAndUpdate(
             { _id: userExists._id },
             {
               $set: {
@@ -276,7 +277,7 @@ router.post(
       })
 
       Promise.all(userImages).then(() => {
-        mongoDb().collection('users').findOneAndUpdate(
+        usersCollection().findOneAndUpdate(
           { _id: ObjectId(userId) },
           {
             $set: {
@@ -315,7 +316,7 @@ router.post(
       // const allImages = []
       // images.map(number => allImages.push(allImagesArray[number]))
 
-      mongoDb().collection('users').findOneAndUpdate(
+      usersCollection().findOneAndUpdate(
         { _id: ObjectId(userId) },
         {
           $set: {

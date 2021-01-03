@@ -1,4 +1,4 @@
-const { MongoClient, ObjectId } = require('mongodb');
+const { MongoClient } = require('mongodb');
 
 const uri = process.env.DEVELOPMENT
   ? 'mongodb+srv://fsultani:asdf@my-match.rxspi.mongodb.net/my-match-dev?retryWrites=true&w=majority'
@@ -22,7 +22,9 @@ const connectToServer = callback => {
 
 const mongoDb = () => db;
 
+const usersCollection = () => db.collection('users');
+
 module.exports = {
   connectToServer,
-  mongoDb,
+  usersCollection,
 }

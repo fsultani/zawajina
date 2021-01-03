@@ -14,7 +14,7 @@ const JWT_SECRET = Buffer.from("fe1a1915a379f3be5394b64d14794932", "hex");
 
 const app = express();
 
-const { connectToServer, mongoDb } = require('./db.js');
+const { connectToServer, usersCollection } = require('./db.js');
 const authenticateToken = require("./config/auth");
 const User = require("./models/user");
 const index = require("./routes/index");
@@ -197,7 +197,7 @@ app.get("*", (req, res, next) => {
   } else {
     if (userId) return next();
     if (token === null) return res.sendStatus(401);
-    jwt.verify(token, JWT_SECRET, (err, authUser) => {
+    jwt.verify(token, JWT_SECRET, async (err, authUser) => {
       if (err) {
         return res.render("landing-pages/_layouts/index", {
           locals: {
@@ -224,7 +224,8 @@ app.get("*", (req, res, next) => {
           },
         });
       }
-      mongoDb().collection('users').findOne({ _id: ObjectId(authUser.userId)}, (error, user) => {
+
+      usersCollection().findOne({ _id: ObjectId(authUser.userId)}, (error, user) => {
         if (err) console.error(error)
         req.authUser = user;
         next();

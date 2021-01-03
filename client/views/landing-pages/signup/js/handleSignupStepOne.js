@@ -6,18 +6,20 @@ const user_password = document.signupForm.user_password;
 const signupButton = document.signupForm.signupButton;
 const loadingSpinner = document.querySelector(".loading-spinner");
 
-const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
 let handleNameValidationValue = false;
 let handleEmailValidationValue = false;
 let handlePasswordValidationValue = false;
 
 const handleNameValidation = name => {
-  if (name.length === 0) {
+  const invalidCharacters = /[0-9!@#$%^&*()_\+=[\]{}|:;"<,>\?\/\\~`]/g;
+  const validName = !invalidCharacters.test(name)
+  console.log('validName:\n', validName);
+
+  if (name.length === 0 || !validName) {
     document.getElementById("name").classList.remove("animate-border-bottom");
     document.getElementById("name-wrapper").classList.add("form-error");
     handleNameValidationValue = false;
-  } else if (name.length > 0) {
+  } else if (name.length > 0 && validName) {
     if (document.getElementById("name-wrapper").classList.contains("form-error")) {
       document.getElementById("name-wrapper").classList.remove("form-error");
       document.getElementById("name").classList.add("animate-border-bottom");
@@ -27,6 +29,8 @@ const handleNameValidation = name => {
 };
 
 const handleEmailValidation = email => {
+  const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+
   if (!emailRegex.test(email)) {
     document.getElementById("email").classList.remove("animate-border-bottom");
     document.getElementById("email-wrapper").classList.add("form-error");
@@ -55,11 +59,11 @@ const handlePasswordValidation = password => {
 };
 
 const handleSignupStepOne = () => {
-  const name = user_name.value;
+  const nameValue = user_name.value;
   const email = user_email.value;
   const password = user_password.value;
 
-  handleNameValidation(name);
+  handleNameValidation(nameValue);
   handleEmailValidation(email);
   handlePasswordValidation(password);
 
@@ -71,7 +75,7 @@ const handleSignupStepOne = () => {
 
     axios
       .post("/register/api/personal-info", {
-        name,
+        nameValue,
         email,
         password,
       })

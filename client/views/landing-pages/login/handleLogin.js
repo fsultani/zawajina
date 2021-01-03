@@ -5,7 +5,7 @@ if (window.location.pathname !== '/login') {
 
 const handleEmailValidation = () => {
   const email = document.login.elements.email.value;
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
   return emailRegex.test(email);
 };
 
@@ -16,7 +16,7 @@ const handlePasswordValidation = () => {
 
 const handleLogin = event => {
   event.preventDefault();
-  const email = document.login.elements.email.value;
+  const email = document.login.elements.email.value.toLowerCase();
   const password = document.login.elements.password.value;
   const loginButton = document.login.elements.loginButton;
   const loadingSpinner = document.querySelector(".loading-spinner");
@@ -41,14 +41,7 @@ const handleLogin = event => {
       .then(res => {
         const { token } = res.data;
         Cookies.set("token", token, { sameSite: "strict" });
-        const { protocol, host, pathname } = window.location;
-        // const pathname = 'users';
-        // const search = '?page=1';
-        // window.location.href = `${protocol}//${host}/${pathname}${search}`;
         window.location.pathname = '/users';
-
-        // const { token, userId } = res.data;
-        // window.location.pathname = `/user/${userId}`;
       })
       .catch(error => {
         loadingSpinner.style.display = "none";
