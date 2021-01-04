@@ -272,7 +272,6 @@ if (process.env.DEVELOPMENT) {
 
 app.listen(port, () => {
   if (process.send) {
-    // process.send({ event:'online', url:'http://localhost:' + port})
     process.send("online");
     console.log(`Listening on port ${port}`);
   }
