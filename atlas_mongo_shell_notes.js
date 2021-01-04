@@ -51,18 +51,11 @@ db.users.update({name: {$regex: "^"}}, { $set: { "messages": []}}, {"multi": tru
 // Remove all usernames that end in a number
 db.users.remove({username: {$regex: "[0-9]$"}})
 
-
 // Prints each item on a separate line
-db.users.find().forEach(function(u) { print(u.name) })
+db.users.find().forEach(user => print(user._id))
 
 // Returns an array
 db.users.find().map( function(u) { return u.name } )
-
-// Find a single user by first name
-db.users.find({ name: "John" }).pretty()
-
-// Find all users
-db.users.find().pretty()
 
 // Find all documents based on a certain criteria
 Message.find({ from_user_id: {"$in": senders}}).exec((err, msg) => { console.log(msg)})
