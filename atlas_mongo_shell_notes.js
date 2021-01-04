@@ -66,21 +66,3 @@ db.users.find().pretty()
 
 // Find all documents based on a certain criteria
 Message.find({ from_user_id: {"$in": senders}}).exec((err, msg) => { console.log(msg)})
-
-// When pushing a local branch to master
-git checkout master
-git merge branch
-git push
-
-// AWS notes
-// Get s3 total size
-aws s3 ls s3://my-match --recursive --human-readable --summarize
-
-// Empty s3 bucket
-aws s3 rm s3://my-match --recursive
-
-// Empty select files in s3 bucket
-aws s3 rm s3://my-match --recursive --exclude "male.png" --exclude "female.png"
-
-// Run prettier with printWidth = 100
-npx prettier --write . --print-width 100 --arrow-parens avoid

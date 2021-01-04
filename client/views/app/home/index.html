@@ -23,23 +23,20 @@
 
   <div class="pagination-container">
     <div class="pagination">
-      ${
-        previousPage ?
-          previousPage === 1 ? `<a href="/users">❮</a>` : `<a href="/users?page=${currentPage - 1}">❮</a>`
-        : ''
-      }
-
-      ${numberOfPages > 2 && currentPage === numberOfPages ? `<a href="/users?page=${previousPage - 1}">${previousPage - 1}</a>` : ''}
-
-      ${
-        previousPage ?
-          previousPage === 1 ? `<a href="/users">${previousPage}</a>` : `<a href="/users?page=${previousPage}">${previousPage}</a>`
-        : ''
-      }
+      ${ previousPage ? previousPage === 1 ? `<a href="/users">❮</a>` : `<a
+        href="/users?page=${currentPage - 1}"
+        >❮</a
+      >` : '' } ${numberOfPages > 2 && currentPage === numberOfPages ? `<a
+        href="/users?page=${previousPage - 1}"
+        >${previousPage - 1}</a
+      >` : ''} ${ previousPage ? previousPage === 1 ? `<a href="/users">${previousPage}</a>` : `<a
+        href="/users?page=${previousPage}"
+        >${previousPage}</a
+      >` : '' }
 
       <a href="#" style="pointer-events: none;" class="active">${currentPage}</a>
-      ${nextPage ? `<a href="/users?page=${nextPage}">${nextPage}</a>` : ''}
-      ${numberOfPages > 2 && currentPage === 1 ? `<a href="/users?page=${nextPage + 1}">${nextPage + 1}</a>` : ''}
+      ${nextPage ? `<a href="/users?page=${nextPage}">${nextPage}</a>` : ''} ${numberOfPages > 2 &&
+      currentPage === 1 ? `<a href="/users?page=${nextPage + 1}">${nextPage + 1}</a>` : ''}
       ${nextPage ? `<a href="/users?page=${currentPage + 1}">❯</a>` : ''}
     </div>
   </div>

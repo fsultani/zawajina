@@ -4,6 +4,7 @@
   <div></div>
   <div></div>
 </div>
+
 <div class="signup-container">
   <section>
     <div class="signup-wrapper">
@@ -51,22 +52,12 @@
                   class="form-control form-control-sm"
                   id="dob-day"
                   onchange="handleBirthDay(event)"
-                >
-                  <script type="module">
-                    import { birthDay } from "/static/client/views/landing-pages/signup-profile/js/helpers.js";
-                    birthDay();
-                  </script>
-                </select>
+                ></select>
                 <select
                   class="form-control form-control-sm"
                   id="dob-year"
                   onchange="handleBirthYear(event)"
-                >
-                  <script type="module">
-                    import { birthYear } from "/static/client/views/landing-pages/signup-profile/js/helpers.js";
-                    birthYear();
-                  </script>
-                </select>
+                ></select>
               </div>
             </div>
           </div>
@@ -85,18 +76,9 @@
 
           <div class="form-row user-location">
             <div class="autocomplete">
-              <input
-                id="locationInput"
-                class="location"
-                type="text"
-                placeholder="Your city"
-              />
+              <input id="locationInput" class="location" type="text" placeholder="Your city" />
               <div id="results"></div>
             </div>
-            <script type="module">
-              import { userLocation } from "/static/client/views/landing-pages/signup-profile/js/helpers.js";
-              userLocation();
-            </script>
           </div>
           <div id="city-error"></div>
 
@@ -110,10 +92,6 @@
               />
               <div id="ethnicityResults"></div>
             </div>
-            <script type="module">
-              import { userEthnicity } from "/static/client/views/landing-pages/signup-profile/js/helpers.js";
-              userEthnicity();
-            </script>
           </div>
           <div id="ethnicity-error"></div>
 
@@ -232,7 +210,7 @@
               type="submit"
               onclick="handleCreateNewAccount()"
               class="form-submit signup-button"
-              name="createNewAccount"
+              id="createNewAccount"
             >
               Sign Up
             </button>

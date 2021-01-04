@@ -1,5 +1,5 @@
 const togglePassword = () => {
-  const passwordType = document.signupForm.elements.password;
+  const passwordType = document.querySelector("#user_password");
   const eye = document.getElementById("passwordEye");
 
   if (passwordType.type === "password") {

@@ -8,13 +8,13 @@ const session = require("express-session");
 const osascript = require("node-osascript");
 const flash = require("connect-flash");
 const mongo = require("mongodb");
-const { MongoClient, ObjectId } = require('mongodb');
+const { MongoClient, ObjectId } = require("mongodb");
 const jwt = require("jsonwebtoken");
 const JWT_SECRET = Buffer.from("fe1a1915a379f3be5394b64d14794932", "hex");
 
 const app = express();
 
-const { connectToServer, usersCollection } = require('./db.js');
+const { connectToServer, usersCollection } = require("./db.js");
 const authenticateToken = require("./config/auth");
 const User = require("./models/user");
 const index = require("./routes/index");
@@ -39,8 +39,8 @@ app.use((req, res, next) => {
   connectToServer(err => {
     if (err) throw err;
     next();
-  })
-})
+  });
+});
 
 // Catch all GET requests, and respond with an html file
 app.get("*", (req, res, next) => {
@@ -160,6 +160,7 @@ app.get("*", (req, res, next) => {
             scripts: [
               "https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js",
               "https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js",
+              "/static/client/views/landing-pages/signup-profile/js/helpers.js",
               "/static/client/views/landing-pages/signup-profile/js/signupProfileInit.js",
               "/static/client/views/landing-pages/signup-profile/js/handleCreateNewAccount.js",
               "/static/client/views/landing-pages/signup-profile/js/imageUpload.js",
@@ -225,11 +226,11 @@ app.get("*", (req, res, next) => {
         });
       }
 
-      usersCollection().findOne({ _id: ObjectId(authUser.userId)}, (error, user) => {
-        if (err) console.error(error)
+      usersCollection().findOne({ _id: ObjectId(authUser.userId) }, (error, user) => {
+        if (err) console.error(error);
         req.authUser = user;
         next();
-      })
+      });
     });
   }
 });

@@ -1,96 +1,96 @@
 /* ********************* Desktop Photos Carousel ********************* */
 
-  .profile-photos-container {
-    width: 100%;
-    grid-row: 1 / 3;
-    grid-column: 1 / 1;
-    box-shadow: 0 8px 8px rgba(22, 30, 42, 0.16);
-  }
+.profile-photos-container {
+  width: 100%;
+  grid-row: 1 / 3;
+  grid-column: 1 / 1;
+  box-shadow: 0 8px 8px rgba(22, 30, 42, 0.16);
+}
 
-  .slider {
-    width: 100%;
-    overflow: hidden;
-    border-radius: 12px;
-  }
+.slider {
+  width: 100%;
+  overflow: hidden;
+  border-radius: 12px;
+}
 
-  .photos-container {
-    position: relative;
-  }
+.photos-container {
+  position: relative;
+}
 
-  .slider-wrapper {
-    display: flex;
-    transition: transform ease-out 0.3s;
-  }
+.slider-wrapper {
+  display: flex;
+  transition: transform ease-out 0.3s;
+}
 
-  .slider-wrapper img {
-    width: 100%;
-    height: 100%;
-    border-radius: 12px;
-    object-fit: cover;
-  }
+.slider-wrapper img {
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  object-fit: cover;
+}
 
-  .slide {
-    flex: 1 0 100%;
-    flex-basis: 100%;
-    height: 390px;
-  }
+.slide {
+  flex: 1 0 100%;
+  flex-basis: 100%;
+  height: 390px;
+}
 
-  .dots-wrapper {
-    position: absolute;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    bottom: 10px;
-    overflow-y: auto;
-    overflow-x: hidden;
-  }
+.dots-wrapper {
+  position: absolute;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  bottom: 10px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
 
-  .dot {
-    height: 10px;
-    width: 10px;
-    margin: 0 4px;
-    background-color: #ffffff;
-    border-radius: 50%;
-    display: inline-block;
-    transition: background-color 0.6s ease;
-  }
+.dot {
+  height: 10px;
+  width: 10px;
+  margin: 0 4px;
+  background-color: #ffffff;
+  border-radius: 50%;
+  display: inline-block;
+  transition: background-color 0.6s ease;
+}
 
-  .dot:hover {
-    cursor: pointer;
-  }
+.dot:hover {
+  cursor: pointer;
+}
 
-  .active {
-    background-color: green;
-  }
+.active {
+  background-color: green;
+}
 
-  .image-previews-container {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    margin-top: 12px;
-  }
+.image-previews-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-top: 12px;
+}
 
-  .image-preview-wrapper {
-    margin: 0 1px;
-  }
+.image-preview-wrapper {
+  margin: 0 1px;
+}
 
-  .image-previews-container .image-preview-wrapper:first-child img {
-    border-radius: 3px 0 0 3px;
-  }
+.image-previews-container .image-preview-wrapper:first-child img {
+  border-radius: 3px 0 0 3px;
+}
 
-  .image-previews-container .image-preview-wrapper:last-child img {
-    border-radius: 0 3px 3px 0;
-  }
+.image-previews-container .image-preview-wrapper:last-child img {
+  border-radius: 0 3px 3px 0;
+}
 
-  .user-photo {
-    width: 60px;
-    height: 60px;
-    object-fit: cover;
-  }
+.user-photo {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+}
 
-  .user-photo:hover {
-    cursor: pointer;
-  }
+.user-photo:hover {
+  cursor: pointer;
+}
 
 /* ********************* Mobile Photos Carousel ********************* */
 
@@ -103,6 +103,7 @@
   .slider {
     width: 100%;
     overflow: hidden;
+    border-radius: 0;
   }
 
   .photos-container {
@@ -119,8 +120,8 @@
     scroll-snap-type: x mandatory;
 
     /* Hide scrollbar for IE, Edge and Firefox */
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
   }
 
   /* Hide scrollbar for Chrome, Safari and Opera */
@@ -131,6 +132,7 @@
   .slider-wrapper img {
     width: 100%;
     height: 100%;
+    border-radius: 0;
   }
 
   .slide {
@@ -254,7 +256,7 @@
   height: 75px;
   font-size: 14px;
   border-radius: 6px;
-  animation: fade-in .15s linear 1;
+  animation: fade-in 0.15s linear 1;
 }
 
 .arrow {
@@ -279,16 +281,14 @@
   flex-direction: column;
   background-color: #ffffff;
   border-radius: 6px;
-  box-shadow:
-    0 3px 6px -4px rgba(0, 0, 0, 0.12),
-    0 6px 16px 0 rgba(0, 0, 0, 0.08),
+  box-shadow: 0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 6px 16px 0 rgba(0, 0, 0, 0.08),
     0 9px 28px 8px rgba(0, 0, 0, 0.05);
 }
 
 .inner-content div:hover {
   cursor: pointer;
   background-color: #d8d8d8;
-  transition: all .14s ease-in-out;
+  transition: all 0.14s ease-in-out;
 }
 
 .inner-content div {

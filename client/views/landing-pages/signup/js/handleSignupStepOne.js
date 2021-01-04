@@ -1,9 +1,7 @@
-const signupFormElements = document.signupForm.elements;
-
-const user_name = document.signupForm.user_name;
-const user_email = document.signupForm.user_email;
-const user_password = document.signupForm.user_password;
-const signupButton = document.signupForm.signupButton;
+const user_name = document.querySelector("#user_name");
+const user_email = document.querySelector("#user_email");
+const user_password = document.querySelector("#user_password");
+const signupButton = document.querySelector("#signupButton");
 const loadingSpinner = document.querySelector(".loading-spinner");
 
 let handleNameValidationValue = false;
@@ -12,8 +10,7 @@ let handlePasswordValidationValue = false;
 
 const handleNameValidation = name => {
   const invalidCharacters = /[0-9!@#$%^&*()_\+=[\]{}|:;"<,>\?\/\\~`]/g;
-  const validName = !invalidCharacters.test(name)
-  console.log('validName:\n', validName);
+  const validName = !invalidCharacters.test(name);
 
   if (name.length === 0 || !validName) {
     document.getElementById("name").classList.remove("animate-border-bottom");
