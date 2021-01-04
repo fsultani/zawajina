@@ -1,4 +1,4 @@
-var mongoose = require('mongoose');
+var mongoose = require("mongoose");
 
 var Message = mongoose.Schema({
   message: {
@@ -26,9 +26,9 @@ var Message = mongoose.Schema({
   conversation: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Conversation',
+      ref: "Conversation",
     },
   ],
 });
 
-module.exports = mongoose.model('Messages', Message);
+module.exports = mongoose.model("Messages", Message);

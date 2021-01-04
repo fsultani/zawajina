@@ -1,17 +1,13 @@
-export const birthDay = () => {
-  const dayOptions = ["<option selected disabled>Day</option>"];
-  const res = [...Array(31)].map((_, i) => dayOptions.push(`<option>${i + 1}</option>`));
-  document.getElementById("dob-day").innerHTML = dayOptions;
-};
+const birthDayOptions = ["<option selected disabled>Day</option>"];
+[...Array(31)].map((_, i) => birthDayOptions.push(`<option>${i + 1}</option>`));
+document.querySelector("#dob-day").innerHTML = birthDayOptions;
 
-export const birthYear = () => {
-  const today = new Date();
-  const age18 = today.getFullYear() - 18;
+const today = new Date();
+const age18 = today.getFullYear() - 18;
 
-  let yearOptions = ["<option selected disabled>Year</option>"];
-  const res = [...Array(100)].map((_, i) => yearOptions.push(`<option>${age18 - i}</option>`));
-  document.getElementById("dob-year").innerHTML = yearOptions;
-};
+let birthYearOptions = ["<option selected disabled>Year</option>"];
+[...Array(100)].map((_, i) => birthYearOptions.push(`<option>${age18 - i}</option>`));
+document.querySelector("#dob-year").innerHTML = birthYearOptions;
 
 // https://davidwalsh.name/javascript-debounce-function
 const debounce = (func, wait, immediate) => {
@@ -60,7 +56,7 @@ const addActive = (element, currentFocus) => {
   element[currentFocus].classList.add("autocomplete-active");
 };
 
-export const userLocation = async () => {
+(async () => {
   let currentFocus;
 
   const getUserIPAddress = async () => {
@@ -72,6 +68,7 @@ export const userLocation = async () => {
       return err;
     }
   };
+
   const userIPAddress = await getUserIPAddress();
 
   const getAllCountries = async userInput => {
@@ -177,7 +174,7 @@ export const userLocation = async () => {
     }
   });
 
-  inputString.addEventListener('blur', event => {
+  inputString.addEventListener("blur", event => {
     const inputTag = event.target.dataset;
     if (window.event.relatedTarget && (!inputString.value || !inputTag.city)) {
       closeAllLists("#locationInput");
@@ -202,9 +199,9 @@ export const userLocation = async () => {
       inputString.setAttribute("data-country", country);
     }
   });
-};
+})();
 
-export const userEthnicity = async () => {
+(async () => {
   let currentFocus;
 
   const getAllEthnicities = async userInput => {
@@ -253,7 +250,7 @@ export const userEthnicity = async () => {
 
       let searchResultsWrapper = '<div class="autocomplete-items">';
 
-      results.map((ethnicity) => {
+      results.map(ethnicity => {
         searchResultsWrapper += `
         <div
           data-ethnicity=${JSON.stringify(ethnicity)}
@@ -298,7 +295,7 @@ export const userEthnicity = async () => {
     }
   });
 
-  inputString.addEventListener('blur', event => {
+  inputString.addEventListener("blur", event => {
     const inputTag = event.target.dataset;
     if (window.event.relatedTarget && (!inputString.value || !inputTag.ethnicity)) {
       closeAllLists("#ethnicityInput");
@@ -310,10 +307,10 @@ export const userEthnicity = async () => {
     const inputTag = event.target.dataset;
     if (inputTag?.ethnicity) {
       const ethnicity = inputTag.ethnicity;
-      inputString.value = ethnicity
+      inputString.value = ethnicity;
       closeAllLists("#ethnicityInput");
 
       inputString.setAttribute("data-ethnicity", ethnicity);
     }
   });
-};
+})();

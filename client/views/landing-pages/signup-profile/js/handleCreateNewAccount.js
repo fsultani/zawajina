@@ -12,20 +12,8 @@ const handleBirthDay = event => (birthDay = event.target.value);
 const handleBirthYear = event => (birthYear = event.target.value);
 const handleGender = value => (gender = value);
 
-const createNewAccountButton = document.signupForm.createNewAccount;
+const createNewAccountButton = document.querySelector("#createNewAccount");
 const loadingSpinner = document.querySelector(".submit-loading-spinner");
-
-const closeAllLists = element => {
-  const inputString = document.querySelector(element);
-  /*close all autocomplete lists in the document,
-  except the one passed as an argument:*/
-  var x = document.getElementsByClassName("autocomplete-items");
-  for (var i = 0; i < x.length; i++) {
-    if (element != x[i] && element != inputString) {
-      x[i].parentNode.removeChild(x[i]);
-    }
-  }
-};
 
 const handleCreateNewAccount = () => {
   const locationValue = document.querySelector("#locationInput");
@@ -36,7 +24,7 @@ const handleCreateNewAccount = () => {
 
   const ethnicityValue = document.querySelector("#ethnicityInput");
   const ethnicityData = document.querySelector("#ethnicityInput").dataset;
-  ethnicity = ethnicityData.ethnicity
+  ethnicity = ethnicityData.ethnicity;
 
   const addErrorClass = element => document.querySelector(`${element}`).classList.add("form-error");
   const removeErrorClass = element =>
@@ -83,7 +71,8 @@ const handleCreateNewAccount = () => {
 
   if (!ethnicity || !ethnicityValue.value) {
     closeAllLists("#ethnicityInput");
-    document.querySelector("#ethnicity-error").innerHTML = "Please select your ethnicity from the dropdown"
+    document.querySelector("#ethnicity-error").innerHTML =
+      "Please select your ethnicity from the dropdown";
     document.querySelector("#ethnicity-error").style.display = "block";
   } else {
     document.querySelector("#ethnicity-error").style.display = "none";
@@ -94,7 +83,16 @@ const handleCreateNewAccount = () => {
     ethnicityValue.setAttribute("data-ethnicity", "");
   }
 
-  if (birthMonth && birthDay && birthYear && gender && city && locationValue.value && ethnicity && ethnicityValue.value) {
+  if (
+    birthMonth &&
+    birthDay &&
+    birthYear &&
+    gender &&
+    city &&
+    locationValue.value &&
+    ethnicity &&
+    ethnicityValue.value
+  ) {
     loadingSpinner.style.display = "inline-block";
     createNewAccountButton.innerHTML = "";
     createNewAccountButton.disabled = true;
@@ -130,7 +128,7 @@ const handleCreateNewAccount = () => {
         }
       })
       .catch(error => {
-        console.error('error.message:\n', error.message);
+        console.error("error.message:\n", error.message);
 
         loadingSpinner.style.display = "none";
         createNewAccountButton.innerHTML = "Create Account";

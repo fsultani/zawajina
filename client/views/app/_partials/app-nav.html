@@ -14,7 +14,9 @@
         <a href="/users">Home</a>
         <a href="/user/${authUser._id}">Profile</a>
         <a href="/user/${authUser._id}">Search</a>
-        <a id="logout" class="dropdown-item" style="cursor: pointer;" onclick="handleLogout()">Logout</a>
+        <a id="logout" class="dropdown-item" style="cursor: pointer;" onclick="handleLogout()"
+          >Logout</a
+        >
       </div>
 
       <ul class="navbar--header-links margin-0">
@@ -24,13 +26,18 @@
         <li>
           <div class="dropdown-menu">
             <div onclick="openDropdownMenu()" class="dropdown-button" role="button">
-              <img src="${authUser.photos.length > 0 ? authUser.photos[0] : authUser.gender === 'male' ? 'https://my-match.s3.amazonaws.com/male.png' : 'https://my-match.s3.amazonaws.com/female.png'}" class="user-avatar-menu">
+              <img
+                src="${authUser.photos.length > 0 ? authUser.photos[0] : authUser.gender === 'male' ? 'https://my-match.s3.amazonaws.com/male.png' : 'https://my-match.s3.amazonaws.com/female.png'}"
+                class="user-avatar-menu"
+              />
               <span id="menu-arrow" class="down-arrow"></span>
             </div>
             <div class="dropdown-content">
               <a href="/users">Home</a>
               <a href="/user/${authUser._id}">Profile</a>
-              <a id="logout" class="dropdown-item" style="cursor: pointer;" onclick="handleLogout()">Logout</a>
+              <a id="logout" class="dropdown-item" style="cursor: pointer;" onclick="handleLogout()"
+                >Logout</a
+              >
             </div>
           </div>
         </li>

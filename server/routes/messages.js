@@ -1,20 +1,20 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
-const jwt = require('jwt-simple');
-const JWT_SECRET = Buffer.from('fe1a1915a379f3be5394b64d14794932', 'hex');
+const mongoose = require("mongoose");
+const bodyParser = require("body-parser");
+const jwt = require("jwt-simple");
+const JWT_SECRET = Buffer.from("fe1a1915a379f3be5394b64d14794932", "hex");
 
-const User = require('../models/user');
-const Message = require('../models/message');
-const Conversation = require('../models/conversation');
+const User = require("../models/user");
+const Message = require("../models/message");
+const Conversation = require("../models/conversation");
 
 /****************************************************************************************************
 // Get the logged in user's messages
 ****************************************************************************************************/
 
-router.get('/api/all-messages', (req, res, next) => {
-  const token = req.headers['authorization'];
+router.get("/api/all-messages", (req, res, next) => {
+  const token = req.headers["authorization"];
   const decodedUser = jwt.decode(token, JWT_SECRET);
   User.findOne({ username: decodedUser.username }, (err, user) => {
     Message.aggregate([
@@ -32,8 +32,8 @@ router.get('/api/all-messages', (req, res, next) => {
       },
       {
         $group: {
-          _id: '$conversation',
-          lastMessage: { $last: '$$ROOT' },
+          _id: "$conversation",
+          lastMessage: { $last: "$$ROOT" },
         },
       },
     ]).exec((err, lastMessage) => {
@@ -46,8 +46,8 @@ router.get('/api/all-messages', (req, res, next) => {
 // Send a new message to another user
 ****************************************************************************************************/
 
-router.post('/api/new-message', (req, res, next) => {
-  const token = req.headers['authorization'];
+router.post("/api/new-message", (req, res, next) => {
+  const token = req.headers["authorization"];
   const decodedUser = jwt.decode(token, JWT_SECRET);
   Promise.all([
     User.findOne({ _id: req.body.memberId }),
@@ -117,8 +117,8 @@ router.post('/api/new-message', (req, res, next) => {
 // Reply to a message
 ****************************************************************************************************/
 
-router.post('/api/reply', (req, res, next) => {
-  const token = req.headers['authorization'];
+router.post("/api/reply", (req, res, next) => {
+  const token = req.headers["authorization"];
   const decodedUser = jwt.decode(token, JWT_SECRET);
   Conversation.findOne({ _id: req.body.conversationId }, (err, conversation) => {
     const to =
@@ -157,7 +157,7 @@ router.post('/api/reply', (req, res, next) => {
   });
 });
 
-router.put('/api/:conversationId/:messageId', (req, res) => {
+router.put("/api/:conversationId/:messageId", (req, res) => {
   Message.findByIdAndUpdate(req.params.messageId, { $set: { unread: false } }, (err, message) => {
     res.status(201).end();
   });

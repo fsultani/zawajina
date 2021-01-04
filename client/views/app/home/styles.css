@@ -96,12 +96,12 @@
 
 .pagination a:hover:not(.active) {
   color: green;
-  box-shadow: 0 0 11px rgba(33,33,33,.2);
+  box-shadow: 0 0 11px rgba(33, 33, 33, 0.2);
 }
 
 .pagination a:active:not(.active) {
   color: green;
-  box-shadow: 0 0 4px rgba(33,33,33,.2);
+  box-shadow: 0 0 4px rgba(33, 33, 33, 0.2);
   transform: scale(0.98);
 }
 
