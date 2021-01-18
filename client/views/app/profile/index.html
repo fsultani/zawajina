@@ -68,7 +68,7 @@
         <h5 class="user-details-header">Details</h5>
         <div class="details-grid">
           <div class="details-key">Ethnicity:</div>
-          <div class="details-value">Afghan</div>
+          <div class="details-value">${user.ethnicity.map(ethnicity => ethnicity).join(' | ')}</div>
           <div class="details-key">Raised in:</div>
           <div class="details-value">United States</div>
           <div class="details-key">Conviction:</div>
