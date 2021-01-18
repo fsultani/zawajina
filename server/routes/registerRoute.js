@@ -264,8 +264,6 @@ router.post(
     let age = today.getFullYear() - dob.getFullYear();
     const month = today.getMonth() - dob.getMonth();
 
-    const ethnicitySelection = ethnicity.split();
-
     if (month < 0 || (month === 0 && today.getDate() < dob.getDate())) {
       age = age - 1;
     }
@@ -302,7 +300,7 @@ router.post(
               state,
               city,
               photos: allImages,
-              ethnicity: ethnicitySelection,
+              ethnicity,
               completedRegistrationAt: new Date(),
               isUserSessionValid: true,
               lastLogin: new Date(),
@@ -344,7 +342,7 @@ router.post(
             city,
             // photos: allImages,
             photos: [],
-            ethnicitySelection,
+            ethnicity,
             completedRegistrationAt: new Date(),
             isUserSessionValid: true,
             lastLogin: new Date(),

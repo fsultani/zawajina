@@ -270,12 +270,57 @@ list-type-ulli {
   overflow: hidden;
 }
 
-.location {
+.user-location,
+.user-ethnicity {
+  position: relative;
+  padding-bottom: 4px;
+}
+
+.location,
+.ethnicity {
   height: 36px;
 }
 
 .autocomplete {
   position: relative;
+}
+
+.user-selection-container {
+  display: flex;
+  justify-content: flex-start;
+  position: absolute;
+  top: 2px;
+  padding: 4px;
+  z-index: 1;
+}
+
+.user-selection-wrapper {
+  display: none;
+  color: #ffffff;
+  padding: 4px 8px;
+  margin-right: 4px;
+  border-radius: 5px;
+  background: linear-gradient(57deg, #009e85 0%, #006353 100%);
+}
+
+.user-selection-content {
+  margin-right: 8px;
+}
+
+.user-selection-remove-wrapper {
+  width: 16px;
+  height: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #009e85;
+  color: #ffffff;
+  border-radius: 50%;
+}
+
+.user-selection-remove-wrapper:hover {
+  cursor: pointer;
+  background-color: #008a74;
 }
 
 #city-error,
@@ -388,10 +433,6 @@ input[type="submit"] {
   position: relative;
 }
 
-.user-location {
-  padding-bottom: 4px;
-}
-
 label,
 input {
   display: block;
@@ -424,7 +465,6 @@ input:focus {
 
 input::-webkit-input-placeholder {
   color: #999;
-  text-transform: uppercase;
   font-weight: 600;
 }
 

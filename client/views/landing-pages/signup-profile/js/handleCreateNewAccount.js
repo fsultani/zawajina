@@ -2,10 +2,6 @@ let birthMonth;
 let birthDay;
 let birthYear;
 let gender;
-let city;
-let state;
-let country;
-let ethnicity;
 
 const handleBirthMonth = event => (birthMonth = event.target.value);
 const handleBirthDay = event => (birthDay = event.target.value);
@@ -16,15 +12,15 @@ const createNewAccountButton = document.querySelector("#createNewAccount");
 const loadingSpinner = document.querySelector(".submit-loading-spinner");
 
 const handleCreateNewAccount = () => {
-  const locationValue = document.querySelector("#locationInput");
   const locationData = document.querySelector("#locationInput").dataset;
-  city = locationData.city;
-  state = locationData.state;
-  country = locationData.country;
+  const city = locationData.city;
+  const state = locationData.state;
+  const country = locationData.country;
 
-  const ethnicityValue = document.querySelector("#ethnicityInput");
-  const ethnicityData = document.querySelector("#ethnicityInput").dataset;
-  ethnicity = ethnicityData.ethnicity;
+  const ethnicity = [];
+  document.querySelectorAll('.user-ethnicity-content').forEach(({ id }) => {
+    ethnicity.push(id)
+  })
 
   const addErrorClass = element => document.querySelector(`${element}`).classList.add("form-error");
   const removeErrorClass = element =>
@@ -54,33 +50,25 @@ const handleCreateNewAccount = () => {
     removeErrorClass(".form-flex");
   }
 
-  if (!city || !locationValue.value) {
+  if (!city) {
     closeAllLists("#locationInput");
+    document.querySelector('.user-location').style.cssText = 'padding-bottom: 4px';
     document.querySelector("#city-error").innerHTML = "Please select your city from the dropdown";
     document.querySelector("#city-error").style.display = "block";
   } else {
+    document.querySelector('.user-location').style.cssText = 'padding-bottom: 16px';
     document.querySelector("#city-error").style.display = "none";
   }
 
-  if (!locationValue.value) {
-    closeAllLists("#locationInput");
-    locationValue.setAttribute("data-city", "");
-    locationValue.setAttribute("data-state", "");
-    locationValue.setAttribute("data-country", "");
-  }
-
-  if (!ethnicity || !ethnicityValue.value) {
+  if (ethnicity.length === 0) {
     closeAllLists("#ethnicityInput");
+    document.querySelector('.user-ethnicity').style.cssText = 'padding-bottom: 4px';
     document.querySelector("#ethnicity-error").innerHTML =
       "Please select your ethnicity from the dropdown";
     document.querySelector("#ethnicity-error").style.display = "block";
   } else {
+    document.querySelector('.user-ethnicity').style.cssText = 'padding-bottom: 16px';
     document.querySelector("#ethnicity-error").style.display = "none";
-  }
-
-  if (!ethnicityValue.value) {
-    closeAllLists("#ethnicityInput");
-    ethnicityValue.setAttribute("data-ethnicity", "");
   }
 
   if (
@@ -89,9 +77,7 @@ const handleCreateNewAccount = () => {
     birthYear &&
     gender &&
     city &&
-    locationValue.value &&
-    ethnicity &&
-    ethnicityValue.value
+    ethnicity.length > 0
   ) {
     loadingSpinner.style.display = "inline-block";
     createNewAccountButton.innerHTML = "";
