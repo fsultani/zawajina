@@ -1,45 +1,45 @@
-const express = require("express");
-const { ObjectId } = require("mongodb");
-const bcrypt = require("bcryptjs");
-const axios = require("axios");
-const { check, body, validationResult } = require("express-validator/check");
-const cloudinary = require("cloudinary").v2;
-const jwt = require("jsonwebtoken");
-const moment = require("moment");
-const fs = require("fs");
-const multer = require("multer");
-const connectMultipart = require("connect-multiparty");
-const Jimp = require("jimp");
+const express = require('express');
+const { ObjectId } = require('mongodb');
+const bcrypt = require('bcryptjs');
+const axios = require('axios');
+const { check, body, validationResult } = require('express-validator/check');
+const cloudinary = require('cloudinary').v2;
+const jwt = require('jsonwebtoken');
+const moment = require('moment');
+const fs = require('fs');
+const multer = require('multer');
+const connectMultipart = require('connect-multiparty');
+const Jimp = require('jimp');
 
-const JWT_SECRET = Buffer.from("fe1a1915a379f3be5394b64d14794932", "hex");
+const JWT_SECRET = Buffer.from('fe1a1915a379f3be5394b64d14794932', 'hex');
 
-const { usersCollection } = require("../db.js");
-const { createUser } = require("../models/user");
-const countries = require("../data/world-cities");
-const ethnicities = require("../data/ethnicities");
-const User = require("../models/user");
+const { usersCollection } = require('../db.js');
+const { createUser } = require('../models/user');
+const countries = require('../data/world-cities');
+const ethnicities = require('../data/ethnicities');
+const User = require('../models/user');
 
 const router = express.Router();
 
 router.post(
-  "/api/personal-info",
+  '/api/personal-info',
   [
-    check("nameValue").not().isEmpty().trim().escape().withMessage("Enter your name"),
-    check("email").isEmail().normalizeEmail().withMessage("Enter a valid email address"),
-    check("password").not().isEmpty().withMessage("Enter a password"),
-    check("password").isLength({ min: 8 }),
+    check('nameValue').not().isEmpty().trim().escape().withMessage('Enter your name'),
+    check('email').isEmail().normalizeEmail().withMessage('Enter a valid email address'),
+    check('password').not().isEmpty().withMessage('Enter a password'),
+    check('password').isLength({ min: 8 }),
   ],
   (req, res) => {
     const { nameValue, email, password } = req.body;
     const getErrors = validationResult(req);
     const name = nameValue
-      .split(",")
+      .split(',')
       .map(group =>
         group
-          .replace("_", " ")
+          .replace('_', ' ')
           .replace(/\w\S*/g, word => word.charAt(0).toUpperCase() + word.substr(1).toLowerCase())
       )
-      .join(", ");
+      .join(', ');
 
     if (!getErrors.isEmpty()) {
       return res.status(400).json({ error: getErrors.array() });
@@ -78,7 +78,7 @@ router.post(
             },
             (err, user) => {
               if (err) {
-                return res.json({ error: "Unknown error" });
+                return res.json({ error: 'Unknown error' });
               } else {
                 return res.status(201).json({
                   startedRegistrationAt: userExists.startedRegistrationAt,
@@ -89,9 +89,9 @@ router.post(
           );
         } else if (userExists.startedRegistrationAt && userExists.completedRegistrationAt) {
           // Email address already exists
-          return res.status(403).json({ error: "Account already exists" });
+          return res.status(403).json({ error: 'Account already exists' });
         } else {
-          return res.json({ error: "Unknown error" });
+          return res.json({ error: 'Unknown error' });
         }
       });
     }
@@ -105,7 +105,7 @@ let userState;
 let userCountry;
 let locationResponse;
 
-router.get("/api/cities-list", async (req, res) => {
+router.get('/api/cities-list', async (req, res) => {
   const { userIPAddress, userInput } = req.query;
   const allLocations = [];
   const allResults = [];
@@ -120,16 +120,16 @@ router.get("/api/cities-list", async (req, res) => {
     }
 
     const filteredResults = locationResponse.filter(element => {
-      const hasComma = userInput.indexOf(",") !== -1;
+      const hasComma = userInput.indexOf(',') !== -1;
       if (hasComma) {
         if (element.state) {
           return element.state
             .toLowerCase()
-            .startsWith(userInput.split(",")[1].toLowerCase().trim());
+            .startsWith(userInput.split(',')[1].toLowerCase().trim());
         } else {
           return element.country
             .toLowerCase()
-            .startsWith(userInput.split(",")[1].toLowerCase().trim());
+            .startsWith(userInput.split(',')[1].toLowerCase().trim());
         }
       } else {
         return element.city.toLowerCase().startsWith(userInput.toLowerCase());
@@ -156,13 +156,13 @@ router.get("/api/cities-list", async (req, res) => {
 
     for (let i = 0; i < filteredResults.length; i++) {
       const country =
-        filteredResults[i].country === "United States" ? "USA" : filteredResults[i].country;
+        filteredResults[i].country === 'United States' ? 'USA' : filteredResults[i].country;
       const fullLocation = `${filteredResults[i].city}, ${
         filteredResults[i].state ? `${filteredResults[i].state}, ${country}` : country
       }`;
 
       if (fullLocation.substr(0, userInput.length).toUpperCase() == userInput.toUpperCase()) {
-        const search = new RegExp(userInput, "gi");
+        const search = new RegExp(userInput, 'gi');
         const match = fullLocation.replace(search, match => `<strong>${match}</strong>`);
         allResults.push({
           match,
@@ -182,7 +182,7 @@ router.get("/api/cities-list", async (req, res) => {
 
 let ethnicityWasCalled = false;
 let ethnicityResponse;
-router.get("/api/ethnicities-list", async (req, res) => {
+router.get('/api/ethnicities-list', async (req, res) => {
   const { userInput } = req.query;
 
   try {
@@ -203,52 +203,52 @@ router.get("/api/ethnicities-list", async (req, res) => {
 
 cloudinary.config({
   cloud_name: process.env.DEVELOPMENT
-    ? require("../credentials.json").CLOUDINARY_CLOUD_NAME
+    ? require('../credentials.json').CLOUDINARY_CLOUD_NAME
     : process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.DEVELOPMENT
-    ? require("../credentials.json").CLOUDINARY_API_KEY
+    ? require('../credentials.json').CLOUDINARY_API_KEY
     : process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.DEVELOPMENT
-    ? require("../credentials.json").CLOUDINARY_API_SECRET
+    ? require('../credentials.json').CLOUDINARY_API_SECRET
     : process.env.CLOUDINARY_API_SECRET,
 });
 
 const storage = multer.diskStorage({
-  destination: "uploads",
+  destination: 'uploads',
   filename: (req, file, cb) => {
     const random =
       Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-    const fileExtension = file.originalname.split(".")[1];
+    const fileExtension = file.originalname.split('.')[1];
     cb(null, `${random}.${fileExtension}`);
   },
 });
 
 const upload = multer({ storage: storage });
 router.post(
-  "/api/about",
+  '/api/about',
   upload.fields([
     {
-      name: "image-1",
+      name: 'image-1',
       maxCount: 1,
     },
     {
-      name: "image-2",
+      name: 'image-2',
       maxCount: 1,
     },
     {
-      name: "image-3",
+      name: 'image-3',
       maxCount: 1,
     },
     {
-      name: "image-4",
+      name: 'image-4',
       maxCount: 1,
     },
     {
-      name: "image-5",
+      name: 'image-5',
       maxCount: 1,
     },
     {
-      name: "image-6",
+      name: 'image-6',
       maxCount: 1,
     },
   ]),
@@ -272,8 +272,8 @@ router.post(
       const allImages = [];
       const userImages = Object.values(req.files).map(async (image, index) => {
         const file = image[0];
-        const fileName = file.filename.split(".")[0];
-        const compressedFilePath = `compressed/${file.filename.split(".")[0]}.jpg`;
+        const fileName = file.filename.split('.')[0];
+        const compressedFilePath = `compressed/${file.filename.split('.')[0]}.jpg`;
         const jpgImage = await Jimp.read(file.path);
         await jpgImage.cover(640, 640).quality(100).write(compressedFilePath);
         const uploadToCloudinary = await cloudinary.uploader.upload(compressedFilePath, {
@@ -309,7 +309,7 @@ router.post(
           { new: true },
           (err, user) => {
             const token = jwt.sign({ userId: user.value._id }, JWT_SECRET, {
-              expiresIn: "1 day",
+              expiresIn: '1 day',
             });
             res.status(201).json({ token });
           }
@@ -352,7 +352,7 @@ router.post(
         (err, user) => {
           if (err) return res.send({ error: err });
           const token = jwt.sign({ userId: user.value._id }, JWT_SECRET, {
-            expiresIn: "1 day",
+            expiresIn: '1 day',
           });
           res.status(201).json({ token });
         }

@@ -1,21 +1,21 @@
 @font-face {
   font-family: Poppins-Regular;
-  src: url("/static/client/fonts/poppins/Poppins-Regular.ttf");
+  src: url('/static/client/fonts/poppins/Poppins-Regular.ttf');
 }
 
 @font-face {
   font-family: Poppins-Medium;
-  src: url("/static/client/fonts/poppins/Poppins-Medium.ttf");
+  src: url('/static/client/fonts/poppins/Poppins-Medium.ttf');
 }
 
 @font-face {
   font-family: Poppins-Bold;
-  src: url("/static/client/fonts/poppins/Poppins-Bold.ttf");
+  src: url('/static/client/fonts/poppins/Poppins-Bold.ttf');
 }
 
 @font-face {
   font-family: Poppins-SemiBold;
-  src: url("../fonts/poppins/Poppins-SemiBold.ttf");
+  src: url('../fonts/poppins/Poppins-SemiBold.ttf');
 }
 
 * {
@@ -229,7 +229,7 @@ textarea:-ms-input-placeholder {
 }
 
 .input-focus::before {
-  content: "";
+  content: '';
   display: block;
   position: absolute;
   bottom: -2px;
@@ -248,7 +248,7 @@ textarea:-ms-input-placeholder {
 }
 
 .input-focus.email-error::before {
-  content: "";
+  content: '';
   display: block;
   position: absolute;
   bottom: -2px;

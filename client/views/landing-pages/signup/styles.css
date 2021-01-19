@@ -1,61 +1,61 @@
 @font-face {
-  font-family: "Montserrat";
+  font-family: 'Montserrat';
   font-style: normal;
   font-weight: 300;
-  src: url("/static/client/fonts/montserrat/Montserrat-Light.ttf");
+  src: url('/static/client/fonts/montserrat/Montserrat-Light.ttf');
 }
 
 @font-face {
-  font-family: "Montserrat";
+  font-family: 'Montserrat';
   font-style: normal;
   font-weight: 400;
-  src: url("/static/client/fonts/montserrat/Montserrat-Regular.ttf");
+  src: url('/static/client/fonts/montserrat/Montserrat-Regular.ttf');
 }
 
 @font-face {
-  font-family: "Montserrat";
+  font-family: 'Montserrat';
   font-style: italic;
   font-weight: 400;
-  src: url("/static/client/fonts/montserrat/Montserrat-Italic.ttf");
+  src: url('/static/client/fonts/montserrat/Montserrat-Italic.ttf');
 }
 
 @font-face {
-  font-family: "Montserrat";
+  font-family: 'Montserrat';
   font-style: normal;
   font-weight: 500;
-  src: url("/static/client/fonts/montserrat/Montserrat-Medium.ttf");
+  src: url('/static/client/fonts/montserrat/Montserrat-Medium.ttf');
 }
 
 @font-face {
-  font-family: "Montserrat";
+  font-family: 'Montserrat';
   font-style: normal;
   font-weight: 600;
-  src: url("/static/client/fonts/montserrat/Montserrat-SemiBold.ttf");
+  src: url('/static/client/fonts/montserrat/Montserrat-SemiBold.ttf');
 }
 
 @font-face {
-  font-family: "Montserrat";
+  font-family: 'Montserrat';
   font-style: normal;
   font-weight: 700;
-  src: url("/static/client/fonts/montserrat/Montserrat-Bold.ttf");
+  src: url('/static/client/fonts/montserrat/Montserrat-Bold.ttf');
 }
 
 @font-face {
-  font-family: "Montserrat";
+  font-family: 'Montserrat';
   font-style: italic;
   font-weight: 700;
-  src: url("/static/client/fonts/montserrat/Montserrat-BoldItalic.ttf");
+  src: url('/static/client/fonts/montserrat/Montserrat-BoldItalic.ttf');
 }
 
 @font-face {
-  font-family: "Montserrat";
+  font-family: 'Montserrat';
   font-style: italic;
   font-weight: 900;
-  src: url("/static/client/fonts/montserrat/montserrat-v12-latin-900.ttf"),
-    url("/static/client/fonts/montserrat/montserrat-v12-latin-900.eot") format("embedded-opentype"),
-    url("/static/client/fonts/montserrat/montserrat-v12-latin-900.svg") format("woff2"),
-    url("/static/client/fonts/montserrat/montserrat-v12-latin-900.woff") format("woff"),
-    url("/static/client/fonts/montserrat/montserrat-v12-latin-900.woff2") format("truetype");
+  src: url('/static/client/fonts/montserrat/montserrat-v12-latin-900.ttf'),
+    url('/static/client/fonts/montserrat/montserrat-v12-latin-900.eot') format('embedded-opentype'),
+    url('/static/client/fonts/montserrat/montserrat-v12-latin-900.svg') format('woff2'),
+    url('/static/client/fonts/montserrat/montserrat-v12-latin-900.woff') format('woff'),
+    url('/static/client/fonts/montserrat/montserrat-v12-latin-900.woff2') format('truetype');
 }
 
 body {
@@ -187,7 +187,7 @@ textarea:-ms-input-placeholder {
   padding: 0;
   font-weight: 900;
   color: #222;
-  font-family: "Montserrat";
+  font-family: 'Montserrat';
   font-size: 24px;
   text-transform: uppercase;
   text-align: center;
@@ -245,7 +245,7 @@ textarea:-ms-input-placeholder {
 }
 
 .input-focus::before {
-  content: "";
+  content: '';
   display: block;
   position: absolute;
   bottom: -2px;
