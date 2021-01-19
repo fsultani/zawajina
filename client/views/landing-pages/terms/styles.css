@@ -12,13 +12,13 @@
 }
 
 .features .section-title::before {
-  content: "";
+  content: '';
   position: absolute;
   top: -20px;
   left: 0;
   width: 76px;
   height: 85px;
-  background-image: url("/static/client/images/features-quote-illustration.svg");
+  background-image: url('/static/client/images/features-quote-illustration.svg');
   background-size: 100% 100%;
   background-repeat: no-repeat;
   z-index: -1;
@@ -256,7 +256,7 @@
 }
 
 .pricing-table-price {
-  font-family: "PLayfair Display", sans-serif;
+  font-family: 'PLayfair Display', sans-serif;
   color: #fff;
 }
 
@@ -289,7 +289,7 @@
 }
 
 .pricing-table-features li::before {
-  content: "";
+  content: '';
   width: 16px;
   height: 13px;
   margin-right: 12px;
@@ -390,7 +390,7 @@
 }
 
 .cta::before {
-  content: "";
+  content: '';
   width: 100%;
   height: 50%;
   position: absolute;
@@ -406,13 +406,13 @@
 }
 
 .cta-inner::before {
-  content: "";
+  content: '';
   position: absolute;
   right: 58px;
   bottom: calc(50% - 155px);
   width: 155px;
   height: 150px;
-  background-image: url("/static/client/images/cta-illustration.svg");
+  background-image: url('/static/client/images/cta-illustration.svg');
   background-repeat: no-repeat;
 }
 

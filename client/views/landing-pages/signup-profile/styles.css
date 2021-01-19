@@ -1,61 +1,61 @@
 @font-face {
-  font-family: "Montserrat";
+  font-family: 'Montserrat';
   font-style: normal;
   font-weight: 300;
-  src: url("/static/client/fonts/montserrat/Montserrat-Light.ttf");
+  src: url('/static/client/fonts/montserrat/Montserrat-Light.ttf');
 }
 
 @font-face {
-  font-family: "Montserrat";
+  font-family: 'Montserrat';
   font-style: normal;
   font-weight: 400;
-  src: url("/static/client/fonts/montserrat/Montserrat-Regular.ttf");
+  src: url('/static/client/fonts/montserrat/Montserrat-Regular.ttf');
 }
 
 @font-face {
-  font-family: "Montserrat";
+  font-family: 'Montserrat';
   font-style: italic;
   font-weight: 400;
-  src: url("/static/client/fonts/montserrat/Montserrat-Italic.ttf");
+  src: url('/static/client/fonts/montserrat/Montserrat-Italic.ttf');
 }
 
 @font-face {
-  font-family: "Montserrat";
+  font-family: 'Montserrat';
   font-style: normal;
   font-weight: 500;
-  src: url("/static/client/fonts/montserrat/Montserrat-Medium.ttf");
+  src: url('/static/client/fonts/montserrat/Montserrat-Medium.ttf');
 }
 
 @font-face {
-  font-family: "Montserrat";
+  font-family: 'Montserrat';
   font-style: normal;
   font-weight: 600;
-  src: url("/static/client/fonts/montserrat/Montserrat-SemiBold.ttf");
+  src: url('/static/client/fonts/montserrat/Montserrat-SemiBold.ttf');
 }
 
 @font-face {
-  font-family: "Montserrat";
+  font-family: 'Montserrat';
   font-style: normal;
   font-weight: 700;
-  src: url("/static/client/fonts/montserrat/Montserrat-Bold.ttf");
+  src: url('/static/client/fonts/montserrat/Montserrat-Bold.ttf');
 }
 
 @font-face {
-  font-family: "Montserrat";
+  font-family: 'Montserrat';
   font-style: italic;
   font-weight: 700;
-  src: url("/static/client/fonts/montserrat/Montserrat-BoldItalic.ttf");
+  src: url('/static/client/fonts/montserrat/Montserrat-BoldItalic.ttf');
 }
 
 @font-face {
-  font-family: "Montserrat";
+  font-family: 'Montserrat';
   font-style: italic;
   font-weight: 900;
-  src: url("/static/client/fonts/montserrat/montserrat-v12-latin-900.ttf"),
-    url("/static/client/fonts/montserrat/montserrat-v12-latin-900.eot") format("embedded-opentype"),
-    url("/static/client/fonts/montserrat/montserrat-v12-latin-900.svg") format("woff2"),
-    url("/static/client/fonts/montserrat/montserrat-v12-latin-900.woff") format("woff"),
-    url("/static/client/fonts/montserrat/montserrat-v12-latin-900.woff2") format("truetype");
+  src: url('/static/client/fonts/montserrat/montserrat-v12-latin-900.ttf'),
+    url('/static/client/fonts/montserrat/montserrat-v12-latin-900.eot') format('embedded-opentype'),
+    url('/static/client/fonts/montserrat/montserrat-v12-latin-900.svg') format('woff2'),
+    url('/static/client/fonts/montserrat/montserrat-v12-latin-900.woff') format('woff'),
+    url('/static/client/fonts/montserrat/montserrat-v12-latin-900.woff2') format('truetype');
 }
 
 body {
@@ -112,7 +112,7 @@ textarea:focus {
   -ms-box-shadow: none !important;
 }
 
-input[type="checkbox"] {
+input[type='checkbox'] {
   appearance: checkbox !important;
   -moz-appearance: checkbox !important;
   -webkit-appearance: checkbox !important;
@@ -120,7 +120,7 @@ input[type="checkbox"] {
   -ms-appearance: checkbox !important;
 }
 
-input[type="radio"] {
+input[type='radio'] {
   appearance: radio !important;
   -moz-appearance: radio !important;
   -webkit-appearance: radio !important;
@@ -128,7 +128,7 @@ input[type="radio"] {
   -ms-appearance: radio !important;
 }
 
-input[type="number"] {
+input[type='number'] {
   -moz-appearance: textfield !important;
   appearance: none !important;
   -webkit-appearance: none !important;
@@ -163,7 +163,7 @@ h2 {
   padding: 0;
   font-weight: 900;
   color: #222;
-  font-family: "Montserrat";
+  font-family: 'Montserrat';
   font-size: 24px;
   text-transform: uppercase;
   text-align: center;
@@ -254,7 +254,7 @@ list-type-ulli {
   padding: 0;
   font-weight: 900;
   color: #222;
-  font-family: "Montserrat";
+  font-family: 'Montserrat';
   font-size: 24px;
   text-transform: none;
   text-align: center;
@@ -336,11 +336,11 @@ input {
   font-size: 16px;
 }
 
-input[type="text"] {
+input[type='text'] {
   width: 100%;
 }
 
-input[type="submit"] {
+input[type='submit'] {
   background-color: DodgerBlue;
   color: #fff;
   cursor: pointer;
@@ -456,7 +456,7 @@ input {
   padding: 15px 20px;
   font-size: 14px;
   font-weight: bold;
-  font-family: "Montserrat";
+  font-family: 'Montserrat';
 }
 
 input:focus {
@@ -661,7 +661,7 @@ select {
   bottom: 0;
   left: 0;
   right: 0;
-  content: "\d7";
+  content: '\d7';
   font-size: 24px;
   color: #fff;
   line-height: 20px;
@@ -769,7 +769,7 @@ select {
 .success-box-4:before,
 .success-box-5:before,
 .success-box-6:before {
-  content: "";
+  content: '';
   display: block;
   width: 9px;
   height: 18px;
