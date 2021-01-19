@@ -18,9 +18,9 @@ const handleCreateNewAccount = () => {
   const country = locationData.country;
 
   const ethnicity = [];
-  document.querySelectorAll('.user-ethnicity-content').forEach(({ id }) => {
-    ethnicity.push(id)
-  })
+  document.querySelectorAll(".user-ethnicity-content").forEach(({ id }) => {
+    ethnicity.push(id);
+  });
 
   const addErrorClass = element => document.querySelector(`${element}`).classList.add("form-error");
   const removeErrorClass = element =>
@@ -52,33 +52,26 @@ const handleCreateNewAccount = () => {
 
   if (!city) {
     closeAllLists("#locationInput");
-    document.querySelector('.user-location').style.cssText = 'padding-bottom: 4px';
+    document.querySelector(".user-location").style.cssText = "padding-bottom: 4px";
     document.querySelector("#city-error").innerHTML = "Please select your city from the dropdown";
     document.querySelector("#city-error").style.display = "block";
   } else {
-    document.querySelector('.user-location').style.cssText = 'padding-bottom: 16px';
+    document.querySelector(".user-location").style.cssText = "padding-bottom: 16px";
     document.querySelector("#city-error").style.display = "none";
   }
 
   if (ethnicity.length === 0) {
     closeAllLists("#ethnicityInput");
-    document.querySelector('.user-ethnicity').style.cssText = 'padding-bottom: 4px';
+    document.querySelector(".user-ethnicity").style.cssText = "padding-bottom: 4px";
     document.querySelector("#ethnicity-error").innerHTML =
       "Please select your ethnicity from the dropdown";
     document.querySelector("#ethnicity-error").style.display = "block";
   } else {
-    document.querySelector('.user-ethnicity').style.cssText = 'padding-bottom: 16px';
+    document.querySelector(".user-ethnicity").style.cssText = "padding-bottom: 16px";
     document.querySelector("#ethnicity-error").style.display = "none";
   }
 
-  if (
-    birthMonth &&
-    birthDay &&
-    birthYear &&
-    gender &&
-    city &&
-    ethnicity.length > 0
-  ) {
+  if (birthMonth && birthDay && birthYear && gender && city && ethnicity.length > 0) {
     loadingSpinner.style.display = "inline-block";
     createNewAccountButton.innerHTML = "";
     createNewAccountButton.disabled = true;

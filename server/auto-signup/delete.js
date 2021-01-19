@@ -21,12 +21,13 @@ MongoClient.connect(
   (err, client) => {
     if (err) throw err;
     const db = client.db("my-match-dev");
-    const users = db.collection("users").find({ $or:
-      [
+    const users = db.collection("users").find({
+      $or: [
         { name: { $regex: "Farid" } },
         { name: { $regex: "Soon Tobe Yours" } },
         { name: { $regex: "Habibie" } },
-      ]});
+      ],
+    });
 
     users.forEach(user => {
       const userId = user._id.toString();
@@ -55,7 +56,7 @@ MongoClient.connect(
       });
 
       client.close();
-    })
+    });
   }
 );
 
