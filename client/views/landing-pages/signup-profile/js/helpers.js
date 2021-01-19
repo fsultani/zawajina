@@ -28,8 +28,9 @@ const debounce = (func, wait, immediate) => {
 
 const closeAllLists = element => {
   const inputString = document.querySelector(element);
-  /*close all autocomplete lists in the document,
-  except the one passed as an argument:*/
+  /*
+    Close all autocomplete lists in the document, except the one passed as an argument
+  */
   var x = document.getElementsByClassName('autocomplete-items');
   for (var i = 0; i < x.length; i++) {
     if (element != x[i] && element != inputString) {
@@ -39,20 +40,28 @@ const closeAllLists = element => {
 };
 
 const removeActive = x => {
-  /*a function to remove the 'active' class from all autocomplete items:*/
+  /*
+    A function to remove the 'active' class from all autocomplete items
+  */
   for (var i = 0; i < x.length; i++) {
     x[i].classList.remove('autocomplete-active');
   }
 };
 
 const addActive = (element, currentFocus) => {
-  /*a function to classify an item as 'active':*/
+  /*
+    A function to classify an item as 'active'
+  */
   if (!element) return false;
-  /*start by removing the 'active' class on all items:*/
+  /*
+    Start by removing the 'active' class on all items
+  */
   removeActive(element);
   if (currentFocus >= element.length) currentFocus = 0;
   if (currentFocus < 0) currentFocus = element.length - 1;
-  /*add class 'autocomplete-active':*/
+  /*
+    Add class 'autocomplete-active'
+  */
   element[currentFocus].classList.add('autocomplete-active');
 };
 
@@ -118,9 +127,7 @@ const addActive = (element, currentFocus) => {
           return false;
         }
 
-        // console.time('/api/cities-list');
         const results = await getAllCountries(userInput);
-        // console.timeEnd('/api/cities-list');
         currentFocus = -1;
 
         let searchResultsWrapper = '<div class="autocomplete-items">';
