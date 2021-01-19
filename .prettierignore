@@ -5,4 +5,5 @@ coverage
 *.min.css
 *.hbs
 fonts
-mongo_shell_notes.js
+atlas_mongo_shell_notes.js
+server/auto-signup/*

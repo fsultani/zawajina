@@ -276,13 +276,13 @@ list-type-ulli {
   padding-bottom: 4px;
 }
 
+.autocomplete {
+  position: relative;
+}
+
 .location,
 .ethnicity {
   height: 36px;
-}
-
-.autocomplete {
-  position: relative;
 }
 
 .user-selection-container {
