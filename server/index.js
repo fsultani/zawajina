@@ -4,9 +4,7 @@ const es6Renderer = require('express-es6-template-engine');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
-const session = require('express-session');
 const osascript = require('node-osascript');
-const flash = require('connect-flash');
 const mongo = require('mongodb');
 const { MongoClient, ObjectId } = require('mongodb');
 const jwt = require('jsonwebtoken');
@@ -16,12 +14,9 @@ const app = express();
 
 const { connectToServer, usersCollection } = require('./db.js');
 const authenticateToken = require('./config/auth');
-const User = require('./models/user');
 const index = require('./routes/index');
 const registerRoute = require('./routes/registerRoute');
 const user = require('./routes/user');
-const conversation = require('./routes/conversation');
-const messages = require('./routes/messages');
 
 // Body Parser Middleware
 app.use(bodyParser.json());
@@ -160,7 +155,11 @@ app.get('*', (req, res, next) => {
             scripts: [
               'https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js',
               'https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js',
-              '/static/client/views/landing-pages/signup-profile/js/helpers.js',
+              '/static/client/views/landing-pages/signup-profile/js/helpers/utils.js',
+              '/static/client/views/landing-pages/signup-profile/js/helpers/dobHelper.js',
+              '/static/client/views/landing-pages/signup-profile/js/helpers/locationHelper.js',
+              '/static/client/views/landing-pages/signup-profile/js/helpers/ethnicityHelper.js',
+              '/static/client/views/landing-pages/signup-profile/js/helpers/raisedHelper.js',
               '/static/client/views/landing-pages/signup-profile/js/signupProfileInit.js',
               '/static/client/views/landing-pages/signup-profile/js/handleCreateNewAccount.js',
               '/static/client/views/landing-pages/signup-profile/js/imageUpload.js',
@@ -239,8 +238,6 @@ app.get('*', (req, res, next) => {
 app.use('/', index);
 app.use('/register', registerRoute);
 app.use('/user', user);
-app.use('/conversation', conversation);
-app.use('/messages', messages);
 
 const port = process.env.PORT || 3000;
 

@@ -1,16 +1,12 @@
 const express = require('express');
 const { ObjectId } = require('mongodb');
 const jwt = require('jsonwebtoken');
-const Cookies = require('js-cookie');
 const path = require('path');
 const JWT_SECRET = Buffer.from('fe1a1915a379f3be5394b64d14794932', 'hex');
 
 const { usersCollection } = require('../db.js');
 const { comparePassword } = require('../models/user');
 const authenticateToken = require('../config/auth');
-const User = require('../models/user');
-const Message = require('../models/message');
-const Conversation = require('../models/conversation');
 
 const router = express.Router();
 

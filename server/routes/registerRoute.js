@@ -5,10 +5,8 @@ const axios = require('axios');
 const { check, body, validationResult } = require('express-validator/check');
 const cloudinary = require('cloudinary').v2;
 const jwt = require('jsonwebtoken');
-const moment = require('moment');
 const fs = require('fs');
 const multer = require('multer');
-const connectMultipart = require('connect-multiparty');
 const Jimp = require('jimp');
 
 const JWT_SECRET = Buffer.from('fe1a1915a379f3be5394b64d14794932', 'hex');
@@ -201,6 +199,26 @@ router.get('/api/ethnicities-list', async (req, res) => {
   }
 });
 
+let countryWasCalled = false;
+let countryResponse;
+router.get('/api/countries-list', async (req, res) => {
+  const { userInput } = req.query;
+
+  try {
+    if (!countryWasCalled) {
+      countryResponse = countries.default.getAllCountries();
+      countryWasCalled = true;
+    }
+
+    const filteredResults = countryResponse.filter(element =>
+      element.country.toLowerCase().startsWith(userInput.toLowerCase())
+    );
+    res.send(filteredResults);
+  } catch (err) {
+    return res.json({ error: err.countryResponse });
+  }
+});
+
 cloudinary.config({
   cloud_name: process.env.DEVELOPMENT
     ? require('../credentials.json').CLOUDINARY_CLOUD_NAME
@@ -254,7 +272,19 @@ router.post(
   ]),
   (req, res) => {
     const userId = req.body.userId;
-    const { birthMonth, birthDay, birthYear, gender, country, state, city, ethnicity } = JSON.parse(
+    const {
+      birthMonth,
+      birthDay,
+      birthYear,
+      gender,
+      country,
+      state,
+      city,
+      ethnicity,
+      countryRaisedIn,
+      conviction,
+      religiousValues,
+    } = JSON.parse(
       req.body.userInfo
     );
 
@@ -301,6 +331,9 @@ router.post(
               city,
               photos: allImages,
               ethnicity,
+              countryRaisedIn,
+              conviction,
+              religiousValues,
               completedRegistrationAt: new Date(),
               isUserSessionValid: true,
               lastLogin: new Date(),
@@ -343,6 +376,9 @@ router.post(
             // photos: allImages,
             photos: [],
             ethnicity,
+            countryRaisedIn,
+            conviction,
+            religiousValues,
             completedRegistrationAt: new Date(),
             isUserSessionValid: true,
             lastLogin: new Date(),

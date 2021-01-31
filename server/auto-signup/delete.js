@@ -1,6 +1,5 @@
 const { MongoClient, ObjectId } = require("mongodb");
 const cloudinary = require("cloudinary");
-const mongoose = require("mongoose");
 const User = require("../models/user");
 
 cloudinary.config({
