@@ -2,11 +2,15 @@ let birthMonth;
 let birthDay;
 let birthYear;
 let gender;
+let conviction;
+let religiousValues;
 
 const handleBirthMonth = event => (birthMonth = event.target.value);
 const handleBirthDay = event => (birthDay = event.target.value);
 const handleBirthYear = event => (birthYear = event.target.value);
 const handleGender = value => (gender = value);
+const handleConviction = event => conviction = event.target.value;
+const handleReligiousValues = event => religiousValues = event.target.value;
 
 const createNewAccountButton = document.querySelector('#createNewAccount');
 const loadingSpinner = document.querySelector('.submit-loading-spinner');
@@ -21,6 +25,8 @@ const handleCreateNewAccount = () => {
   document.querySelectorAll('.user-ethnicity-content').forEach(({ id }) => {
     ethnicity.push(id);
   });
+
+  const countryRaisedIn = document.querySelector('.user-country-content');
 
   const addErrorClass = element => document.querySelector(`${element}`).classList.add('form-error');
   const removeErrorClass = element =>
@@ -71,8 +77,42 @@ const handleCreateNewAccount = () => {
     document.querySelector('#ethnicity-error').style.display = 'none';
   }
 
-  if (birthMonth && birthDay && birthYear && gender && city && ethnicity.length > 0) {
-    loadingSpinner.style.display = 'inline-block';
+  if (!countryRaisedIn || countryRaisedIn.textContent === '') {
+    closeAllLists('#raisedInput');
+    document.querySelector('.user-raised').style.cssText = 'padding-bottom: 4px';
+    document.querySelector('#raised-error').innerHTML =
+      'Please select the country you raised in from the dropdown';
+    document.querySelector('#raised-error').style.display = 'block';
+  } else {
+    document.querySelector('.user-raised').style.cssText = 'padding-bottom: 16px';
+    document.querySelector('#raised-error').style.display = 'none';
+  }
+
+  if (!conviction) {
+    addErrorClass('#conviction')
+  } else {
+    removeErrorClass('#conviction')
+  }
+
+  if (!religiousValues) {
+    addErrorClass('#religious-values')
+  } else {
+    removeErrorClass('#religious-values')
+  }
+
+  if (
+    birthMonth &&
+    birthDay &&
+    birthYear &&
+    gender &&
+    city &&
+    ethnicity.length > 0 &&
+    countryRaisedIn &&
+    countryRaisedIn.textContent !== '' &&
+    conviction &&
+    religiousValues
+  ) {
+    loadingSpinner.style.display = 'flex';
     createNewAccountButton.innerHTML = '';
     createNewAccountButton.disabled = true;
     createNewAccountButton.style.cursor = 'not-allowed';
@@ -86,6 +126,9 @@ const handleCreateNewAccount = () => {
       state,
       country,
       ethnicity,
+      countryRaisedIn: countryRaisedIn.textContent,
+      conviction,
+      religiousValues,
     };
 
     const images = document.forms.namedItem('signupForm');
