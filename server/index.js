@@ -142,6 +142,7 @@ app.get('*', (req, res, next) => {
         });
         break;
       case '/signup/profile':
+        if (!userId) return res.redirect('/signup');
         res.render('landing-pages/_layouts/index', {
           locals: {
             title: 'Sign Up - My Match',
@@ -160,6 +161,8 @@ app.get('*', (req, res, next) => {
               '/static/client/views/landing-pages/signup-profile/js/helpers/locationHelper.js',
               '/static/client/views/landing-pages/signup-profile/js/helpers/ethnicityHelper.js',
               '/static/client/views/landing-pages/signup-profile/js/helpers/raisedHelper.js',
+              '/static/client/views/landing-pages/signup-profile/js/helpers/professionHelper.js',
+              '/static/client/views/landing-pages/signup-profile/js/helpers/languageHelper.js',
               '/static/client/views/landing-pages/signup-profile/js/signupProfileInit.js',
               '/static/client/views/landing-pages/signup-profile/js/handleCreateNewAccount.js',
               '/static/client/views/landing-pages/signup-profile/js/imageUpload.js',

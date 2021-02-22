@@ -2,15 +2,30 @@ let birthMonth;
 let birthDay;
 let birthYear;
 let gender;
-let conviction;
+let religiousConviction;
 let religiousValues;
+let maritalStatus;
+let education;
+let profession;
+let hijab;
 
 const handleBirthMonth = event => (birthMonth = event.target.value);
 const handleBirthDay = event => (birthDay = event.target.value);
 const handleBirthYear = event => (birthYear = event.target.value);
-const handleGender = value => (gender = value);
-const handleConviction = event => conviction = event.target.value;
+const handleGender = value => {
+  if (value === 'female') {
+    document.querySelector('.hijab-container').style.display = 'inline-block';
+  } else {
+    document.querySelector('.hijab-container').style.display = 'none';
+  }
+  return gender = value;
+}
+const handleConviction = event => religiousConviction = event.target.value;
 const handleReligiousValues = event => religiousValues = event.target.value;
+const handleMaritalStatus = event => maritalStatus = event.target.value;
+const handleEducation = event => education = event.target.value;
+const handleProfession = event => profession = event.target.value;
+const handleHijab = value => (hijab = value);
 
 const createNewAccountButton = document.querySelector('#createNewAccount');
 const loadingSpinner = document.querySelector('.submit-loading-spinner');
@@ -28,26 +43,31 @@ const handleCreateNewAccount = () => {
 
   const countryRaisedIn = document.querySelector('.user-country-content');
 
+  const languages = [];
+  document.querySelectorAll('.user-language-content').forEach(({ id }) => {
+    languages.push(id);
+  });
+
   const addErrorClass = element => document.querySelector(`${element}`).classList.add('form-error');
   const removeErrorClass = element =>
     document.querySelector(`${element}`).classList.remove('form-error');
 
   if (!birthMonth) {
-    addErrorClass('#dob-month');
+    addErrorClass('.dob-month');
   } else {
-    removeErrorClass('#dob-month');
+    removeErrorClass('.dob-month');
   }
 
   if (!birthDay) {
-    addErrorClass('#dob-day');
+    addErrorClass('.dob-day');
   } else {
-    removeErrorClass('#dob-day');
+    removeErrorClass('.dob-day');
   }
 
   if (!birthYear) {
-    addErrorClass('#dob-year');
+    addErrorClass('.dob-year');
   } else {
-    removeErrorClass('#dob-year');
+    removeErrorClass('.dob-year');
   }
 
   if (!gender) {
@@ -88,29 +108,68 @@ const handleCreateNewAccount = () => {
     document.querySelector('#raised-error').style.display = 'none';
   }
 
-  if (!conviction) {
-    addErrorClass('#conviction')
+  if (languages.length === 0) {
+    closeAllLists('#languageInput');
+    document.querySelector('.user-languages').style.cssText = 'padding-bottom: 4px';
+    document.querySelector('#languages-error').innerHTML =
+      'Please select your language from the dropdown';
+    document.querySelector('#languages-error').style.display = 'block';
   } else {
-    removeErrorClass('#conviction')
+    document.querySelector('.user-languages').style.cssText = 'padding-bottom: 16px';
+    document.querySelector('#languages-error').style.display = 'none';
+  }
+
+  if (!religiousConviction) {
+    addErrorClass('.religious-conviction-error')
+  } else {
+    removeErrorClass('.religious-conviction-error')
   }
 
   if (!religiousValues) {
-    addErrorClass('#religious-values')
+    addErrorClass('.religious-values-error')
   } else {
-    removeErrorClass('#religious-values')
+    removeErrorClass('.religious-values-error')
+  }
+
+  if (!maritalStatus) {
+    addErrorClass('.marital-status-error')
+  } else {
+    removeErrorClass('.marital-status-error')
+  }
+
+  if (!education) {
+    addErrorClass('.education-error')
+  } else {
+    removeErrorClass('.education-error')
+  }
+
+  if (!profession) {
+    addErrorClass('.profession-error')
+  } else {
+    removeErrorClass('.profession-error')
+  }
+
+  if (gender === 'female' && !hijab) {
+    addErrorClass('.hijab-error');
+  } else {
+    removeErrorClass('.hijab-error');
   }
 
   if (
     birthMonth &&
     birthDay &&
     birthYear &&
-    gender &&
+    ((gender === 'male' && !hijab) || (gender === 'female' && hijab)) &&
     city &&
     ethnicity.length > 0 &&
     countryRaisedIn &&
     countryRaisedIn.textContent !== '' &&
-    conviction &&
-    religiousValues
+    languages.length > 0 &&
+    religiousConviction &&
+    religiousValues &&
+    maritalStatus &&
+    education &&
+    profession
   ) {
     loadingSpinner.style.display = 'flex';
     createNewAccountButton.innerHTML = '';
@@ -127,8 +186,13 @@ const handleCreateNewAccount = () => {
       country,
       ethnicity,
       countryRaisedIn: countryRaisedIn.textContent,
-      conviction,
+      languages,
+      religiousConviction,
       religiousValues,
+      maritalStatus,
+      education,
+      profession,
+      hijab,
     };
 
     const images = document.forms.namedItem('signupForm');

@@ -26,11 +26,11 @@ const numberOfUsers = 10;
 
     await page.click("button[name=signupButton]");
 
-    await page.waitForSelector("#dob-month");
-    await page.select("#dob-month", "10");
+    await page.waitForSelector(".dob-month");
+    await page.select(".dob-month", "10");
     await page.waitFor(250);
-    await page.select("#dob-day", "14");
-    await page.select("#dob-year", "1983");
+    await page.select(".dob-day", "14");
+    await page.select(".dob-year", "1983");
 
     await page.evaluate(() => document.querySelector("input[type='radio'][id='male']").click());
 

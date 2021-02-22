@@ -23,9 +23,14 @@
       let response;
       setTimeout(() => {
         if (!response) {
-          document.querySelector('body').style.backgroundColor = 'rgba(0,0,0,0.5)';
-          document.querySelector('body').style.opacity = 0.5;
-          document.querySelector('.full-page-loading-spinner').style.display = 'inline-block';
+          document.querySelector('body').style.cssText = `
+            background-color: rgba(0,0,0,0.5);
+            opacity: 0.5;
+          `;
+
+          document.querySelector('.full-page-loading-spinner').style.cssText = `
+            display: inline-block;
+          `;
         }
       }, 1000);
       response = await axios.get(`/register/api/cities-list`, {
@@ -34,15 +39,25 @@
           userInput,
         },
       });
-      document.querySelector('body').style.backgroundColor = '#ffffff';
-      document.querySelector('body').style.opacity = 1;
-      document.querySelector('.full-page-loading-spinner').style.display = 'none';
+      document.querySelector('body').style.cssText = `
+        background-color: #ffffff;
+        opacity: 1;
+      `;
+
+      document.querySelector('.full-page-loading-spinner').style.cssText = `
+        display: none;
+      `;
       return response.data;
     } catch (err) {
       console.error(err);
-      document.querySelector('body').style.backgroundColor = '#ffffff';
-      document.querySelector('body').style.opacity = 1;
-      document.querySelector('.full-page-loading-spinner').style.display = 'none';
+      document.querySelector('body').style.cssText = `
+        background-color: #ffffff;
+        opacity: 1;
+      `;
+
+      document.querySelector('.full-page-loading-spinner').style.cssText = `
+        display: none;
+      `;
       return err.response;
     }
   };

@@ -5,6 +5,7 @@ const imagePreview1 = document.querySelector('.image-preview-1');
 const removeImageButton1 = document.querySelector('.remove-image-1');
 const processingBar1 = document.querySelector('.processing-bar-1');
 const successBox1 = document.querySelector('.success-box-1');
+const imageUploadContainerWidth = document.querySelector('.image-upload-container').offsetWidth
 
 customButton1.addEventListener('click', () => {
   if (image1.value) image1.value = '';
@@ -21,7 +22,7 @@ image1.addEventListener('change', event => {
   let width = 1;
   let identity = setInterval(frame, 10);
   function frame() {
-    if (width < 131) {
+    if (width < imageUploadContainerWidth - 19) {
       width++;
       processingBar1.style.width = `${width}px`;
     } else {
@@ -77,7 +78,7 @@ image2.addEventListener('change', event => {
   let width = 1;
   let identity = setInterval(frame, 10);
   function frame() {
-    if (width < 131) {
+    if (width < imageUploadContainerWidth - 19) {
       width++;
       processingBar2.style.width = `${width}px`;
     } else {
@@ -133,7 +134,7 @@ image3.addEventListener('change', event => {
   let width = 1;
   let identity = setInterval(frame, 10);
   function frame() {
-    if (width < 131) {
+    if (width < imageUploadContainerWidth - 19) {
       width++;
       processingBar3.style.width = `${width}px`;
     } else {
@@ -189,7 +190,7 @@ image4.addEventListener('change', event => {
   let width = 1;
   let identity = setInterval(frame, 10);
   function frame() {
-    if (width < 131) {
+    if (width < imageUploadContainerWidth - 19) {
       width++;
       processingBar4.style.width = `${width}px`;
     } else {
@@ -245,7 +246,7 @@ image5.addEventListener('change', event => {
   let width = 1;
   let identity = setInterval(frame, 10);
   function frame() {
-    if (width < 131) {
+    if (width < imageUploadContainerWidth - 19) {
       width++;
       processingBar5.style.width = `${width}px`;
     } else {
@@ -301,7 +302,7 @@ image6.addEventListener('change', event => {
   let width = 1;
   let identity = setInterval(frame, 10);
   function frame() {
-    if (width < 131) {
+    if (width < imageUploadContainerWidth - 19) {
       width++;
       processingBar6.style.width = `${width}px`;
     } else {
