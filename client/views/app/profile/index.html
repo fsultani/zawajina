@@ -8,8 +8,8 @@
             <div class="slide" id="${index}"><img src="${photo}" /></div>
             `).join('') : `<img
               src="${user.gender === 'male' ?
-              'https://my-match.s3.amazonaws.com/male.png' :
-              'https://my-match.s3.amazonaws.com/female.png'}"
+              'https://res.cloudinary.com/dnjhw5rv2/image/upload/v1613985983/male_fk4pmh.jpg' :
+              'https://res.cloudinary.com/dnjhw5rv2/image/upload/v1613988154/female_zmdkra.jpg'}"
             />
             `}
           </div>
@@ -72,19 +72,22 @@
           <div class="details-key">Raised in:</div>
           <div class="details-value">${user.countryRaisedIn}</div>
           <div class="details-key">Conviction:</div>
-          <div class="details-value">${user.conviction}</div>
+          <div class="details-value">${user.religiousConviction}</div>
           <div class="details-key">Values:</div>
           <div class="details-value">${user.religiousValues}</div>
           <div class="details-key">Marital Status:</div>
-          <div class="details-value">Never married</div>
+          <div class="details-value">${user.maritalStatus}</div>
           <div class="details-key">Education:</div>
-          <div class="details-value">Bachelor's Degree</div>
+          <div class="details-value">${user.education}</div>
           <div class="details-key">Profession:</div>
-          <div class="details-value">Software Engineer</div>
+          <div class="details-value">${user.profession}</div>
           <div class="details-key">Languages:</div>
-          <div class="details-value">English, Dari</div>
-          <div class="details-key">Hijab:</div>
-          <div class="details-value">No</div>
+          <div class="details-value">${user.languages.map(languages => languages).join(' | ')}</div>
+          ${user.gender === 'female' ? `
+            <div class="details-key">Hijab:</div>
+            <div class="details-value">${user.hijab}</div>
+            ` : ''
+          }
           <div class="details-key">Has children:</div>
           <div class="details-value">No</div>
           <div class="details-key">Wants children:</div>

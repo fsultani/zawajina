@@ -27,13 +27,12 @@
 
           <!-- ************************************************************ -->
 
-          <div class="form-row">
+          <section class="form-row">
             <div class="dob-container">
               <label for="birth_date">Birth date</label>
               <div class="dob-wrapper">
                 <select
-                  class="select-wrapper"
-                  id="dob-month"
+                  class="select-wrapper dob-month"
                   onchange="handleBirthMonth(event)"
                 >
                   <option selected disabled>Month</option>
@@ -51,22 +50,20 @@
                   <option value="12">December</option>
                 </select>
                 <select
-                  class="select-wrapper"
-                  id="dob-day"
+                  class="select-wrapper dob-day"
                   onchange="handleBirthDay(event)"
                 ></select>
                 <select
-                  class="select-wrapper"
-                  id="dob-year"
+                  class="select-wrapper dob-year"
                   onchange="handleBirthYear(event)"
                 ></select>
               </div>
             </div>
-          </div>
+          </section>
 
           <!-- ************************************************************ -->
 
-          <div class="form-row">
+          <section class="form-row">
             <div class="gender-container form-radio">
               <label for="gender">Gender</label>
               <div class="form-flex">
@@ -76,49 +73,59 @@
                 <label for="female">Female</label>
               </div>
             </div>
-          </div>
+          </section>
 
           <!-- ************************************************************ -->
 
-          <div class="form-row user-location">
-            <div class="autocomplete">
-              <div class="user-location-selection"></div>
-              <input id="locationInput" class="location" type="text" />
-              <div id="location-results"></div>
+          <section>
+            <div class="form-row user-location">
+              <div class="autocomplete">
+                <div class="user-location-selection"></div>
+                <input id="locationInput" class="location" type="text" />
+                <div id="location-results"></div>
+              </div>
             </div>
-          </div>
-          <div id="city-error"></div>
+            <div id="city-error"></div>
 
-          <!-- ************************************************************ -->
+            <!-- ************************************************************ -->
 
-          <div class="form-row user-ethnicity">
-            <div class="autocomplete">
-              <div class="user-ethnicity-selection"></div>
-              <input id="ethnicityInput" class="ethnicity" type="text" />
-              <div id="ethnicity-results"></div>
+            <div class="form-row user-ethnicity">
+              <div class="autocomplete">
+                <div class="user-ethnicity-selection"></div>
+                <input id="ethnicityInput" class="ethnicity" type="text" />
+                <div id="ethnicity-results"></div>
+              </div>
             </div>
-          </div>
-          <div id="ethnicity-error"></div>
+            <div id="ethnicity-error"></div>
 
-          <!-- ************************************************************ -->
+            <!-- ************************************************************ -->
 
-          <div class="form-row user-raised">
-            <div class="autocomplete">
-              <div class="user-raised-selection"></div>
-              <input id="raisedInput" class="raised" type="text" />
-              <div id="raised-results"></div>
+            <div class="form-row user-raised">
+              <div class="autocomplete">
+                <div class="user-raised-selection"></div>
+                <input id="raisedInput" class="raised" type="text" />
+                <div id="raised-results"></div>
+              </div>
             </div>
-          </div>
-          <div id="raised-error"></div>
+            <div id="raised-error"></div>
+
+            <div class="form-row user-languages">
+              <div class="autocomplete">
+                <div class="user-languages-selection"></div>
+                <input id="languageInput" class="languages" type="text" />
+                <div id="language-results"></div>
+              </div>
+            </div>
+            <div id="languages-error"></div>
+          </section>
 
           <!-- ************************************************************ -->
 
-          <div class="form-row flex-wrapper">
-            <div class="conviction-container">
-              <label for="conviction">Conviction</label>
+          <section class="form-row three-item-container">
+            <div>
+              <label>Conviction</label>
               <select
-                class="form-control form-control-sm"
-                id="conviction"
+                class="religious-conviction-error"
                 onchange="handleConviction(event)"
               >
                 <option selected disabled>Select Conviction</option>
@@ -128,11 +135,10 @@
                 <option value="Other">Other</option>
               </select>
             </div>
-            <div class="values-container">
-              <label for="values">Values</label>
+            <div>
+              <label>Values</label>
               <select
-                class="form-control form-control-sm"
-                id="religious-values"
+                class="religious-values-error"
                 onchange="handleReligiousValues(event)"
               >
                 <option selected disabled>Select Values</option>
@@ -141,111 +147,155 @@
                 <option value="Liberal">Liberal</option>
               </select>
             </div>
-          </div>
+            <div>
+              <label>Marital Status</label>
+              <select
+                class="marital-status-error"
+                onchange="handleMaritalStatus(event)"
+              >
+                <option selected disabled>Marital Status</option>
+                <option value="Never Married">Never Married</option>
+                <option value="Divorced">Divorced</option>
+                <option value="Widowed">Widowed</option>
+              </select>
+            </div>
+            <div>
+              <label>Education</label>
+              <select
+                class="education-error"
+                onchange="handleEducation(event)"
+              >
+                <option selected disabled>Education Level</option>
+                <option value="High School">High School</option>
+                <option value="Associate degree">Associate degree</option>
+                <option value="Bachelor's degree">Bachelor's degree</option>
+                <option value="Master's degree">Master's degree</option>
+                <option value="Doctoral degree">Doctoral degree</option>
+              </select>
+            </div>
+            <div>
+              <label>Profession</label>
+              <select
+                class="professions profession-error"
+                onchange="handleProfession(event)"
+              ></select>
+            </div>
+            <div class="hijab-container form-radio">
+              <label for="hijab">Hijab</label>
+              <div class="form-flex hijab-error">
+                <input type="radio" name="hijab" id="hijab-yes" onchange="handleHijab('Yes')" />
+                <label for="hijab-yes">Yes</label>
+                <input type="radio" name="hijab" id="hijab-no" onchange="handleHijab('No')" />
+                <label for="hijab-no">No</label>
+              </div>
+            </div>
+          </section>
 
           <!-- ************************************************************ -->
 
-          <h3 class="photos-header">Photos</h3>
-          <div class="invalid-file-type">
-            Please upload only JPEG or PNG
-          </div>
-          <div class="images-wrapper">
-            <input
-              type="file"
-              name="image-1"
-              class="image-1"
-              hidden="hidden"
-              accept=".jpg,.jpeg,.png"
-            />
-            <div class="image-upload-container">
-              <div class="custom-button-1"></div>
-              <div class="image-upload-1">
-                <img src="" class="image-preview-1" />
-              </div>
-              <div class="remove-image-1"></div>
-              <div class="processing-bar-1"></div>
-              <div class="success-box-1"></div>
+          <div class="form-row">
+            <h3 class="photos-header">Photos</h3>
+            <div class="invalid-file-type">
+              Please upload only JPEG or PNG
             </div>
-            <input
-              type="file"
-              name="image-2"
-              class="image-2"
-              hidden="hidden"
-              accept=".jpg,.jpeg,.png"
-            />
-            <div class="image-upload-container">
-              <div class="custom-button-2"></div>
-              <div class="image-upload-2">
-                <img src="" class="image-preview-2" />
+            <div class="images-wrapper">
+              <input
+                type="file"
+                name="image-1"
+                class="image-1"
+                hidden="hidden"
+                accept=".jpg,.jpeg,.png"
+              />
+              <div class="image-upload-container">
+                <div class="custom-button-1"></div>
+                <div class="image-upload-1">
+                  <img src="" class="image-preview-1" />
+                </div>
+                <div class="remove-image-1"></div>
+                <div class="processing-bar-1"></div>
+                <div class="success-box-1"></div>
               </div>
-              <div class="remove-image-2"></div>
-              <div class="processing-bar-2"></div>
-              <div class="success-box-2"></div>
-            </div>
-            <input
-              type="file"
-              name="image-3"
-              class="image-3"
-              hidden="hidden"
-              accept=".jpg,.jpeg,.png"
-            />
-            <div class="image-upload-container">
-              <div class="custom-button-3"></div>
-              <div class="image-upload-3">
-                <img src="" class="image-preview-3" />
+              <input
+                type="file"
+                name="image-2"
+                class="image-2"
+                hidden="hidden"
+                accept=".jpg,.jpeg,.png"
+              />
+              <div class="image-upload-container">
+                <div class="custom-button-2"></div>
+                <div class="image-upload-2">
+                  <img src="" class="image-preview-2" />
+                </div>
+                <div class="remove-image-2"></div>
+                <div class="processing-bar-2"></div>
+                <div class="success-box-2"></div>
               </div>
-              <div class="remove-image-3"></div>
-              <div class="processing-bar-3"></div>
-              <div class="success-box-3"></div>
-            </div>
+              <input
+                type="file"
+                name="image-3"
+                class="image-3"
+                hidden="hidden"
+                accept=".jpg,.jpeg,.png"
+              />
+              <div class="image-upload-container">
+                <div class="custom-button-3"></div>
+                <div class="image-upload-3">
+                  <img src="" class="image-preview-3" />
+                </div>
+                <div class="remove-image-3"></div>
+                <div class="processing-bar-3"></div>
+                <div class="success-box-3"></div>
+              </div>
 
-            <input
-              type="file"
-              name="image-4"
-              class="image-4"
-              hidden="hidden"
-              accept=".jpg,.jpeg,.png"
-            />
-            <div class="image-upload-container">
-              <div class="custom-button-4"></div>
-              <div class="image-upload-4">
-                <img src="" class="image-preview-4" />
+              <input
+                type="file"
+                name="image-4"
+                class="image-4"
+                hidden="hidden"
+                accept=".jpg,.jpeg,.png"
+              />
+              <div class="image-upload-container">
+                <div class="custom-button-4"></div>
+                <div class="image-upload-4">
+                  <img src="" class="image-preview-4" />
+                </div>
+                <div class="remove-image-4"></div>
+                <div class="processing-bar-4"></div>
+                <div class="success-box-4"></div>
               </div>
-              <div class="remove-image-4"></div>
-              <div class="processing-bar-4"></div>
-              <div class="success-box-4"></div>
-            </div>
-            <input
-              type="file"
-              name="image-5"
-              class="image-5"
-              hidden="hidden"
-              accept=".jpg,.jpeg,.png"
-            />
-            <div class="image-upload-container">
-              <div class="custom-button-5"></div>
-              <div class="image-upload-5">
-                <img src="" class="image-preview-5" />
+              <input
+                type="file"
+                name="image-5"
+                class="image-5"
+                hidden="hidden"
+                accept=".jpg,.jpeg,.png"
+              />
+              <div class="image-upload-container">
+                <div class="custom-button-5"></div>
+                <div class="image-upload-5">
+                  <img src="" class="image-preview-5" />
+                </div>
+                <div class="remove-image-5"></div>
+                <div class="processing-bar-5"></div>
+                <div class="success-box-5"></div>
               </div>
-              <div class="remove-image-5"></div>
-              <div class="processing-bar-5"></div>
-              <div class="success-box-5"></div>
-            </div>
-            <input
-              type="file"
-              name="image-6"
-              class="image-6"
-              hidden="hidden"
-              accept=".jpg,.jpeg,.png"
-            />
-            <div class="image-upload-container">
-              <div class="custom-button-6"></div>
-              <div class="image-upload-6">
-                <img src="" class="image-preview-6" />
+              <input
+                type="file"
+                name="image-6"
+                class="image-6"
+                hidden="hidden"
+                accept=".jpg,.jpeg,.png"
+              />
+              <div class="image-upload-container">
+                <div class="custom-button-6"></div>
+                <div class="image-upload-6">
+                  <img src="" class="image-preview-6" />
+                </div>
+                <div class="remove-image-6"></div>
+                <div class="processing-bar-6"></div>
+                <div class="success-box-6"></div>
               </div>
-              <div class="remove-image-6"></div>
-              <div class="processing-bar-6"></div>
-              <div class="success-box-6"></div>
             </div>
           </div>
 

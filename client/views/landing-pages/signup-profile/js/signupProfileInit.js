@@ -57,6 +57,7 @@ axios
       console.error(err);
     } else {
       Cookies.remove('token');
+      Cookies.remove('userId');
       window.location.pathname = '/';
     }
   });

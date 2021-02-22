@@ -15,9 +15,34 @@ const { usersCollection } = require('../db.js');
 const { createUser } = require('../models/user');
 const countries = require('../data/world-cities');
 const ethnicities = require('../data/ethnicities');
+const languages = require('../data/languages');
 const User = require('../models/user');
 
 const router = express.Router();
+
+cloudinary.config({
+  cloud_name: process.env.DEVELOPMENT
+    ? require('../credentials.json').CLOUDINARY_CLOUD_NAME
+    : process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.DEVELOPMENT
+    ? require('../credentials.json').CLOUDINARY_API_KEY
+    : process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.DEVELOPMENT
+    ? require('../credentials.json').CLOUDINARY_API_SECRET
+    : process.env.CLOUDINARY_API_SECRET,
+});
+
+const storage = multer.diskStorage({
+  destination: 'uploads',
+  filename: (req, file, cb) => {
+    const random =
+      Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+    const fileExtension = file.originalname.split('.')[1];
+    cb(null, `${random}.${fileExtension}`);
+  },
+});
+
+const upload = multer({ storage: storage });
 
 router.post(
   '/api/personal-info',
@@ -219,29 +244,27 @@ router.get('/api/countries-list', async (req, res) => {
   }
 });
 
-cloudinary.config({
-  cloud_name: process.env.DEVELOPMENT
-    ? require('../credentials.json').CLOUDINARY_CLOUD_NAME
-    : process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.DEVELOPMENT
-    ? require('../credentials.json').CLOUDINARY_API_KEY
-    : process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.DEVELOPMENT
-    ? require('../credentials.json').CLOUDINARY_API_SECRET
-    : process.env.CLOUDINARY_API_SECRET,
+let languagesWasCalled = false;
+let languagesResponse;
+router.get('/api/languages-list', async (req, res) => {
+  const { userInput } = req.query;
+
+  try {
+    if (!languagesWasCalled) {
+      languagesResponse = languages.default.getAllLanguages();
+      languagesWasCalled = true;
+    }
+
+    const filteredResults = languagesResponse.filter(element =>
+      element.toLowerCase().startsWith(userInput.toLowerCase())
+    );
+    filteredResults.sort((a, b) => b < a);
+    res.send(filteredResults);
+  } catch (err) {
+    return res.json({ error: err.languagesResponse });
+  }
 });
 
-const storage = multer.diskStorage({
-  destination: 'uploads',
-  filename: (req, file, cb) => {
-    const random =
-      Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-    const fileExtension = file.originalname.split('.')[1];
-    cb(null, `${random}.${fileExtension}`);
-  },
-});
-
-const upload = multer({ storage: storage });
 router.post(
   '/api/about',
   upload.fields([
@@ -282,8 +305,13 @@ router.post(
       city,
       ethnicity,
       countryRaisedIn,
-      conviction,
+      languages,
+      religiousConviction,
       religiousValues,
+      maritalStatus,
+      education,
+      profession,
+      hijab,
     } = JSON.parse(
       req.body.userInfo
     );
@@ -332,8 +360,13 @@ router.post(
               photos: allImages,
               ethnicity,
               countryRaisedIn,
-              conviction,
+              languages,
+              religiousConviction,
               religiousValues,
+              maritalStatus,
+              education,
+              profession,
+              hijab,
               completedRegistrationAt: new Date(),
               isUserSessionValid: true,
               lastLogin: new Date(),
@@ -377,8 +410,13 @@ router.post(
             photos: [],
             ethnicity,
             countryRaisedIn,
-            conviction,
+            languages,
+            religiousConviction,
             religiousValues,
+            maritalStatus,
+            education,
+            profession,
+            hijab,
             completedRegistrationAt: new Date(),
             isUserSessionValid: true,
             lastLogin: new Date(),

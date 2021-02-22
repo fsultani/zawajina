@@ -76,7 +76,7 @@
             `<div class='user-selection-wrapper display-user-ethnicity' id='wrapper-${index}'>
         <div class='user-selection-content user-ethnicity-content' id='${response}'>${response}</div>
         <div class='user-selection-remove-wrapper'>
-          <span role='img' aria-label='close' class='user-selection-remove user-ethnicity-remove' id='remove-${index}'>
+          <span role='img' aria-label='close' class='user-selection-remove user-ethnicity-remove' id='remove-ethnicity-${index}'>
             <svg viewBox='64 64 896 896' focusable='false' data-icon='close' width='10px' height='10px' fill='currentColor' aria-hidden='true'>
               <path d='M563.8 512l262.5-312.9c4.4-5.2.7-13.1-6.1-13.1h-79.8c-4.7 0-9.2 2.1-12.3 5.7L511.6 449.8 295.1 191.7c-3-3.6-7.5-5.7-12.3-5.7H203c-6.8 0-10.5 7.9-6.1 13.1L459.4 512 196.9 824.9A7.95 7.95 0 00203 838h79.8c4.7 0 9.2-2.1 12.3-5.7l216.5-258.1 216.5 258.1c3 3.6 7.5 5.7 12.3 5.7h79.8c6.8 0 10.5-7.9 6.1-13.1L563.8 512z'></path>
             </svg>
@@ -105,13 +105,11 @@
       document.querySelector('#ethnicityInput').placeholder = ethnicityInputPlaceholder;
       document.querySelector('.ethnicity').style.cssText = `padding-left: 20px`;
       ethnicityInput.focus();
-    } else if (data.length === 1) {
+    } else if (data.length < 2) {
       document.querySelector('#ethnicityInput').disabled = false;
-      const selectionElement = document
-        .querySelector('.user-ethnicity-selection')
-        .getBoundingClientRect();
-      let locationElement = document
-        .querySelector(`#remove-${data.length - 1}`)
+      const selectionElement = userSelection.getBoundingClientRect();
+      const locationElement = document
+        .querySelector(`#remove-ethnicity-${data.length - 1}`)
         .getBoundingClientRect();
 
       document.querySelector('.ethnicity').style.cssText = `padding-left: ${
@@ -122,16 +120,6 @@
       removeEthnicitySelection();
     } else {
       document.querySelector('#ethnicityInput').disabled = true;
-      const selectionElement = document
-        .querySelector('.user-ethnicity-selection')
-        .getBoundingClientRect();
-      let locationElement = document
-        .querySelector(`#remove-${data.length - 1}`)
-        .getBoundingClientRect();
-
-      document.querySelector('.ethnicity').style.cssText = `padding-left: ${
-        locationElement.x - selectionElement.x + 30
-      }px`;
       removeEthnicitySelection();
     }
 
@@ -162,7 +150,7 @@
   const removeEthnicitySelection = () => {
     document.querySelectorAll('.user-ethnicity-remove').forEach(element => {
       element.addEventListener('click', el => {
-        const elementId = el.currentTarget.id.split('-')[1];
+        const elementId = el.currentTarget.id.split('-')[2];
         userEthnicityResults.splice(elementId, 1);
         renderEthnicity(userEthnicityResults);
       });

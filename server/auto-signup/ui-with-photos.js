@@ -96,14 +96,14 @@ const numberOfUsers = 1;
           }
         });
 
-        await page.waitForSelector('#dob-month');
-        await page.select('#dob-month', birthMonth);
+        await page.waitForSelector('.dob-month');
+        await page.select('.dob-month', birthMonth);
         await page.waitFor(250);
-        await page.waitForSelector('#dob-day');
-        await page.select('#dob-day', birthDay);
+        await page.waitForSelector('.dob-day');
+        await page.select('.dob-day', birthDay);
         await page.waitFor(250);
-        await page.waitForSelector('#dob-year');
-        await page.select('#dob-year', birthYear);
+        await page.waitForSelector('.dob-year');
+        await page.select('.dob-year', birthYear);
         await page.waitFor(250);
 
         nameChoice.gender === 'male'
