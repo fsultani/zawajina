@@ -68,28 +68,28 @@
         <h5 class="user-details-header">Details</h5>
         <div class="details-grid">
           <div class="details-key">Ethnicity:</div>
-          <div class="details-value">${user.ethnicity.map(ethnicity => ethnicity).join(' | ')}</div>
+          <div class="details-value">${user.ethnicity ? user.ethnicity.map(ethnicity => ethnicity).join(' | ') : 'No Answer'}</div>
           <div class="details-key">Raised in:</div>
-          <div class="details-value">${user.countryRaisedIn}</div>
+          <div class="details-value">${user.countryRaisedIn || 'No Answer'}</div>
           <div class="details-key">Conviction:</div>
-          <div class="details-value">${user.religiousConviction}</div>
+          <div class="details-value">${user.religiousConviction || 'No Answer'}</div>
           <div class="details-key">Values:</div>
-          <div class="details-value">${user.religiousValues}</div>
+          <div class="details-value">${user.religiousValues || 'No Answer'}</div>
           <div class="details-key">Marital Status:</div>
-          <div class="details-value">${user.maritalStatus}</div>
+          <div class="details-value">${user.maritalStatus || 'No Answer'}</div>
           <div class="details-key">Education:</div>
-          <div class="details-value">${user.education}</div>
+          <div class="details-value">${user.education || 'No Answer'}</div>
           <div class="details-key">Profession:</div>
-          <div class="details-value">${user.profession}</div>
+          <div class="details-value">${user.profession || 'No Answer'}</div>
           <div class="details-key">Languages:</div>
-          <div class="details-value">${user.languages.map(languages => languages).join(' | ')}</div>
+          <div class="details-value">${user.languages ? user.languages.map(languages => languages).join(' | ') : 'No Answer'}</div>
           ${user.gender === 'female' ? `
             <div class="details-key">Hijab:</div>
-            <div class="details-value">${user.hijab}</div>
+            <div class="details-value">${user.hijab || 'No Answer'}</div>
             ` : ''
           }
           <div class="details-key">Has children:</div>
-          <div class="details-value">No</div>
+          <div class="details-value">${user.hasChildren || 'No Answer'}</div>
           <div class="details-key">Wants children:</div>
           <div class="details-value">Yes</div>
           <div class="details-key">Body Type:</div>

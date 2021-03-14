@@ -14,9 +14,11 @@ const app = express();
 
 const { connectToServer, usersCollection } = require('./db.js');
 const authenticateToken = require('./config/auth');
+
 const index = require('./routes/index');
 const registerRoute = require('./routes/registerRoute');
 const user = require('./routes/user');
+const search = require('./routes/search');
 
 // Body Parser Middleware
 app.use(bodyParser.json());
@@ -241,6 +243,7 @@ app.get('*', (req, res, next) => {
 app.use('/', index);
 app.use('/register', registerRoute);
 app.use('/user', user);
+app.use('/search', search);
 
 const port = process.env.PORT || 3000;
 

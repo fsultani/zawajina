@@ -119,14 +119,9 @@ td:last-child {
 }
 
 .main-content {
+  height: 100%;
   display: flex;
   flex-direction: column;
-}
-
-@media (min-width: 641px) {
-  .main-content {
-    height: 100%;
-  }
 }
 
 @media (min-width: 481px) {
