@@ -377,7 +377,7 @@ textarea:-ms-input-placeholder {
 
 @media screen and (max-width: 768px) {
   .signup-container {
-    height: 100%;
+    height: 100vh;
   }
   .signup-wrapper {
     width: calc(100% - 40px);

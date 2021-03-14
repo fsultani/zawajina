@@ -916,10 +916,6 @@ list-type-ulli {
     font-size: 12px;
   }
 
-  .signup-container {
-    height: 100%;
-  }
-
   .signup-wrapper {
     width: calc(100% - 40px);
     max-width: 100%;

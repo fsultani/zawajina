@@ -124,6 +124,12 @@ td:last-child {
   flex-direction: column;
 }
 
+@media (max-width: 768px) {
+  .main-content {
+    height: initial;
+  }
+}
+
 @media (min-width: 481px) {
   .navbar--container,
   .container,
