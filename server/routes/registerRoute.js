@@ -132,6 +132,7 @@ router.get('/api/cities-list', async (req, res) => {
   const { userIPAddress, userInput } = req.query;
   const allLocations = [];
   const allResults = [];
+
   try {
     if (!locationDataWasCalled) {
       userLocationData = await axios.get(`http://ip-api.com/json/${userIPAddress}`);
@@ -207,6 +208,7 @@ let ethnicityWasCalled = false;
 let ethnicityResponse;
 router.get('/api/ethnicities-list', async (req, res) => {
   const { userInput } = req.query;
+  const userInputRegex = new RegExp(userInput, 'gi')
 
   try {
     if (!ethnicityWasCalled) {
@@ -215,8 +217,8 @@ router.get('/api/ethnicities-list', async (req, res) => {
     }
 
     const filteredResults = ethnicityResponse.filter(element =>
-      element.toLowerCase().startsWith(userInput.toLowerCase())
-    );
+      element.toLowerCase().indexOf(userInput.toLowerCase()) > -1
+    ).map(ethnicity => ethnicity.replace(userInputRegex, x => `<strong>${x}</strong>`))
     filteredResults.sort((a, b) => b < a);
     res.send(filteredResults);
   } catch (err) {
@@ -228,6 +230,7 @@ let countryWasCalled = false;
 let countryResponse;
 router.get('/api/countries-list', async (req, res) => {
   const { userInput } = req.query;
+  const userInputRegex = new RegExp(userInput, 'gi')
 
   try {
     if (!countryWasCalled) {
@@ -236,8 +239,8 @@ router.get('/api/countries-list', async (req, res) => {
     }
 
     const filteredResults = countryResponse.filter(element =>
-      element.country.toLowerCase().startsWith(userInput.toLowerCase())
-    );
+      element.country.toLowerCase().indexOf(userInput.toLowerCase()) > -1
+    ).map(({ country }) => country.replace(userInputRegex, x => `<strong>${x}</strong>`))
     res.send(filteredResults);
   } catch (err) {
     return res.json({ error: err.countryResponse });
@@ -248,6 +251,7 @@ let languagesWasCalled = false;
 let languagesResponse;
 router.get('/api/languages-list', async (req, res) => {
   const { userInput } = req.query;
+  const userInputRegex = new RegExp(userInput, 'gi')
 
   try {
     if (!languagesWasCalled) {
@@ -256,8 +260,8 @@ router.get('/api/languages-list', async (req, res) => {
     }
 
     const filteredResults = languagesResponse.filter(element =>
-      element.toLowerCase().startsWith(userInput.toLowerCase())
-    );
+      element.toLowerCase().indexOf(userInput.toLowerCase()) > -1
+    ).map(language => language.replace(userInputRegex, x => `<strong>${x}</strong>`))
     filteredResults.sort((a, b) => b < a);
     res.send(filteredResults);
   } catch (err) {
@@ -312,6 +316,7 @@ router.post(
       education,
       profession,
       hijab,
+      hasChildren,
     } = JSON.parse(
       req.body.userInfo
     );
@@ -367,6 +372,7 @@ router.post(
               education,
               profession,
               hijab,
+              hasChildren,
               completedRegistrationAt: new Date(),
               isUserSessionValid: true,
               lastLogin: new Date(),
@@ -417,6 +423,7 @@ router.post(
             education,
             profession,
             hijab,
+            hasChildren,
             completedRegistrationAt: new Date(),
             isUserSessionValid: true,
             lastLogin: new Date(),

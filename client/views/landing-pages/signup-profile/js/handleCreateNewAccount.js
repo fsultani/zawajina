@@ -8,6 +8,7 @@ let maritalStatus;
 let education;
 let profession;
 let hijab;
+let hasChildren;
 
 const handleBirthMonth = event => (birthMonth = event.target.value);
 const handleBirthDay = event => (birthDay = event.target.value);
@@ -26,6 +27,7 @@ const handleMaritalStatus = event => maritalStatus = event.target.value;
 const handleEducation = event => education = event.target.value;
 const handleProfession = event => profession = event.target.value;
 const handleHijab = value => (hijab = value);
+const handleHasChildren = value => (hasChildren = event.target.value);
 
 const createNewAccountButton = document.querySelector('#createNewAccount');
 const loadingSpinner = document.querySelector('.submit-loading-spinner');
@@ -155,6 +157,12 @@ const handleCreateNewAccount = () => {
     removeErrorClass('.hijab-error');
   }
 
+  if (!hasChildren) {
+    addErrorClass('.has-children-error')
+  } else {
+    removeErrorClass('.has-children-error')
+  }
+
   if (
     birthMonth &&
     birthDay &&
@@ -169,7 +177,8 @@ const handleCreateNewAccount = () => {
     religiousValues &&
     maritalStatus &&
     education &&
-    profession
+    profession &&
+    hasChildren
   ) {
     loadingSpinner.style.display = 'flex';
     createNewAccountButton.innerHTML = '';
@@ -193,6 +202,7 @@ const handleCreateNewAccount = () => {
       education,
       profession,
       hijab,
+      hasChildren,
     };
 
     const images = document.forms.namedItem('signupForm');

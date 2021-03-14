@@ -50,7 +50,7 @@
 
         let searchResultsWrapper = '<div class="autocomplete-items">';
 
-        results.map(({ country }) => {
+        results.map(country => {
           searchResultsWrapper += `
         <div
           id='${country}'
@@ -69,10 +69,11 @@
     );
 
   const renderCountry = (country) => {
+    const countryName = country.replace(/<\/?strong>/g, '')
     const result = `
       <div class='user-selection-container'>
         <div class='user-selection-wrapper display-country'>
-          <div class='user-selection-content user-country-content'>${country}</div>
+          <div class='user-selection-content user-country-content'>${countryName}</div>
           <div class='user-selection-remove-wrapper'>
             <span role='img' aria-label='close' class='user-selection-remove country-remove'>
               <svg viewBox='64 64 896 896' focusable='false' data-icon='close' width='10px' height='10px' fill='currentColor' aria-hidden='true'>
