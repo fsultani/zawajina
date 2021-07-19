@@ -115,17 +115,4 @@ router.get('/users', async (req, res, next) => {
   }
 });
 
-// router.get('/api/signup-user-first-name', (req, res, next) => {
-//   usersCollection().findOne({ _id: ObjectId(req.headers.userid) }, (err, user) => {
-//     if (err || !user) return res.sendStatus(401);
-//     if (user.startedRegistrationAt && !user.emailVerified) {
-//       res.status(200).json({ message: 'Token Sent' })
-//     } else if (user.startedRegistrationAt && user.emailVerified && !user.completedRegistrationAt) {
-//       res.status(201).send({ name: user.name });
-//     } else {
-//       res.sendStatus(401);
-//     }
-//   });
-// });
-
 module.exports = router;
