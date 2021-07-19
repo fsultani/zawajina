@@ -47,7 +47,7 @@ const professionsList = [
   'Baker',
   'Lifeguard',
   'Other',
-]
+];
 
 const professionOptions = ['<option selected disabled>Select Profession</option>'];
 professionsList.map(item => professionOptions.push(`<option>${item}</option>`));

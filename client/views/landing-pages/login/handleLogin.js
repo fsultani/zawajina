@@ -1,7 +1,7 @@
-if (window.location.pathname !== '/login') {
-  Cookies.remove('token');
-  window.location.pathname = '/login';
-}
+// if (window.location.pathname !== '/login') {
+//   Cookies.remove('my_match_authToken');
+//   window.location.pathname = '/login';
+// }
 
 const handleEmailValidation = () => {
   const email = document.login.elements.email.value;
@@ -40,7 +40,7 @@ const handleLogin = event => {
       })
       .then(res => {
         const { token } = res.data;
-        Cookies.set('token', token, { sameSite: 'strict' });
+        Cookies.set('my_match_authToken', token, { sameSite: 'strict' });
         window.location.pathname = '/users';
       })
       .catch(error => {

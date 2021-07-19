@@ -24,20 +24,19 @@ router.post('/login', async (req, res, next) => {
     { _id: ObjectId(user._id) },
     {
       $set: {
-        isUserSessionValid: true,
         lastLogin: new Date(),
       },
     }
   );
 
-  const token = jwt.sign({ userId: authUser.value._id }, JWT_SECRET, {
+  const token = jwt.sign({ my_match_userId: authUser.value._id }, JWT_SECRET, {
     expiresIn: '1 day',
   });
   res.status(201).json({ token });
 });
 
 router.get('/users', async (req, res, next) => {
-  const authUser = req.authUser;
+  const { authUser, conversationsCount } = req;
   const page = parseInt(req.query.page);
   const skipRecords = page > 1 ? (page - 1) * 20 : 0;
 
@@ -69,9 +68,9 @@ router.get('/users', async (req, res, next) => {
         scripts: [
           'https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js',
           'https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js',
-          '/static/client/views/app/_layouts/handleLogout.js',
         ],
         authUser,
+        conversationsCount,
         allUsersCount,
         allUsers,
         previousPage,
@@ -96,9 +95,9 @@ router.get('/users', async (req, res, next) => {
         scripts: [
           'https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js',
           'https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js',
-          '/static/client/views/app/_layouts/handleLogout.js',
         ],
         authUser,
+        conversationsCount,
         allUsersCount: 0,
         allUsers: [],
         previousPage: 0,
@@ -116,15 +115,17 @@ router.get('/users', async (req, res, next) => {
   }
 });
 
-router.get('/api/signup-user-first-name', (req, res, next) => {
-  usersCollection().findOne({ _id: ObjectId(req.headers.userid) }, (err, user) => {
-    if (err) return res.sendStatus(403);
-    if (user !== null) {
-      res.status(201).send({ name: user.name });
-    } else {
-      res.sendStatus(403);
-    }
-  });
-});
+// router.get('/api/signup-user-first-name', (req, res, next) => {
+//   usersCollection().findOne({ _id: ObjectId(req.headers.userid) }, (err, user) => {
+//     if (err || !user) return res.sendStatus(401);
+//     if (user.startedRegistrationAt && !user.emailVerified) {
+//       res.status(200).json({ message: 'Token Sent' })
+//     } else if (user.startedRegistrationAt && user.emailVerified && !user.completedRegistrationAt) {
+//       res.status(201).send({ name: user.name });
+//     } else {
+//       res.sendStatus(401);
+//     }
+//   });
+// });
 
 module.exports = router;

@@ -79,7 +79,7 @@ let counter = 0;
       formData.append("image-5", fs.createReadStream(shuffleImages(imagesArray)[4]));
       formData.append("image-6", fs.createReadStream(shuffleImages(imagesArray)[5]));
 
-      const aboutResponse = await axios.post("http://localhost:3000/register/api/about", formData, {
+      const aboutResponse = await axios.post("http://localhost:3000/register/api/profile-details", formData, {
         headers: formData.getHeaders(),
       });
     } catch (err) {

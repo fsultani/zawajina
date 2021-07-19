@@ -8,7 +8,7 @@ const { usersCollection } = require('../db.js');
 
 router.get('/:userId', async (req, res, next) => {
   const { userId } = req.params;
-  const authUser = req.authUser;
+  const { authUser, conversationsCount } = req;
 
   const user = await usersCollection().findOne({ _id: ObjectId(userId) });
   if (!user) return res.redirect('/users');
@@ -54,10 +54,10 @@ router.get('/:userId', async (req, res, next) => {
       scripts: [
         'https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js',
         'https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js',
-        '/static/client/views/app/_layouts/handleLogout.js',
         '/static/client/views/app/profile/main.js',
       ],
       authUser,
+      conversationsCount,
       lastActive,
       user,
     },

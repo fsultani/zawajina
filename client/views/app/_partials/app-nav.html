@@ -20,14 +20,17 @@
       </div>
 
       <ul class="navbar--header-links margin-0">
-        <li>
+        <li class="search">
           <a href="/search">Search</a>
+        </li>
+        <li class="messages">
+          <a href="/messages">${conversationsCount > 0 ? `Messages (${conversationsCount})` : `Messages`}</a>
         </li>
         <li>
           <div class="dropdown-menu">
             <div onclick="openDropdownMenu()" class="dropdown-button" role="button">
               <img
-                src="${authUser.photos.length > 0 ? authUser.photos[0] : authUser.gender === 'male' ? 'https://res.cloudinary.com/dnjhw5rv2/image/upload/v1613985983/male_fk4pmh.jpg' : 'https://res.cloudinary.com/dnjhw5rv2/image/upload/v1613988446/female_anre94.png'}"
+                src="${authUser.photos.length > 0 ? authUser.photos[0] : authUser.gender === 'male' ? 'https://res.cloudinary.com/dnjhw5rv2/image/upload/v1613985983/male_profile.jpg' : 'https://res.cloudinary.com/dnjhw5rv2/image/upload/v1613988446/female_app_nav.png'}"
                 class="user-avatar-menu"
               />
               <span id="menu-arrow" class="down-arrow"></span>

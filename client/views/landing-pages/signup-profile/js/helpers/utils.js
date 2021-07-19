@@ -1,17 +1,11 @@
-// https://davidwalsh.name/javascript-debounce-function
-const debounce = (func, wait, immediate) => {
-  let timeout;
-  return function () {
-    const context = this,
-      args = arguments;
-    const later = function () {
-      timeout = null;
-      if (!immediate) func.apply(context, args);
-    };
-    const callNow = immediate && !timeout;
-    clearTimeout(timeout);
-    timeout = setTimeout(later, wait);
-    if (callNow) func.apply(context, args);
+const debounce = (callback, time) => {
+  let interval;
+  return (...args) => {
+    clearTimeout(interval);
+    interval = setTimeout(() => {
+      interval = null;
+      callback(...args);
+    }, time);
   };
 };
 
@@ -53,3 +47,29 @@ const addActive = (element, currentFocus) => {
   */
   element[currentFocus].classList.add('autocomplete-active');
 };
+
+const FetchData = async (apiUrl, params) => {
+  try {
+    const response = await axios.get(apiUrl, params);
+    return response.data;
+  } catch (err) {
+    console.error(err);
+    return err.response;
+  }
+};
+
+(() => {
+  document.getElementById('about-me').addEventListener('keyup', e => {
+    let characterCount = e.target.value.length;
+    document.getElementById('about-me-character-count').innerHTML = `${characterCount}/100`;
+    document.getElementById('about-me-character-count').style.cssText =
+      characterCount < 100 ? 'color: #777;' : 'color: green;';
+  });
+
+  document.getElementById('about-my-match').addEventListener('keyup', e => {
+    let characterCount = e.target.value.length;
+    document.getElementById('about-my-match-character-count').innerHTML = `${characterCount}/100`;
+    document.getElementById('about-my-match-character-count').style.cssText =
+      characterCount < 100 ? 'color: #777;' : 'color: green;';
+  });
+})();

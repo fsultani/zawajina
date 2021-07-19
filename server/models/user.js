@@ -17,7 +17,7 @@ module.exports.getUserById = (id, callback) => {
   User.findById(id, callback);
 };
 
-module.exports.comparePassword = (userPassword, hash, callback) => (
+module.exports.comparePassword = (userPassword, hash, callback) =>
   new Promise((resolve, reject) => {
     bcrypt.compare(userPassword, hash, (err, isMatch) => {
       if (err) {
@@ -25,6 +25,5 @@ module.exports.comparePassword = (userPassword, hash, callback) => (
         reject(err);
       }
       resolve(isMatch);
-    })
-  })
-);
+    });
+  });

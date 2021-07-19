@@ -150,8 +150,15 @@ h5 {
   .navbar--header-links li {
     display: flex;
     align-items: center;
-    width: 75px;
     height: 100%;
+  }
+
+  .search {
+    width: 75px;
+  }
+
+  .messages {
+    width: 120px;
   }
 
   .navbar--header-links a {

@@ -1,3 +1,7 @@
+.wrapper > div {
+  background-color: #ffffff;
+}
+
 /* ********************* Desktop Photos Carousel ********************* */
 
 .profile-photos-container {
@@ -7,10 +11,15 @@
   box-shadow: 0 8px 8px rgba(22, 30, 42, 0.16);
 }
 
-.slider {
+.photos-slider-wrapper,
+.no-photos-slider-wrapper {
   width: 100%;
   overflow: hidden;
   border-radius: 12px;
+}
+
+.no-photos-slider-wrapper {
+  height: 100%;
 }
 
 .photos-container {
@@ -104,10 +113,15 @@
     height: 100%;
   }
 
-  .slider {
+  .photos-slider-wrapper,
+  .no-photos-slider-wrapper {
     width: 100%;
     overflow: hidden;
     border-radius: 0;
+  }
+
+  .no-photos-slider-wrapper {
+    height: 100%;
   }
 
   .photos-container {
@@ -193,6 +207,12 @@
 .about-match {
   display: grid;
   align-items: center;
+  height: 100%;
+  padding: 20px 32px 20px 20px;
+  font-size: 16px;
+}
+
+.about-match {
   border-top: 1px solid rgba(22, 30, 42, 0.16);
 }
 
@@ -352,28 +372,29 @@
   box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(0, 140, 255, 0.5);
 }
 
-.about-me,
-.about-match {
-  height: 100%;
-  padding: 20px 32px 20px 20px;
-  font-size: 16px;
+.details-container {
+  display: flex;
+  flex-direction: column;
 }
 
-.details-grid {
-  display: grid;
-  grid-template-columns: 1fr 2fr;
+.details-wrapper {
+  display: flex;
 }
 
 .details-key {
   padding: 10px 0;
+  flex-basis: 30%;
   color: #7f7f7f;
 }
 
 .details-value {
+  display: flex;
+  flex-wrap: wrap;
+  flex-basis: 70%;
   padding: 10px 0 10px 10px;
 }
 
-.details-grid div:not(:nth-last-child(-n + 2)) {
+.details-container div:not(:last-child) {
   border-bottom: 1px solid rgba(22, 30, 42, 0.16);
 }
 
@@ -503,12 +524,23 @@
     font-size: 25px;
   }
 
-  .details-grid {
-    display: grid;
-    grid-template-columns: 1fr 2fr;
+  .details-container {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .details-wrapper {
+    display: flex;
+  }
+
+  .details-key {
+    flex-basis: 30%;
   }
 
   .details-value {
+    display: flex;
+    flex-wrap: wrap;
+    flex-basis: 70%;
     padding: 10px 0;
   }
 

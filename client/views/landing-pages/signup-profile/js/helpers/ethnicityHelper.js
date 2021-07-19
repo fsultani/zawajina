@@ -1,37 +1,24 @@
 (async () => {
   const ethnicityInput = document.querySelector('#ethnicityInput');
   const ethnicityResults = document.querySelector('#ethnicity-results');
-  const ethnicityInputPlaceholder = 'What is your ethnicity? (Select up to 2)';
+  const ethnicityInputPlaceholder = 'Select up to 2';
   const userEthnicityResults = [];
-  let currentFocus;
+
+  let currentFocus = 0;
+  let results = [];
 
   ethnicityInput.placeholder = ethnicityInputPlaceholder;
 
   const getAllEthnicities = async userInput => {
     try {
-      let response;
-      setTimeout(() => {
-        if (!response) {
-          document.querySelector('body').style.backgroundColor = 'rgba(0,0,0,0.5)';
-          document.querySelector('body').style.opacity = 0.5;
-          document.querySelector('.full-page-loading-spinner').style.display = 'inline-block';
-        }
-      }, 1000);
-      response = await axios.get(`/register/api/ethnicities-list`, {
+      const data = await FetchData('/register/api/ethnicities', {
         params: {
           userInput,
         },
       });
-      document.querySelector('body').style.backgroundColor = '#ffffff';
-      document.querySelector('body').style.opacity = 1;
-      document.querySelector('.full-page-loading-spinner').style.display = 'none';
-      return response.data;
-    } catch (err) {
-      console.error(err);
-      document.querySelector('body').style.backgroundColor = '#ffffff';
-      document.querySelector('body').style.opacity = 1;
-      document.querySelector('.full-page-loading-spinner').style.display = 'none';
-      return err.response;
+      return data;
+    } catch (error) {
+      return error.response;
     }
   };
 
@@ -45,17 +32,19 @@
           return false;
         }
 
-        const results = await getAllEthnicities(userInput);
+        results = await getAllEthnicities(userInput);
         currentFocus = -1;
 
         let searchResultsWrapper = '<div class="autocomplete-items">';
+        const userInputRegex = new RegExp(userInput, 'gi');
 
         results.map(ethnicity => {
+          const ethnicityMatch = ethnicity.replace(userInputRegex, x => `<strong>${x}</strong>`);
           searchResultsWrapper += `
         <div
           id='${ethnicity}'
         >
-          ${ethnicity}
+          ${ethnicityMatch}
           <input
             type='hidden'
           />
@@ -71,10 +60,9 @@
   const renderEthnicity = data => {
     const results = resultsData =>
       resultsData
-        .map(
-          (response, index) => {
-            const ethnicity = response.replace(/<\/?strong>/g, '')
-            return `
+        .map((response, index) => {
+          const ethnicity = response.replace(/<\/?strong>/g, '');
+          return `
               <div class='user-selection-wrapper display-user-ethnicity' id='wrapper-${index}'>
                 <div class='user-selection-content user-ethnicity-content' id='${ethnicity}'>${ethnicity}</div>
                 <div class='user-selection-remove-wrapper'>
@@ -85,8 +73,8 @@
                   </span>
                 </div>
               </div>
-            `
-          })
+            `;
+        })
         .join('');
 
     const selection = () => `
@@ -134,10 +122,10 @@
     if (element) {
       element = element.getElementsByTagName('div');
     }
-    if (event.key === 'ArrowDown') {
+    if (event.key === 'ArrowDown' && currentFocus < results.length - 1) {
       currentFocus++;
       addActive(element, currentFocus);
-    } else if (event.key === 'ArrowUp') {
+    } else if (event.key === 'ArrowUp' && currentFocus > 0) {
       currentFocus--;
       addActive(element, currentFocus);
     } else if (event.key === 'Enter') {
@@ -167,8 +155,9 @@
       const value = element[currentFocus].id;
       const ethnicitySelection = value;
       ethnicityInput.value = '';
-
-      userEthnicityResults.push(ethnicitySelection);
+      if (userEthnicityResults.indexOf(ethnicitySelection) === -1) {
+        userEthnicityResults.push(ethnicitySelection);
+      }
 
       renderEthnicity(userEthnicityResults);
     });
@@ -179,7 +168,9 @@
     const ethnicitySelection = value;
     ethnicityInput.value = '';
 
-    userEthnicityResults.push(ethnicitySelection);
+    if (userEthnicityResults.indexOf(ethnicitySelection) === -1) {
+      userEthnicityResults.push(ethnicitySelection);
+    }
 
     renderEthnicity(userEthnicityResults);
   });

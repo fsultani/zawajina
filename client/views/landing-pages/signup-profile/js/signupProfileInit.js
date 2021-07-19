@@ -40,24 +40,42 @@ setTimeout(() => {
   }, 10000);
 }, 1000);
 
-axios
-  .get('/api/signup-user-first-name', {
-    headers: {
-      userId: Cookies.get('userId'),
-    },
-  })
-  .then(res => {
-    documentReady = true;
-    loader(false);
-    document.querySelector('#slow-network-warning').style.display = 'none';
-    document.querySelector('.form-title').innerHTML = `Welcome, ${res.data.name}`;
-  })
-  .catch(err => {
-    if (err instanceof TypeError) {
-      console.error(err);
-    } else {
-      Cookies.remove('token');
-      Cookies.remove('userId');
-      window.location.pathname = '/';
-    }
-  });
+// axios.get('/register/api/signup-user-first-name', {
+//   headers: {
+//     userId: Cookies.get('my_match_userId'),
+//   },
+// }).then(res => {
+//   if (res.data.message === 'Token Sent') {
+//     window.location.pathname = '/verify-email';
+//   }
+//   documentReady = true;
+//   loader(false);
+//   document.querySelector('#slow-network-warning').style.display = 'none';
+//   document.querySelector('.form-title').innerHTML = `Welcome, ${res.data.name}`;
+// }).catch(err => {
+//   if (err instanceof TypeError) {
+//     console.error(err);
+//   } else {
+//     Cookies.remove('my_match_authToken');
+//     Cookies.remove('my_match_userId');
+//     window.location.pathname = '/signup';
+//   }
+// });
+
+axios.get('/register/api/signup-user-first-name').then(res => {
+  if (res.data.message === 'Token Sent') {
+    window.location.pathname = '/verify-email';
+  }
+  documentReady = true;
+  loader(false);
+  document.querySelector('#slow-network-warning').style.display = 'none';
+  document.querySelector('.form-title').innerHTML = `Welcome, ${res.data.name}`;
+}).catch(err => {
+  if (err instanceof TypeError) {
+    console.error(err);
+  } else {
+    Cookies.remove('my_match_authToken');
+    Cookies.remove('my_match_userId');
+    window.location.pathname = '/signup';
+  }
+});

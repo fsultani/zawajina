@@ -24,11 +24,11 @@ const connectToServer = callback => {
   }
 };
 
-const mongoDb = () => db;
-
 const usersCollection = () => db.collection('users');
+const messagesCollection = () => db.collection('messages');
 
 module.exports = {
   connectToServer,
   usersCollection,
+  messagesCollection,
 };

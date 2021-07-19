@@ -9,6 +9,11 @@ let education;
 let profession;
 let hijab;
 let hasChildren;
+let wantsChildren;
+let height;
+let relocate;
+let diet;
+let smokes;
 
 const handleBirthMonth = event => (birthMonth = event.target.value);
 const handleBirthDay = event => (birthDay = event.target.value);
@@ -19,18 +24,30 @@ const handleGender = value => {
   } else {
     document.querySelector('.hijab-container').style.display = 'none';
   }
-  return gender = value;
-}
-const handleConviction = event => religiousConviction = event.target.value;
-const handleReligiousValues = event => religiousValues = event.target.value;
-const handleMaritalStatus = event => maritalStatus = event.target.value;
-const handleEducation = event => education = event.target.value;
-const handleProfession = event => profession = event.target.value;
+  return (gender = value);
+};
+const handleConviction = event => (religiousConviction = event.target.value);
+const handleReligiousValues = event => (religiousValues = event.target.value);
+const handleMaritalStatus = event => (maritalStatus = event.target.value);
+const handleEducation = event => (education = event.target.value);
+const handleProfession = event => (profession = event.target.value);
 const handleHijab = value => (hijab = value);
-const handleHasChildren = value => (hasChildren = event.target.value);
+const handleHasChildren = value => (hasChildren = value);
+const handleWantsChildren = value => (wantsChildren = value);
+const handleHeight = () => {
+  const element = document.querySelector('.height-options');
+  const text = element.options[element.selectedIndex].text;
+  return (height = text);
+};
+const handleRelocate = event => (relocate = event.target.value);
+const handleDiet = event => (diet = event.target.value);
+const handleSmokes = value => (smokes = value);
 
 const createNewAccountButton = document.querySelector('#createNewAccount');
 const loadingSpinner = document.querySelector('.submit-loading-spinner');
+
+const addErrorClass = element => document.querySelector(`${element}`).classList.add('form-error');
+const removeErrorClass = element => document.querySelector(`${element}`).classList.remove('form-error');
 
 const handleCreateNewAccount = () => {
   const locationData = document.querySelector('#locationInput').dataset;
@@ -43,16 +60,17 @@ const handleCreateNewAccount = () => {
     ethnicity.push(id);
   });
 
-  const countryRaisedIn = document.querySelector('.user-country-content');
+  const countryRaisedIn = document.querySelector('.user-country-content').textContent;
 
   const languages = [];
   document.querySelectorAll('.user-language-content').forEach(({ id }) => {
     languages.push(id);
   });
 
-  const addErrorClass = element => document.querySelector(`${element}`).classList.add('form-error');
-  const removeErrorClass = element =>
-    document.querySelector(`${element}`).classList.remove('form-error');
+  const hobbies = [];
+  document.querySelectorAll('.user-hobby-content').forEach(({ id }) => {
+    hobbies.push(id);
+  });
 
   if (!birthMonth) {
     addErrorClass('.dob-month');
@@ -122,33 +140,33 @@ const handleCreateNewAccount = () => {
   }
 
   if (!religiousConviction) {
-    addErrorClass('.religious-conviction-error')
+    addErrorClass('.religious-conviction-error');
   } else {
-    removeErrorClass('.religious-conviction-error')
+    removeErrorClass('.religious-conviction-error');
   }
 
   if (!religiousValues) {
-    addErrorClass('.religious-values-error')
+    addErrorClass('.religious-values-error');
   } else {
-    removeErrorClass('.religious-values-error')
+    removeErrorClass('.religious-values-error');
   }
 
   if (!maritalStatus) {
-    addErrorClass('.marital-status-error')
+    addErrorClass('.marital-status-error');
   } else {
-    removeErrorClass('.marital-status-error')
+    removeErrorClass('.marital-status-error');
   }
 
   if (!education) {
-    addErrorClass('.education-error')
+    addErrorClass('.education-error');
   } else {
-    removeErrorClass('.education-error')
+    removeErrorClass('.education-error');
   }
 
   if (!profession) {
-    addErrorClass('.profession-error')
+    addErrorClass('.profession-error');
   } else {
-    removeErrorClass('.profession-error')
+    removeErrorClass('.profession-error');
   }
 
   if (gender === 'female' && !hijab) {
@@ -158,9 +176,119 @@ const handleCreateNewAccount = () => {
   }
 
   if (!hasChildren) {
-    addErrorClass('.has-children-error')
+    addErrorClass('.has-children-error');
   } else {
-    removeErrorClass('.has-children-error')
+    removeErrorClass('.has-children-error');
+  }
+
+  if (!wantsChildren) {
+    addErrorClass('.wants-children-error');
+  } else {
+    removeErrorClass('.wants-children-error');
+  }
+
+  if (!height) {
+    addErrorClass('.height-error');
+  } else {
+    removeErrorClass('.height-error');
+  }
+
+  if (!relocate) {
+    addErrorClass('.relocate-error');
+  } else {
+    removeErrorClass('.relocate-error');
+  }
+
+  if (!diet) {
+    addErrorClass('.diet-error');
+  } else {
+    removeErrorClass('.diet-error');
+  }
+
+  if (!smokes) {
+    addErrorClass('.smokes-error');
+  } else {
+    removeErrorClass('.smokes-error');
+  }
+
+  const rawInput = string => string.split(' ').join('').toLowerCase().replace(/\./g, '').replace(/,/g, '')
+  const socialMediaAccounts = [
+    'facebook',
+    'whatsapp',
+    'googlehangouts',
+    'instagram',
+    'snapchat',
+    'viber',
+    'telegram',
+    'kakaotalk',
+    'kik',
+    '@',
+  ];
+  const htmlEscapes = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#x27;',
+    '/': '&#x2F;',
+    '\n': '<br>',
+  };
+  const htmlEscapeRegex = /[&<>"'\/\n]/g;
+
+  const textareaHasSocialMediaAccount = string => socialMediaAccounts.some(item => rawInput(string).includes(item));
+  const textareaHasPhoneNumber = string => string.match(/\d{6,}/g);
+  const handleHtmlEscape = string => '' + string.replace(htmlEscapeRegex, match => htmlEscapes[match]);
+
+  const aboutMe = handleHtmlEscape(document.getElementById('about-me').value);
+  let aboutMeIsValid = true;
+  if (!aboutMe || aboutMe.length < 100) {
+    addErrorClass('.about-me-error');
+    document.querySelector('#about-me-error-text').innerHTML =
+      'Please enter at least 100 characters';
+    document.querySelector('#about-me-error-text').style.display = 'block';
+    aboutMeIsValid = false;
+  } else if (textareaHasSocialMediaAccount(aboutMe)) {
+    addErrorClass('.about-me-error');
+    document.querySelector('#about-me-error-text').innerHTML =
+      'Email addresses and social media accounts are not allowed in your profile';
+    document.querySelector('#about-me-error-text').style.display = 'block';
+    aboutMeIsValid = false;
+  } else if (textareaHasPhoneNumber(aboutMe)) {
+    addErrorClass('.about-me-error');
+    document.querySelector('#about-me-error-text').innerHTML =
+      'Phone numbers are not allowed in your profile';
+    document.querySelector('#about-me-error-text').style.display = 'block';
+    aboutMeIsValid = false;
+  } else {
+    removeErrorClass('.about-me-error');
+    document.querySelector('#about-me-error-text').style.display = 'none';
+    aboutMeIsValid = true;
+  }
+
+  const aboutMyMatch = handleHtmlEscape(document.getElementById('about-my-match').value);
+  let aboutMyMatchIsValid = true;
+  if (!aboutMyMatch || aboutMyMatch.length < 100) {
+    addErrorClass('.about-my-match-error');
+    document.querySelector('#about-my-match-error-text').innerHTML =
+      'Please enter at least 100 characters';
+    document.querySelector('#about-my-match-error-text').style.display = 'block';
+    aboutMyMatchIsValid = false;
+  } else if (textareaHasSocialMediaAccount(aboutMyMatch)) {
+    addErrorClass('.about-my-match-error');
+    document.querySelector('#about-my-match-error-text').innerHTML =
+      'Email addresses and social media accounts are not allowed in your profile';
+    document.querySelector('#about-my-match-error-text').style.display = 'block';
+    aboutMyMatchIsValid = false;
+  } else if (textareaHasPhoneNumber(aboutMyMatch)) {
+    addErrorClass('.about-my-match-error');
+    document.querySelector('#about-my-match-error-text').innerHTML =
+      'Phone numbers are not allowed in your profile';
+    document.querySelector('#about-my-match-error-text').style.display = 'block';
+    aboutMyMatchIsValid = false;
+  } else {
+    removeErrorClass('.about-me-error');
+    document.querySelector('#about-my-match-error-text').style.display = 'none';
+    aboutMyMatchIsValid = true;
   }
 
   if (
@@ -178,7 +306,14 @@ const handleCreateNewAccount = () => {
     maritalStatus &&
     education &&
     profession &&
-    hasChildren
+    hasChildren &&
+    wantsChildren &&
+    height &&
+    relocate &&
+    diet &&
+    smokes &&
+    aboutMeIsValid &&
+    aboutMyMatchIsValid
   ) {
     loadingSpinner.style.display = 'flex';
     createNewAccountButton.innerHTML = '';
@@ -194,7 +329,7 @@ const handleCreateNewAccount = () => {
       state,
       country,
       ethnicity,
-      countryRaisedIn: countryRaisedIn.textContent,
+      countryRaisedIn,
       languages,
       religiousConviction,
       religiousValues,
@@ -203,19 +338,27 @@ const handleCreateNewAccount = () => {
       profession,
       hijab,
       hasChildren,
+      wantsChildren,
+      height,
+      relocate,
+      diet,
+      smokes,
+      hobbies,
+      aboutMe,
+      aboutMyMatch,
     };
 
     const images = document.forms.namedItem('signupForm');
     const userData = new FormData(images);
     userData.append('userInfo', JSON.stringify(userInfo));
-    userData.append('userId', Cookies.get('userId'));
+    userData.append('userId', Cookies.get('my_match_userId'));
 
     axios
-      .post('/register/api/about', userData)
+      .post('/register/api/profile-details', userData)
       .then(res => {
         if (res.status === 201 || res.status === 200) {
-          Cookies.set('token', res.data.token, { sameSite: 'strict' });
-          Cookies.remove('userId');
+          Cookies.set('my_match_authToken', res.data.token, { sameSite: 'strict' });
+          Cookies.remove('my_match_userId');
           window.location.pathname = '/users';
         } else {
           document.querySelector('#signup-error').innerHTML =
@@ -235,5 +378,12 @@ const handleCreateNewAccount = () => {
           'Unknown error.  Please try again later.';
         document.querySelector('#signup-error').style.display = 'block';
       });
+  } else {
+    document.querySelector('.form-errors').style.display = 'inline-block';
+    addErrorClass('.signup-button');
+    window.scroll({
+      top: 0,
+      behavior: 'smooth',
+    });
   }
 };

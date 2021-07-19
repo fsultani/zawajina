@@ -1,0 +1,36 @@
+<section class="signup-container">
+  <div class="signup-wrapper">
+    <div class="signup-content">
+      <div id="verification-code-error"></div>
+      <form onsubmit="return false" novalidate>
+        <h2 class="form-title">Verify Email Address</h2>
+
+        <p class="form-subtitle">
+          Please enter the 5 digit verification code sent to your email address:
+        </p>
+
+        <input type="number" class="verification-token input-field" />
+        <div class="form-group">
+          <div class="loading-spinner">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+          <button
+            type="submit"
+            onclick="handleVerityEmail()"
+            class="form-submit"
+            id="submitButton"
+          >
+            Verify Email Address
+          </button>
+
+          <div class="helper-text-wrapper">
+            <a href="/resend-email" class="helper-text">Didn't get a code?</a>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>

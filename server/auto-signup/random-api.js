@@ -86,12 +86,12 @@ const makeApiCalls = () => {
         );
 
         axios
-          .post("http://localhost:3000/register/api/about", formData, {
+          .post("http://localhost:3000/register/api/profile-details", formData, {
             maxBodyLength: Infinity,
             headers: formData.getHeaders(),
           })
           .then(res => {
-            console.log("api/about status:\n", res.status);
+            console.log("api/profile-details status:\n", res.status);
             console.log("res.data:\n", res.data);
             console.log(`${counter} of ${numberOfUsers}\n`);
             // return makeApiCalls();

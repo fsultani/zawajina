@@ -1,55 +1,24 @@
 (async () => {
   const languageInput = document.querySelector('#languageInput');
   const languageResults = document.querySelector('#language-results');
-  const languageInputPlaceholder = 'What language(s) do you speak? (Select up to 3)';
+  const languageInputPlaceholder = 'Select up to 3';
   const userLanguagesResult = [];
-  let currentFocus;
+
+  let currentFocus = 0;
+  let results = [];
 
   languageInput.placeholder = languageInputPlaceholder;
 
   const getAllLanguages = async userInput => {
     try {
-      let response;
-      setTimeout(() => {
-        if (!response) {
-          document.querySelector('body').style.cssText = `
-            background-color: rgba(0,0,0,0.5);
-            opacity: 0.5;
-          `;
-
-          document.querySelector('.full-page-loading-spinner').style.cssText = `
-            display: inline-block;
-          `;
-        }
-      }, 1000);
-      response = await axios.get(`/register/api/languages-list`, {
+      const data = await FetchData('/register/api/languages', {
         params: {
           userInput,
         },
       });
-
-      document.querySelector('body').style.cssText = `
-        background-color: #ffffff;
-        opacity: 1;
-      `;
-
-      document.querySelector('.full-page-loading-spinner').style.cssText = `
-        display: none;
-      `;
-
-      return response.data;
-    } catch (err) {
-      console.error(err);
-      document.querySelector('body').style.cssText = `
-        background-color: #ffffff;
-        opacity: 1;
-      `;
-
-      document.querySelector('.full-page-loading-spinner').style.cssText = `
-        display: none;
-      `;
-
-      return err.response;
+      return data;
+    } catch (error) {
+      return error.response;
     }
   };
 
@@ -63,17 +32,19 @@
           return false;
         }
 
-        const results = await getAllLanguages(userInput);
+        results = await getAllLanguages(userInput);
         currentFocus = -1;
 
         let searchResultsWrapper = '<div class="autocomplete-items">';
+        const userInputRegex = new RegExp(userInput, 'gi');
 
         results.map(language => {
+          const languageMatch = language.replace(userInputRegex, x => `<strong>${x}</strong>`);
           searchResultsWrapper += `
         <div
           id='${language}'
         >
-          ${language}
+          ${languageMatch}
           <input
             type='hidden'
           />
@@ -89,10 +60,9 @@
   const renderLanguages = data => {
     const results = resultsData =>
       resultsData
-        .map(
-          (response, index) => {
-            const language = response.replace(/<\/?strong>/g, '')
-            return `
+        .map((response, index) => {
+          const language = response.replace(/<\/?strong>/g, '');
+          return `
               <div class='user-selection-wrapper display-user-language' id='wrapper-${index}'>
                 <div class='user-selection-content user-language-content' id='${language}'>${language}</div>
                 <div class='user-selection-remove-wrapper'>
@@ -103,8 +73,8 @@
                   </span>
                 </div>
               </div>
-            `
-          })
+            `;
+        })
         .join('');
 
     const selection = () => `
@@ -152,10 +122,10 @@
     if (element) {
       element = element.getElementsByTagName('div');
     }
-    if (event.key === 'ArrowDown') {
+    if (event.key === 'ArrowDown' && currentFocus < results.length - 1) {
       currentFocus++;
       addActive(element, currentFocus);
-    } else if (event.key === 'ArrowUp') {
+    } else if (event.key === 'ArrowUp' && currentFocus > 0) {
       currentFocus--;
       addActive(element, currentFocus);
     } else if (event.key === 'Enter') {
@@ -186,7 +156,9 @@
       const languageSelection = value;
       languageInput.value = '';
 
-      userLanguagesResult.push(languageSelection);
+      if (userLanguagesResult.indexOf(languageSelection) === -1) {
+        userLanguagesResult.push(languageSelection);
+      }
 
       renderLanguages(userLanguagesResult);
     });
@@ -197,7 +169,9 @@
     const languageSelection = value;
     languageInput.value = '';
 
-    userLanguagesResult.push(languageSelection);
+    if (userLanguagesResult.indexOf(languageSelection) === -1) {
+      userLanguagesResult.push(languageSelection);
+    }
 
     renderLanguages(userLanguagesResult);
   });

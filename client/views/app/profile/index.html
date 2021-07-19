@@ -1,15 +1,15 @@
 <div class="container">
   <div class="wrapper">
     <div class="profile-photos-container" data-user-photos="${user.photos.length}">
-      <div class="slider">
+      <div class="${user.photos.length > 0 ? 'photos-slider-wrapper' : 'no-photos-slider-wrapper'}">
         <div class="photos-container">
           <div class="slider-wrapper">
             ${user.photos.length > 0 ? user.photos.map((photo, index) => `
             <div class="slide" id="${index}"><img src="${photo}" /></div>
             `).join('') : `<img
               src="${user.gender === 'male' ?
-              'https://res.cloudinary.com/dnjhw5rv2/image/upload/v1613985983/male_fk4pmh.jpg' :
-              'https://res.cloudinary.com/dnjhw5rv2/image/upload/v1613988154/female_zmdkra.jpg'}"
+              'https://res.cloudinary.com/dnjhw5rv2/image/upload/v1613985983/male_profile.jpg' :
+              'https://res.cloudinary.com/dnjhw5rv2/image/upload/v1613988154/female_profile.jpg'}"
             />
             `}
           </div>
@@ -58,7 +58,7 @@
         </div>
       </div>
       <div class="contact-wrapper">
-        <button onclick="handleSendMessage()"><i class="far fa-envelope fa-2x"></i></button>
+        <button onclick="handleGoToConversation()"><i class="far fa-envelope fa-2x"></i></button>
         <button onclick="handleLikeUser()"><i class="far fa-star fa-2x"></i></button>
       </div>
     </div>
@@ -66,43 +66,73 @@
     <div class="user-details-container">
       <div class="user-details-wrapper">
         <h5 class="user-details-header">Details</h5>
-        <div class="details-grid">
-          <div class="details-key">Ethnicity:</div>
-          <div class="details-value">${user.ethnicity ? user.ethnicity.map(ethnicity => ethnicity).join(' | ') : 'No Answer'}</div>
-          <div class="details-key">Raised in:</div>
-          <div class="details-value">${user.countryRaisedIn || 'No Answer'}</div>
-          <div class="details-key">Conviction:</div>
-          <div class="details-value">${user.religiousConviction || 'No Answer'}</div>
-          <div class="details-key">Values:</div>
-          <div class="details-value">${user.religiousValues || 'No Answer'}</div>
-          <div class="details-key">Marital Status:</div>
-          <div class="details-value">${user.maritalStatus || 'No Answer'}</div>
-          <div class="details-key">Education:</div>
-          <div class="details-value">${user.education || 'No Answer'}</div>
-          <div class="details-key">Profession:</div>
-          <div class="details-value">${user.profession || 'No Answer'}</div>
-          <div class="details-key">Languages:</div>
-          <div class="details-value">${user.languages ? user.languages.map(languages => languages).join(' | ') : 'No Answer'}</div>
+        <div class="details-container">
+          <div class="details-wrapper">
+            <span class="details-key">Ethnicity:</span>
+            <span class="details-value">${user.ethnicity ? user.ethnicity.map(ethnicity => ethnicity).join(' | ') : 'No Answer'}</span>
+          </div>
+          <div class="details-wrapper">
+            <span class="details-key">Raised in:</span>
+            <span class="details-value">${user.countryRaisedIn || 'No Answer'}</span>
+          </div>
+          <div class="details-wrapper">
+            <span class="details-key">Conviction:</span>
+            <span class="details-value">${user.religiousConviction || 'No Answer'}</span>
+          </div>
+          <div class="details-wrapper">
+            <span class="details-key">Values:</span>
+            <span class="details-value">${user.religiousValues || 'No Answer'}</span>
+          </div>
+          <div class="details-wrapper">
+            <span class="details-key">Marital Status:</span>
+            <span class="details-value">${user.maritalStatus || 'No Answer'}</span>
+          </div>
+          <div class="details-wrapper">
+            <span class="details-key">Education:</span>
+            <span class="details-value">${user.education || 'No Answer'}</span>
+          </div>
+          <div class="details-wrapper">
+            <span class="details-key">Profession:</span>
+            <span class="details-value">${user.profession || 'No Answer'}</span>
+          </div>
+          <div class="details-wrapper">
+            <span class="details-key">Languages:</span>
+            <span class="details-value">${user.languages ? user.languages.map(language => language).join(' | ') : 'No Answer'}</span>
+          </div>
           ${user.gender === 'female' ? `
-            <div class="details-key">Hijab:</div>
-            <div class="details-value">${user.hijab || 'No Answer'}</div>
+            <div class="details-wrapper">
+              <span class="details-key">Hijab:</span>
+              <span class="details-value">${user.hijab || 'No Answer'}</span>
+            </div>
             ` : ''
           }
-          <div class="details-key">Has children:</div>
-          <div class="details-value">${user.hasChildren || 'No Answer'}</div>
-          <div class="details-key">Wants children:</div>
-          <div class="details-value">Yes</div>
-          <div class="details-key">Body Type:</div>
-          <div class="details-value">Athletic</div>
-          <div class="details-key">Height:</div>
-          <div class="details-value">5' 11"</div>
-          <div class="details-key">Can relocate:</div>
-          <div class="details-value">Yes</div>
-          <div class="details-key">Diet:</div>
-          <div class="details-value">Halal when possible</div>
-          <div class="details-key">Interests:</div>
-          <div class="details-value">
-            Computers <span>&#9679;</span> Nature <span>&#9679;</span> Beach
+          <div class="details-wrapper">
+            <span class="details-key">Has children:</span>
+            <span class="details-value">${user.hasChildren || 'No Answer'}</span>
+          </div>
+          <div class="details-wrapper">
+            <span class="details-key">Wants children:</span>
+            <span class="details-value">${user.wantsChildren || 'No Answer'}</span>
+          </div>
+          <div class="details-wrapper">
+            <span class="details-key">Height:</span>
+            <span class="details-value">${user.height || 'No Answer'}</span>
+          </div>
+          <div class="details-wrapper">
+            <span class="details-key">Can relocate:</span>
+            <span class="details-value">${user.relocate || 'No Answer'}</span>
+          </div>
+          <div class="details-wrapper">
+            <span class="details-key">Diet:</span>
+            <span class="details-value">${user.diet || 'No Answer'}</span>
+          </div>
+          <div class="details-wrapper">
+            <span class="details-key">Smokes:</span>
+            <span class="details-value">${user.smokes || 'No Answer'}</span>
+          </div>
+          <div class="details-wrapper">
+            <span class="details-key">Interests:</span>
+            <span class="details-value">${user.hobbies ? user.hobbies.map(hobby => hobby).join('&nbsp;<span>&#9679;</span>&nbsp;') : 'No Answer'}</span>
           </div>
         </div>
       </div>
@@ -110,36 +140,12 @@
 
     <div class="about-me">
       <h5>About me</h5>
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-        labore et dolore magna aliqua. Amet facilisis magna etiam tempor orci eu. A iaculis at erat
-        pellentesque. Ornare lectus sit amet est placerat in egestas. Nunc id cursus metus aliquam.
-        Sit amet porttitor eget dolor morbi non arcu. Lectus magna fringilla urna porttitor rhoncus
-        dolor. Placerat in egestas erat imperdiet. Sit amet luctus venenatis lectus magna fringilla
-        urna porttitor rhoncus. Mi quis hendrerit dolor magna eget. Justo eget magna fermentum
-        iaculis. Egestas purus viverra accumsan in. Et molestie ac feugiat sed lectus. Lorem donec
-        massa sapien faucibus et molestie ac feugiat sed. Consectetur adipiscing elit ut aliquam. Eu
-        facilisis sed odio morbi quis commodo odio aenean. Sollicitudin nibh sit amet commodo nulla
-        facilisi nullam vehicula. Quis auctor elit sed vulputate mi. Porttitor leo a diam
-        sollicitudin tempor id eu. Arcu odio ut sem nulla pharetra.
-      </p>
+      <p>${user.aboutMe || 'No Answer'}</p>
     </div>
 
     <div class="about-match">
       <h5>About my match</h5>
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-        labore et dolore magna aliqua. Amet facilisis magna etiam tempor orci eu. A iaculis at erat
-        pellentesque. Ornare lectus sit amet est placerat in egestas. Nunc id cursus metus aliquam.
-        Sit amet porttitor eget dolor morbi non arcu. Lectus magna fringilla urna porttitor rhoncus
-        dolor. Placerat in egestas erat imperdiet. Sit amet luctus venenatis lectus magna fringilla
-        urna porttitor rhoncus. Mi quis hendrerit dolor magna eget. Justo eget magna fermentum
-        iaculis. Egestas purus viverra accumsan in. Et molestie ac feugiat sed lectus. Lorem donec
-        massa sapien faucibus et molestie ac feugiat sed. Consectetur adipiscing elit ut aliquam. Eu
-        facilisis sed odio morbi quis commodo odio aenean. Sollicitudin nibh sit amet commodo nulla
-        facilisi nullam vehicula. Quis auctor elit sed vulputate mi. Porttitor leo a diam
-        sollicitudin tempor id eu. Arcu odio ut sem nulla pharetra.
-      </p>
+      <p>${user.aboutMyMatch || 'No Answer'}</p>
     </div>
   </div>
 </div>

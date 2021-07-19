@@ -1,0 +1,35 @@
+<section class="signup-container">
+  <div class="signup-wrapper">
+    <div class="signup-content">
+      <div id="email-exists-error"></div>
+      <form name="signupForm" onsubmit="return false" novalidate>
+        <h2 class="form-title">Enter email address</h2>
+
+        <div class="input-wrapper validate-input" id="email-wrapper">
+          <input type="email" class="form-input" id="user_email" required />
+          <span
+            class="input-focus animate-border-bottom"
+            id="email"
+            data-placeholder="Email"
+          ></span>
+        </div>
+        <div class="form-group submit-button">
+          <div class="loading-spinner">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+          <button
+            type="submit"
+            onclick="handleResendVerificationCode()"
+            class="form-submit"
+            id="signupButton"
+          >
+            Resend Code
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>

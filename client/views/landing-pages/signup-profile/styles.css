@@ -103,8 +103,9 @@ input {
 }
 
 label {
-  text-transform: uppercase;
-  font-weight: 800;
+  font-weight: 700;
+  font-size: 14px;
+  color: #727272;
   margin-bottom: 3px;
 }
 
@@ -133,19 +134,16 @@ input::-webkit-input-placeholder {
 
 input::-moz-placeholder {
   color: #999;
-  text-transform: uppercase;
   font-weight: 600;
 }
 
 input:-ms-input-placeholder {
   color: #999;
-  text-transform: uppercase;
   font-weight: 600;
 }
 
 input:-moz-placeholder {
   color: #999;
-  text-transform: uppercase;
   font-weight: 600;
 }
 
@@ -170,6 +168,15 @@ textarea {
   -webkit-appearance: unset !important;
   -o-appearance: unset !important;
   -ms-appearance: unset !important;
+}
+
+textarea {
+  width: 100%;
+  height: 200px;
+  border-radius: 5px;
+  padding: 8px;
+  resize: none;
+  border: 1px solid #ebebeb;
 }
 
 input::-webkit-outer-spin-button,
@@ -246,7 +253,6 @@ h2 {
   color: #222;
   font-family: 'Montserrat';
   font-size: 24px;
-  text-transform: uppercase;
   text-align: center;
   margin-bottom: 40px;
 }
@@ -328,8 +334,13 @@ list-type-ulli {
   margin-bottom: 4px;
 }
 
+.form-header {
+  width: 100%;
+  height: 40px;
+}
+
 .form-title {
-  line-height: 1.66;
+  line-height: 40px;
   margin: 0;
   padding: 0;
   font-weight: 900;
@@ -338,12 +349,19 @@ list-type-ulli {
   font-size: 24px;
   text-transform: none;
   text-align: center;
-  margin-bottom: 8px;
 }
 
 .form-subtitle {
-  margin: 8px auto;
   text-align: center;
+  padding-bottom: 8px;
+}
+
+.form-errors {
+  display: none;
+  width: 100%;
+  text-align: center;
+  color: red;
+  padding-bottom: 16px;
 }
 
 .form-group {
@@ -352,7 +370,8 @@ list-type-ulli {
 
 .user-location,
 .user-ethnicity,
-.user-raised {
+.user-raised,
+.user-hobbies {
   position: relative;
   padding-bottom: 4px;
 }
@@ -368,9 +387,19 @@ list-type-ulli {
   height: 36px;
 }
 
+.hobbies {
+  height: 36px;
+}
+
+.character-count {
+  display: flex;
+  justify-content: flex-end;
+}
+
 .user-selection-container {
   display: flex;
   justify-content: flex-start;
+  flex-wrap: wrap;
   position: absolute;
   top: 2px;
   padding: 4px;
@@ -408,13 +437,16 @@ list-type-ulli {
 
 #city-error,
 #ethnicity-error,
-#raised-error {
+#raised-error,
+#languages-error,
+#about-me-error-text,
+#about-my-match-error-text {
   display: none;
   color: red;
-  padding-bottom: 16px;
+  padding-bottom: 12px;
 }
 
-.three-item-container {
+.select-container {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   column-gap: 10px;
@@ -468,7 +500,6 @@ list-type-ulli {
   font-size: 14px;
   font-weight: 700;
   color: #fff;
-  text-transform: uppercase;
   border: none;
   cursor: pointer;
   background-image: -moz-linear-gradient(to left, #74ebd5, #9face6);
@@ -503,10 +534,6 @@ list-type-ulli {
 .hijab-container {
   display: none;
   width: 100%;
-}
-
-.form-row label {
-  font-size: 13px;
 }
 
 .form-group,
@@ -598,10 +625,16 @@ list-type-ulli {
 
 .photos-header {
   text-align: center;
-  margin: 0 auto 8px;
-  font-size: 16px;
+  margin: 0;
   line-height: 30px;
-  text-transform: uppercase;
+  font-size: 16px;
+  font-weight: 700;
+  color: #727272;
+}
+
+.photos-subtitle {
+  margin-bottom: 16px;
+  text-align: center;
 }
 
 .invalid-file-type {
@@ -938,7 +971,7 @@ list-type-ulli {
     width: 100%;
   }
 
-  .three-item-container {
+  .select-container {
     grid-template-columns: 1fr;
     grid-row-gap: 7px;
   }

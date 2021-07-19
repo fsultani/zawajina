@@ -1,9 +1,8 @@
 const express = require('express');
-
 const router = express.Router();
 
 router.get('/', async (req, res, next) => {
-  const authUser = req.authUser;
+  const { authUser, conversationsCount } = req;
 
   res.render('app/_layouts/index', {
     locals: {
@@ -17,9 +16,9 @@ router.get('/', async (req, res, next) => {
       scripts: [
         'https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js',
         'https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js',
-        '/static/client/views/app/_layouts/handleLogout.js',
       ],
       authUser,
+      conversationsCount,
     },
     partials: {
       nav: 'app/_partials/app-nav',

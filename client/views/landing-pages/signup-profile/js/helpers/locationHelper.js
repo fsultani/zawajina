@@ -1,8 +1,10 @@
 (async () => {
   const locationInput = document.querySelector('#locationInput');
   const locationResults = document.querySelector('#location-results');
-  const locationInputPlaceholder = 'What city do you live in?';
-  let currentFocus;
+  const locationInputPlaceholder = 'Enter your city';
+
+  let currentFocus = 0;
+  let results = [];
 
   locationInput.placeholder = locationInputPlaceholder;
 
@@ -20,45 +22,15 @@
 
   const getAllCountries = async userInput => {
     try {
-      let response;
-      setTimeout(() => {
-        if (!response) {
-          document.querySelector('body').style.cssText = `
-            background-color: rgba(0,0,0,0.5);
-            opacity: 0.5;
-          `;
-
-          document.querySelector('.full-page-loading-spinner').style.cssText = `
-            display: inline-block;
-          `;
-        }
-      }, 1000);
-      response = await axios.get(`/register/api/cities-list`, {
+      const data = await FetchData('/register/api/cities', {
         params: {
           userIPAddress,
           userInput,
         },
       });
-      document.querySelector('body').style.cssText = `
-        background-color: #ffffff;
-        opacity: 1;
-      `;
-
-      document.querySelector('.full-page-loading-spinner').style.cssText = `
-        display: none;
-      `;
-      return response.data;
-    } catch (err) {
-      console.error(err);
-      document.querySelector('body').style.cssText = `
-        background-color: #ffffff;
-        opacity: 1;
-      `;
-
-      document.querySelector('.full-page-loading-spinner').style.cssText = `
-        display: none;
-      `;
-      return err.response;
+      return data;
+    } catch (error) {
+      return error.response;
     }
   };
 
@@ -75,7 +47,7 @@
           return false;
         }
 
-        const results = await getAllCountries(userInput);
+        results = await getAllCountries(userInput);
         currentFocus = -1;
 
         let searchResultsWrapper = '<div class="autocomplete-items">';
@@ -137,10 +109,10 @@
     if (element) {
       element = element.getElementsByTagName('div');
     }
-    if (event.key === 'ArrowDown') {
+    if (event.key === 'ArrowDown' && currentFocus < results.length - 1) {
       currentFocus++;
       addActive(element, currentFocus);
-    } else if (event.key === 'ArrowUp') {
+    } else if (event.key === 'ArrowUp' && currentFocus > 0) {
       currentFocus--;
       addActive(element, currentFocus);
     } else if (event.key === 'Enter') {

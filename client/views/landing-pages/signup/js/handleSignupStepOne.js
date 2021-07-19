@@ -78,14 +78,16 @@ const handleSignupStepOne = () => {
       })
       .then(res => {
         if (res.status === 201) {
-          Cookies.set('userId', res.data.userId, { sameSite: 'strict' });
+          Cookies.set('my_match_userId', res.data.userId, { sameSite: 'strict' });
+          window.location.pathname = '/verify-email';
+        } else if (res.status === 200) {
           window.location.pathname = '/signup/profile';
         }
       })
       .catch(error => {
         console.error(error.response);
         if (error.response.status === 403) {
-          // Email address already exists
+          /* Email address already exists */
           loadingSpinner.style.display = 'none';
           signupButton.innerHTML = 'Create Account';
           signupButton.disabled = false;
@@ -94,7 +96,7 @@ const handleSignupStepOne = () => {
           document.getElementById('email-exists-error').innerHTML = error.response.data.error;
           document.getElementById('email-exists-error').style.display = 'block';
         } else {
-          // Display generic error message
+          /* Display generic error message */
           loadingSpinner.style.display = 'none';
           signupButton.innerHTML = 'Create Account';
           signupButton.disabled = false;

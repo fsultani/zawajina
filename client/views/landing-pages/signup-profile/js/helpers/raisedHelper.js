@@ -1,37 +1,23 @@
 (async () => {
   const raisedInput = document.querySelector('#raisedInput');
   const raisedResults = document.querySelector('#raised-results');
-  const raisedInputPlaceholder = 'Where were you raised?';
+  const raisedInputPlaceholder = 'Enter country';
 
-  let currentFocus;
+  let currentFocus = 0;
+  let results = [];
 
   raisedInput.placeholder = raisedInputPlaceholder;
 
   const getAllCountries = async userInput => {
     try {
-      let response;
-      setTimeout(() => {
-        if (!response) {
-          document.querySelector('body').style.backgroundColor = 'rgba(0,0,0,0.5)';
-          document.querySelector('body').style.opacity = 0.5;
-          document.querySelector('.full-page-loading-spinner').style.display = 'inline-block';
-        }
-      }, 1000);
-      response = await axios.get(`/register/api/countries-list`, {
+      const data = await FetchData('/register/api/countries', {
         params: {
           userInput,
         },
       });
-      document.querySelector('body').style.backgroundColor = '#ffffff';
-      document.querySelector('body').style.opacity = 1;
-      document.querySelector('.full-page-loading-spinner').style.display = 'none';
-      return response.data;
-    } catch (err) {
-      console.error(err);
-      document.querySelector('body').style.backgroundColor = '#ffffff';
-      document.querySelector('body').style.opacity = 1;
-      document.querySelector('.full-page-loading-spinner').style.display = 'none';
-      return err.response;
+      return data;
+    } catch (error) {
+      return error.response;
     }
   };
 
@@ -45,7 +31,7 @@
           return false;
         }
 
-        const results = await getAllCountries(userInput);
+        results = await getAllCountries(userInput);
         currentFocus = -1;
 
         let searchResultsWrapper = '<div class="autocomplete-items">';
@@ -68,8 +54,8 @@
       }, 250)
     );
 
-  const renderCountry = (country) => {
-    const countryName = country.replace(/<\/?strong>/g, '')
+  const renderCountry = country => {
+    const countryName = country.replace(/<\/?strong>/g, '');
     const result = `
       <div class='user-selection-container'>
         <div class='user-selection-wrapper display-country'>
@@ -99,10 +85,10 @@
     if (element) {
       element = element.getElementsByTagName('div');
     }
-    if (event.key === 'ArrowDown') {
+    if (event.key === 'ArrowDown' && currentFocus < results.length - 1) {
       currentFocus++;
       addActive(element, currentFocus);
-    } else if (event.key === 'ArrowUp') {
+    } else if (event.key === 'ArrowUp' && currentFocus > 0) {
       currentFocus--;
       addActive(element, currentFocus);
     } else if (event.key === 'Enter') {
@@ -132,7 +118,7 @@
       const value = element[currentFocus].id;
       const countrySelection = value;
       raisedInput.value = '';
-      renderCountry(countrySelection)
+      renderCountry(countrySelection);
     });
   });
 

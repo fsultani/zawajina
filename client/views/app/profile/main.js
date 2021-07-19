@@ -102,8 +102,16 @@ document.addEventListener('click', event => {
 
 /* **************************************************************************** */
 
-const handleSendMessage = () => {
-  console.log(`handleSendMessage`);
+const handleGoToConversation = () => {
+  const userId = window.location.pathname.split('/')[2]
+  axios
+    .get(`/messages/api/conversation/user/${userId}`)
+    .then(({ data: { conversationId } }) => {
+      window.location.pathname = `/messages/${conversationId}`;
+    })
+    .catch(error => {
+      console.log(`error\n`, error);
+    })
 };
 
 const handleLikeUser = () => {

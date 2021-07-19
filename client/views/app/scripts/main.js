@@ -19,6 +19,11 @@ const closeNav = () => {
   document.querySelector('.mask').classList.remove('mask-open');
 };
 
+const handleLogout = () => {
+  Cookies.remove('my_match_authToken');
+  window.location.pathname = '/login';
+};
+
 document.addEventListener('click', event => {
   const targetName = event.target.classList.value;
   const isDropdownContentVisible = document.querySelector('.dropdown-content').classList;

@@ -5,7 +5,7 @@ const imagePreview1 = document.querySelector('.image-preview-1');
 const removeImageButton1 = document.querySelector('.remove-image-1');
 const processingBar1 = document.querySelector('.processing-bar-1');
 const successBox1 = document.querySelector('.success-box-1');
-const imageUploadContainerWidth = document.querySelector('.image-upload-container').offsetWidth
+const imageUploadContainerWidth = document.querySelector('.image-upload-container').offsetWidth;
 
 customButton1.addEventListener('click', () => {
   if (image1.value) image1.value = '';

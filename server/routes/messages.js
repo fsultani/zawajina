@@ -1,172 +1,194 @@
-// const express = require('express');
-// const router = express.Router();
-// const mongoose = require('mongoose');
-// const bodyParser = require('body-parser');
-// const jwt = require('jwt-simple');
-// const JWT_SECRET = Buffer.from('fe1a1915a379f3be5394b64d14794932', 'hex');
+const express = require('express');
+const { ObjectId } = require('mongodb');
 
-// const User = require('../models/user');
-// const Message = require('../models/message');
-// const Conversation = require('../models/conversation');
+const router = express.Router();
 
-// /****************************************************************************************************
-// // Get the logged in user's messages
-// ****************************************************************************************************/
+const { usersCollection, messagesCollection } = require('../db');
 
-// router.get('/api/all-messages', (req, res, next) => {
-//   const token = req.headers['authorization'];
-//   const decodedUser = jwt.decode(token, JWT_SECRET);
-//   User.findOne({ username: decodedUser.username }, (err, user) => {
-//     Message.aggregate([
-//       {
-//         $match: {
-//           $or: [
-//             {
-//               from_user_id: user._id.toString(),
-//             },
-//             {
-//               to_user_id: user._id.toString(),
-//             },
-//           ],
-//         },
-//       },
-//       {
-//         $group: {
-//           _id: '$conversation',
-//           lastMessage: { $last: '$$ROOT' },
-//         },
-//       },
-//     ]).exec((err, lastMessage) => {
-//       res.json({ lastMessage });
-//     });
-//   });
-// });
+router.get('/:conversationId?', async (req, res, next) => {
+  const { conversationId } = req.params;
+  const { authUser, conversationsCount } = req;
 
-// /****************************************************************************************************
-// // Send a new message to another user
-// ****************************************************************************************************/
+  const conversationsCollection = await messagesCollection().findOne({ _id: ObjectId(conversationId) })
+  const users = conversationsCollection ? conversationsCollection.users : {};
 
-// router.post('/api/new-message', (req, res, next) => {
-//   const token = req.headers['authorization'];
-//   const decodedUser = jwt.decode(token, JWT_SECRET);
-//   Promise.all([
-//     User.findOne({ _id: req.body.memberId }),
-//     User.findOne({ username: decodedUser.username }),
-//   ]).then(([user, member]) => {
-//     Conversation.findOne(
-//       {
-//         $and: [
-//           {
-//             users: user._id,
-//           },
-//           {
-//             users: member._id,
-//           },
-//         ],
-//       },
-//       (err, conversation) => {
-//         if (conversation) {
-//           // Conversation exists, so redirect to the conversation screen
-//         } else {
-//           Conversation.create(
-//             {
-//               created_at: Date.now(),
-//               updated_at: Date.now(),
-//               created_by_user_first_name: member.name,
-//               created_by_user_id: member._id,
-//               sent_to_user_first_name: user.name,
-//               sent_to_user_id: user._id,
-//               unread: true,
-//               users: [member, user],
-//             },
-//             (err, conversation) => {
-//               if (err) {
-//                 console.log(err);
-//               } else {
-//                 Message.create(
-//                   {
-//                     message: req.body.message,
-//                     from: member.name,
-//                     to: user.name,
-//                     from_user_id: member._id,
-//                     to_user_id: user._id,
-//                     created_at: Date.now(),
-//                     unread: true,
-//                     conversation: conversation,
-//                   },
-//                   (err, message) => {
-//                     if (err) {
-//                       console.log(err);
-//                     } else {
-//                       message.save();
-//                       conversation.save();
-//                       res.json({ conversation: conversation });
-//                     }
-//                   }
-//                 );
-//               }
-//             }
-//           );
-//         }
-//       }
-//     );
-//   });
-// });
+  res.render('app/_layouts/index', {
+    locals: {
+      title: 'My Match',
+      styles: [
+        'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css',
+        '/static/client/views/app/_partials/app-nav.css',
+        '/static/client/views/app/_layouts/app-global-styles.css',
+        '/static/client/views/app/messages/styles.css',
+      ],
+      scripts: [
+        'https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js',
+        'https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js',
+        '/static/client/views/app/messages/script.js',
+      ],
+      authUser,
+      conversationsCount,
+      conversationId,
+      users,
+    },
+    partials: {
+      nav: 'app/_partials/app-nav',
+      body: 'app/messages/index',
+    },
+  });
+});
 
-// /****************************************************************************************************
-// // Reply to a message
-// ****************************************************************************************************/
+/****************************************************************************************************
+// Get all conversations
+****************************************************************************************************/
 
-// router.post('/api/reply', (req, res, next) => {
-//   const token = req.headers['authorization'];
-//   const decodedUser = jwt.decode(token, JWT_SECRET);
-//   Conversation.findOne({ _id: req.body.conversationId }, (err, conversation) => {
-//     const to =
-//       conversation.sent_to_user_id === req.body.memberId
-//         ? conversation.created_by_user_first_name
-//         : conversation.sent_to_user_first_name;
-//     const from_user_id =
-//       conversation.sent_to_user_id === req.body.memberId
-//         ? conversation.sent_to_user_id
-//         : conversation.created_by_user_id;
-//     const to_user_id =
-//       conversation.sent_to_user_id === req.body.memberId
-//         ? conversation.created_by_user_id
-//         : conversation.sent_to_user_id;
+router.get('/api/conversations', async (req, res, next) => {
+  const { authUser } = req;
 
-//     Message.create(
-//       {
-//         message: req.body.reply,
-//         from: req.body.memberFirstName,
-//         to,
-//         from_user_id,
-//         to_user_id,
-//         created_at: Date.now(),
-//         unread: true,
-//         conversation: conversation,
-//       },
-//       (err, message) => {
-//         if (err) {
-//           console.log(err);
-//         } else {
-//           message.save();
-//           res.status(201).json({ reply: message });
-//         }
-//       }
-//     );
-//   });
-// });
+  try {
+    const allConversations = [];
+    await messagesCollection().find({
+      $or: [
+        {
+          recipientId: ObjectId(authUser._id),
+        },
+        {
+          createdByUserId: ObjectId(authUser._id)
+        }
+      ]
+    }).forEach(conversation => {
+      let otherUser = conversation.users.recipient.name;
 
-// router.put('/api/:conversationId/:messageId', (req, res) => {
-//   Message.findByIdAndUpdate(req.params.messageId, { $set: { unread: false } }, (err, message) => {
-//     res.status(201).end();
-//   });
-//   Conversation.findByIdAndUpdate(
-//     req.params.conversationId,
-//     { $set: { unread: false } },
-//     (err, conversation) => {
-//       res.status(201).end();
-//     }
-//   );
-// });
-// module.exports = router;
+      const authUserId = String(authUser._id);
+      const otherUserId = String(conversation.users.recipient._id);
+      if (authUserId === otherUserId) {
+        otherUser = conversation.users.createdByUser.name;
+      }
+
+      const lastMessagePreview = conversation.messages[conversation.messages.length - 1];
+      const lastMessageWasRead = String(lastMessagePreview.sender) === authUserId ? true : lastMessagePreview.read;
+      const allUnreadMessagesCount = conversation.messages.filter(message => !message.read).length;
+
+      allConversations.push({
+        ...conversation,
+        otherUser,
+        lastMessagePreview: lastMessagePreview.messageText.slice(0, 100),
+        lastMessageWasRead,
+        allUnreadMessagesCount,
+      })
+    });
+
+    res.status(200).json({
+      allConversations,
+    });
+  } catch (error) {
+    console.log(`Error in /api/conversations\n`, error);
+    throw new Error(error);
+  }
+})
+
+/****************************************************************************************************
+// View the conversation with a user
+****************************************************************************************************/
+
+router.get('/api/conversation/user/:userId', async (req, res, next) => {
+  const { authUser } = req;
+  const recipientId = req.params.userId;
+
+  try {
+    /* Conversation was accessed by clicking on the message button from the user's profile */
+    const conversationsCollection = await messagesCollection().findOne({ $or: [{ recipientId: ObjectId(recipientId) }, { createdByUserId: ObjectId(recipientId) }] })
+    const recipient = await usersCollection().findOne({ _id: ObjectId(recipientId) });
+
+    /* No conversation exists.  Create a new one. */
+    if (!conversationsCollection) {
+      const conversation = {
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        createdByUserId: authUser._id,
+        recipientId: recipient._id,
+        users: {
+          createdByUser: authUser,
+          recipient,
+        },
+        messages: [],
+      }
+
+      /* Create the new conversation in.  Send the ID. */
+      const newConversation = await messagesCollection().insertOne(conversation);
+      res.status(201).json({ conversationId: newConversation.insertedId });
+    } else {
+      /* A conversation exists.  Send the ID. */
+      return res.status(200).json({ conversationId: conversationsCollection._id });
+    }
+  } catch (error) {
+    console.log(`Error in /api/conversation/user/:userId\n`, error);
+    throw new Error(error);
+  }
+})
+
+/****************************************************************************************************
+// View the conversation with a user
+****************************************************************************************************/
+
+router.get('/api/conversation/:conversationId', async (req, res, next) => {
+  const { authUser } = req;
+  const conversationId = req.params.conversationId;
+
+  try {
+    /* Conversation was accessed by clicking on the message button from the user's profile */
+    const conversationsCollection = await messagesCollection().findOne({ _id: ObjectId(conversationId) })
+    const messages = conversationsCollection && conversationsCollection.messages.length > 0 ? conversationsCollection.messages : [];
+
+    res.status(200).json({
+      conversationId: conversationsCollection._id,
+      createdByUser: conversationsCollection.users.createdByUser,
+      authUser,
+      messages,
+    });
+  } catch (error) {
+    console.log(`Error in /api/conversation/:conversationId\n`, error);
+    throw new Error(error);
+  }
+})
+
+/****************************************************************************************************
+// Send a new message to a user
+****************************************************************************************************/
+
+router.post('/api/new-message', async (req, res) => {
+  const { authUser } = req;
+  const { conversationId, messageText } = req.body;
+
+  try {
+    const now = new Date();
+    const time = now.toLocaleTimeString()
+    const conversation = {
+      $set: { updatedAt: new Date() },
+      $push: {
+        messages: {
+          sender: authUser._id,
+          messageText,
+          time,
+          read: false,
+        }
+      }
+    }
+
+    let conversationsCollection = await messagesCollection().findOne({ _id: ObjectId(conversationId) })
+    await messagesCollection().updateOne({ _id: conversationsCollection._id }, conversation);
+    conversationsCollection = await messagesCollection().findOne({ _id: ObjectId(conversationId) })
+    const messages = conversationsCollection && conversationsCollection.messages.length > 0 ? conversationsCollection.messages : [];
+
+    res.status(200).json({
+      createdByUser: conversationsCollection.users.createdByUser,
+      authUser,
+      messages,
+    });
+  } catch (error) {
+    console.log(`Error in /api/new-message\n`, error);
+    throw new Error(error);
+  }
+})
+
+module.exports = router;
