@@ -1,13 +1,13 @@
 const express = require('express');
-const { ObjectId } = require('mongodb');
+const { ObjectId, ObjectID } = require('mongodb');
 
 const router = express.Router();
 
-const { usersCollection, messagesCollection } = require('../db');
+const { usersCollection, messagesCollection, messagesAggregate } = require('../db');
 
 router.get('/:conversationId?', async (req, res, next) => {
   const { conversationId } = req.params;
-  const { authUser, conversationsCount } = req;
+  const { authUser, allConversationsCount } = req;
 
   const conversationsCollection = await messagesCollection().findOne({ _id: ObjectId(conversationId) })
   const users = conversationsCollection ? conversationsCollection.users : {};
@@ -27,7 +27,7 @@ router.get('/:conversationId?', async (req, res, next) => {
         '/static/client/views/app/messages/script.js',
       ],
       authUser,
-      conversationsCount,
+      allConversationsCount,
       conversationId,
       users,
     },
@@ -46,6 +46,78 @@ router.get('/api/conversations', async (req, res, next) => {
   const { authUser } = req;
 
   try {
+    // const allConversationsSidebar = await messagesCollection().aggregate([
+    //   {
+    //     $match: {
+    //       $or: [
+    //         {
+    //           recipientId: ObjectId(authUser._id),
+    //         },
+    //         {
+    //           createdByUserId: ObjectId(authUser._id)
+    //         }
+    //       ]
+    //     }
+    //   },
+    //   {
+    //     $addFields: {
+    //       'otherUser': {
+    //         $cond: {
+    //           'if': {
+    //             $eq: ['$recipientId', ObjectId(authUser._id)]
+    //           },
+    //           'then': '$users.createdByUser.name',
+    //           'else': '$users.recipient.name',
+    //         }
+    //       },
+    //       'lastMessagePreview': {
+    //         $substrBytes: [{ '$last': '$messages.messageText' }, 0, 50]
+    //       },
+    //       'lastMessageWasRead': {
+    //         $cond: {
+    //           'if': {
+    //             $eq: [{ '$last': '$messages.recipient' }, ObjectId(authUser._id)]
+    //           },
+    //           'then': { '$last': '$messages.read' },
+    //           'else': true,
+    //         }
+    //       },
+    //       'unreadMessagesCount': {
+    //         $sum: {
+    //           $map: {
+    //             'input': '$messages',
+    //             'as': 'message',
+    //             'in': {
+    //               $cond: {
+    //                 'if': {
+    //                   $and: [
+    //                     { $eq: [ '$$message.recipient', ObjectId(authUser._id) ] },
+    //                     { $eq: [ '$$message.read', false ] },
+    //                   ]
+    //                 },
+    //                 'then': 1,
+    //                 'else': 0,
+    //               }
+    //             }
+    //           }
+    //         }
+    //       },
+    //     }
+    //   },
+    //   {
+    //     $project: {
+    //       otherUser: 1,
+    //       lastMessagePreview: 1,
+    //       lastMessageWasRead: 1,
+    //       unreadMessagesCount: 1,
+    //     }
+    //   }
+    // ]).toArray();
+
+    // res.status(200).json({
+    //   allConversationsSidebar,
+    // });
+
     const allConversations = [];
     await messagesCollection().find({
       $or: [
@@ -65,21 +137,37 @@ router.get('/api/conversations', async (req, res, next) => {
         otherUser = conversation.users.createdByUser.name;
       }
 
-      const lastMessagePreview = conversation.messages[conversation.messages.length - 1];
-      const lastMessageWasRead = String(lastMessagePreview.sender) === authUserId ? true : lastMessagePreview.read;
-      const allUnreadMessagesCount = conversation.messages.filter(message => !message.read).length;
+      let lastMessage = {}
+      if (conversation.messages.length > 0) {
+        const lastMessageObject = conversation.messages[conversation.messages.length - 1];
+        lastMessage = {
+          preview: lastMessageObject.messageText.slice(0, 50),
+          wasRead: String(lastMessageObject.sender) === authUserId ? true : lastMessageObject.read,
+        }
+      } else {
+        lastMessage = {
+          preview: '',
+          wasRead: true,
+        }
+      }
+
+      const unreadMessagesCount = conversation.messages.filter(message => {
+        if (String(message.sender) !== authUserId) {
+          return !message.read;
+        }
+      }).length;
 
       allConversations.push({
         ...conversation,
         otherUser,
-        lastMessagePreview: lastMessagePreview.messageText.slice(0, 100),
-        lastMessageWasRead,
-        allUnreadMessagesCount,
+        lastMessagePreview: lastMessage.preview,
+        lastMessageWasRead: lastMessage.wasRead,
+        unreadMessagesCount,
       })
     });
 
     res.status(200).json({
-      allConversations,
+      allConversationsSidebar: allConversations,
     });
   } catch (error) {
     console.log(`Error in /api/conversations\n`, error);
@@ -88,7 +176,7 @@ router.get('/api/conversations', async (req, res, next) => {
 })
 
 /****************************************************************************************************
-// View the conversation with a user
+// View the conversation with a user through the user's profile page
 ****************************************************************************************************/
 
 router.get('/api/conversation/user/:userId', async (req, res, next) => {
@@ -97,7 +185,22 @@ router.get('/api/conversation/user/:userId', async (req, res, next) => {
 
   try {
     /* Conversation was accessed by clicking on the message button from the user's profile */
-    const conversationsCollection = await messagesCollection().findOne({ $or: [{ recipientId: ObjectId(recipientId) }, { createdByUserId: ObjectId(recipientId) }] })
+    const conversationsCollection = await messagesCollection().findOne({
+      $or: [
+        {
+          $and: [
+            { recipientId: ObjectId(authUser._id) },
+            { createdByUserId: ObjectId(recipientId) }
+          ]
+        },
+        {
+          $and: [
+            { recipientId: ObjectId(recipientId) },
+            { createdByUserId: ObjectId(authUser._id) }
+          ]
+        },
+      ]
+    })
     const recipient = await usersCollection().findOne({ _id: ObjectId(recipientId) });
 
     /* No conversation exists.  Create a new one. */
@@ -128,7 +231,7 @@ router.get('/api/conversation/user/:userId', async (req, res, next) => {
 })
 
 /****************************************************************************************************
-// View the conversation with a user
+// Get the conversation with a user after the conversation page loads
 ****************************************************************************************************/
 
 router.get('/api/conversation/:conversationId', async (req, res, next) => {
@@ -138,6 +241,20 @@ router.get('/api/conversation/:conversationId', async (req, res, next) => {
   try {
     /* Conversation was accessed by clicking on the message button from the user's profile */
     const conversationsCollection = await messagesCollection().findOne({ _id: ObjectId(conversationId) })
+    await messagesCollection().updateOne(
+      {
+        _id: ObjectId(conversationId),
+      },
+      { $set: { "messages.$[element].read": true } },
+      {
+        multi: true,
+        arrayFilters: [
+          {
+            "element.recipient": ObjectId(authUser._id),
+          }
+        ]
+      }
+    )
     const messages = conversationsCollection && conversationsCollection.messages.length > 0 ? conversationsCollection.messages : [];
 
     res.status(200).json({
@@ -160,30 +277,33 @@ router.post('/api/new-message', async (req, res) => {
   const { authUser } = req;
   const { conversationId, messageText } = req.body;
 
+  let conversationsCollection = await messagesCollection().findOne({ _id: ObjectId(conversationId) })
   try {
     const now = new Date();
-    const time = now.toLocaleTimeString()
-    const conversation = {
+    const date = now.toLocaleDateString()
+    const time = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    const timeStamp = `${date} - ${time}`;
+    const message = {
       $set: { updatedAt: new Date() },
       $push: {
         messages: {
           sender: authUser._id,
+          recipient: String(authUser._id) === String(conversationsCollection.recipientId) ? conversationsCollection.createdByUserId : conversationsCollection.recipientId,
           messageText,
-          time,
+          timeStamp,
           read: false,
         }
       }
     }
 
-    let conversationsCollection = await messagesCollection().findOne({ _id: ObjectId(conversationId) })
-    await messagesCollection().updateOne({ _id: conversationsCollection._id }, conversation);
+    await messagesCollection().updateOne({ _id: conversationsCollection._id }, message);
     conversationsCollection = await messagesCollection().findOne({ _id: ObjectId(conversationId) })
-    const messages = conversationsCollection && conversationsCollection.messages.length > 0 ? conversationsCollection.messages : [];
 
     res.status(200).json({
       createdByUser: conversationsCollection.users.createdByUser,
       authUser,
-      messages,
+      message: messageText,
+      timeStamp,
     });
   } catch (error) {
     console.log(`Error in /api/new-message\n`, error);

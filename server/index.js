@@ -8,7 +8,7 @@ const { ObjectId } = require('mongodb');
 const jwt = require('jsonwebtoken');
 const JWT_SECRET = Buffer.from('fe1a1915a379f3be5394b64d14794932', 'hex');
 
-const { connectToServer, usersCollection, messagesCollection } = require('./db.js');
+const { connectToServer, usersCollection, messagesCollection, messagesAggregate } = require('./db.js');
 const index = require('./routes/index');
 const register = require('./routes/register/index');
 const user = require('./routes/user');
@@ -328,15 +328,23 @@ app.use('*', (req, res, next) => {
             footer: 'landing-pages/_partials/footer',
           },
         });
-      }
+      };
 
-      const conversationsCount = await messagesCollection().countDocuments({ createdByUserId: user._id })
+      const allConversationsCount = await messagesCollection().countDocuments({
+        messages: {
+          $elemMatch: {
+            recipient: ObjectId(user._id),
+            read: false,
+          }
+        },
+      });
+
       req.authUser = user;
-      req.conversationsCount = conversationsCount;
+      req.allConversationsCount = allConversationsCount;
       next();
     });
   });
-})
+});
 
 /* Use index.js for any routes beginning with '/' */
 app.use('/', index);

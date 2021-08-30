@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
-router.get('/', async (req, res, next) => {
-  const { authUser, conversationsCount } = req;
+router.get('/', async (req, res) => {
+  const { authUser, allConversationsCount } = req;
 
   res.render('app/_layouts/index', {
     locals: {
@@ -18,7 +18,7 @@ router.get('/', async (req, res, next) => {
         'https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js',
       ],
       authUser,
-      conversationsCount,
+      allConversationsCount,
     },
     partials: {
       nav: 'app/_partials/app-nav',

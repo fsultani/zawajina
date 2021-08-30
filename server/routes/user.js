@@ -7,7 +7,7 @@ const { usersCollection } = require('../db.js');
 
 router.get('/:userId', async (req, res, next) => {
   const { userId } = req.params;
-  const { authUser, conversationsCount } = req;
+  const { authUser, allConversationsCount } = req;
 
   const user = await usersCollection().findOne({ _id: ObjectId(userId) });
   if (!user) return res.redirect('/users');
@@ -56,7 +56,7 @@ router.get('/:userId', async (req, res, next) => {
         '/static/client/views/app/profile/main.js',
       ],
       authUser,
-      conversationsCount,
+      allConversationsCount,
       lastActive,
       user,
     },

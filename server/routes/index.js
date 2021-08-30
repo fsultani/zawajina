@@ -36,7 +36,7 @@ router.post('/login', async (req, res, next) => {
 });
 
 router.get('/users', async (req, res, next) => {
-  const { authUser, conversationsCount } = req;
+  const { authUser, allConversationsCount } = req;
   const page = parseInt(req.query.page);
   const skipRecords = page > 1 ? (page - 1) * 20 : 0;
 
@@ -70,7 +70,7 @@ router.get('/users', async (req, res, next) => {
           'https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js',
         ],
         authUser,
-        conversationsCount,
+        allConversationsCount,
         allUsersCount,
         allUsers,
         previousPage,
@@ -97,7 +97,7 @@ router.get('/users', async (req, res, next) => {
           'https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js',
         ],
         authUser,
-        conversationsCount,
+        allConversationsCount,
         allUsersCount: 0,
         allUsers: [],
         previousPage: 0,
