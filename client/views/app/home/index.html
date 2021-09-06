@@ -1,40 +1,35 @@
 <div class="main">
-  <h2 class="testimonials-header">Recently Active</h2>
-  <div class="users-container">
-    ${allUsers.map(user => `
-    <a href="/user/${user._id}" style="text-decoration: none;">
-      <div class="testimonial-wrapper">
-        <div class="testimonial-image">
-          <img
-            src="${user.photos.length > 0 ? user.photos[0] : user.gender === 'male' ? 'https://res.cloudinary.com/dnjhw5rv2/image/upload/v1613985983/male_profile.jpg' : 'https://res.cloudinary.com/dnjhw5rv2/image/upload/v1613988154/female_profile.jpg'}"
-            alt="Photo 1"
-          />
+  <div class="main-container">
+    <h2 class="testimonials-header">Recently Active</h2>
+    <div class="users-container">
+      ${allUsers.map(user => `
+      <a href="/user/${user._id}" style="text-decoration: none;">
+        <div class="testimonial-wrapper">
+          <div class="testimonial-image">
+            <img
+              src="${user.photos.length > 0 ? user.photos[0] : user.gender === 'male' ? 'https://res.cloudinary.com/dnjhw5rv2/image/upload/v1613985983/male_profile.jpg' : 'https://res.cloudinary.com/dnjhw5rv2/image/upload/v1613988154/female_profile.jpg'}"
+              alt="Photo 1" />
+          </div>
+          <div class="testimonial-body">
+            <div class="testimonial-name">${user.name}, ${user.age}</div>
+            <p class="location">
+              ${user.city}, ${user.state !== null ? `${user.state}, ${user.country}` : user.country}
+            </p>
+          </div>
         </div>
-        <div class="testimonial-body">
-          <div class="testimonial-name">${user.name}, ${user.age}</div>
-          <p class="location">
-            ${user.city}, ${user.state !== null ? `${user.state}, ${user.country}` : user.country}
-          </p>
-        </div>
-      </div>
-    </a>
-    `).join('')}
+      </a>
+      `).join('')}
+    </div>
   </div>
 
   <div class="pagination-container">
     <div class="pagination">
-      ${ previousPage ? previousPage === 1 ? `<a href="/users">❮</a>` : `<a
-        href="/users?page=${currentPage - 1}"
-        >❮</a
-      >` : '' } ${numberOfPages > 2 && currentPage === numberOfPages ? `<a
-        href="/users?page=${previousPage - 1}"
-        >${previousPage - 1}</a
-      >` : ''} ${ previousPage ? previousPage === 1 ? `<a href="/users">${previousPage}</a>` : `<a
-        href="/users?page=${previousPage}"
-        >${previousPage}</a
-      >` : '' }
+      ${ previousPage ? previousPage === 1 ? `<a href="/users">❮</a>` : `<a href="/users?page=${currentPage - 1}">❮</a>`
+      : '' } ${numberOfPages > 2 && currentPage === numberOfPages ? `<a
+        href="/users?page=${previousPage - 1}">${previousPage - 1}</a>` : ''} ${ previousPage ? previousPage === 1 ? `<a
+        href="/users">${previousPage}</a>` : `<a href="/users?page=${previousPage}">${previousPage}</a>` : '' }
 
-      <a href="#" style="pointer-events: none;" class="active">${currentPage}</a>
+      ${numberOfPages > 1 ? `<a href="#" style="pointer-events: none;" class="active">${currentPage}</a>` : ''}
       ${nextPage ? `<a href="/users?page=${nextPage}">${nextPage}</a>` : ''} ${numberOfPages > 2 &&
       currentPage === 1 ? `<a href="/users?page=${nextPage + 1}">${nextPage + 1}</a>` : ''}
       ${nextPage ? `<a href="/users?page=${currentPage + 1}">❯</a>` : ''}

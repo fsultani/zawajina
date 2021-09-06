@@ -165,6 +165,7 @@ router.get('/api/conversations', async (req, res, next) => {
         unreadMessagesCount,
       })
     });
+    allConversations.sort((a, b) => b.updatedAt - a.updatedAt)
 
     res.status(200).json({
       allConversationsSidebar: allConversations,
@@ -299,10 +300,57 @@ router.post('/api/new-message', async (req, res) => {
     await messagesCollection().updateOne({ _id: conversationsCollection._id }, message);
     conversationsCollection = await messagesCollection().findOne({ _id: ObjectId(conversationId) })
 
+    const allConversations = [];
+    await messagesCollection().find({
+      $or: [
+        {
+          recipientId: ObjectId(authUser._id),
+        },
+        {
+          createdByUserId: ObjectId(authUser._id)
+        }
+      ]
+    }).forEach(conversation => {
+      let otherUser = conversation.users.recipient.name;
+
+      const authUserId = String(authUser._id);
+      const otherUserId = String(conversation.users.recipient._id);
+      if (authUserId === otherUserId) {
+        otherUser = conversation.users.createdByUser.name;
+      }
+
+      let lastMessage = {}
+      if (conversation.messages.length > 0) {
+        const lastMessageObject = conversation.messages[conversation.messages.length - 1];
+        lastMessage = {
+          preview: lastMessageObject.messageText.slice(0, 50),
+          wasRead: String(lastMessageObject.sender) === authUserId ? true : lastMessageObject.read,
+        }
+      } else {
+        lastMessage = {
+          preview: '',
+          wasRead: true,
+        }
+      }
+
+      const unreadMessagesCount = conversation.messages.filter(message => {
+        if (String(message.sender) !== authUserId) {
+          return !message.read;
+        }
+      }).length;
+
+      allConversations.push({
+        ...conversation,
+        otherUser,
+        lastMessagePreview: lastMessage.preview,
+        lastMessageWasRead: lastMessage.wasRead,
+        unreadMessagesCount,
+      })
+    });
+    allConversations.sort((a, b) => b.updatedAt - a.updatedAt)
+
     res.status(200).json({
-      createdByUser: conversationsCollection.users.createdByUser,
-      authUser,
-      message: messageText,
+      allConversations,
       timeStamp,
     });
   } catch (error) {

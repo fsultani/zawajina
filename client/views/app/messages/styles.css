@@ -4,17 +4,16 @@
 }
 
 .page-container {
-  padding-top: 50px;
+  margin-top: -55px;;
+  padding-top: 55px;
+  height: 100%;
 }
 
 .container {
   display: flex;
   justify-content: center;
   background-color: #ffffff;
-  height: 75vh;
-  border: solid 1px #eee;
-  border-radius: 12px;
-  box-shadow: 0 8px 8px rgba(22, 30, 42, 0.16);
+  height: 100%;
 }
 
 .left-container {
@@ -70,7 +69,9 @@
 }
 
 .sidebar-conversations-container {
-  padding: 20px 0;
+  height: calc(100vh - 110px);
+  overflow-y: auto;
+  padding-bottom: 20px;
 }
 
 .sidebar-message-container {
@@ -253,11 +254,8 @@
   box-sizing: border-box;
   position: relative;
   display: flex;
-  /*flex-direction: column;*/
   align-items: flex-end;
   flex-wrap: wrap;
-  /*align-items: stretch;*/
-  /*width: 100%;*/
 }
 
 .message-form {
@@ -275,14 +273,12 @@ textarea {
 }
 
 .message-input {
-  /*width: 100%;*/
   word-wrap: break-word;
   box-sizing: border-box;
   margin: 0;
   font-family: inherit;
   overflow: visible;
   display: block;
-  /*height: calc(1.5em + .75rem + 2px);*/
   max-height: 300px;
   padding: .375rem .75rem;
   font-size: 14px;
@@ -295,7 +291,6 @@ textarea {
   transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
   position: relative;
   flex: 1 1 auto;
-  /*width: 1%;*/
   min-width: 0;
   margin-bottom: 0;
   border-top-right-radius: 0;
@@ -314,13 +309,10 @@ textarea {
   overflow: visible;
   text-transform: none;
   -webkit-appearance: button;
-  /*display: inline-block;*/
   font-weight: 400;
   text-align: center;
-  /*vertical-align: middle;*/
   user-select: none;
   border: 1px solid transparent;
-  /*margin-top: 12px;*/
   padding: .375rem .75rem;
   margin-left: 12px;
   font-size: 14px;

@@ -2,6 +2,13 @@
   max-width: 1200px;
   height: 100%;
   margin: 0 auto;
+  padding: 0 30px 50px;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-container {
+  flex-grow: 1;
 }
 
 .testimonials-header {

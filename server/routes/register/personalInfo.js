@@ -2,6 +2,7 @@ const bcrypt = require('bcryptjs');
 const { validationResult } = require('express-validator/check');
 
 const { usersCollection } = require('../../db.js');
+const sendEmail = require('../../helpers/email.js');
 
 const personalInfo = (req, res) => {
   let { nameValue, email, password } = req.body;
