@@ -1,5 +1,5 @@
 const puppeteer = require('puppeteer');
-const names = require('./female-names');
+const names = require("../data/female-names");
 // const names = require('./male-names');
 const countries = require('../data/world-cities');
 

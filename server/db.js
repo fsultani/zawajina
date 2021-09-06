@@ -1,16 +1,10 @@
 const { MongoClient } = require('mongodb');
 
-// const localUri = 'mongodb://localhost:27017/my_match_local';
-
-const uri = process.env.DEVELOPMENT
-  ? 'mongodb+srv://fsultani:asdf@my-match.rxspi.mongodb.net/my-match-dev?retryWrites=true&w=majority'
-  : process.env.MONGODB_URI;
-
 let db;
 const connectToServer = callback => {
   if (!db) {
     MongoClient.connect(
-      uri,
+      process.env.MONGODB_URI,
       {
         useNewUrlParser: true,
         useUnifiedTopology: true,
@@ -28,12 +22,10 @@ const connectToServer = callback => {
 
 const usersCollection = () => db.collection('users');
 const messagesCollection = () => db.collection('messages');
-const messagesAggregate = (...args) => db.collection('messages').aggregate(...args)
 
 module.exports = {
   connectToServer,
   usersCollection,
   messagesCollection,
-  messagesAggregate,
   db,
 };

@@ -1,4 +1,4 @@
-const http = require('http');
+require('dotenv').config();
 const express = require('express');
 const es6Renderer = require('express-es6-template-engine');
 const path = require('path');
@@ -8,7 +8,7 @@ const { ObjectId } = require('mongodb');
 const jwt = require('jsonwebtoken');
 const JWT_SECRET = Buffer.from('fe1a1915a379f3be5394b64d14794932', 'hex');
 
-const { connectToServer, usersCollection, messagesCollection, messagesAggregate } = require('./db.js');
+const { connectToServer, usersCollection, messagesCollection } = require('./db.js');
 const index = require('./routes/index');
 const register = require('./routes/register/index');
 const user = require('./routes/user');

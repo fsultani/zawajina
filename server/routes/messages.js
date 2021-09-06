@@ -1,11 +1,11 @@
 const express = require('express');
-const { ObjectId, ObjectID } = require('mongodb');
+const { ObjectId } = require('mongodb');
 
 const router = express.Router();
 
-const { usersCollection, messagesCollection, messagesAggregate } = require('../db');
+const { usersCollection, messagesCollection } = require('../db');
 
-router.get('/:conversationId?', async (req, res, next) => {
+router.get('/:conversationId?', async (req, res) => {
   const { conversationId } = req.params;
   const { authUser, allConversationsCount } = req;
 
@@ -42,134 +42,136 @@ router.get('/:conversationId?', async (req, res, next) => {
 // Get all conversations
 ****************************************************************************************************/
 
-router.get('/api/conversations', async (req, res, next) => {
+router.get('/api/conversations', async (req, res) => {
   const { authUser } = req;
 
   try {
-    // const allConversationsSidebar = await messagesCollection().aggregate([
-    //   {
-    //     $match: {
-    //       $or: [
-    //         {
-    //           recipientId: ObjectId(authUser._id),
-    //         },
-    //         {
-    //           createdByUserId: ObjectId(authUser._id)
-    //         }
-    //       ]
-    //     }
-    //   },
-    //   {
-    //     $addFields: {
-    //       'otherUser': {
-    //         $cond: {
-    //           'if': {
-    //             $eq: ['$recipientId', ObjectId(authUser._id)]
-    //           },
-    //           'then': '$users.createdByUser.name',
-    //           'else': '$users.recipient.name',
-    //         }
-    //       },
-    //       'lastMessagePreview': {
-    //         $substrBytes: [{ '$last': '$messages.messageText' }, 0, 50]
-    //       },
-    //       'lastMessageWasRead': {
-    //         $cond: {
-    //           'if': {
-    //             $eq: [{ '$last': '$messages.recipient' }, ObjectId(authUser._id)]
-    //           },
-    //           'then': { '$last': '$messages.read' },
-    //           'else': true,
-    //         }
-    //       },
-    //       'unreadMessagesCount': {
-    //         $sum: {
-    //           $map: {
-    //             'input': '$messages',
-    //             'as': 'message',
-    //             'in': {
-    //               $cond: {
-    //                 'if': {
-    //                   $and: [
-    //                     { $eq: [ '$$message.recipient', ObjectId(authUser._id) ] },
-    //                     { $eq: [ '$$message.read', false ] },
-    //                   ]
-    //                 },
-    //                 'then': 1,
-    //                 'else': 0,
-    //               }
-    //             }
-    //           }
-    //         }
-    //       },
-    //     }
-    //   },
-    //   {
-    //     $project: {
-    //       otherUser: 1,
-    //       lastMessagePreview: 1,
-    //       lastMessageWasRead: 1,
-    //       unreadMessagesCount: 1,
-    //     }
-    //   }
-    // ]).toArray();
-
-    // res.status(200).json({
-    //   allConversationsSidebar,
-    // });
-
-    const allConversations = [];
-    await messagesCollection().find({
-      $or: [
-        {
-          recipientId: ObjectId(authUser._id),
-        },
-        {
-          createdByUserId: ObjectId(authUser._id)
+    const allConversationsSidebar = await messagesCollection().aggregate([
+      {
+        $match: {
+          $or: [
+            {
+              recipientId: ObjectId(authUser._id),
+            },
+            {
+              createdByUserId: ObjectId(authUser._id)
+            }
+          ]
         }
-      ]
-    }).forEach(conversation => {
-      let otherUser = conversation.users.recipient.name;
-
-      const authUserId = String(authUser._id);
-      const otherUserId = String(conversation.users.recipient._id);
-      if (authUserId === otherUserId) {
-        otherUser = conversation.users.createdByUser.name;
-      }
-
-      let lastMessage = {}
-      if (conversation.messages.length > 0) {
-        const lastMessageObject = conversation.messages[conversation.messages.length - 1];
-        lastMessage = {
-          preview: lastMessageObject.messageText.slice(0, 50),
-          wasRead: String(lastMessageObject.sender) === authUserId ? true : lastMessageObject.read,
+      },
+      {
+        $addFields: {
+          'otherUser': {
+            $cond: {
+              'if': {
+                $eq: ['$recipientId', ObjectId(authUser._id)]
+              },
+              'then': '$users.createdByUser.name',
+              'else': '$users.recipient.name',
+            }
+          },
+          'lastMessagePreview': {
+            $substrBytes: [{ '$last': '$messages.messageText' }, 0, 50]
+          },
+          'lastMessageWasRead': {
+            $cond: {
+              'if': {
+                $eq: [{ '$last': '$messages.recipient' }, ObjectId(authUser._id)]
+              },
+              'then': { '$last': '$messages.read' },
+              'else': true,
+            }
+          },
+          'unreadMessagesCount': {
+            $sum: {
+              $map: {
+                'input': '$messages',
+                'as': 'message',
+                'in': {
+                  $cond: {
+                    'if': {
+                      $and: [
+                        { $eq: [ '$$message.recipient', ObjectId(authUser._id) ] },
+                        { $eq: [ '$$message.read', false ] },
+                      ]
+                    },
+                    'then': 1,
+                    'else': 0,
+                  }
+                }
+              }
+            }
+          },
         }
-      } else {
-        lastMessage = {
-          preview: '',
-          wasRead: true,
+      },
+      {
+        $project: {
+          updatedAt: 1,
+          otherUser: 1,
+          lastMessagePreview: 1,
+          lastMessageWasRead: 1,
+          unreadMessagesCount: 1,
         }
       }
-
-      const unreadMessagesCount = conversation.messages.filter(message => {
-        if (String(message.sender) !== authUserId) {
-          return !message.read;
-        }
-      }).length;
-
-      allConversations.push({
-        ...conversation,
-        otherUser,
-        lastMessagePreview: lastMessage.preview,
-        lastMessageWasRead: lastMessage.wasRead,
-        unreadMessagesCount,
-      })
-    });
-    allConversations.sort((a, b) => b.updatedAt - a.updatedAt)
+    ]).sort({ 'updatedAt': -1 }).toArray();
+    console.log(`allConversationsSidebar\n`, allConversationsSidebar);
 
     res.status(200).json({
-      allConversationsSidebar: allConversations,
+      allConversationsSidebar,
     });
+
+    // const allConversations = [];
+    // await messagesCollection().find({
+    //   $or: [
+    //     {
+    //       recipientId: ObjectId(authUser._id),
+    //     },
+    //     {
+    //       createdByUserId: ObjectId(authUser._id)
+    //     }
+    //   ]
+    // }).forEach(conversation => {
+    //   let otherUser = conversation.users.recipient.name;
+
+    //   const authUserId = String(authUser._id);
+    //   const otherUserId = String(conversation.users.recipient._id);
+    //   if (authUserId === otherUserId) {
+    //     otherUser = conversation.users.createdByUser.name;
+    //   }
+
+    //   let lastMessage = {}
+    //   if (conversation.messages.length > 0) {
+    //     const lastMessageObject = conversation.messages[conversation.messages.length - 1];
+    //     lastMessage = {
+    //       preview: lastMessageObject.messageText.slice(0, 50),
+    //       wasRead: String(lastMessageObject.sender) === authUserId ? true : lastMessageObject.read,
+    //     }
+    //   } else {
+    //     lastMessage = {
+    //       preview: '',
+    //       wasRead: true,
+    //     }
+    //   }
+
+    //   const unreadMessagesCount = conversation.messages.filter(message => {
+    //     if (String(message.sender) !== authUserId) {
+    //       return !message.read;
+    //     }
+    //   }).length;
+
+    //   allConversations.push({
+    //     ...conversation,
+    //     otherUser,
+    //     lastMessagePreview: lastMessage.preview,
+    //     lastMessageWasRead: lastMessage.wasRead,
+    //     unreadMessagesCount,
+    //   })
+    // });
+    // allConversations.sort((a, b) => b.updatedAt - a.updatedAt)
+
+    // res.status(200).json({
+    //   allConversationsSidebar: allConversations,
+    // });
   } catch (error) {
     console.log(`Error in /api/conversations\n`, error);
     throw new Error(error);
@@ -180,7 +182,7 @@ router.get('/api/conversations', async (req, res, next) => {
 // View the conversation with a user through the user's profile page
 ****************************************************************************************************/
 
-router.get('/api/conversation/user/:userId', async (req, res, next) => {
+router.get('/api/conversation/user/:userId', async (req, res) => {
   const { authUser } = req;
   const recipientId = req.params.userId;
 
@@ -235,7 +237,7 @@ router.get('/api/conversation/user/:userId', async (req, res, next) => {
 // Get the conversation with a user after the conversation page loads
 ****************************************************************************************************/
 
-router.get('/api/conversation/:conversationId', async (req, res, next) => {
+router.get('/api/conversation/:conversationId', async (req, res) => {
   const { authUser } = req;
   const conversationId = req.params.conversationId;
 

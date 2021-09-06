@@ -1,6 +1,5 @@
-const { MongoClient, ObjectId } = require("mongodb");
+const { MongoClient } = require("mongodb");
 const cloudinary = require("cloudinary");
-const User = require("../models/user");
 
 cloudinary.config({
   cloud_name: require("/Users/farid/_repos/my-match/server/credentials.json").CLOUDINARY_CLOUD_NAME,
@@ -8,8 +7,7 @@ cloudinary.config({
   api_secret: require("/Users/farid/_repos/my-match/server/credentials.json").CLOUDINARY_API_SECRET,
 });
 
-const uri =
-  "mongodb+srv://fsultani:asdf@my-match.rxspi.mongodb.net/my-match-dev?retryWrites=true&w=majority";
+const uri = process.env.MONGODB_URI;
 
 MongoClient.connect(
   uri,

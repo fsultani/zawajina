@@ -1,6 +1,7 @@
 node_modules
-db_credentials
-.DS_Store
 credentials.json
 uploads/
 compressed/
+atlas_mongo_shell_notes.js
+.DS_Store
+.env

@@ -1,17 +1,15 @@
 const { MongoClient } = require('mongodb');
 const bcrypt = require('bcryptjs');
 
-const femaleNames = require('./female-names');
+const femaleNames = require("./data/female-names");
 const countries = require('../data/world-cities');
 const ethnicities = require("../data/ethnicities");
 const languagesList = require('../data/languages');
 const hobbiesList = require('../data/hobbies');
 
-const uri = 'mongodb://localhost:27017/my_match_local';
-
 const numberOfUsers = 10;
 
-MongoClient.connect(uri, {
+MongoClient.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 }, async (err, client) => {

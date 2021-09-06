@@ -4,8 +4,8 @@ const axios = require("axios");
 const fs = require("fs");
 const FormData = require("form-data");
 
-const names = require("./female-names");
-// const names = require('./male-names');
+const names = require("./data/female-names");
+// const names = require('./data/male-names');
 const countries = require("../data/world-cities");
 const ethnicities = require("../data/ethnicities");
 

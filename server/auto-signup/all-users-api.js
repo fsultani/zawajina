@@ -4,7 +4,7 @@ const axios = require("axios");
 const fs = require("fs");
 const FormData = require("form-data");
 
-const names = require("./female-names");
+const femaleNames = require("./data/female-names");
 const countries = require("../data/world-cities");
 
 let counter = 0;
@@ -14,7 +14,7 @@ let counter = 0;
     let nameChoice;
     // Create only female users in order
     nameChoice = {
-      name: names[counter],
+      name: femaleNames[counter],
       gender: "female",
     };
 
@@ -90,7 +90,7 @@ let counter = 0;
         return;
       }
 
-      // if (counter > 0 && counter < names.length) {
+      // if (counter > 0 && counter < femaleNames.length) {
       //   makeApiCalls(true);
       //   counter--;
       // }
@@ -102,9 +102,9 @@ let counter = 0;
       // makeApiCalls(true);
     }
 
-    if (counter < names.length) {
+    if (counter < femaleNames.length) {
       console.log("createUser().nameChoice:\n", createUser().nameChoice);
-      console.log(`counter: ${counter}/${names.length}`);
+      console.log(`counter: ${counter}/${femaleNames.length}`);
       console.log("************************************************************\n");
       counter++;
       makeApiCalls();
@@ -114,7 +114,7 @@ let counter = 0;
     }
   };
   // const repeatFunction = setInterval(async () => {
-  //   if (counter < names.length) {
+  //   if (counter < femaleNames.length) {
   //     makeApiCalls();
   //   } else {
   //     clearInterval(repeatFunction);
