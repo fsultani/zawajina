@@ -6,24 +6,16 @@
         <h2 class="form-title">Create account</h2>
 
         <div class="input-wrapper validate-input" id="name-wrapper">
-          <input class="form-input" type="text" id="user_name" required />
+          <input type="text" class="form-input" id="user_name" required />
           <span class="input-focus animate-border-bottom" id="name" data-placeholder="Name"></span>
         </div>
         <div class="input-wrapper validate-input" id="email-wrapper">
           <input type="email" class="form-input" id="user_email" required />
-          <span
-            class="input-focus animate-border-bottom"
-            id="email"
-            data-placeholder="Email"
-          ></span>
+          <span class="input-focus animate-border-bottom" id="email" data-placeholder="Email"></span>
         </div>
         <div class="input-wrapper password-position" id="password-wrapper">
           <input class="form-input" type="password" id="user_password" />
-          <span
-            class="input-focus animate-border-bottom"
-            id="password"
-            data-placeholder="Password"
-          ></span>
+          <span class="input-focus animate-border-bottom" id="password" data-placeholder="Password"></span>
           <span toggle="#password" class="field-icon" onclick="togglePassword()">
             <i class="fa fa-eye" id="passwordEye"></i>
           </span>
@@ -38,21 +30,15 @@
             <div></div>
             <div></div>
           </div>
-          <button
-            type="submit"
-            onclick="handleSignupStepOne()"
-            class="form-submit signup-button"
-            id="signupButton"
-          >
+          <button type="submit" onclick="handleSignupStepOne()" class="form-submit signup-button" id="signupButton">
             Create Account
           </button>
         </div>
       </form>
       <div class="form-group">
-        <label for="agree-term" class="label-agree-term"
-          ><span><span></span></span>By signing up, you agree to all statements in
-          <a href="/terms" class="term-service">Terms of Service</a></label
-        >
+        <label for="agree-term" class="label-agree-term">
+          By signing up, you agree to all statements in
+          <a href="/terms" class="term-service">Terms of Service</a></label>
       </div>
       <p class="login">Already have an account? <a href="#" class="login-link">Login here</a></p>
     </div>

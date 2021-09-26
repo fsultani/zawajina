@@ -1,13 +1,18 @@
+require('dotenv').config();
 const { MongoClient } = require('mongodb');
 const bcrypt = require('bcryptjs');
 
 const femaleNames = require("./data/female-names");
+const birthMonths = require('./data/birthMonths');
+const professionsList = require('./data/professionsList');
+const heights = require('./data/heights');
+
 const countries = require('../data/world-cities');
 const ethnicities = require("../data/ethnicities");
 const languagesList = require('../data/languages');
 const hobbiesList = require('../data/hobbies');
 
-const numberOfUsers = 10;
+const numberOfUsers = 500;
 
 MongoClient.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
@@ -24,21 +29,6 @@ MongoClient.connect(process.env.MONGODB_URI, {
     const bcryptGenSalt = await bcrypt.genSalt(10);
     const bcryptHash = await bcrypt.hash('asdfasdf', bcryptGenSalt);
     const password = bcryptHash;
-
-    const birthMonths = [
-      '01',
-      '02',
-      '03',
-      '04',
-      '05',
-      '06',
-      '07',
-      '08',
-      '09',
-      '10',
-      '11',
-      '12',
-    ];
 
     const birthMonth = birthMonths[Math.floor(Math.random() * birthMonths.length)];
     const birthDay = Math.floor(Math.random() * 31).toString();
@@ -76,86 +66,12 @@ MongoClient.connect(process.env.MONGODB_URI, {
     const allEducationLevels = ['High School', `Bachelor's degree`, `Master's degree`, 'Doctoral degree']
     const education = allEducationLevels[Math.floor(Math.random() * allEducationLevels.length)];
 
-    const professionsList = [
-      'Teacher',
-      'Engineer',
-      'Physician',
-      'Lawyer',
-      'Architect',
-      'Scientist',
-      'Pharmacist',
-      'Accountant',
-      'Veterinarian',
-      'Dentist',
-      'Worker',
-      'Technician',
-      'Artist',
-      'Firefighter',
-      'Electrician',
-      'Actor',
-      'Chef',
-      'Plumber',
-      'Police officer',
-      'Psychologist',
-      'Waiter',
-      'Cook',
-      'Mechanic',
-      'Hairdresser',
-      'Librarian',
-      'Secretary',
-      'Aircraft pilot',
-      'Dietitian',
-      'Registered nurse',
-      'Occupational Therapist',
-      'Designer',
-      'Farmer',
-      'Surgeon',
-      'Cashier',
-      'Butcher',
-      'Optician',
-      'Economist',
-      'Mail carrier',
-      'Dental hygienist',
-      'Judge',
-      'Geologist',
-      'Tailor',
-      'Journalist',
-      'Cleaner',
-      'Athlete',
-      'Baker',
-      'Lifeguard',
-      'Other',
-    ];
     const profession = professionsList[Math.floor(Math.random() * professionsList.length)];
 
     const yesNoOptions = ['Yes', 'No'];
     const yesNoMaybeOptions = ['Yes', 'No', 'Maybe'];
 
-    const allHeights = [
-      `4'10" (< 147 cm)`,
-      `4'10" (147 cm)`,
-      `4'11" (150 cm)`,
-      `5' (152 cm)`,
-      `5'1" (155 cm)`,
-      `5'2" (157 cm)`,
-      `5'3" (160 cm)`,
-      `5'4" (163 cm)`,
-      `5'5" (165 cm)`,
-      `5'6" (168 cm)`,
-      `5'7" (170 cm)`,
-      `5'8" (173 cm)`,
-      `5'9" (175 cm)`,
-      `5'10" (177 cm)`,
-      `5'11" (180 cm)`,
-      `6' (183 cm)`,
-      `6'1" (185 cm)`,
-      `6'2" (188 cm)`,
-      `6'3" (191 cm)`,
-      `6'4" (193 cm)`,
-      `6'5" (196 cm)`,
-      `6'5" (> 196 cm)`,
-    ];
-    const height = allHeights[Math.floor(Math.random() * allHeights.length)];
+    const height = heights[Math.floor(Math.random() * heights.length)];
 
     const allDiets = ['Halal only', 'Halal when possible', 'Eat anything', 'Eat anything except pork', 'Vegetarian'];
     const diet = allDiets[Math.floor(Math.random() * allDiets.length)];

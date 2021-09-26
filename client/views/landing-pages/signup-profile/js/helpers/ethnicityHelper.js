@@ -174,4 +174,19 @@
 
     renderEthnicity(userEthnicityResults);
   });
+
+  ethnicityInput.addEventListener('focusout', () => {
+    setTimeout(() => {
+      if (userEthnicityResults.length === 0) {
+        closeAllLists('#ethnicityInput');
+        document.querySelector('.user-ethnicity').style.cssText = 'padding-bottom: 4px';
+        document.querySelector('#ethnicity-error').innerHTML =
+          'Please select your ethnicity from the dropdown';
+        document.querySelector('#ethnicity-error').style.display = 'block';
+      } else {
+        document.querySelector('.user-ethnicity').style.cssText = 'padding-bottom: 16px';
+        document.querySelector('#ethnicity-error').style.display = 'none';
+      }
+    }, 250)
+  })
 })();

@@ -114,7 +114,6 @@ router.get('/api/conversations', async (req, res) => {
         }
       }
     ]).sort({ 'updatedAt': -1 }).toArray();
-    console.log(`allConversationsSidebar\n`, allConversationsSidebar);
 
     res.status(200).json({
       allConversationsSidebar,

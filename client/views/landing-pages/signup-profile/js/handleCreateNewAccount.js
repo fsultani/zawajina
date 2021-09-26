@@ -14,6 +14,7 @@ let height;
 let relocate;
 let diet;
 let smokes;
+let countryRaisedIn;
 
 const handleBirthMonth = event => (birthMonth = event.target.value);
 const handleBirthDay = event => (birthDay = event.target.value);
@@ -52,7 +53,7 @@ const removeErrorClass = element => document.querySelector(`${element}`).classLi
 const handleCreateNewAccount = () => {
   const locationData = document.querySelector('#locationInput').dataset;
   const city = locationData.city;
-  const state = locationData.state;
+  const state = locationData.state !== 'null' ? locationData.state : null;
   const country = locationData.country;
 
   const ethnicity = [];
@@ -60,7 +61,7 @@ const handleCreateNewAccount = () => {
     ethnicity.push(id);
   });
 
-  const countryRaisedIn = document.querySelector('.user-country-content').textContent;
+  const userCountryContent = document.querySelector('.user-country-content');
 
   const languages = [];
   document.querySelectorAll('.user-language-content').forEach(({ id }) => {
@@ -106,6 +107,18 @@ const handleCreateNewAccount = () => {
     document.querySelector('#city-error').style.display = 'none';
   }
 
+  if (!userCountryContent || userCountryContent.textContent === '') {
+    closeAllLists('#raisedInput');
+    document.querySelector('.user-raised').style.cssText = 'padding-bottom: 4px';
+    document.querySelector('#raised-error').innerHTML =
+      'Please select the country you raised in from the dropdown';
+    document.querySelector('#raised-error').style.display = 'block';
+  } else {
+    document.querySelector('.user-raised').style.cssText = 'padding-bottom: 16px';
+    document.querySelector('#raised-error').style.display = 'none';
+    countryRaisedIn = userCountryContent.textContent;
+  }
+
   if (ethnicity.length === 0) {
     closeAllLists('#ethnicityInput');
     document.querySelector('.user-ethnicity').style.cssText = 'padding-bottom: 4px';
@@ -115,17 +128,6 @@ const handleCreateNewAccount = () => {
   } else {
     document.querySelector('.user-ethnicity').style.cssText = 'padding-bottom: 16px';
     document.querySelector('#ethnicity-error').style.display = 'none';
-  }
-
-  if (!countryRaisedIn || countryRaisedIn.textContent === '') {
-    closeAllLists('#raisedInput');
-    document.querySelector('.user-raised').style.cssText = 'padding-bottom: 4px';
-    document.querySelector('#raised-error').innerHTML =
-      'Please select the country you raised in from the dropdown';
-    document.querySelector('#raised-error').style.display = 'block';
-  } else {
-    document.querySelector('.user-raised').style.cssText = 'padding-bottom: 16px';
-    document.querySelector('#raised-error').style.display = 'none';
   }
 
   if (languages.length === 0) {
@@ -298,8 +300,8 @@ const handleCreateNewAccount = () => {
     ((gender === 'male' && !hijab) || (gender === 'female' && hijab)) &&
     city &&
     ethnicity.length > 0 &&
-    countryRaisedIn &&
-    countryRaisedIn.textContent !== '' &&
+    userCountryContent &&
+    userCountryContent.textContent !== '' &&
     languages.length > 0 &&
     religiousConviction &&
     religiousValues &&

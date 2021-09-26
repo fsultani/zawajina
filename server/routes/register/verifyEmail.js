@@ -6,6 +6,11 @@ const verifyEmail = (req, res) => {
   const { my_match_userId } = req.cookies;
 
   usersCollection().findOne({ _id: ObjectId(my_match_userId) }, (err, userExists) => {
+    if (err) {
+      console.log(`err\n`, err);
+      return res.json({ error: 'Error in verifyEmail' });
+    }
+
     const { emailVerificationToken } = userExists;
 
     if (verificationToken === emailVerificationToken) {

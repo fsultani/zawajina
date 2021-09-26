@@ -164,4 +164,18 @@
       renderLocation(locationSelection, city, state, country);
     }
   });
+
+  locationInput.addEventListener('focusout', event => {
+    setTimeout(() => {
+      if (!event.target.dataset.city) {
+        closeAllLists('#locationInput');
+        document.querySelector('.user-location').style.cssText = 'padding-bottom: 4px';
+        document.querySelector('#city-error').innerHTML = 'Please select your city from the dropdown';
+        document.querySelector('#city-error').style.display = 'block';
+      } else {
+        document.querySelector('.user-location').style.cssText = 'padding-bottom: 16px';
+        document.querySelector('#city-error').style.display = 'none';
+      }
+    }, 250)
+  })
 })();

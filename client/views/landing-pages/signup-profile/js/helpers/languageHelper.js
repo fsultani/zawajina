@@ -175,4 +175,19 @@
 
     renderLanguages(userLanguagesResult);
   });
+
+  languageInput.addEventListener('focusout', () => {
+    setTimeout(() => {
+      if (userLanguagesResult.length === 0) {
+        closeAllLists('#languageInput');
+        document.querySelector('.user-languages').style.cssText = 'padding-bottom: 4px';
+        document.querySelector('#languages-error').innerHTML =
+          'Please select your language from the dropdown';
+        document.querySelector('#languages-error').style.display = 'block';
+      } else {
+        document.querySelector('.user-languages').style.cssText = 'padding-bottom: 16px';
+        document.querySelector('#languages-error').style.display = 'none';
+      }
+    }, 250)
+  })
 })();

@@ -85,7 +85,9 @@ const personalInfo = (req, res) => {
           });
         } else if (userExists.emailVerificationToken && userExists.emailVerified) {
           /* User completed step 1 and verified their email with a token. */
-          return res.status(200).send();
+          return res.status(200).json({
+            userId: userExists._id,
+          });
         } else {
           /*
             User created an account, but no token was sent and the email was never verified.

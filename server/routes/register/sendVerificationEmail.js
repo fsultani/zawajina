@@ -1,5 +1,6 @@
 const { ObjectId } = require('mongodb');
 const { usersCollection } = require('../../db.js');
+const sendEmail = require('../../helpers/email.js');
 
 const sendVerificationEmail = (req, res) => {
   const { my_match_userId } = req.cookies;

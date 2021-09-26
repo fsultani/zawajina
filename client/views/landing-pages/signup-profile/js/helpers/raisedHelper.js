@@ -128,4 +128,20 @@
     raisedInput.value = '';
     renderCountry(countrySelection);
   });
+
+  raisedInput.addEventListener('focusout', () => {
+    setTimeout(() => {
+      const countryRaisedIn = document.querySelector('.user-country-content');
+      if (!countryRaisedIn || countryRaisedIn.textContent === '') {
+        closeAllLists('#raisedInput');
+        document.querySelector('.user-raised').style.cssText = 'padding-bottom: 4px';
+        document.querySelector('#raised-error').innerHTML =
+          'Please select the country you raised in from the dropdown';
+        document.querySelector('#raised-error').style.display = 'block';
+      } else {
+        document.querySelector('.user-raised').style.cssText = 'padding-bottom: 16px';
+        document.querySelector('#raised-error').style.display = 'none';
+      }
+    }, 250)
+  })
 })();

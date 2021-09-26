@@ -77,8 +77,8 @@ const handleSignupStepOne = () => {
         password,
       })
       .then(res => {
+        Cookies.set('my_match_userId', res.data.userId, { sameSite: 'strict' });
         if (res.status === 201) {
-          Cookies.set('my_match_userId', res.data.userId, { sameSite: 'strict' });
           window.location.pathname = '/verify-email';
         } else if (res.status === 200) {
           window.location.pathname = '/signup/profile';
