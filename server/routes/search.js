@@ -8,14 +8,14 @@ router.get('/', async (req, res) => {
     locals: {
       title: 'My Match',
       styles: [
-        'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css',
+        '/static/assets/font_awesome_5_14_0.min.css',
         '/static/client/views/app/_partials/app-nav.css',
         '/static/client/views/app/_layouts/app-global-styles.css',
         '/static/client/views/app/search/styles.css',
       ],
       scripts: [
-        'https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js',
-        'https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js',
+        '/static/assets/axios.min.js',
+        '/static/assets/js.cookie.min.js',
       ],
       authUser,
       allConversationsCount,

@@ -72,8 +72,8 @@ router.get('/users', async (req, res, next) => {
             '/static/client/views/app/_layouts/app-global-styles.css',
           ],
           scripts: [
-            'https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js',
-            'https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js',
+            '/static/assets/axios.min.js',
+            '/static/assets/js.cookie.min.js',
           ],
           authUser,
           allConversationsCount,
@@ -99,8 +99,8 @@ router.get('/users', async (req, res, next) => {
             '/static/client/views/app/_layouts/app-global-styles.css',
           ],
           scripts: [
-            'https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js',
-            'https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js',
+            '/static/assets/axios.min.js',
+            '/static/assets/js.cookie.min.js',
           ],
           authUser,
           allConversationsCount,

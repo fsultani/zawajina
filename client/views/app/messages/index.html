@@ -1,45 +1,27 @@
 <div class="page-container">
   <div class="container">
-    <div class="left-container">
-
+    <!-- <div class="sidebar-conversations-container">
       <div class="search-box-container">
         <div class="search-box-wrapper">
           <div class="form-group">
-            <input id="searchText" type="text" class="form-control" name="searchText" placeholder="Search">
+            <input id="searchTextInput" type="text" class="form-control" name="searchText" placeholder="Search">
             <span class="glyphicon glyphicon-search form-control-feedback">
               <img src="/static/client/images/search_icon.png" />
             </span>
           </div>
         </div>
       </div>
-
-      <div class="sidebar-conversations-container"></div>
+      <div class="sidebar-conversations-wrapper"></div>
     </div>
-
-    <div class="right-container">
-      ${conversationId ?
-        `
-          <div class="user-info">
-            <h5>
-              ${authUser._id.toString() === users.createdByUser._id.toString() ?
-                `${users.recipient.name} (${users.recipient.age}, ${users.recipient.city}, ${users.recipient.state}, ${users.recipient.country})`
-                :
-                `${users.createdByUser.name} (${users.createdByUser.age}, ${users.createdByUser.city}, ${users.createdByUser.state}, ${users.createdByUser.country})`
-              }
-            </h5>
-          </div>
     
-          <div class="chat-container"></div>
-          `
-        :
-        `
-          <div class="chat-image-container">
-            <img src="/static/client/images/chat_icon.png" class="chat-image" />
-          </div>
-          <div class="bottom"></div>
-        `
-      }
-
+    <div class="right-container">
+      <div class="conversation-wrapper">
+        <div class="chat-image-container">
+          <img src="/static/client/images/chat_icon.png" class="chat-image" />
+        </div>
+        <div class="bottom"></div>
+      </div>
+    
       <div class="input-container">
         <div class="input-wrapper">
           <form name="messageForm" class="message-form" onsubmit="handleSendMessage(event)" novalidate>
@@ -48,6 +30,6 @@
           </form>
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
 </div>

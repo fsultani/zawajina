@@ -14,6 +14,8 @@
         <a href="/users">Home</a>
         <a href="/user/${authUser._id}">Profile</a>
         <a href="/user/${authUser._id}">Search</a>
+        <a href="/messages" class="allConversationsCount">${allConversationsCount > 0 ? `Messages (${allConversationsCount})` :
+          `Messages`}</a>
         <a id="logout" class="dropdown-item" style="cursor: pointer;" onclick="handleLogout()"
           >Logout</a
         >
@@ -24,13 +26,13 @@
           <a href="/search">Search</a>
         </li>
         <li class="messages">
-          <a href="/messages">${allConversationsCount > 0 ? `Messages (${allConversationsCount})` : `Messages`}</a>
+          <a href="/messages" class="allConversationsCount">${allConversationsCount > 0 ? `Messages (${allConversationsCount})` : `Messages`}</a>
         </li>
         <li>
           <div class="dropdown-menu">
             <div onclick="openDropdownMenu()" class="dropdown-button" role="button">
               <img
-                src="${authUser.photos.length > 0 ? authUser.photos[0] : authUser.gender === 'male' ? 'https://res.cloudinary.com/dnjhw5rv2/image/upload/v1613985983/male_profile.jpg' : 'https://res.cloudinary.com/dnjhw5rv2/image/upload/v1613988446/female_app_nav.png'}"
+                src="${authUser.photos.length > 0 ? authUser.photos[0] : authUser.gender === 'male' ? '/static/assets/male_profile.jpeg' : '/static/assets/female_app_nav.png'}"
                 class="user-avatar-menu"
               />
               <span id="menu-arrow" class="down-arrow"></span>

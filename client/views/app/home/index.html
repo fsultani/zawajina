@@ -3,11 +3,11 @@
     <h2 class="testimonials-header">Recently Active</h2>
     <div class="users-container">
       ${allUsers.map(user => `
-      <a href="/user/${user._id}" style="text-decoration: none;">
+      <a href="/user/${user._id}">
         <div class="testimonial-wrapper">
           <div class="testimonial-image">
             <img
-              src="${user.photos.length > 0 ? user.photos[0] : user.gender === 'male' ? 'https://res.cloudinary.com/dnjhw5rv2/image/upload/v1613985983/male_profile.jpg' : 'https://res.cloudinary.com/dnjhw5rv2/image/upload/v1613988154/female_profile.jpg'}"
+              src="${user.photos.length > 0 ? user.photos[0] : user.gender === 'male' ? '/static/assets/male_profile.jpeg' : '/static/assets/female_profile.jpeg'}"
               alt="Photo 1" />
           </div>
           <div class="testimonial-body">

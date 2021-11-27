@@ -2,9 +2,15 @@
   max-width: 1200px;
   height: 100%;
   margin: 0 auto;
-  padding: 0 30px 50px;
+  padding-bottom: 50px;
   display: flex;
   flex-direction: column;
+}
+
+@media (min-width: 600px) {
+  .main {
+    padding: 0 30px 50px;
+  }
 }
 
 .main-container {
@@ -22,6 +28,10 @@
   grid-gap: 1rem;
   grid-template-columns: 1fr;
   grid-auto-rows: 350px;
+}
+
+.users-container a {
+  text-decoration: none;
 }
 
 .testimonial-wrapper {

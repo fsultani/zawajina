@@ -51,7 +51,7 @@ app.get('*', (req, res, next) => {
         locals: {
           title: 'My Match',
           styles: [
-            'https://fonts.googleapis.com/css?family=Heebo:400,700|Playfair+Display:700',
+            '/static/assets/fonts_googleapis.css',
             '/static/client/views/landing-pages/_layouts/global-styles.css',
             '/static/client/views/landing-pages/_partials/styles/landing-page-nav.css',
             '/static/client/views/landing-pages/_partials/styles/footer.css',
@@ -59,7 +59,7 @@ app.get('*', (req, res, next) => {
           ],
           scripts: [
             'https://unpkg.com/scrollreveal',
-            'https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js',
+            '/static/assets/axios.min.js',
             '/static/client/views/landing-pages/home/animations.js',
           ],
         },
@@ -75,7 +75,7 @@ app.get('*', (req, res, next) => {
         locals: {
           title: 'About Us - My Match',
           styles: [
-            'https://fonts.googleapis.com/css?family=Heebo:400,700|Playfair+Display:700',
+            '/static/assets/fonts_googleapis.css',
             '/static/client/views/landing-pages/_layouts/global-styles.css',
             '/static/client/views/landing-pages/_partials/styles/landing-page-nav.css',
             '/static/client/views/landing-pages/_partials/styles/footer.css',
@@ -98,16 +98,16 @@ app.get('*', (req, res, next) => {
         locals: {
           title: 'Login - My Match',
           styles: [
-            'https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css',
-            'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css',
+            '/static/assets/material-design-iconic-font.min.css',
+            '/static/assets/bootstrap.min.css',
             '/static/client/views/landing-pages/_layouts/global-styles.css',
             '/static/client/views/landing-pages/_partials/styles/landing-page-nav.css',
             '/static/client/views/landing-pages/_partials/styles/footer.css',
             '/static/client/views/landing-pages/login/styles.css',
           ],
           scripts: [
-            'https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js',
-            'https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js',
+            '/static/assets/axios.min.js',
+            '/static/assets/js.cookie.min.js',
             '/static/client/views/landing-pages/login/handleFocusEvent.js',
             '/static/client/views/landing-pages/login/handleLogin.js',
             '/static/client/views/landing-pages/login/init.js',
@@ -125,15 +125,15 @@ app.get('*', (req, res, next) => {
         locals: {
           title: 'Sign Up - My Match',
           styles: [
-            'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css',
+            '/static/assets/font_awesome_5_14_0.min.css',
             '/static/client/views/landing-pages/_layouts/global-styles.css',
             '/static/client/views/landing-pages/_partials/styles/landing-page-nav.css',
             '/static/client/views/landing-pages/_partials/styles/footer.css',
             '/static/client/views/landing-pages/signup/styles.css',
           ],
           scripts: [
-            'https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js',
-            'https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js',
+            '/static/assets/axios.min.js',
+            '/static/assets/js.cookie.min.js',
             '/static/client/views/landing-pages/signup/js/includeHTML.js',
             '/static/client/views/landing-pages/signup/js/togglePassword.js',
             '/static/client/views/landing-pages/signup/js/handleSignupStepOne.js',
@@ -153,15 +153,15 @@ app.get('*', (req, res, next) => {
         locals: {
           title: 'Sign Up - My Match',
           styles: [
-            'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css',
+            '/static/assets/font_awesome_5_14_0.min.css',
             '/static/client/views/landing-pages/_layouts/global-styles.css',
             '/static/client/views/landing-pages/_partials/styles/landing-page-nav.css',
             '/static/client/views/landing-pages/_partials/styles/footer.css',
             '/static/client/views/landing-pages/verify-email/styles.css',
           ],
           scripts: [
-            'https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js',
-            'https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js',
+            '/static/assets/axios.min.js',
+            '/static/assets/js.cookie.min.js',
             '/static/client/views/landing-pages/verify-email/init.js',
             '/static/client/views/landing-pages/verify-email/handleVerityEmail.js',
           ],
@@ -180,15 +180,15 @@ app.get('*', (req, res, next) => {
         locals: {
           title: 'Sign Up - My Match',
           styles: [
-            'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css',
+            '/static/assets/font_awesome_5_14_0.min.css',
             '/static/client/views/landing-pages/_layouts/global-styles.css',
             '/static/client/views/landing-pages/_partials/styles/landing-page-nav.css',
             '/static/client/views/landing-pages/_partials/styles/footer.css',
             '/static/client/views/landing-pages/resend-email/styles.css',
           ],
           scripts: [
-            'https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js',
-            'https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js',
+            '/static/assets/axios.min.js',
+            '/static/assets/js.cookie.min.js',
             '/static/client/views/landing-pages/resend-email/js/includeHTML.js',
             '/static/client/views/landing-pages/resend-email/js/handleResendVerificationCode.js',
           ],
@@ -207,15 +207,15 @@ app.get('*', (req, res, next) => {
         locals: {
           title: 'Sign Up - My Match',
           styles: [
-            'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css',
+            '/static/assets/font_awesome_5_14_0.min.css',
             '/static/client/views/landing-pages/_layouts/global-styles.css',
             '/static/client/views/landing-pages/_partials/styles/landing-page-nav.css',
             '/static/client/views/landing-pages/_partials/styles/footer.css',
             '/static/client/views/landing-pages/signup-profile/styles.css',
           ],
           scripts: [
-            'https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js',
-            'https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js',
+            '/static/assets/axios.min.js',
+            '/static/assets/js.cookie.min.js',
             '/static/client/views/landing-pages/signup-profile/js/helpers/utils.js',
             '/static/client/views/landing-pages/signup-profile/js/helpers/dobHelper.js',
             '/static/client/views/landing-pages/signup-profile/js/helpers/locationHelper.js',
@@ -241,7 +241,7 @@ app.get('*', (req, res, next) => {
         locals: {
           title: 'Terms of Service - My Match',
           styles: [
-            'https://fonts.googleapis.com/css?family=Heebo:400,700|Playfair+Display:700',
+            '/static/assets/fonts_googleapis.css',
             '/static/client/views/landing-pages/_layouts/global-styles.css',
             '/static/client/views/landing-pages/_partials/styles/landing-page-nav.css',
             '/static/client/views/landing-pages/_partials/styles/footer.css',
@@ -278,16 +278,16 @@ app.use('*', (req, res, next) => {
         locals: {
           title: 'Login - My Match',
           styles: [
-            'https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css',
-            'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css',
+            '/static/assets/material-design-iconic-font.min.css',
+            '/static/assets/bootstrap.min.css',
             '/static/client/views/landing-pages/_layouts/global-styles.css',
             '/static/client/views/landing-pages/_partials/styles/landing-page-nav.css',
             '/static/client/views/landing-pages/_partials/styles/footer.css',
             '/static/client/views/landing-pages/login/styles.css',
           ],
           scripts: [
-            'https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js',
-            'https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js',
+            '/static/assets/axios.min.js',
+            '/static/assets/js.cookie.min.js',
             '/static/client/views/landing-pages/login/handleFocusEvent.js',
             '/static/client/views/landing-pages/login/handleLogin.js',
             '/static/client/views/landing-pages/login/init.js',
@@ -307,16 +307,16 @@ app.use('*', (req, res, next) => {
           locals: {
             title: 'Login - My Match',
             styles: [
-              'https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css',
-              'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css',
+              '/static/assets/material-design-iconic-font.min.css',
+              '/static/assets/bootstrap.min.css',
               '/static/client/views/landing-pages/_layouts/global-styles.css',
               '/static/client/views/landing-pages/_partials/styles/landing-page-nav.css',
               '/static/client/views/landing-pages/_partials/styles/footer.css',
               '/static/client/views/landing-pages/login/styles.css',
             ],
             scripts: [
-              'https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js',
-              'https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js',
+              '/static/assets/axios.min.js',
+              '/static/assets/js.cookie.min.js',
               '/static/client/views/landing-pages/login/handleFocusEvent.js',
               '/static/client/views/landing-pages/login/handleLogin.js',
               '/static/client/views/landing-pages/login/init.js',
