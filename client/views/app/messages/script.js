@@ -8,8 +8,19 @@ let searchMessagesApiWasCalled = false;
 let searchQueryRegex;
 let searchTextInput;
 
+const fullPageLoadingSpinner = `
+  <div class="full-page-loading-spinner">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+`;
+
 let pageContent = `
-  <div class="sidebar-conversations-container"></div>
+  <div class="sidebar-conversations-container">
+    ${fullPageLoadingSpinner}
+  </div>
 `;
 
 const highlightSearchResults = (stringToSearch, regexString) => stringToSearch.replace(regexString, x => `<span class="search-query-results">${x}</span>`);
@@ -159,8 +170,14 @@ const renderConversationWithState = (conversationId) => {
 }
 
 const renderAllConversationsSidebar = () => {
+  const fullPageLoadingSpinner = document.querySelector('.full-page-loading-spinner');
+
   if (searchQueryRegex === undefined) {
+    fullPageLoadingSpinner.style.cssText = `display: inline-block`;
+
     axios.get(`/messages/api/conversations?page=${pageValue}`).then(({ data }) => {
+      fullPageLoadingSpinner.style.display = 'none';
+
       if (isMobileDevice) {
         if (data.allConversationsSidebar.length > 0) {
           const allConversationsSidebar = data.allConversationsSidebar.map(conversation => `
@@ -425,7 +442,9 @@ window.onpopstate = function (event) {
             </div>
           </div>
         </div>
-        <div class="sidebar-conversations-wrapper"></div>
+        <div class="sidebar-conversations-wrapper">
+          ${fullPageLoadingSpinner}
+        </div>
       </div>
 
       <div class="right-container">

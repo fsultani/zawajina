@@ -1,0 +1,34 @@
+<div class="main">
+  <div class="main-container">
+    <h2 class="testimonials-header">Search Results</h2>
+    <div class="users-container">
+      ${allUsers.map(user => `
+      <a href="/user/${user._id}">
+        <div class="testimonial-wrapper">
+          <div class="testimonial-image">
+            <img
+              src="${user.photos.length > 0 ? user.photos[0] : user.gender === 'male' ? '/static/assets/icons/male_profile.jpeg' : '/static/assets/icons/female_profile.jpeg'}"
+              alt="Photo 1" />
+          </div>
+          <div class="testimonial-body">
+            <div class="testimonial-name">${user.name}, ${user.age}</div>
+            <p class="location">
+              ${user.city}, ${user.state !== null ? `${user.state}, ${user.country}` : user.country}
+            </p>
+          </div>
+        </div>
+      </a>
+      `).join('')}
+    </div>
+  </div>
+
+  <div class="pagination-container">
+    <div
+      class="pagination"
+      data-previousPage=${previousPage}
+      data-numberOfPages=${numberOfPages}
+      data-currentPage=${currentPage}
+      data-nextPage=${nextPage}
+    ></div>
+  </div>
+</div>

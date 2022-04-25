@@ -130,6 +130,34 @@ td:last-child {
   }
 }
 
+#application-error,
+#slow-network-warning {
+  display: none;
+  position: absolute;
+  padding: 10px 14px;
+  border: 1px solid transparent;
+  border-radius: 0.25rem;
+  text-align: center;
+  font-size: 16px;
+}
+
+#application-error {
+  top: 70px;
+  left: 40vw;
+  z-index: 99;
+  color: #721c24;
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+}
+
+#slow-network-warning {
+  top: 10px;
+  left: 35vw;
+  z-index: 2;
+  color: #000;
+  background-color: #fff5be;
+}
+
 @media (min-width: 481px) {
   .navbar--container,
   .container,

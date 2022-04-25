@@ -1,8 +1,3 @@
-// if (window.location.pathname !== '/login') {
-//   Cookies.remove('my_match_authToken');
-//   window.location.pathname = '/login';
-// }
-
 const handleEmailValidation = () => {
   const email = document.login.elements.email.value;
   const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
@@ -14,7 +9,7 @@ const handlePasswordValidation = () => {
   return password.length > 0;
 };
 
-const handleLogin = event => {
+const handleLogin = async event => {
   event.preventDefault();
   const email = document.login.elements.email.value.toLowerCase();
   const password = document.login.elements.password.value;
@@ -33,24 +28,28 @@ const handleLogin = event => {
       cursor: not-allowed;
     `;
 
+    document.querySelectorAll('form *').forEach(item => item.disabled = true);
+
+    const userIPAddress = await getUserIPAddress();
     axios
       .post('/login', {
         email,
         password,
+        userIPAddress,
       })
       .then(res => {
         const { token } = res.data;
         Cookies.set('my_match_authToken', token, { sameSite: 'strict' });
         window.location.pathname = '/users';
       })
-      .catch(error => {
+      .catch(() => {
         loadingSpinner.style.display = 'none';
         loginButton.innerHTML = 'Login';
-        loginButton.style.cssText = `
-        disabled: false;
-        opacity: 1;
-        cursor: pointer;
-      `;
+          loginButton.style.cssText = `
+          disabled: false;
+          opacity: 1;
+          cursor: pointer;
+        `;
 
         // For any login errors, only display 'Invalid password' for security purposes
         document.getElementById('invalid-password').style.display = 'block';

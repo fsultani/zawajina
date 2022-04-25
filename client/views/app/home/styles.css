@@ -34,6 +34,13 @@
   text-decoration: none;
 }
 
+@media (min-width: 600px) {
+  .users-container {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-auto-rows: auto;
+  }
+}
+
 .testimonial-wrapper {
   background: #fff;
   width: 100%;
@@ -44,6 +51,14 @@
 
 .testimonial-wrapper:hover {
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+}
+
+@media (min-width: 600px) {
+  .testimonial-wrapper {
+    width: 215px;
+    height: 290px;
+    border-radius: 6px;
+  }
 }
 
 .testimonial-image {
@@ -58,6 +73,18 @@
   object-fit: cover;
 }
 
+@media (min-width: 600px) {
+  .testimonial-image {
+    height: 215px;
+  }
+
+  .testimonial-image img {
+    width: 215px;
+    height: 215px;
+    border-radius: 6px 6px 0 0;
+  }
+}
+
 .testimonial-body {
   display: flex;
   flex-direction: column;
@@ -68,23 +95,33 @@
   color: #92a2b1;
 }
 
-.location,
-.country,
-.testimonial-name {
-  font-size: 14px;
-  line-height: normal;
+@media (min-width: 600px) {
+  .testimonial-body {
+    height: calc(290px - 215px);
+    padding: 8px 14px;
+    justify-content: flex-start;
+  }
 }
 
 .testimonial-name {
+  font-size: 14px;
   color: #161e2a;
+  line-height: normal;
   padding-bottom: 8px;
+}
+
+.location,
+.ethnicity {
+  font-size: 13px;
+  line-height: normal;
 }
 
 .location {
   padding-bottom: 4px;
 }
 
-/* *********************************** Pagination *********************************** */
+/* ************************************************** */
+/* Pagination */
 
 .pagination-container {
   width: 100%;
@@ -130,32 +167,4 @@
 .pagination a:last-child {
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
-}
-
-@media (min-width: 600px) {
-  .users-container {
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    grid-auto-rows: auto;
-  }
-
-  .testimonial-wrapper {
-    display: grid;
-    width: 215px;
-    border-radius: 6px;
-  }
-
-  .testimonial-image {
-    height: 100%;
-  }
-
-  .testimonial-body {
-    height: 100%;
-    padding: 8px 16px;
-  }
-
-  .testimonial-image img {
-    width: 215px;
-    height: 215px;
-    border-radius: 6px 6px 0 0;
-  }
 }

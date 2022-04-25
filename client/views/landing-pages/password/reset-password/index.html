@@ -1,0 +1,39 @@
+<section class="form-container">
+  <div class="form-wrapper">
+    <div class="form-content">
+      <div class="form-submission-error"></div>
+      <form name="resetPasswordForm" onsubmit="return false" novalidate>
+        <h2 class="form-title">Reset Password</h2>
+
+        <div class="input-wrapper">
+          <input class="form-input user-password-one" type="password" />
+          <span class="input-focus animate-border-bottom" data-placeholder="New Password"></span>
+          <span class="field-icon" onclick="togglePassword('1')">
+            <i class="fa fa-eye-slash password-one-eye"></i>
+          </span>
+        </div>
+        <div class="input-wrapper password-position password-wrapper">
+          <input class="form-input user-password-two" type="password" />
+          <span class="input-focus animate-border-bottom" data-placeholder="Confirm New Password"></span>
+          <span class="field-icon" onclick="togglePassword([2])">
+            <i class="fa fa-eye-slash password-two-eye"></i>
+          </span>
+        </div>
+        <div class="password-helper-text">
+          Password must be at least 8 characters long
+        </div>
+        <div class="form-group submit-button">
+          <div class="loading-spinner">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+          <button type="submit" onclick="handleResetPassword()" class="form-submit form-submit-button" id="submitButton">
+            Reset Password
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>

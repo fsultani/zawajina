@@ -1,6 +1,6 @@
 const axios = require('axios');
 
-const countries = require('../data/world-cities');
+const locations = require('../data/world-cities');
 
 let locationDataWasCalled = false;
 let userLocationData;
@@ -9,9 +9,10 @@ let userState;
 let userCountry;
 let locationResponse;
 
+const lowerCaseString = string => string.split(' ').join('').toLowerCase();
+
 const cities = async (req, res) => {
   const { userIPAddress, userInput } = req.query;
-  const allLocations = [];
   const allResults = [];
 
   try {
@@ -20,7 +21,7 @@ const cities = async (req, res) => {
       userCity = userLocationData.data.city;
       userState = userLocationData.data.region;
       userCountry = userLocationData.data.country;
-      locationResponse = countries.default.getAllCities();
+      locationResponse = locations.default.getAllCities();
       locationDataWasCalled = true;
     }
 
@@ -42,6 +43,8 @@ const cities = async (req, res) => {
     });
 
     filteredResults.sort((a, b) => {
+      if (a.state && lowerCaseString(a.city) === lowerCaseString(userCity) && lowerCaseString(a.state) === lowerCaseString(userState)) return -1;
+
       if (b.city.startsWith(userCity) > a.city.startsWith(userCity)) return 1;
       if (b.city.startsWith(userCity) < a.city.startsWith(userCity)) return -1;
 
@@ -60,8 +63,7 @@ const cities = async (req, res) => {
     });
 
     for (let i = 0; i < filteredResults.length; i++) {
-      const country =
-        filteredResults[i].country === 'United States' ? 'USA' : filteredResults[i].country;
+      const country = filteredResults[i].country;
       const fullLocation = `${filteredResults[i].city}, ${
         filteredResults[i].state ? `${filteredResults[i].state}, ${country}` : country
       }`;

@@ -55,7 +55,7 @@ const handlePasswordValidation = password => {
   }
 };
 
-const handleSignupStepOne = () => {
+const handleSignupStepOne = async () => {
   const nameValue = user_name.value;
   const email = user_email.value;
   const password = user_password.value;
@@ -70,14 +70,20 @@ const handleSignupStepOne = () => {
     signupButton.disabled = true;
     signupButton.style.cursor = 'not-allowed';
 
+    document.querySelectorAll('form *').forEach(item => item.disabled = true);
+
+    const userIPAddress = await getUserIPAddress();
+
     axios
       .post('/register/api/personal-info', {
         nameValue,
         email,
         password,
+        userIPAddress,
       })
       .then(res => {
         Cookies.set('my_match_userId', res.data.userId, { sameSite: 'strict' });
+        Cookies.set('emailVerificationToken', res.data.emailVerificationToken, { sameSite: 'strict' });
         if (res.status === 201) {
           window.location.pathname = '/verify-email';
         } else if (res.status === 200) {

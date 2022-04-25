@@ -1,0 +1,30 @@
+<section>
+  <div class="form-container">
+    <div class="form-wrapper">
+      <form class="form" name="resetPassword" onsubmit="handlePasswordResetEmail(event)" novalidate>
+        <div class="email-sent-message"></div>
+        <span class="form-title">
+          Reset Password
+        </span>
+        <div class="input-wrapper validate-input" id="email-wrapper">
+          <input class="input-field" type="email" name="email" />
+          <span class="input-focus" id="email" data-placeholder="Email"></span>
+        </div>
+        <div class="button-container">
+          <div class="button-wrapper">
+            <div class="button-background"></div>
+            <div class="loading-spinner">
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+            </div>
+            <button class="reset-password-button" type="submit" name="resetPasswordButton">
+              Reset Password
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>

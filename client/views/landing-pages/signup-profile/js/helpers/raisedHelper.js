@@ -1,12 +1,12 @@
 (async () => {
-  const raisedInput = document.querySelector('#raisedInput');
-  const raisedResults = document.querySelector('#raised-results');
+  const countryRaisedInInput = document.querySelector('#countryRaisedInInput');
+  const raisedResults = document.querySelector('#country-raised-in-results');
   const raisedInputPlaceholder = 'Enter country';
 
   let currentFocus = 0;
   let results = [];
 
-  raisedInput.placeholder = raisedInputPlaceholder;
+  countryRaisedInInput.placeholder = raisedInputPlaceholder;
 
   const getAllCountries = async userInput => {
     try {
@@ -22,12 +22,12 @@
   };
 
   const getUserCountryInput = () =>
-    raisedInput.addEventListener(
+    countryRaisedInInput.addEventListener(
       'input',
       debounce(async event => {
-        const userInput = raisedInput.value;
+        const userInput = countryRaisedInInput.value;
         if (!userInput) {
-          closeAllLists('#raisedInput');
+          closeAllLists('#countryRaisedInInput');
           return false;
         }
 
@@ -50,7 +50,7 @@
         });
 
         searchResultsWrapper += '</div>';
-        document.querySelector('#raised-results').innerHTML = searchResultsWrapper;
+        document.querySelector('#country-raised-in-results').innerHTML = searchResultsWrapper;
       }, 250)
     );
 
@@ -70,12 +70,12 @@
         </div>
       </div>`;
 
-    const userSelection = document.querySelector('.user-raised-selection');
+    const userSelection = document.querySelector('.country-user-raised-in-selection');
     userSelection.innerHTML = result;
     document.querySelector('.display-country').style.display = 'flex';
-    raisedInput.placeholder = '';
-    raisedInput.disabled = true;
-    closeAllLists('#raisedInput');
+    countryRaisedInInput.placeholder = '';
+    countryRaisedInInput.disabled = true;
+    closeAllLists('#countryRaisedInInput');
 
     removeCountrySelection();
   };
@@ -105,19 +105,19 @@
     document.querySelector('.country-remove').addEventListener('click', element => {
       document.querySelector('.user-country-content').textContent = '';
       document.querySelector('.display-country').style.display = 'none';
-      raisedInput.placeholder = raisedInputPlaceholder;
-      raisedInput.disabled = false;
-      raisedInput.focus();
+      countryRaisedInInput.placeholder = raisedInputPlaceholder;
+      countryRaisedInInput.disabled = false;
+      countryRaisedInInput.focus();
     });
   };
 
-  raisedInput.addEventListener('keydown', event => {
+  countryRaisedInInput.addEventListener('keydown', event => {
     getUserCountryInput();
 
     getKeyDirection(event, element => {
       const value = element[currentFocus].id;
       const countrySelection = value;
-      raisedInput.value = '';
+      countryRaisedInInput.value = '';
       renderCountry(countrySelection);
     });
   });
@@ -125,22 +125,22 @@
   raisedResults.addEventListener('click', event => {
     const value = event.target.id;
     const countrySelection = value;
-    raisedInput.value = '';
+    countryRaisedInInput.value = '';
     renderCountry(countrySelection);
   });
 
-  raisedInput.addEventListener('focusout', () => {
+  countryRaisedInInput.addEventListener('focusout', () => {
     setTimeout(() => {
       const countryRaisedIn = document.querySelector('.user-country-content');
       if (!countryRaisedIn || countryRaisedIn.textContent === '') {
-        closeAllLists('#raisedInput');
-        document.querySelector('.user-raised').style.cssText = 'padding-bottom: 4px';
-        document.querySelector('#raised-error').innerHTML =
+        closeAllLists('#countryRaisedInInput');
+        document.querySelector('.country-user-raised-in').style.cssText = 'padding-bottom: 4px';
+        document.querySelector('#country-raised-in-error').innerHTML =
           'Please select the country you raised in from the dropdown';
-        document.querySelector('#raised-error').style.display = 'block';
+        document.querySelector('#country-raised-in-error').style.display = 'block';
       } else {
-        document.querySelector('.user-raised').style.cssText = 'padding-bottom: 16px';
-        document.querySelector('#raised-error').style.display = 'none';
+        document.querySelector('.country-user-raised-in').style.cssText = 'padding-bottom: 16px';
+        document.querySelector('#country-raised-in-error').style.display = 'none';
       }
     }, 250)
   })

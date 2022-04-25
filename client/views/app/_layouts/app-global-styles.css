@@ -1,7 +1,8 @@
 html {
   box-sizing: border-box;
-  font-size: 20px;
-  line-height: 25px;
+  line-height: 1.15;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
 }
 
 *,
@@ -11,8 +12,6 @@ html {
 }
 
 body {
-  /*background: #fff;*/
-  /*background-color: #f7f7f7;*/
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   font-size: 1rem;
@@ -49,4 +48,8 @@ h5 {
 #app {
   margin: 0 auto;
   padding: 55px 0;
+}
+
+[hidden] {
+  display: none;
 }

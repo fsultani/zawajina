@@ -1,0 +1,75 @@
+.user-details-container {
+  padding: 20px 0 0;
+}
+
+@media only screen and (min-width: 800px) {
+  .user-details-container {
+    grid-row: 3 / 5;
+    grid-column: 1 / 2;
+    height: fit-content;
+  }
+}
+
+.user-details-wrapper {
+  padding: 0 20px;
+}
+
+@media only screen and (min-width: 800px) {
+  .user-details-header {
+    font-size: 25px;
+  }
+}
+
+.details-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.details-container div:not(:last-child) {
+  border-bottom: 1px solid rgba(22, 30, 42, 0.16);
+}
+
+@media only screen and (min-width: 800px) {
+  .details-container {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.details-wrapper {
+  display: flex;
+}
+
+@media only screen and (min-width: 800px) {
+  .details-wrapper {
+    display: flex;
+  }
+}
+
+.details-key {
+  padding: 10px 0;
+  flex-basis: 30%;
+  color: #7f7f7f;
+}
+
+@media only screen and (min-width: 800px) {
+  .details-key {
+    flex-basis: 30%;
+  }
+}
+
+.details-value {
+  display: flex;
+  flex-wrap: wrap;
+  flex-basis: 70%;
+  padding: 10px 0 10px 10px;
+}
+
+@media only screen and (min-width: 800px) {
+  .details-value {
+    display: flex;
+    flex-wrap: wrap;
+    flex-basis: 70%;
+    padding: 10px 0;
+  }
+}

@@ -1,132 +1,132 @@
 const { ObjectId } = require('mongodb');
 const jwt = require('jsonwebtoken');
 const fs = require('fs');
-const Jimp = require('jimp');
-
 const JWT_SECRET = Buffer.from('fe1a1915a379f3be5394b64d14794932', 'hex');
+const { compress } = require('compress-images/promise');
 
+const { FetchData } = require('../../utils');
 const { usersCollection } = require('../../db.js');
 
-const profileDetails = (req, res) => {
-  const userId = req.body.userId;
-  const {
-    birthMonth,
-    birthDay,
-    birthYear,
-    gender,
-    country,
-    state,
-    city,
-    ethnicity,
-    countryRaisedIn,
-    languages,
-    religiousConviction,
-    religiousValues,
-    maritalStatus,
-    education,
-    profession,
-    hijab,
-    hasChildren,
-    wantsChildren,
-    height,
-    relocate,
-    diet,
-    smokes,
-    hobbies,
-    aboutMe,
-    aboutMyMatch,
-  } = JSON.parse(req.body.userInfo);
-
-  const fullDob = `${birthMonth}/${birthDay}/${birthYear}`;
-  const today = new Date();
-  const dob = new Date(fullDob);
-  let age = today.getFullYear() - dob.getFullYear();
-  const month = today.getMonth() - dob.getMonth();
-
-  if (month < 0 || (month === 0 && today.getDate() < dob.getDate())) {
-    age = age - 1;
-  }
-
-  if (req.files && Object.values(req.files).length > 0) {
-    const cloudinary = require('cloudinary').v2;
+const uploadToCloudinary = async ({ req, userId }) => {
+  try {
+    const cloudinary = require('cloudinary');
     require('../../config/cloudinary');
-    const allImages = [];
+
+    let photos = [];
     const userImages = Object.values(req.files).map(async (image, index) => {
       const file = image[0];
-      const fileName = file.filename.split('.')[0];
-      const compressedFilePath = `compressed/${file.filename.split('.')[0]}.jpg`;
-      const jpgImage = await Jimp.read(file.path);
-      await jpgImage.cover(640, 640).quality(100).write(compressedFilePath);
-      const uploadToCloudinary = await cloudinary.uploader.upload(compressedFilePath, {
+      const result = await compress({
+        source: file.path,
+        destination: 'compressed/',
+        enginesSetup: {
+          jpg: { engine: 'mozjpeg', command: ['-quality', '60']},
+          png: { engine: 'pngquant', command: ['--quality=20-50', '-o']},
+        },
+        params: {
+          statistic: false,
+        }
+      });
+
+      const { statistics, errors } = result;
+      if (errors.length > 0) return new Error('Error in uploadToCloudinary');
+      const upload = await cloudinary.v2.uploader.upload(statistics[0].path_out_new, {
         folder: userId,
       });
-      allImages.push(uploadToCloudinary.secure_url);
-      fs.unlink(file.path, err => {
-        if (err) return console.error(err);
-        fs.unlink(compressedFilePath, err => {
-          if (err) return console.error(err);
-        });
-      });
-    });
 
-    Promise.all(userImages).then(() => {
-      usersCollection().findOneAndUpdate(
-        { _id: ObjectId(userId) },
-        {
-          $set: {
-            fullDob,
-            age,
-            gender,
-            country,
-            state,
-            city,
-            photos: allImages,
-            ethnicity,
-            countryRaisedIn,
-            languages,
-            religiousConviction,
-            religiousValues,
-            maritalStatus,
-            education,
-            profession,
-            hijab,
-            hasChildren,
-            wantsChildren,
-            height,
-            relocate,
-            diet,
-            smokes,
-            hobbies,
-            aboutMe,
-            aboutMyMatch,
-            completedRegistrationAt: new Date(),
-            // conversations: [],
-            lastLogin: new Date(),
-          },
-        },
-        { new: true },
-        (err, user) => {
-          const token = jwt.sign({ my_match_userId: user.value._id }, JWT_SECRET, {
-            expiresIn: '1 day',
-          });
-          res.status(201).json({ token });
-        }
-      );
-    });
-  } else {
-    // const allImagesArray = [
-    //   'https://res.cloudinary.com/dnjhw5rv2/image/upload/v1608951248/5fe6a54a2f3fa93aad83aa49/zfucr4bfuoff4aibwvio.jpg',
-    //   'https://res.cloudinary.com/dnjhw5rv2/image/upload/v1608951248/5fe6a54a2f3fa93aad83aa49/tmfvnssdmpoz0ct7pq2s.jpg',
-    //   'https://res.cloudinary.com/dnjhw5rv2/image/upload/v1608951250/5fe6a54a2f3fa93aad83aa49/m8ygr6hz9i6jvuqig1tv.jpg',
-    //   'https://res.cloudinary.com/dnjhw5rv2/image/upload/v1608951250/5fe6a54a2f3fa93aad83aa49/nuyegob47msffx6lzhva.jpg',
-    //   'https://res.cloudinary.com/dnjhw5rv2/image/upload/v1608951250/5fe6a54a2f3fa93aad83aa49/h0s34njkv4o7c6krpvms.jpg',
-    //   'https://res.cloudinary.com/dnjhw5rv2/image/upload/v1608951251/5fe6a54a2f3fa93aad83aa49/jekn1peld8nzaan5jgsy.jpg'
-    // ]
+      const uploadResponse = {
+        index,
+        asset_id: upload.asset_id,
+        public_id: upload.public_id,
+        version: upload.version,
+        version_id: upload.version_id,
+        signature: upload.signature,
+        width: upload.width,
+        height: upload.height,
+        format: upload.format,
+        resource_type: upload.resource_type,
+        created_at: upload.created_at,
+        tags: upload.tags,
+        bytes: upload.bytes,
+        type: upload.type,
+        etag: upload.etag,
+        placeholder: upload.placeholder,
+        url: upload.url,
+        secure_url: upload.secure_url,
+        original_filename: upload.original_filename,
+        api_key: upload.api_key,
+      }
 
-    // const images = Array(allImagesArray.length).fill().map((_, index) => index);
-    // images.sort(() => Math.random() - 0.5);
-    // const allImages = []
-    // images.map(number => allImages.push(allImagesArray[number]))
+      // photos[`photo_${index}`] = { ...uploadResponse }
+      photos.push({ ...uploadResponse });
+    })
+
+    await Promise.all(userImages);
+
+    fs.readdirSync('uploads').forEach(f => fs.rmSync(`uploads/${f}`));
+    fs.readdirSync('compressed').forEach(f => fs.rmSync(`compressed/${f}`));
+    return photos;
+  } catch (error) {
+    console.error(`uploadToCloudinary\n`, error);
+    throw error;
+  }
+};
+
+const profileDetails = async (req, res) => {
+  try {
+    const { userId } = req.body;
+    const {
+      birthMonth,
+      birthDay,
+      birthYear,
+      gender,
+      country,
+      state,
+      city,
+      ethnicity,
+      countryRaisedIn,
+      languages,
+      religiousConviction,
+      religiousValues,
+      maritalStatus,
+      education,
+      profession,
+      hijab,
+      hasChildren,
+      wantsChildren,
+      height,
+      relocate,
+      diet,
+      smokes,
+      hobbies,
+      aboutMe,
+      aboutMyMatch,
+      userIPAddress,
+    } = JSON.parse(req.body.userInfo);
+
+    const fullDob = `${birthMonth}/${birthDay}/${birthYear}`;
+    const today = new Date();
+    const dob = new Date(fullDob);
+    let age = today.getFullYear() - dob.getFullYear();
+    const month = today.getMonth() - dob.getMonth();
+
+    if (month < 0 || (month === 0 && today.getDate() < dob.getDate())) {
+      age = age - 1;
+    }
+
+    let photos = [];
+    if (req.files && Object.values(req.files).length > 0) {
+      const response = await uploadToCloudinary({ req, userId });
+      const upload = response.map(item => ({
+        ...item,
+        isApproved: true,
+      }))
+      upload.sort((a, b) => a.index - b.index);
+      photos = [...upload];
+    }
+
+    const geoLocationData = await FetchData(`http://ip-api.com/json/${userIPAddress}`);
+    const latitude = geoLocationData.lat;
+    const longitude = geoLocationData.lon;
 
     usersCollection().findOneAndUpdate(
       { _id: ObjectId(userId) },
@@ -138,8 +138,7 @@ const profileDetails = (req, res) => {
           country,
           state,
           city,
-          // photos: allImages,
-          photos: [],
+          photos,
           ethnicity,
           countryRaisedIn,
           languages,
@@ -159,8 +158,16 @@ const profileDetails = (req, res) => {
           aboutMe,
           aboutMyMatch,
           completedRegistrationAt: new Date(),
-          // conversations: [],
-          lastLogin: new Date(),
+          location: { type: "Point", coordinates: [longitude, latitude] },
+        },
+        $push: {
+          loginData: {
+            $each: [{
+              time: new Date(),
+              geoLocationData,
+            }],
+            $position: 0,
+          },
         },
       },
       { new: true },
@@ -172,6 +179,10 @@ const profileDetails = (req, res) => {
         res.status(201).json({ token });
       }
     );
+  } catch (error) {
+    console.log(`profileDetails error\n`, error);
+    res.send({ error });
+    throw error;
   }
 };
 

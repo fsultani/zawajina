@@ -7,13 +7,18 @@
         <div class="testimonial-wrapper">
           <div class="testimonial-image">
             <img
-              src="${user.photos.length > 0 ? user.photos[0] : user.gender === 'male' ? '/static/assets/male_profile.jpeg' : '/static/assets/female_profile.jpeg'}"
+              src="${user.photos.length > 0 ? user.photos[0] : user.gender === 'male' ? '/static/assets/icons/male_profile.jpeg' : '/static/assets/icons/female_profile.jpeg'}"
               alt="Photo 1" />
           </div>
           <div class="testimonial-body">
             <div class="testimonial-name">${user.name}, ${user.age}</div>
             <p class="location">
-              ${user.city}, ${user.state !== null ? `${user.state}, ${user.country}` : user.country}
+              ${(user.city.length + 2 + (user.state ? user.state.length + 2 : 0) + user.country.length) < 30 ?
+                `${user.city}, ${user.state !==null ? `${user.state}, ${user.country}` : user.country}` :
+                `${user.city}, ${user.state !==null ? `${user.state}, ${user.country}` : user.country.slice(0, -10)}...`}
+            </p>
+            <p class="ethnicity">
+              ${user.ethnicity.map(ethnicity => ethnicity).join(' | ')}
             </p>
           </div>
         </div>

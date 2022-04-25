@@ -44,21 +44,21 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-const sendEmail = (address, subject, body, callback) => {
+const sendEmail = async (address, subject, body) => {
   const mailOptions = {
-    from: `"My Match Admin" <${process.env.NODEMAILER_AUTH_USERNAME}>`, /* To prevent emails from going to spam */
+    /* To prevent emails from going to spam */
+    from: `"My Match Admin" <${process.env.NODEMAILER_AUTH_USERNAME}>`,
     to: address,
     subject,
     html: body,
   };
 
-  transporter.sendMail(mailOptions, (err, info) => {
-    if (err) {
-      throw new Error(err);
-    } else {
-      return callback();
-    }
-  });
+  try {
+    await transporter.sendMail(mailOptions);
+    return { status: 201 };
+  } catch (error) {
+    throw Error(`Error in sendEmail: ${error}`)
+  }
 };
 
 module.exports = sendEmail;

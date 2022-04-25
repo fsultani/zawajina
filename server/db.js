@@ -12,7 +12,7 @@ const connectToServer = callback => {
       (err, client) => {
         if (err) throw err;
         db = client.db();
-        return callback(err);
+        return callback(err, db);
       }
     );
   } else {

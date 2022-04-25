@@ -1,0 +1,175 @@
+.form-container {
+  padding: 200px 0;
+  background: linear-gradient(57deg, #00c6a7 0%, #1e4d92 100%);
+  background: -webkit-linear-gradient(57deg, #00c6a7 0%, #1e4d92 100%);
+  background: -o-linear-gradient(57deg, #00c6a7 0%, #1e4d92 100%);
+  background: -moz-linear-gradient(57deg, #00c6a7 0%, #1e4d92 100%);
+}
+
+@media screen and (max-width: 768px) {
+  .form-container {
+    height: 100vh;
+  }
+}
+
+.form-wrapper {
+  width: 390px;
+  height: 100%;
+  position: relative;
+  margin: 0 auto;
+}
+
+@media screen and (max-width: 768px) {
+  .form-wrapper {
+    width: calc(100% - 40px);
+    max-width: 100%;
+  }
+}
+
+.form-content {
+  background: #fff;
+  border-radius: 10px;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  -o-border-radius: 10px;
+  -ms-border-radius: 10px;
+  padding: 30px;
+}
+
+@media screen and (max-width: 768px) {
+  .form-content {
+    padding: 50px 25px;
+  }
+}
+
+.form-submission-error {
+  display: none;
+  position: relative;
+  padding: 12px 0;
+  margin-bottom: 30px;
+  border: 1px solid transparent;
+  border-radius: 0.25rem;
+  text-align: center;
+  font-size: 14px;
+  color: #721c24;
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+}
+
+.form-title {
+  line-height: 1.66;
+  margin: 0;
+  padding: 0;
+  font-weight: 900;
+  color: #222;
+  font-family: 'Montserrat';
+  font-size: 24px;
+  text-transform: uppercase;
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.input-wrapper {
+  width: 100%;
+  position: relative;
+  border-bottom: 2px solid #adadad;
+  margin-bottom: 30px;
+}
+
+.form-input {
+  color: #555555;
+  line-height: 1.2;
+  display: block;
+  width: 100%;
+  height: 45px;
+  background: transparent;
+  padding: 0 5px;
+}
+
+.input-focus {
+  position: absolute;
+  display: block;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+
+.input-focus::before {
+  content: '';
+  display: block;
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+}
+
+.input-focus::after {
+  font-size: 15px;
+  color: #999999;
+  line-height: 1.2;
+  content: attr(data-placeholder);
+  display: block;
+  width: 100%;
+  position: absolute;
+  top: 16px;
+  left: 0px;
+  padding-left: 5px;
+  -webkit-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  -moz-transition: all 0.4s;
+  transition: all 0.4s;
+}
+
+.form-input:focus+.input-focus::after {
+  top: -15px;
+}
+
+.form-input:focus+.input-focus::before {
+  width: 100%;
+}
+
+.has-value.form-input+.input-focus::after {
+  top: -15px;
+}
+
+.has-value.form-input+.input-focus::before {
+  width: 100%;
+}
+
+.animate-border-bottom::before {
+  -webkit-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  -moz-transition: all 0.4s;
+  transition: all 0.4s;
+  background: #6a7dfe;
+  background: -webkit-linear-gradient(left, #21d4fd, #b721ff);
+  background: -o-linear-gradient(left, #21d4fd, #b721ff);
+  background: -moz-linear-gradient(left, #21d4fd, #b721ff);
+  background: linear-gradient(left, #21d4fd, #b721ff);
+}
+
+.field-icon {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  color: #555;
+}
+
+.password-helper-text {
+  font-size: 12px;
+  margin-bottom: 20px;
+}
+
+@media screen and (max-width: 768px) {
+  .password-helper-text {
+    font-size: 10px;
+  }
+}
+
+.form-group {
+  overflow: hidden;
+  margin-bottom: 20px;
+}

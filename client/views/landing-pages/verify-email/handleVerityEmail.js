@@ -19,6 +19,8 @@ const handleVerityEmail = () => {
     submitButton.disabled = true;
     submitButton.style.cursor = 'not-allowed';
 
+    document.querySelectorAll('form *').forEach(item => item.disabled = true);
+
     axios.get('/register/api/verify-email', {
       params: { verificationToken }
     })

@@ -86,7 +86,6 @@
     userSelection.innerHTML = selection();
 
     document.querySelectorAll('.display-user-hobby').forEach(element => {
-      // element.style.display = 'flex';
       element.style.cssText = `
         display: flex;
         margin-bottom: 8px;

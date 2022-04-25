@@ -158,8 +158,8 @@ textarea:-ms-input-placeholder {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  align-items: center;
-  padding: 60px 20px;
+  align-items: flex-start;
+  padding: 200px 20px;
   background: linear-gradient(-135deg, #c850c0, #4158d0);
   background: linear-gradient(57deg, #00c6a7 0%, #1e4d92 100%);
 }
@@ -169,7 +169,7 @@ textarea:-ms-input-placeholder {
   background: #fff;
   border-radius: 10px;
   overflow: hidden;
-  padding: 77px 55px 33px 55px;
+  padding: 30px;
   box-shadow: 0 5px 10px 0px rgba(0, 0, 0, 0.1);
   -moz-box-shadow: 0 5px 10px 0px rgba(0, 0, 0, 0.1);
   -webkit-box-shadow: 0 5px 10px 0px rgba(0, 0, 0, 0.1);
@@ -295,7 +295,7 @@ textarea:-ms-input-placeholder {
 }
 
 .input-field:focus + .input-focus::after {
-  top: -15px;
+  top: -20px;
 }
 
 .input-field:focus + .input-focus::before {
@@ -303,7 +303,7 @@ textarea:-ms-input-placeholder {
 }
 
 .has-value.input-field + .input-focus::after {
-  top: -15px;
+  top: -20px;
 }
 
 .has-value.input-field + .input-focus::before {
@@ -389,9 +389,12 @@ textarea:-ms-input-placeholder {
   position: relative;
 }
 
-.no-account-container {
-  text-align: center;
-  padding-top: 8px;
+.bottom-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-top: 14px;
 }
 
 @media screen and (max-width: 768px) {
@@ -409,7 +412,7 @@ textarea:-ms-input-placeholder {
     padding: 32px 15px;
   }
 
-  .no-account-container {
+  .bottom-container {
     padding-top: 32px;
   }
 }
@@ -448,7 +451,7 @@ textarea:-ms-input-placeholder {
 
 @media (min-width: 600px) {
   .loading-spinner {
-    left: 117px;
+    left: 45%;
   }
 }
 

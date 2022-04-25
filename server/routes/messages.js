@@ -1,10 +1,20 @@
 const express = require('express');
 const { ObjectId } = require('mongodb');
-const fs = require('fs');
 
 const router = express.Router();
 
+const { getAllFiles } = require('../utils');
 const { usersCollection, messagesCollection } = require('../db');
+
+const {
+  emailBodyContainerStyles,
+  emailHeader,
+  paragraphStyles,
+  ctaButton,
+  emailSignature,
+} = require('../email-templates/components');
+
+const sendEmail = require('../helpers/email');
 
 router.get('/:conversationId?', async (req, res) => {
   const { conversationId } = req.params;
@@ -13,36 +23,24 @@ router.get('/:conversationId?', async (req, res) => {
   const conversationsCollection = await messagesCollection().findOne({ _id: ObjectId(conversationId) })
   const users = conversationsCollection ? conversationsCollection.users : {};
 
-  const messagesDirectory = 'client/views/app/messages'
-  const messagesFiles = fs.readdirSync(messagesDirectory);
+  const directoryPath = ['client/views/app/messages'];
 
-  /* Read all files of a given type without needing to add them manually to the res.render() function */
-  const getMessagesFileType = ({ fileType, filesArray }) => {
-    messagesFiles.filter(file => file.split('.')[1] === fileType).map(file => {
-      filesArray.push(`/static/${messagesDirectory}/${file}`)
-    })
-  }
-
-  const messagesStyles = [
-    '/static/assets/font_awesome_5_14_0.min.css',
+  const styles = [
+    '/static/assets/styles/fontawesome-free-5.15.4-web/css/all.css',
     '/static/client/views/app/_partials/app-nav.css',
     '/static/client/views/app/_layouts/app-global-styles.css',
   ];
 
-  getMessagesFileType({ fileType: 'css', filesArray: messagesStyles });
-
-  const messagesScripts = [
-    '/static/assets/axios.min.js',
-    '/static/assets/js.cookie.min.js',
+  const scripts = [
+    '/static/assets/apis/axios.min.js',
+    '/static/assets/apis/js.cookie.min.js',
   ]
-
-  getMessagesFileType({ fileType: 'js', filesArray: messagesScripts })
 
   res.render('app/_layouts/index', {
     locals: {
       title: 'My Match',
-      styles: messagesStyles,
-      scripts: messagesScripts,
+      styles: getAllFiles({ directoryPath, fileType: 'css', filesArray: styles }),
+      scripts: getAllFiles({ directoryPath, fileType: 'js', filesArray: scripts }),
       authUser,
       allConversationsCount,
       conversationId,
@@ -55,79 +53,82 @@ router.get('/:conversationId?', async (req, res) => {
   });
 });
 
-/****************************************************************************************************
-// Get all conversations using find()
-****************************************************************************************************/
+/* ************************************************** */
+/*
+  Get all conversations using find().
+  This is needed when using the local db
+*/
+
+// router.get('/api/conversations1', async (req, res) => {
+//   const { authUser, allConversationsCount } = req;
+
+//   try {
+//     const allConversations = [];
+//     await messagesCollection().find({
+//       $or: [
+//         {
+//           recipientId: ObjectId(authUser._id),
+//         },
+//         {
+//           createdByUserId: ObjectId(authUser._id)
+//         }
+//       ]
+//     }).forEach(conversation => {
+//       let otherUser = conversation.users.recipient.name;
+
+//       const authUserId = String(authUser._id);
+//       const otherUserId = String(conversation.users.recipient._id);
+//       if (authUserId === otherUserId) {
+//         otherUser = conversation.users.createdByUser.name;
+//       }
+
+//       let lastMessage = {}
+//       if (conversation.messages.length > 0) {
+//         const lastMessageObject = conversation.messages[conversation.messages.length - 1];
+//         lastMessage = {
+//           preview: lastMessageObject.messageText.slice(0, 50),
+//           wasRead: String(lastMessageObject.sender) === authUserId ? true : lastMessageObject.read,
+//         }
+//       } else {
+//         lastMessage = {
+//           preview: '',
+//           wasRead: true,
+//         }
+//       }
+
+//       const unreadMessagesCount = conversation.messages.filter(message => {
+//         if (String(message.sender) !== authUserId) {
+//           return !message.read;
+//         }
+//       }).length;
+
+//       allConversations.push({
+//         _id: conversation._id,
+//         otherUser,
+//         lastMessagePreview: lastMessage.preview,
+//         lastMessageWasRead: lastMessage.wasRead,
+//         unreadMessagesCount,
+//       })
+//     });
+//     allConversations.sort((a, b) => b.updatedAt - a.updatedAt)
+
+//     res.status(200).json({
+//       allConversationsCount,
+//       allConversationsSidebar: allConversations,
+//       hasMoreConversations: allConversations.length > 0,
+//     });
+//   } catch (error) {
+//     console.log(`Error in /api/conversations\n`, error);
+//     throw new Error(error);
+//   }
+// })
+
+/* ************************************************** */
+/*
+  Get all conversations using aggregate()
+*/
 
 router.get('/api/conversations', async (req, res) => {
-  const { authUser, allConversationsCount } = req;
-
-  try {
-    const allConversations = [];
-    await messagesCollection().find({
-      $or: [
-        {
-          recipientId: ObjectId(authUser._id),
-        },
-        {
-          createdByUserId: ObjectId(authUser._id)
-        }
-      ]
-    }).forEach(conversation => {
-      let otherUser = conversation.users.recipient.name;
-
-      const authUserId = String(authUser._id);
-      const otherUserId = String(conversation.users.recipient._id);
-      if (authUserId === otherUserId) {
-        otherUser = conversation.users.createdByUser.name;
-      }
-
-      let lastMessage = {}
-      if (conversation.messages.length > 0) {
-        const lastMessageObject = conversation.messages[conversation.messages.length - 1];
-        lastMessage = {
-          preview: lastMessageObject.messageText.slice(0, 50),
-          wasRead: String(lastMessageObject.sender) === authUserId ? true : lastMessageObject.read,
-        }
-      } else {
-        lastMessage = {
-          preview: '',
-          wasRead: true,
-        }
-      }
-
-      const unreadMessagesCount = conversation.messages.filter(message => {
-        if (String(message.sender) !== authUserId) {
-          return !message.read;
-        }
-      }).length;
-
-      allConversations.push({
-        _id: conversation._id,
-        otherUser,
-        lastMessagePreview: lastMessage.preview,
-        lastMessageWasRead: lastMessage.wasRead,
-        unreadMessagesCount,
-      })
-    });
-    allConversations.sort((a, b) => b.updatedAt - a.updatedAt)
-
-    res.status(200).json({
-      allConversationsCount,
-      allConversationsSidebar: allConversations,
-      hasMoreConversations: allConversations.length > 0,
-    });
-  } catch (error) {
-    console.log(`Error in /api/conversations\n`, error);
-    throw new Error(error);
-  }
-})
-
-/****************************************************************************************************
-// Get all conversations using aggregate()
-****************************************************************************************************/
-
-router.get('/api/conversations1', async (req, res) => {
   const { authUser, allConversationsCount } = req;
   const { page } = req.query;
   const limit = 25;
@@ -179,8 +180,8 @@ router.get('/api/conversations1', async (req, res) => {
                   $cond: {
                     'if': {
                       $and: [
-                        { $eq: [ '$$message.recipient', ObjectId(authUser._id) ] },
-                        { $eq: [ '$$message.read', false ] },
+                        { $eq: ['$$message.recipient', ObjectId(authUser._id)] },
+                        { $eq: ['$$message.read', false] },
                       ]
                     },
                     'then': 1,
@@ -202,10 +203,10 @@ router.get('/api/conversations1', async (req, res) => {
         }
       }
     ])
-    .sort({ updatedAt: -1 })
-    .skip(skipRecords)
-    .limit(limit)
-    .toArray();
+      .sort({ updatedAt: -1 })
+      .skip(skipRecords)
+      .limit(limit)
+      .toArray();
 
     res.status(200).json({
       allConversationsCount,
@@ -214,13 +215,14 @@ router.get('/api/conversations1', async (req, res) => {
     });
   } catch (error) {
     console.log(`Error in /api/conversations\n`, error);
-    throw new Error(error);
+    new Error(error);
   }
 })
 
-/****************************************************************************************************
-// Get messages search query
-****************************************************************************************************/
+/* ************************************************** */
+/*
+  Get messages search query
+*/
 
 router.get('/api/conversations/search', async (req, res) => {
   const { authUser } = req;
@@ -317,8 +319,8 @@ router.get('/api/conversations/search', async (req, res) => {
                   $cond: {
                     'if': {
                       $and: [
-                        { $eq: [ '$$message.recipient', ObjectId(authUser._id) ] },
-                        { $eq: [ '$$message.read', false ] },
+                        { $eq: ['$$message.recipient', ObjectId(authUser._id)] },
+                        { $eq: ['$$message.read', false] },
                       ]
                     },
                     'then': 1,
@@ -357,9 +359,10 @@ router.get('/api/conversations/search', async (req, res) => {
   }
 })
 
-/****************************************************************************************************
-// View the conversation with a user through the user's profile page
-****************************************************************************************************/
+/* ************************************************** */
+/*
+  View the conversation with a user through the user's profile page
+*/
 
 router.get('/api/conversation/user/:userId', async (req, res) => {
   const { authUser } = req;
@@ -412,9 +415,11 @@ router.get('/api/conversation/user/:userId', async (req, res) => {
   }
 })
 
-/****************************************************************************************************
-// Get the conversation with a user after the conversation page loads
-****************************************************************************************************/
+/* ************************************************** */
+/*
+  Get the conversation with a user
+  after the conversation page loads
+*/
 
 router.get('/api/conversation/:conversationId', async (req, res) => {
   const { authUser } = req;
@@ -452,9 +457,10 @@ router.get('/api/conversation/:conversationId', async (req, res) => {
   }
 })
 
-/****************************************************************************************************
-// Send a new message to a user
-****************************************************************************************************/
+/* ************************************************** */
+/*
+  Send a new message to a user
+*/
 
 router.post('/api/new-message', async (req, res) => {
   const { authUser } = req;
@@ -530,6 +536,27 @@ router.post('/api/new-message', async (req, res) => {
           unreadMessagesCount,
         })
       });
+
+    const recipient = String(authUser._id) === String(conversationsCollection.recipientId) ? conversationsCollection.users.createdByUser : conversationsCollection.users.recipient;
+    let url = `${process.env.MY_MATCH_HEROKU}/messages/${conversationId}`;
+    if (process.env.DEVELOPMENT) {
+      url = `${process.env.MY_MATCH_LOCALHOST}/messages/${conversationId}`;
+    }
+
+    const subject = `You have a new message from ${authUser.name}`;
+    const emailBody = `
+      <div style="${emailBodyContainerStyles}">
+        ${emailHeader({ recipientName: recipient.name })}
+        <p style="${paragraphStyles({})}">${authUser.name} just sent you a message.</p>
+        ${ctaButton({
+          ctaButtonUrl: url,
+          ctaButtonText: 'Go To Messages'
+        })}
+        ${emailSignature}
+      </div>
+    `;
+
+    await sendEmail(recipient.email, subject, emailBody)
 
     res.status(200).json({
       allConversations,

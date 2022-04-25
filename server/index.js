@@ -1,5 +1,8 @@
 require('dotenv').config();
 const express = require('express');
+// const AdminJS = require('adminjs');
+// const AdminJSExpress = require('@adminjs/express');
+
 const es6Renderer = require('express-es6-template-engine');
 const path = require('path');
 const cookieParser = require('cookie-parser');
@@ -9,11 +12,18 @@ const jwt = require('jsonwebtoken');
 const JWT_SECRET = Buffer.from('fe1a1915a379f3be5394b64d14794932', 'hex');
 
 const { connectToServer, usersCollection, messagesCollection } = require('./db.js');
-const index = require('./routes/index');
-const register = require('./routes/register/index');
-const user = require('./routes/user');
-const search = require('./routes/search');
-const messages = require('./routes/messages');
+const {
+  register,
+  login,
+  password,
+  users,
+  user,
+  search,
+  messages,
+  settings,
+} = require('./routes/index');
+
+const { getAllFiles } = require('./utils.js');
 
 const app = express();
 
@@ -27,12 +37,22 @@ app.engine('html', es6Renderer);
 app.set('views', path.join(__dirname, '../client/views'));
 app.set('view engine', 'html');
 
-app.use((req, res, next) => {
-  connectToServer(err => {
+let mongoDb;
+app.use((_req, _res, next) => {
+  connectToServer((err, db) => {
     if (err) throw err;
+    mongoDb = db;
     next();
   });
 });
+
+// const adminJs = new AdminJS({
+//   databases: [],
+//   rootPath: '/admin',
+// });
+
+// const router = AdminJSExpress.buildRouter(adminJs);
+// app.use(adminJs.options.rootPath, router); 
 
 /* Catch all GET requests, and respond with an html file */
 app.get('*', (req, res, next) => {
@@ -42,16 +62,27 @@ app.get('*', (req, res, next) => {
     my_match_authToken
   } = req.cookies;
 
-  if (requestUrl.split('/').indexOf('api') !== -1 || my_match_authToken) {
+  if (
+    requestUrl.split('/').indexOf('api') !== -1 ||
+    requestUrl.indexOf('password') !== -1 ||
+    my_match_authToken
+  ) {
     return next();
   }
+
+  let stylesDirectoryPath = [];
+  let scriptsDirectoryPath = [];
+
+  let styles = [];
+  let scripts = [];
+
   switch (requestUrl) {
     case '/':
       res.render('landing-pages/_layouts/index', {
         locals: {
           title: 'My Match',
           styles: [
-            '/static/assets/fonts_googleapis.css',
+            '/static/assets/styles/fonts_googleapis.css',
             '/static/client/views/landing-pages/_layouts/global-styles.css',
             '/static/client/views/landing-pages/_partials/styles/landing-page-nav.css',
             '/static/client/views/landing-pages/_partials/styles/footer.css',
@@ -59,7 +90,7 @@ app.get('*', (req, res, next) => {
           ],
           scripts: [
             'https://unpkg.com/scrollreveal',
-            '/static/assets/axios.min.js',
+            '/static/assets/apis/axios.min.js',
             '/static/client/views/landing-pages/home/animations.js',
           ],
         },
@@ -75,7 +106,7 @@ app.get('*', (req, res, next) => {
         locals: {
           title: 'About Us - My Match',
           styles: [
-            '/static/assets/fonts_googleapis.css',
+            '/static/assets/styles/fonts_googleapis.css',
             '/static/client/views/landing-pages/_layouts/global-styles.css',
             '/static/client/views/landing-pages/_partials/styles/landing-page-nav.css',
             '/static/client/views/landing-pages/_partials/styles/footer.css',
@@ -98,16 +129,16 @@ app.get('*', (req, res, next) => {
         locals: {
           title: 'Login - My Match',
           styles: [
-            '/static/assets/material-design-iconic-font.min.css',
-            '/static/assets/bootstrap.min.css',
+            '/static/assets/styles/material-design-iconic-font.min.css',
+            '/static/assets/styles/bootstrap.min.css',
             '/static/client/views/landing-pages/_layouts/global-styles.css',
             '/static/client/views/landing-pages/_partials/styles/landing-page-nav.css',
             '/static/client/views/landing-pages/_partials/styles/footer.css',
             '/static/client/views/landing-pages/login/styles.css',
           ],
           scripts: [
-            '/static/assets/axios.min.js',
-            '/static/assets/js.cookie.min.js',
+            '/static/assets/apis/axios.min.js',
+            '/static/assets/apis/js.cookie.min.js',
             '/static/client/views/landing-pages/login/handleFocusEvent.js',
             '/static/client/views/landing-pages/login/handleLogin.js',
             '/static/client/views/landing-pages/login/init.js',
@@ -125,15 +156,15 @@ app.get('*', (req, res, next) => {
         locals: {
           title: 'Sign Up - My Match',
           styles: [
-            '/static/assets/font_awesome_5_14_0.min.css',
+            'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css',
             '/static/client/views/landing-pages/_layouts/global-styles.css',
             '/static/client/views/landing-pages/_partials/styles/landing-page-nav.css',
             '/static/client/views/landing-pages/_partials/styles/footer.css',
             '/static/client/views/landing-pages/signup/styles.css',
           ],
           scripts: [
-            '/static/assets/axios.min.js',
-            '/static/assets/js.cookie.min.js',
+            '/static/assets/apis/axios.min.js',
+            '/static/assets/apis/js.cookie.min.js',
             '/static/client/views/landing-pages/signup/js/includeHTML.js',
             '/static/client/views/landing-pages/signup/js/togglePassword.js',
             '/static/client/views/landing-pages/signup/js/handleSignupStepOne.js',
@@ -153,15 +184,15 @@ app.get('*', (req, res, next) => {
         locals: {
           title: 'Sign Up - My Match',
           styles: [
-            '/static/assets/font_awesome_5_14_0.min.css',
+            'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css',
             '/static/client/views/landing-pages/_layouts/global-styles.css',
             '/static/client/views/landing-pages/_partials/styles/landing-page-nav.css',
             '/static/client/views/landing-pages/_partials/styles/footer.css',
             '/static/client/views/landing-pages/verify-email/styles.css',
           ],
           scripts: [
-            '/static/assets/axios.min.js',
-            '/static/assets/js.cookie.min.js',
+            '/static/assets/apis/axios.min.js',
+            '/static/assets/apis/js.cookie.min.js',
             '/static/client/views/landing-pages/verify-email/init.js',
             '/static/client/views/landing-pages/verify-email/handleVerityEmail.js',
           ],
@@ -180,15 +211,15 @@ app.get('*', (req, res, next) => {
         locals: {
           title: 'Sign Up - My Match',
           styles: [
-            '/static/assets/font_awesome_5_14_0.min.css',
+            'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css',
             '/static/client/views/landing-pages/_layouts/global-styles.css',
             '/static/client/views/landing-pages/_partials/styles/landing-page-nav.css',
             '/static/client/views/landing-pages/_partials/styles/footer.css',
             '/static/client/views/landing-pages/resend-email/styles.css',
           ],
           scripts: [
-            '/static/assets/axios.min.js',
-            '/static/assets/js.cookie.min.js',
+            '/static/assets/apis/axios.min.js',
+            '/static/assets/apis/js.cookie.min.js',
             '/static/client/views/landing-pages/resend-email/js/includeHTML.js',
             '/static/client/views/landing-pages/resend-email/js/handleResendVerificationCode.js',
           ],
@@ -203,31 +234,26 @@ app.get('*', (req, res, next) => {
     case '/signup/profile':
       /* If someone lands on this pathname without a my_match_userId, redirect them to /signup. */
       if (!my_match_userId) return res.redirect('/signup');
+      stylesDirectoryPath = ['client/views/landing-pages/signup-profile'];
+      scriptsDirectoryPath = ['client/views/landing-pages/signup-profile/js', 'client/views/landing-pages/signup-profile/js/helpers'];
+
+      styles = [
+        'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css',
+        '/static/client/views/landing-pages/_layouts/global-styles.css',
+        '/static/client/views/landing-pages/_partials/styles/landing-page-nav.css',
+        '/static/client/views/landing-pages/_partials/styles/footer.css',
+      ];
+
+      scripts = [
+        '/static/assets/apis/axios.min.js',
+        '/static/assets/apis/js.cookie.min.js',
+      ];
+
       res.render('landing-pages/_layouts/index', {
         locals: {
           title: 'Sign Up - My Match',
-          styles: [
-            '/static/assets/font_awesome_5_14_0.min.css',
-            '/static/client/views/landing-pages/_layouts/global-styles.css',
-            '/static/client/views/landing-pages/_partials/styles/landing-page-nav.css',
-            '/static/client/views/landing-pages/_partials/styles/footer.css',
-            '/static/client/views/landing-pages/signup-profile/styles.css',
-          ],
-          scripts: [
-            '/static/assets/axios.min.js',
-            '/static/assets/js.cookie.min.js',
-            '/static/client/views/landing-pages/signup-profile/js/helpers/utils.js',
-            '/static/client/views/landing-pages/signup-profile/js/helpers/dobHelper.js',
-            '/static/client/views/landing-pages/signup-profile/js/helpers/locationHelper.js',
-            '/static/client/views/landing-pages/signup-profile/js/helpers/raisedHelper.js',
-            '/static/client/views/landing-pages/signup-profile/js/helpers/ethnicityHelper.js',
-            '/static/client/views/landing-pages/signup-profile/js/helpers/professionHelper.js',
-            '/static/client/views/landing-pages/signup-profile/js/helpers/languageHelper.js',
-            '/static/client/views/landing-pages/signup-profile/js/helpers/hobbiesHelper.js',
-            '/static/client/views/landing-pages/signup-profile/js/signupProfileInit.js',
-            '/static/client/views/landing-pages/signup-profile/js/handleCreateNewAccount.js',
-            '/static/client/views/landing-pages/signup-profile/js/imageUpload.js',
-          ],
+          styles: getAllFiles({ directoryPath: stylesDirectoryPath, fileType: 'css', filesArray: styles }),
+          scripts: getAllFiles({ directoryPath: scriptsDirectoryPath, fileType: 'js', filesArray: scripts }),
         },
         partials: {
           nav: 'landing-pages/_partials/landing-page-nav',
@@ -241,7 +267,7 @@ app.get('*', (req, res, next) => {
         locals: {
           title: 'Terms of Service - My Match',
           styles: [
-            '/static/assets/fonts_googleapis.css',
+            '/static/assets/styles/fonts_googleapis.css',
             '/static/client/views/landing-pages/_layouts/global-styles.css',
             '/static/client/views/landing-pages/_partials/styles/landing-page-nav.css',
             '/static/client/views/landing-pages/_partials/styles/footer.css',
@@ -260,98 +286,73 @@ app.get('*', (req, res, next) => {
   }
 });
 
-app.use('*', (req, res, next) => {
-  const requestUrl = req.originalUrl.split('/')
-  const { my_match_authToken } = req.cookies;
+app.use('*', async (req, res, next) => {
+  try {
+    const requestUrl = req.originalUrl.split('/')
+    const { my_match_authToken } = req.cookies;
+  
+    if (!my_match_authToken &&
+      (
+        requestUrl.indexOf('signup-user-first-name') !== -1 ||
+        requestUrl.indexOf('login') !== -1 ||
+        requestUrl.indexOf('api') !== -1 ||
+        requestUrl.indexOf('password') !== -1
+      )
+    ) return next();
 
-  if (!my_match_authToken &&
-    (
-      requestUrl.indexOf('signup-user-first-name') !== -1 ||
-      requestUrl.indexOf('login') !== -1 ||
-      requestUrl.indexOf('api') !== -1
-    )
-  ) return next();
+    const jwtVerify = await jwt.verify(my_match_authToken, JWT_SECRET);
+    const userDocument = await usersCollection().findOne({ _id: ObjectId(jwtVerify.my_match_userId) });
 
-  return jwt.verify(my_match_authToken, JWT_SECRET, async (authError, authUser) => {
-    if (authError) {
-      return res.render('landing-pages/_layouts/index', {
-        locals: {
-          title: 'Login - My Match',
-          styles: [
-            '/static/assets/material-design-iconic-font.min.css',
-            '/static/assets/bootstrap.min.css',
-            '/static/client/views/landing-pages/_layouts/global-styles.css',
-            '/static/client/views/landing-pages/_partials/styles/landing-page-nav.css',
-            '/static/client/views/landing-pages/_partials/styles/footer.css',
-            '/static/client/views/landing-pages/login/styles.css',
-          ],
-          scripts: [
-            '/static/assets/axios.min.js',
-            '/static/assets/js.cookie.min.js',
-            '/static/client/views/landing-pages/login/handleFocusEvent.js',
-            '/static/client/views/landing-pages/login/handleLogin.js',
-            '/static/client/views/landing-pages/login/init.js',
-          ],
-        },
-        partials: {
-          nav: 'landing-pages/_partials/landing-page-nav',
-          body: 'landing-pages/login/index',
-          footer: 'landing-pages/_partials/footer',
-        },
-      });
-    }
-
-    usersCollection().findOne({ _id: ObjectId(authUser.my_match_userId) }, async (error, user) => {
-      if (error || !user) {
-        return res.render('landing-pages/_layouts/index', {
-          locals: {
-            title: 'Login - My Match',
-            styles: [
-              '/static/assets/material-design-iconic-font.min.css',
-              '/static/assets/bootstrap.min.css',
-              '/static/client/views/landing-pages/_layouts/global-styles.css',
-              '/static/client/views/landing-pages/_partials/styles/landing-page-nav.css',
-              '/static/client/views/landing-pages/_partials/styles/footer.css',
-              '/static/client/views/landing-pages/login/styles.css',
-            ],
-            scripts: [
-              '/static/assets/axios.min.js',
-              '/static/assets/js.cookie.min.js',
-              '/static/client/views/landing-pages/login/handleFocusEvent.js',
-              '/static/client/views/landing-pages/login/handleLogin.js',
-              '/static/client/views/landing-pages/login/init.js',
-            ],
-          },
-          partials: {
-            nav: 'landing-pages/_partials/landing-page-nav',
-            body: 'landing-pages/login/index',
-            footer: 'landing-pages/_partials/footer',
-          },
-        });
-      };
-
-      const allConversationsCount = await messagesCollection().countDocuments({
-        messages: {
-          $elemMatch: {
-            recipient: ObjectId(user._id),
-            read: false,
-          }
-        },
-      });
-
-      req.authUser = user;
-      req.allConversationsCount = allConversationsCount;
-      next();
+    const allConversationsCount = await messagesCollection().countDocuments({
+      messages: {
+        $elemMatch: {
+          recipient: ObjectId(userDocument._id),
+          read: false,
+        }
+      },
     });
-  });
+
+    req.authUser = userDocument;
+    req.allConversationsCount = allConversationsCount;
+    next();
+  } catch (error) {
+    console.log(`error\n`, error);
+    return res.render('landing-pages/_layouts/index', {
+      locals: {
+        title: 'Login - My Match',
+        styles: [
+          '/static/assets/styles/material-design-iconic-font.min.css',
+          '/static/assets/styles/bootstrap.min.css',
+          '/static/client/views/landing-pages/_layouts/global-styles.css',
+          '/static/client/views/landing-pages/_partials/styles/landing-page-nav.css',
+          '/static/client/views/landing-pages/_partials/styles/footer.css',
+          '/static/client/views/landing-pages/login/styles.css',
+        ],
+        scripts: [
+          '/static/assets/apis/axios.min.js',
+          '/static/assets/apis/js.cookie.min.js',
+          '/static/client/views/landing-pages/login/handleFocusEvent.js',
+          '/static/client/views/landing-pages/login/handleLogin.js',
+          '/static/client/views/landing-pages/login/init.js',
+        ],
+      },
+      partials: {
+        nav: 'landing-pages/_partials/landing-page-nav',
+        body: 'landing-pages/login/index',
+        footer: 'landing-pages/_partials/footer',
+      },
+    });
+  }
 });
 
-/* Use index.js for any routes beginning with '/' */
-app.use('/', index);
 app.use('/register', register);
+app.use('/login', login);
+app.use('/password', password);
+app.use('/users', users);
 app.use('/user', user);
 app.use('/search', search);
 app.use('/messages', messages);
+app.use('/settings', settings);
 
 /* Redirect to the main view for any nonmatching routes where a valid my_match_authToken exists */
 app.use('/*', (_req, res) => res.redirect('/users'));
@@ -382,7 +383,7 @@ if (process.env.DEVELOPMENT) {
       if (err) return console.error(err);
     }
   );
-}
+};
 
 app.listen(port, () => {
   if (process.send) {

@@ -9,10 +9,6 @@
   <section>
     <div class="signup-wrapper">
       <div class="signup-content">
-        <div id="signup-error"></div>
-        <div id="slow-network-warning">
-          <p class="slow-network-message"></p>
-        </div>
         <form
           name="signupForm"
           enctype="multipart/form-data"
@@ -27,8 +23,6 @@
             Please answer some additional questions to find the right matches.
           </p>
           <p class="form-errors">Please fix the errors below.</p>
-
-          <!-- ************************************************************ -->
 
           <section class="form-row">
             <div class="dob-container">
@@ -55,8 +49,6 @@
             </div>
           </section>
 
-          <!-- ************************************************************ -->
-
           <section class="form-row">
             <div class="gender-container form-radio">
               <label for="gender">Gender</label>
@@ -69,8 +61,6 @@
             </div>
           </section>
 
-          <!-- ************************************************************ -->
-
           <section>
             <div class="form-row user-location">
               <label for="locationInput">What city do you live in?</label>
@@ -82,15 +72,15 @@
             </div>
             <div id="city-error"></div>
 
-            <div class="form-row user-raised">
-              <label for="raisedInput">Where were you raised?</label>
+            <div class="form-row country-user-raised-in">
+              <label for="countryRaisedInInput">Where were you raised?</label>
               <div class="autocomplete">
-                <div class="user-raised-selection"></div>
-                <input id="raisedInput" class="raised" type="text" />
-                <div id="raised-results"></div>
+                <div class="country-user-raised-in-selection"></div>
+                <input id="countryRaisedInInput" class="country-raised-in" type="text" />
+                <div id="country-raised-in-results"></div>
               </div>
             </div>
-            <div id="raised-error"></div>
+            <div id="country-raised-in-error"></div>
 
             <div class="form-row user-ethnicity">
               <label for="ethnicityInput">What is your ethnicity?</label>
@@ -113,12 +103,10 @@
             <div id="languages-error"></div>
           </section>
 
-          <!-- ************************************************************ -->
-
           <section class="form-row select-container">
             <div>
               <label>Conviction</label>
-              <select class="religious-conviction-error" onchange="handleConviction(event)">
+              <select class="religious-conviction" onchange="handleConviction(event)">
                 <option selected disabled>Select Conviction</option>
                 <option value="Sunni">Sunni</option>
                 <option value="Shia">Shia</option>
@@ -128,7 +116,7 @@
             </div>
             <div>
               <label>Values</label>
-              <select class="religious-values-error" onchange="handleReligiousValues(event)">
+              <select class="religious-values" onchange="handleReligiousValues(event)">
                 <option selected disabled>Select Values</option>
                 <option value="Conservative">Conservative</option>
                 <option value="Moderate">Moderate</option>
@@ -137,7 +125,7 @@
             </div>
             <div>
               <label>Marital Status</label>
-              <select class="marital-status-error" onchange="handleMaritalStatus(event)">
+              <select class="marital-status" onchange="handleMaritalStatus(event)">
                 <option selected disabled>Marital Status</option>
                 <option value="Never Married">Never Married</option>
                 <option value="Divorced">Divorced</option>
@@ -146,7 +134,7 @@
             </div>
             <div>
               <label>Education</label>
-              <select class="education-error" onchange="handleEducation(event)">
+              <select class="education" onchange="handleEducation(event)">
                 <option selected disabled>Education Level</option>
                 <option value="High School">High School</option>
                 <option value="Associate degree">Associate degree</option>
@@ -158,41 +146,17 @@
             <div>
               <label>Profession</label>
               <select
-                class="professions profession-error"
+                class="professions"
                 onchange="handleProfession(event)"
               ></select>
             </div>
             <div>
               <label>Height</label>
-              <select class="height-error height-options" onchange="handleHeight(event)">
-                <option selected disabled>Select Height</option>
-                <option>< 4'10" (< 147 cm)</option>
-                <option>4'10" (147 cm)</option>
-                <option>4'11" (150 cm)</option>
-                <option>5' (152 cm)</option>
-                <option>5'1" (155 cm)</option>
-                <option>5'2" (157 cm)</option>
-                <option>5'3" (160 cm)</option>
-                <option>5'4" (163 cm)</option>
-                <option>5'5" (165 cm)</option>
-                <option>5'6" (168 cm)</option>
-                <option>5'7" (170 cm)</option>
-                <option>5'8" (173 cm)</option>
-                <option>5'9" (175 cm)</option>
-                <option>5'10" (177 cm)</option>
-                <option>5'11" (180 cm)</option>
-                <option>6' (183 cm)</option>
-                <option>6'1" (185 cm)</option>
-                <option>6'2" (188 cm)</option>
-                <option>6'3" (191 cm)</option>
-                <option>6'4" (193 cm)</option>
-                <option>6'5" (196 cm)</option>
-                <option>> 6'5" (> 196 cm)</option>
-              </select>
+              <select class="user-height" onchange="handleHeight(event)"></select>
             </div>
             <div>
               <label>Can you relocate?</label>
-              <select class="relocate-error" onchange="handleRelocate(event)">
+              <select class="relocate" onchange="handleRelocate(event)">
                 <option selected disabled>Select One</option>
                 <option value="Yes">Yes</option>
                 <option value="No">No</option>
@@ -201,7 +165,7 @@
             </div>
             <div>
               <label>Diet</label>
-              <select class="diet-error" onchange="handleDiet(event)">
+              <select class="diet" onchange="handleDiet(event)">
                 <option selected disabled>Diet</option>
                 <option value="Halal only">Halal only</option>
                 <option value="Halal when possible">Halal when possible</option>
@@ -212,7 +176,7 @@
             </div>
             <div class="form-radio">
               <label for="smokes">Do you smoke?</label>
-              <div class="form-flex smokes-error">
+              <div class="form-flex smokes">
                 <input type="radio" name="smokes" id="smokes-yes" onchange="handleSmokes('Yes')" />
                 <label for="smokes-yes">Yes</label>
                 <input type="radio" name="smokes" id="smokes-no" onchange="handleSmokes('No')" />
@@ -221,7 +185,7 @@
             </div>
             <div class="form-radio">
               <label for="has-children">Do you have children?</label>
-              <div class="form-flex has-children-error">
+              <div class="form-flex has-children">
                 <input
                   type="radio"
                   name="has-children"
@@ -240,7 +204,7 @@
             </div>
             <div class="form-radio">
               <label for="wants-children">Do you want children?</label>
-              <div class="form-flex wants-children-error">
+              <div class="form-flex wants-children">
                 <input
                   type="radio"
                   name="wants-children"
@@ -259,7 +223,7 @@
             </div>
             <div class="hijab-container form-radio">
               <label for="hijab">Hijab</label>
-              <div class="form-flex hijab-error">
+              <div class="form-flex hijab">
                 <input type="radio" name="hijab" id="hijab-yes" onchange="handleHijab('Yes')" />
                 <label for="hijab-yes">Yes</label>
                 <input type="radio" name="hijab" id="hijab-no" onchange="handleHijab('No')" />
@@ -283,7 +247,7 @@
             <label for="about-me">About Me</label>
             <div id="about-me-error-text"></div>
             <textarea
-              class="about-me-error"
+              class="about-me"
               id="about-me"
               name="about-me"
               placeholder="Describe yourself (100 character minimum)"
@@ -295,15 +259,13 @@
             <label for="about-my-match">About My Match</label>
             <div id="about-my-match-error-text"></div>
             <textarea
-              class="about-my-match-error"
+              class="about-my-match"
               id="about-my-match"
               name="about-my-match"
               placeholder="Describe your ideal match (100 character minimum)"
             ></textarea>
             <p class="character-count" id="about-my-match-character-count">0/100</p>
           </section>
-
-          <!-- ************************************************************ -->
 
           <div class="form-row">
             <h3 class="photos-header">Photos</h3>
@@ -314,6 +276,22 @@
               Please upload only JPEG or PNG
             </div>
             <div class="images-wrapper">
+              <input
+                type="file"
+                name="image-0"
+                class="image-0"
+                hidden="hidden"
+                accept=".jpg,.jpeg,.png"
+              />
+              <div class="image-upload-container">
+                <div class="custom-button-0"></div>
+                <div class="image-upload-0">
+                  <img src="" class="image-preview-0" />
+                </div>
+                <div class="remove-image-0"></div>
+                <div class="processing-bar-0"></div>
+                <div class="success-box-0"></div>
+              </div>
               <input
                 type="file"
                 name="image-1"
@@ -346,6 +324,7 @@
                 <div class="processing-bar-2"></div>
                 <div class="success-box-2"></div>
               </div>
+
               <input
                 type="file"
                 name="image-3"
@@ -362,7 +341,6 @@
                 <div class="processing-bar-3"></div>
                 <div class="success-box-3"></div>
               </div>
-
               <input
                 type="file"
                 name="image-4"
@@ -395,26 +373,8 @@
                 <div class="processing-bar-5"></div>
                 <div class="success-box-5"></div>
               </div>
-              <input
-                type="file"
-                name="image-6"
-                class="image-6"
-                hidden="hidden"
-                accept=".jpg,.jpeg,.png"
-              />
-              <div class="image-upload-container">
-                <div class="custom-button-6"></div>
-                <div class="image-upload-6">
-                  <img src="" class="image-preview-6" />
-                </div>
-                <div class="remove-image-6"></div>
-                <div class="processing-bar-6"></div>
-                <div class="success-box-6"></div>
-              </div>
             </div>
           </div>
-
-          <!-- ************************************************************ -->
 
           <div class="signup-button-wrapper">
             <div class="submit-loading-spinner">

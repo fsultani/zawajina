@@ -1,5 +1,7 @@
 const { ObjectId } = require('mongodb');
+
 const { usersCollection } = require('../../db.js');
+const emailVerification = require('../../email-templates/email-verification.js');
 const sendEmail = require('../../helpers/email.js');
 
 const resendEmail = (req, res) => {
@@ -17,12 +19,7 @@ const resendEmail = (req, res) => {
       }
 
       if (user.startedRegistrationAt && !user.completedRegistrationAt) {
-          const emailVerificationToken = Math.floor(Math.random() * 90000) + 10000;
-          const subject = 'Thanks for signing up on My Match!';
-          const emailBody = `
-            <p>As-salāmu ʿalaykum, ${user.name}.  Thanks for signing up!</p>
-            <p>Please enter the following code to verify your email address: ${emailVerificationToken}</p>
-          `;
+        const { emailVerificationToken, subject, emailBody } = emailVerification({ name: user.name });
 
           usersCollection().updateOne(
             { _id: user._id },
@@ -33,13 +30,12 @@ const resendEmail = (req, res) => {
                 emailVerificationTokenDateSent: new Date(),
               },
             },
-            (err, user) => {
+            async (err, user) => {
               if (err) {
                 return res.json({ error: 'Unknown error' });
               } else {
-                sendEmail(email, subject, emailBody, () => {
-                  return res.status(201).send();
-                });
+                await sendEmail(email, subject, emailBody)
+                return res.status(201).send();
               }
             }
           );

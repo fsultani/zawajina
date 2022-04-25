@@ -1,0 +1,12 @@
+.character-count {
+  display: flex;
+  justify-content: flex-end;
+}
+
+#about-me-error-text,
+#about-my-match-error-text {
+  display: none;
+  position: absolute;
+  top: 30px;
+  color: red;
+}

@@ -3,9 +3,12 @@ const { validationResult } = require('express-validator/check');
 
 const { usersCollection } = require('../../db.js');
 const sendEmail = require('../../helpers/email.js');
+const { FetchData } = require('../../utils.js');
+const emailVerification = require('../../email-templates/email-verification.js');
 
 const personalInfo = (req, res) => {
-  let { nameValue, email, password } = req.body;
+  const { nameValue, email, userIPAddress } = req.body;
+  let { password } = req.body;
   const getErrors = validationResult(req);
   const name = nameValue
     .split(',')
@@ -19,42 +22,51 @@ const personalInfo = (req, res) => {
   if (!getErrors.isEmpty()) {
     return res.status(400).json({ error: getErrors.array() });
   } else {
-    usersCollection().findOne({ email }, (err, userExists) => {
+    usersCollection().findOne({ email }, async (err, userExists) => {
       if (!userExists) {
-        /* User does not exist; create a new account */
-        const emailVerificationToken = Math.floor(Math.random() * 90000) + 10000;
-        const subject = 'Thanks for signing up on My Match!';
-        const emailBody = `
-          <p>As-salāmu ʿalaykum, ${name}.  Thanks for signing up!</p>
-          <p>Please enter the following code to verify your email address: ${emailVerificationToken}</p>
-        `;
-        console.log(`emailVerificationToken\n`, emailVerificationToken);
 
-        bcrypt.genSalt(10, (err, salt) => {
-          bcrypt.hash(password, salt, (err, hash) => {
-            password = hash;
-            const newUser = {
-              name,
-              email,
-              password,
-              startedRegistrationAt: new Date(),
-              completedRegistrationAt: false,
-              emailVerified: false,
-              emailVerificationToken,
-              emailVerificationTokenDateSent: new Date(),
-            };
-            usersCollection().insertOne(newUser, (err, user) => {
-              if (err) throw Error(err);
-              const userId = user.insertedId;
-              sendEmail(email, subject, emailBody, () => {
-                return res.status(201).json({
-                  userId,
-                  emailVerified: false,
-                });
-              });
-            });
+        try {
+          /* User does not exist; create a new account */
+          const geoLocationData = await FetchData(`http://ip-api.com/json/${userIPAddress}`);
+          const latitude = geoLocationData.lat;
+          const longitude = geoLocationData.lon;
+
+          const { emailVerificationToken, subject, emailBody } = emailVerification({ name });
+          console.log(`emailVerificationToken\n`, emailVerificationToken);
+
+          const bcryptHash = await bcrypt.hash(password, 10);
+          password = bcryptHash;
+          const newUser = {
+            name,
+            email,
+            password,
+            loginData: [{
+              time: new Date(),
+              geoLocationData,
+            }],
+            location: { type: "Point", coordinates: [longitude, latitude] },
+            startedRegistrationAt: new Date(),
+            completedRegistrationAt: false,
+            emailVerified: false,
+            emailVerificationToken,
+            emailVerificationTokenDateSent: new Date(),
+          };
+
+          const insertUser = await usersCollection().insertOne(newUser);
+          const userId = insertUser.insertedId;
+
+          if (process.env.NODE_ENV !== 'localhost') {
+            await sendEmail(email, subject, emailBody);
+          }
+
+          return res.status(201).json({
+            userId,
+            emailVerified: false,
+            emailVerificationToken: process.env.NODE_ENV === 'localhost' ? emailVerificationToken : null,
           });
-        });
+        } catch (error) {
+          throw Error(`Error in personalInfo: ${error}`)
+        }
       } else if (userExists.startedRegistrationAt && !userExists.completedRegistrationAt) {
         /* User completed step 1 only */
         if (userExists.emailVerificationToken && !userExists.emailVerified) {

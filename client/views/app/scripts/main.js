@@ -1,10 +1,10 @@
 const openDropdownMenu = () => {
-  const dropdownContent = document.querySelector('.dropdown-content').classList;
+  const dropdownContent = document.querySelector('.dropdown-menu-content').classList;
   document.querySelector('#menu-arrow').classList.toggle('up-arrow');
-  if (!dropdownContent.contains('show')) {
-    dropdownContent.add('show');
+  if (!dropdownContent.contains('show-dropdown-menu-content')) {
+    dropdownContent.add('show-dropdown-menu-content');
   } else {
-    dropdownContent.remove('show');
+    dropdownContent.remove('show-dropdown-menu-content');
     document.querySelector('.dropdown-button').blur();
   }
 };
@@ -26,14 +26,14 @@ const handleLogout = () => {
 
 document.addEventListener('click', event => {
   const targetName = event.target.classList.value;
-  const isDropdownContentVisible = document.querySelector('.dropdown-content').classList;
+  const isDropdownContentVisible = document.querySelector('.dropdown-menu-content').classList;
 
   if (
     targetName !== 'dropdown-button' &&
     targetName !== 'dropdown-item' &&
-    isDropdownContentVisible.contains('show')
+    isDropdownContentVisible.contains('show-dropdown-menu-content')
   ) {
-    document.querySelector('.dropdown-content').classList.remove('show');
+    document.querySelector('.dropdown-menu-content').classList.remove('show-dropdown-menu-content');
     document.querySelector('#menu-arrow').classList.remove('up-arrow');
   }
 });

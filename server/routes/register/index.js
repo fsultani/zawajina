@@ -87,6 +87,10 @@ router.post(
   '/api/profile-details',
   upload.fields([
     {
+      name: 'image-0',
+      maxCount: 1,
+    },
+    {
       name: 'image-1',
       maxCount: 1,
     },
@@ -104,10 +108,6 @@ router.post(
     },
     {
       name: 'image-5',
-      maxCount: 1,
-    },
-    {
-      name: 'image-6',
       maxCount: 1,
     },
   ]),

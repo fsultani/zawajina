@@ -32,10 +32,6 @@
     "country": "Anguilla"
   },
   {
-    "country_code": "AG",
-    "country": "Antigua and Barbuda"
-  },
-  {
     "country_code": "AR",
     "country": "Argentina"
   },
@@ -104,10 +100,6 @@
     "country": "Bolivia"
   },
   {
-    "country_code": "BQ",
-    "country": "Bonaire, Saint Eustatius and Saba "
-  },
-  {
     "country_code": "BA",
     "country": "Bosnia and Herzegovina"
   },
@@ -118,10 +110,6 @@
   {
     "country_code": "BR",
     "country": "Brazil"
-  },
-  {
-    "country_code": "IO",
-    "country": "British Indian Ocean Territory"
   },
   {
     "country_code": "VG",
@@ -158,6 +146,10 @@
   {
     "country_code": "CV",
     "country": "Cape Verde"
+  },
+  {
+    "country_code": "CB",
+    "country": "Caribbean"
   },
   {
     "country_code": "KY",
@@ -224,10 +216,6 @@
     "country": "Czech Republic"
   },
   {
-    "country_code": "CD",
-    "country": "Democratic Republic of the Congo"
-  },
-  {
     "country_code": "DK",
     "country": "Denmark"
   },
@@ -242,6 +230,10 @@
   {
     "country_code": "DO",
     "country": "Dominican Republic"
+  },
+  {
+    "country_code": "DR",
+    "country": "DR Congo"
   },
   {
     "country_code": "TL",
@@ -302,10 +294,6 @@
   {
     "country_code": "PF",
     "country": "French Polynesia"
-  },
-  {
-    "country_code": "TF",
-    "country": "French Southern Territories"
   },
   {
     "country_code": "GA",
@@ -648,10 +636,6 @@
     "country": "North Korea"
   },
   {
-    "country_code": "MP",
-    "country": "Northern Mariana Islands"
-  },
-  {
     "country_code": "NO",
     "country": "Norway"
   },
@@ -669,7 +653,7 @@
   },
   {
     "country_code": "PS",
-    "country": "Palestinian Territory"
+    "country": "Palestine"
   },
   {
     "country_code": "PA",
@@ -732,44 +716,12 @@
     "country": "Rwanda"
   },
   {
-    "country_code": "BL",
-    "country": "Saint Barthelemy"
-  },
-  {
-    "country_code": "SH",
-    "country": "Saint Helena"
-  },
-  {
-    "country_code": "KN",
-    "country": "Saint Kitts and Nevis"
-  },
-  {
-    "country_code": "LC",
-    "country": "Saint Lucia"
-  },
-  {
-    "country_code": "MF",
-    "country": "Saint Martin"
-  },
-  {
-    "country_code": "PM",
-    "country": "Saint Pierre and Miquelon"
-  },
-  {
-    "country_code": "VC",
-    "country": "Saint Vincent and the Grenadines"
-  },
-  {
     "country_code": "WS",
     "country": "Samoa"
   },
   {
     "country_code": "SM",
     "country": "San Marino"
-  },
-  {
-    "country_code": "ST",
-    "country": "Sao Tome and Principe"
   },
   {
     "country_code": "SA",
@@ -820,10 +772,6 @@
     "country": "South Africa"
   },
   {
-    "country_code": "GS",
-    "country": "South Georgia and the South Sandwich Islands"
-  },
-  {
     "country_code": "KR",
     "country": "South Korea"
   },
@@ -846,10 +794,6 @@
   {
     "country_code": "SR",
     "country": "Suriname"
-  },
-  {
-    "country_code": "SJ",
-    "country": "Svalbard and Jan Mayen"
   },
   {
     "country_code": "SZ",
@@ -912,10 +856,6 @@
     "country": "Turkmenistan"
   },
   {
-    "country_code": "TC",
-    "country": "Turks and Caicos Islands"
-  },
-  {
     "country_code": "TV",
     "country": "Tuvalu"
   },
@@ -936,6 +876,10 @@
     "country": "United Arab Emirates"
   },
   {
+    "country_code": "AE",
+    "country": "UAE"
+  },
+  {
     "country_code": "GB",
     "country": "United Kingdom"
   },
@@ -944,8 +888,8 @@
     "country": "United States"
   },
   {
-    "country_code": "UM",
-    "country": "United States Minor Outlying Islands"
+    "country_code": "US",
+    "country": "USA"
   },
   {
     "country_code": "UY",

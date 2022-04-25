@@ -30,6 +30,8 @@ const handleResendVerificationCode = () => {
     signupButton.disabled = true;
     signupButton.style.cursor = 'not-allowed';
 
+    document.querySelectorAll('form *').forEach(item => item.disabled = true);
+
     axios
       .post('/register/api/resend-email', {
         email,
