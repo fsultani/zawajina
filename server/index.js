@@ -360,7 +360,7 @@ app.use('/*', (_req, res) => res.redirect('/users'));
 const port = process.env.PORT || 3000;
 
 /* Reload the app on every file change in development mode only */
-if (process.env.DEVELOPMENT) {
+if (process.env.NODE_ENV === 'localhost') {
   osascript.execute(
     `
     tell application "Google Chrome"

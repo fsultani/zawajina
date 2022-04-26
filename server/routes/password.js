@@ -117,7 +117,7 @@ router.post('/api/request', async (req, res) => {
     });
 
     let url = `${process.env.MY_MATCH_HEROKU}/password/reset?token=${token}`;
-    if (process.env.DEVELOPMENT) {
+    if (process.env.NODE_ENV === 'localhost') {
       url = `${process.env.MY_MATCH_LOCALHOST}/password/reset?token=${token}`;
     }
 

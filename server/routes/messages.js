@@ -539,7 +539,7 @@ router.post('/api/new-message', async (req, res) => {
 
     const recipient = String(authUser._id) === String(conversationsCollection.recipientId) ? conversationsCollection.users.createdByUser : conversationsCollection.users.recipient;
     let url = `${process.env.MY_MATCH_HEROKU}/messages/${conversationId}`;
-    if (process.env.DEVELOPMENT) {
+    if (process.env.NODE_ENV === 'localhost') {
       url = `${process.env.MY_MATCH_LOCALHOST}/messages/${conversationId}`;
     }
 

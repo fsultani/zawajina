@@ -65,7 +65,7 @@ const personalInfo = (req, res) => {
             emailVerificationToken: process.env.NODE_ENV === 'localhost' ? emailVerificationToken : null,
           });
         } catch (error) {
-          if (process.env.DEVELOPMENT) {
+          if (process.env.NODE_ENV === 'localhost') {
             throw Error(`Error in personalInfo: ${error}`)
           }
         }

@@ -1,13 +1,13 @@
 const nodemailer = require('nodemailer');
 // const { google } = require('googleapis');
 
-// const GOOGLE_CLIENT_ID = process.env.DEVELOPMENT ?
+// const GOOGLE_CLIENT_ID = process.env.NODE_ENV === 'localhost' ?
 //   require('../credentials.json').GOOGLE_CLIENT_ID : process.env.GOOGLE_CLIENT_ID;
 
-// const GOOGLE_CLIENT_SECRET = process.env.DEVELOPMENT ?
+// const GOOGLE_CLIENT_SECRET = process.env.NODE_ENV === 'localhost' ?
 //   require('../credentials.json').GOOGLE_CLIENT_SECRET : process.env.GOOGLE_CLIENT_SECRET;
 
-// const GOOGLE_REFRESH_TOKEN = process.env.DEVELOPMENT ?
+// const GOOGLE_REFRESH_TOKEN = process.env.NODE_ENV === 'localhost' ?
 //   require('../credentials.json').GOOGLE_REFRESH_TOKEN : process.env.GOOGLE_REFRESH_TOKEN;
 
 // const OAuth2 = google.auth.OAuth2;
@@ -57,7 +57,7 @@ const sendEmail = async (address, subject, body) => {
     await transporter.sendMail(mailOptions);
     return { status: 201 };
   } catch (error) {
-    if (process.env.DEVELOPMENT) {
+    if (process.env.NODE_ENV === 'localhost') {
       throw Error(`Error in sendEmail: ${error}`)
     }
   }
