@@ -2,12 +2,13 @@
   "name": "my-match",
   "version": "1.0.0",
   "engines": {
-    "node": "8.9.3"
+    "node": "16.x"
   },
   "description": "",
   "main": "server.js",
   "scripts": {
     "dev": "DEVELOPMENT=true supervisor -e '.js,.html,.css' server/index.js",
+    "heroku:deploy": "git push heroku main",
     "start": "node server/index.js"
   },
   "author": "Farid Sultani",
