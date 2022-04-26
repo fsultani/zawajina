@@ -65,7 +65,9 @@ const personalInfo = (req, res) => {
             emailVerificationToken: process.env.NODE_ENV === 'localhost' ? emailVerificationToken : null,
           });
         } catch (error) {
-          throw Error(`Error in personalInfo: ${error}`)
+          if (process.env.DEVELOPMENT) {
+            throw Error(`Error in personalInfo: ${error}`)
+          }
         }
       } else if (userExists.startedRegistrationAt && !userExists.completedRegistrationAt) {
         /* User completed step 1 only */

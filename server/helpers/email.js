@@ -57,7 +57,9 @@ const sendEmail = async (address, subject, body) => {
     await transporter.sendMail(mailOptions);
     return { status: 201 };
   } catch (error) {
-    throw Error(`Error in sendEmail: ${error}`)
+    if (process.env.DEVELOPMENT) {
+      throw Error(`Error in sendEmail: ${error}`)
+    }
   }
 };
 
