@@ -1,6 +1,13 @@
 const emailBodyContainerStyles = `
   width: 500px;
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: #ffffff;
+  padding: 30px;
+  margin-top: 50px;
+  border-radius: 6px;
 `;
 
 const emailHeader = ({ recipientName }) => (`
@@ -35,15 +42,17 @@ const spanStyles = ({ customStyles = '' }) => `
 const ctaButton = ({ ctaButtonUrl, ctaButtonText, customStyles = '' }) => (`
   <a href=${ctaButtonUrl}
     style="
+      display: flex;
+      justify-content: center;
+      align-items: center;
       color: #ffffff;
       font-weight: 400;
       text-decoration: none;
       font-size: 14px;
-      display: inline-block;
       padding: 10px 24px;
       background-color: #007bff;
-      border-radius: 5px;
-      min-width: 90px;
+      border-radius: 12px;
+      width: 130px;
       margin: 16px 0;
       ${customStyles}
     "

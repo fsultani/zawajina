@@ -545,15 +545,23 @@ router.post('/api/new-message', async (req, res) => {
 
     const subject = `You have a new message from ${authUser.name}`;
     const emailBody = `
-      <div style="${emailBodyContainerStyles}">
-        ${emailHeader({ recipientName: recipient.name })}
-        <p style="${paragraphStyles({})}">${authUser.name} just sent you a message.</p>
-        ${ctaButton({
-          ctaButtonUrl: url,
-          ctaButtonText: 'Go To Messages'
-        })}
-        ${emailSignature}
-      </div>
+      <body style="
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        background: #e5e5e5;
+      ">
+        <div style="${emailBodyContainerStyles}">
+          ${emailHeader({ recipientName: recipient.name })}
+          <p style="${paragraphStyles({})}">${authUser.name} just sent you a message.</p>
+          ${ctaButton({
+            ctaButtonUrl: url,
+            ctaButtonText: 'Go To Messages'
+          })}
+          ${emailSignature}
+        </div>
+      </body>
     `;
 
     await sendEmail(recipient.email, subject, emailBody)
