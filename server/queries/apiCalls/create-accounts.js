@@ -2,28 +2,40 @@ require('dotenv').config();
 const { MongoClient } = require('mongodb');
 const bcrypt = require('bcryptjs');
 
-const femaleNames = require("./data/female-names");
-const maleNames = require("./data/male-names");
-const birthMonths = require('./data/birthMonths');
-const professionsList = require('./data/professionsList');
-const heights = require('./data/heights');
+const femaleNames = require("../data/female-names");
+const maleNames = require("../data/male-names");
+const birthMonths = require('../data/birthMonths');
+const professionsList = require('../data/professionsList');
+const heights = require('../data/heights');
 
-const worldCities = require('./data/world-cities');
+const worldCities = require('../data/world-cities');
 const ethnicities = require("../data/ethnicities");
-const languagesList = require('./data/languages');
-const hobbiesList = require('./data/hobbies');
+const languagesList = require('../data/languages');
+const hobbiesList = require('../data/hobbies');
 
 /*
-  node server/auto-signup/create-accounts.js --numberOfUsers=100
+  node server/queries/apiCalls/create-accounts.js --numberOfUsers=100
 */
-const processArgv = process.argv.slice(2)[0];
+const processArgv = process.argv.slice(2);
 
 if (!processArgv) {
-  console.log(`Missing --numberOfUsers`);
-  return;
+  console.log(`Missing arguments`);
+  process.exit(1);
 }
 
-const numberOfUsers = processArgv.split('=')[1];
+const numberOfUsers = Number(processArgv[0].split('=')[1]);
+const gender = processArgv[1].split('=')[1];
+
+if (!numberOfUsers) {
+  console.log(`Enter a number for numberOfUsers`);
+  process.exit(1);
+}
+
+const genders = ['male', 'female'];
+if (genders.indexOf(gender) === -1) {
+  console.log(`Gender must be 'male' or 'female'`);
+  process.exit(1);
+}
 
 MongoClient.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
@@ -33,8 +45,10 @@ MongoClient.connect(process.env.MONGODB_URI, {
 
   for (let i = 0; i < numberOfUsers; i++) {
     const nameChoice = {
-      name: femaleNames[Math.floor(Math.random() * femaleNames.length)],
-      gender: 'female',
+      name: gender === 'female' ?
+        femaleNames[Math.floor(Math.random() * femaleNames.length)] :
+        maleNames[Math.floor(Math.random() * maleNames.length)],
+      gender,
     };
 
     const bcryptGenSalt = await bcrypt.genSalt(10);

@@ -84,11 +84,12 @@ const handleSignupStepOne = async () => {
       .then(res => {
         Cookies.set('my_match_userId', res.data.userId, { sameSite: 'strict' });
         // Cookies.set('emailVerificationToken', res.data.emailVerificationToken, { sameSite: 'strict' });
-        if (res.status === 201) {
-          window.location.pathname = '/verify-email';
-        } else if (res.status === 200) {
-          window.location.pathname = '/signup/profile';
-        }
+        // if (res.status === 201) {
+        //   window.location.pathname = '/verify-email';
+        // } else if (res.status === 200) {
+        //   window.location.pathname = '/signup/profile';
+        // }
+        window.location.pathname = '/signup/profile';
       })
       .catch(error => {
         console.error(error.response);

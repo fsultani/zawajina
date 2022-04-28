@@ -67,13 +67,14 @@ router.get(
 router.get('/api/signup-user-first-name', (req, res, next) => {
   usersCollection().findOne({ _id: ObjectId(req.cookies.my_match_userId) }, (err, user) => {
     if (err || !user) return res.sendStatus(401);
-    if (user.startedRegistrationAt && !user.emailVerified) {
-      res.status(200).json({ message: 'Token Sent' })
-    } else if (user.startedRegistrationAt && user.emailVerified && !user.completedRegistrationAt) {
-      res.status(201).send({ name: user.name });
-    } else {
-      res.sendStatus(401);
-    }
+    res.status(201).send({ name: user.name });
+    // if (user.startedRegistrationAt && !user.emailVerified) {
+    //   res.status(200).json({ message: 'Token Sent' })
+    // } else if (user.startedRegistrationAt && user.emailVerified && !user.completedRegistrationAt) {
+    //   res.status(201).send({ name: user.name });
+    // } else {
+    //   res.sendStatus(401);
+    // }
   });
 });
 

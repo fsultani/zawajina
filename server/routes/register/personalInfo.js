@@ -55,9 +55,9 @@ const personalInfo = (req, res) => {
           const insertUser = await usersCollection().insertOne(newUser);
           const userId = insertUser.insertedId;
 
-          if (process.env.NODE_ENV !== 'localhost') {
-            await sendEmail(email, subject, emailBody);
-          }
+          // if (process.env.NODE_ENV !== 'localhost') {
+          //   await sendEmail(email, subject, emailBody);
+          // }
 
           return res.status(201).json({
             userId,

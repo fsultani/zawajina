@@ -1,7 +1,7 @@
 axios.get('/register/api/signup-user-first-name').then(res => {
-  if (res.data.message === 'Token Sent') {
-    window.location.pathname = '/verify-email';
-  }
+  // if (res.data.message === 'Token Sent') {
+  //   window.location.pathname = '/verify-email';
+  // }
   document.querySelector('.form-title').innerHTML = `Welcome, ${res.data.name}`;
 }).catch(err => {
   if (err instanceof TypeError) {
