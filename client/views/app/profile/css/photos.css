@@ -56,8 +56,6 @@
     display: flex;
     transition: transform ease-out 0.45s;
 
-    overflow-x: scroll;
-    overflow-y: hidden;
     scroll-padding: 50%;
     scroll-snap-type: x mandatory;
 
@@ -136,10 +134,6 @@
   transition: background-color 0.6s ease;
 }
 
-.dot:hover {
-  cursor: pointer;
-}
-
 @media only screen and (max-width: 799px) {
   .dot {
     height: 10px;
@@ -149,10 +143,6 @@
     border-radius: 50%;
     display: inline-block;
     transition: background-color 0.6s ease;
-  }
-
-  .dot:hover {
-    cursor: pointer;
   }
 }
 
@@ -182,10 +172,6 @@
 }
 
 @media only screen and (max-width: 799px) {
-  .image-previews-container {
-    display: none;
-  }
-
   .image-previews-container .image-preview-wrapper:first-child img {
     border-radius: 3px 0 0 3px;
   }

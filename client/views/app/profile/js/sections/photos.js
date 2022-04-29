@@ -13,12 +13,7 @@ if (userPhotosLength > 1) {
   slideWidth = document.querySelector('.slide').clientWidth;
 
   document.querySelector('.dot').classList.add('active');
-
-  if (screen.width < 800) {
-    profilePhotosContainer.style.marginBottom = 0;
-  } else {
-    profilePhotosContainer.style.marginBottom = userPhotosLength < 1 ? 0 : '80px';
-  }
+  profilePhotosContainer.style.marginBottom = userPhotosLength < 1 ? 0 : '80px';
 
   const carousel = document.querySelector('.slider-wrapper');
   const elements = document.querySelectorAll('.slider-wrapper > *');

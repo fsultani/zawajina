@@ -122,6 +122,12 @@ h5 {
   display: none;
 }
 
+.navbar--header-links-mobile-container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
 .navbar--header-links-mobile {
   display: flex;
   justify-content: center;
@@ -136,9 +142,6 @@ h5 {
   justify-content: center;
   align-items: center;
   height: 100%;
-}
-
-.navbar--header-links-mobile li:not(:last-child) {
   margin-right: 10px;
 }
 

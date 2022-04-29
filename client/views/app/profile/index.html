@@ -22,7 +22,7 @@
           </div>
           <div class="dots-wrapper">
             ${user.photos.length > 1 ? user.photos.filter(photo => photo).map((photo, index) => `
-            <span class="dot" onclick="goToImage(${index})"></span>
+            <span class="dot"></span>
             `).join('') : ''}
           </div>
         </div>
@@ -417,11 +417,11 @@
               <div class="success-box-5"></div>
             </div>
           </div>
-          <div class="photos-buttons-container">
+          <!-- <div class="photos-buttons-container">
             <div class="photos-button">
               <button>Make Default</button>
             </div>
-          </div>
+          </div> -->
         </div>
       </section>
 

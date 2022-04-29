@@ -29,18 +29,20 @@ const editProfile = () => {
     button.style.cssText = `
       width: 100%;
       height: 100%;
-      border-radius: 5px;
-      -moz-border-radius: 5px;
-      -webkit-border-radius: 5px;
-      -o-border-radius: 5px;
-      -ms-border-radius: 5px;
-      padding: 10px 15px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 12px;
+      background-color: #008cff;
+      border: transparent;
       box-sizing: border-box;
-      font-size: 14px;
-      font-weight: 700;
-      color: #fff;
-      border: none;
-      cursor: pointer;
+      outline: none;
+      color: #ffffff;
+      box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.14), 0 4px 5px -5px rgba(0, 0, 0, 0.5);
+      letter-spacing: 1px;
+      font-size: 16px;
+      border-radius: 5px;
+      padding: 5px 20px;
     `;
 
     div.appendChild(button);
