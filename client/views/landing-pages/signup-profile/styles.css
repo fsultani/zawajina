@@ -67,6 +67,8 @@ body {
 
 p {
   font-size: 15px;
+  margin-bottom: 0px;
+  color: #777;
 }
 
 a:focus,
@@ -237,12 +239,6 @@ img {
 
 figure {
   margin: 0;
-}
-
-p {
-  margin-bottom: 0px;
-  font-size: 3.5vw;
-  color: #777;
 }
 
 h2 {
@@ -605,8 +601,15 @@ list-type-ulli {
 }
 
 .photos-subtitle {
+  font-size: 3.5vw;
   margin-bottom: 16px;
   text-align: center;
+}
+
+@media (min-width: 600px) {
+  .photos-subtitle {
+    font-size: 15px;
+  }
 }
 
 .invalid-file-type {
