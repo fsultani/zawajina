@@ -10,7 +10,7 @@ const resendEmail = require('./resendEmail');
 const verifyEmail = require('./verifyEmail');
 const profileDetails = require('./profileDetails');
 
-const cities = require('../../helpers/cities');
+const location = require('../../helpers/location');
 const countries = require('../../helpers/countries');
 const ethnicities = require('../../helpers/ethnicities');
 const languages = require('../../helpers/languages');
@@ -78,7 +78,7 @@ router.get('/api/signup-user-first-name', (req, res, next) => {
   });
 });
 
-router.get('/api/cities', (req, res) => cities(req, res));
+router.get('/api/location', (req, res) => location(req, res));
 router.get('/api/ethnicities', (req, res) => ethnicities(req, res));
 router.get('/api/countries', (req, res) => countries(req, res));
 router.get('/api/languages', (req, res) => languages(req, res));

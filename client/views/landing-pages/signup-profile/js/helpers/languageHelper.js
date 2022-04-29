@@ -10,16 +10,15 @@
   languageInput.placeholder = languageInputPlaceholder;
 
   const getAllLanguages = async userInput => {
-    try {
-      const data = await FetchData('/register/api/languages', {
-        params: {
-          userInput,
-        },
-      });
-      return data;
-    } catch (error) {
-      return error.response;
-    }
+    const { allLanguages } = globalThis;
+
+    const filteredResults = allLanguages.filter(
+      element => element.toLowerCase().indexOf(userInput.toLowerCase()) > -1
+    );
+
+    filteredResults.sort((a, b) => b < a);
+
+    return filteredResults;
   };
 
   const getUserLanguageInput = () =>

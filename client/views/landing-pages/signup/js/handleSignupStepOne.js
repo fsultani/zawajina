@@ -1,6 +1,6 @@
-const user_name = document.querySelector('#user_name');
-const user_email = document.querySelector('#user_email');
-const user_password = document.querySelector('#user_password');
+const user_name = document.querySelector('.user_name');
+const user_email = document.querySelector('.user_email');
+const user_password = document.querySelector('.user_password');
 const signupButton = document.querySelector('#signupButton');
 const loadingSpinner = document.querySelector('.loading-spinner');
 

@@ -136,7 +136,6 @@ td:last-child {
   position: absolute;
   padding: 10px 14px;
   border: 1px solid transparent;
-  border-radius: 0.25rem;
   text-align: center;
   font-size: 16px;
 }
@@ -151,11 +150,17 @@ td:last-child {
 }
 
 #slow-network-warning {
-  top: 10px;
-  left: 35vw;
+  top: 55px;
   z-index: 2;
   color: #000;
   background-color: #fff5be;
+}
+
+@media (min-width: 600px) {
+  #slow-network-warning {
+    top: 70px;
+    left: 35vw;
+  }
 }
 
 @media (min-width: 481px) {

@@ -9,17 +9,15 @@
   countryRaisedInInput.placeholder = raisedInputPlaceholder;
 
   const getAllCountries = async userInput => {
-    try {
-      const data = await FetchData('/register/api/countries', {
-        params: {
-          userInput,
-        },
-      });
-      return data;
-    } catch (error) {
-      return error.response;
-    }
-  };
+    const { countries } = globalThis;
+    const userInputRegex = new RegExp(userInput, 'gi');
+
+    const filteredResults = countries
+      .filter(element => element.country.toLowerCase().indexOf(userInput.toLowerCase()) > -1)
+      .map(({ country }) => country.replace(userInputRegex, match => `<strong>${match}</strong>`));
+
+    return filteredResults;
+  }
 
   const getUserCountryInput = () =>
     countryRaisedInInput.addEventListener(

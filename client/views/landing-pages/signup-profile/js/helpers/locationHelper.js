@@ -7,21 +7,71 @@ let results = [];
 
 locationInput.placeholder = locationInputPlaceholder;
 
-const getAllCountries = async userInput => {
-  try {
-    const userIPAddress = await getUserIPAddress();
-    const data = await FetchData('/register/api/cities', {
-      params: {
-        userIPAddress,
-        userInput,
-      },
-    });
-    return data;
-  } catch (error) {
-    document.querySelector('#application-error').style.display = 'block';
-    return error.response;
+const lowerCaseString = string => string.split(' ').join('').toLowerCase();
+
+const getAllCities = async userInput => {
+  const { allLocations, userLocationData } = globalThis;
+  const filteredResults = [];
+  const userCity = userLocationData.city;
+  const userState = userLocationData.region;
+  const userCountry = userLocationData.country;
+
+  const filteredLocations = allLocations.filter(element => {
+    const hasComma = userInput.indexOf(',') !== -1;
+    if (hasComma) {
+      if (element.state) {
+        return element.state
+          .toLowerCase()
+          .startsWith(userInput.split(',')[1].toLowerCase().trim());
+      } else {
+        return element.country
+          .toLowerCase()
+          .startsWith(userInput.split(',')[1].toLowerCase().trim());
+      }
+    } else {
+      return element.city.toLowerCase().startsWith(userInput.toLowerCase());
+    }
+  });
+
+  filteredLocations.sort((a, b) => {
+    if (a.state && lowerCaseString(a.city) === lowerCaseString(userCity) && lowerCaseString(a.state) === lowerCaseString(userState)) return -1;
+
+    if (b.city.startsWith(userCity) > a.city.startsWith(userCity)) return 1;
+    if (b.city.startsWith(userCity) < a.city.startsWith(userCity)) return -1;
+
+    if (b.country.startsWith(userCountry) > a.country.startsWith(userCountry)) return 1;
+    if (b.country.startsWith(userCountry) < a.country.startsWith(userCountry)) return -1;
+
+    if (a.state === b.state) {
+      return 0;
+    } else if (a.state === null) {
+      return 1;
+    } else if (b.state === null) {
+      return -1;
+    } else {
+      return b.state.startsWith(userState) - a.state.startsWith(userState);
+    }
+  });
+
+  for (let i = 0; i < filteredLocations.length; i++) {
+    const country = filteredLocations[i].country;
+    const fullLocation = `${filteredLocations[i].city}, ${filteredLocations[i].state ? `${filteredLocations[i].state}, ${country}` : country
+      }`;
+
+    if (lowerCaseString(fullLocation.substring(0, userInput.length)) == lowerCaseString(userInput)) {
+      const search = new RegExp(userInput, 'gi');
+      const match = fullLocation.replace(search, match => `<strong>${match}</strong>`);
+      filteredResults.push({
+        match,
+        city: filteredLocations[i].city,
+        state: filteredLocations[i].state,
+        country: country,
+      });
+    }
   }
-};
+
+  return filteredResults.slice(0, 7);
+}
 
 const getUserLocationInput = () =>
   locationInput.addEventListener(
@@ -36,7 +86,7 @@ const getUserLocationInput = () =>
         return false;
       }
 
-      results = await getAllCountries(userInput);
+      results = await getAllCities(userInput);
       currentFocus = -1;
 
       let searchResultsWrapper = '<div class="autocomplete-items">';

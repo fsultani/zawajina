@@ -10,17 +10,15 @@
   ethnicityInput.placeholder = ethnicityInputPlaceholder;
 
   const getAllEthnicities = async userInput => {
-    try {
-      const data = await FetchData('/register/api/ethnicities', {
-        params: {
-          userInput,
-        },
-      });
-      return data;
-    } catch (error) {
-      return error.response;
-    }
-  };
+    const { allEthnicities } = globalThis;
+    const filteredResults = allEthnicities.filter(
+      element => element.toLowerCase().indexOf(userInput.toLowerCase()) > -1
+    );
+
+    filteredResults.sort((a, b) => b < a);
+
+    return filteredResults;
+  }
 
   const getUserEthnicityInput = () =>
     ethnicityInput.addEventListener(
