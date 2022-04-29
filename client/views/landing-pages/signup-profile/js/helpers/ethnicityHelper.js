@@ -11,6 +11,7 @@
 
   const getAllEthnicities = async userInput => {
     const { allEthnicities } = globalThis;
+
     const filteredResults = allEthnicities.filter(
       element => element.toLowerCase().indexOf(userInput.toLowerCase()) > -1
     );

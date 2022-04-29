@@ -10,8 +10,8 @@
 
   const getAllCountries = async userInput => {
     const { countries } = globalThis;
-    const userInputRegex = new RegExp(userInput, 'gi');
 
+    const userInputRegex = new RegExp(userInput, 'gi');
     const filteredResults = countries
       .filter(element => element.country.toLowerCase().indexOf(userInput.toLowerCase()) > -1)
       .map(({ country }) => country.replace(userInputRegex, match => `<strong>${match}</strong>`));

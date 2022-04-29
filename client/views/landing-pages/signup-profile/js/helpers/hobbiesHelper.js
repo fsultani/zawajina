@@ -10,16 +10,14 @@
   hobbiesInput.placeholder = hobbiesInputPlaceholder;
 
   const getAllHobbies = async userInput => {
-    try {
-      const data = await FetchData('/register/api/hobbies', {
-        params: {
-          userInput,
-        },
-      });
-      return data;
-    } catch (error) {
-      return error.response;
-    }
+    const { allHobbies } = globalThis;
+
+    const filteredResults = allHobbies.filter(
+      element => element.toLowerCase().indexOf(userInput.toLowerCase()) > -1
+    );
+    filteredResults.sort((a, b) => b < a);
+
+    return filteredResults;
   };
 
   const getUserHobbyINput = () =>

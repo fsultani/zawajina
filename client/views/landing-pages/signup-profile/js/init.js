@@ -65,6 +65,15 @@ const displayLoadingSpinner = (isLoading) => {
     }
   };
 
+  const getAllHobbies = async userInput => {
+    try {
+      const data = await FetchData('/register/api/hobbies');
+      return data;
+    } catch (error) {
+      return error.response;
+    }
+  };
+
   if (typeof globalThis === 'object') {
     const {
       allLocations,
@@ -74,6 +83,7 @@ const displayLoadingSpinner = (isLoading) => {
     const { countries } = await getAllCountries();
     const { allEthnicities } = await getAllEthnicities();
     const { allLanguages } = await getAllLanguages();
+    const { allHobbies } = await getAllHobbies();
 
     displayLoadingSpinner(false);
 
@@ -83,6 +93,7 @@ const displayLoadingSpinner = (isLoading) => {
       countries,
       allEthnicities,
       allLanguages,
+      allHobbies,
     }
   };
 
