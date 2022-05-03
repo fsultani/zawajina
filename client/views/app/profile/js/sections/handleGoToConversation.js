@@ -1,5 +1,4 @@
-const handleGoToConversation = () => {
-  const userId = window.location.pathname.split('/')[2]
+const handleGoToConversation = userId => {
   axios
     .get(`/messages/api/conversation/user/${userId}`)
     .then(({ data: { conversationId } }) => {

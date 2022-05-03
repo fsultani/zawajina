@@ -27,7 +27,7 @@
         <div class="image-previews-container">
           ${user.photos.filter(photo => photo).map((photo, index) => `
           <div class="image-preview-wrapper">
-            <img src="${photo.secure_url}" class="user-photo" onclick="goToImage(${index})" />
+            <img src="${photo.secure_url}" class="user-photo" onclick="goToImage('${index}')" />
           </div>
           `).join('')}
         </div>
@@ -61,8 +61,19 @@
         </div>
       </div>
       <div class="contact-wrapper">
-        <button onclick="handleGoToConversation()"><i class="far fa-envelope fa-2x"></i></button>
-        <button onclick="handleLikeUser()"><i class="far fa-star fa-2x"></i></button>
+        <button
+          onclick="handleGoToConversation('${user._id}')"
+          class="message-button"
+        >
+          <i class="far fa-envelope fa-2x"></i>
+        </button>
+        <button
+          onclick="handleLikeUser('${user._id}')"
+          class="like-button"
+          data-user-is-liked="${user.userIsLiked}"
+        >
+          <i class="like-icon far fa-star fa-2x"></i>
+        </button>
       </div>
     </div>
 

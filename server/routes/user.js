@@ -265,9 +265,12 @@ router.get('/:userId', async (req, res) => {
     const imperialHeight = calculateImperialHeight(userDocument.height);
     const userHeight = `${imperialHeight.heightInFeet}'${imperialHeight.heightInInches}" (${userDocument.height} cm)`;
 
+    const userIsLiked = !!await usersCollection().findOne({ _id: ObjectId(authUser._id), usersLiked: { $in: [userId] } });
+
     const user = {
       ...userDocument,
       height: userHeight,
+      userIsLiked,
     };
 
     const lastLogin = new Date(user.loginData[0]?.time);
@@ -458,5 +461,49 @@ router.put(
     }
   }
 );
+
+router.put('/', async (req, res) => {
+  const { authUser } = req;
+  const { userId } = req.body;
+
+  let userIsLiked = !!await usersCollection().findOne({ _id: ObjectId(authUser._id), usersLiked: { $in: [userId] } });
+
+  if (!userIsLiked) {
+    usersCollection().findOneAndUpdate(
+      { _id: authUser._id },
+      {
+        $push: {
+          usersLiked: userId,
+        },
+      },
+      async (err, user) => {
+        if (err) {
+          console.log(`err\n`, err);
+          return res.send({ error: err });
+        }
+
+        const userLiked = await usersCollection().findOne({ _id: ObjectId(userId)});
+        return res.status(200).json({ userIsLiked: true, userName: userLiked.name });
+      }
+    );
+  } else {
+    usersCollection().findOneAndUpdate(
+      { _id: authUser._id },
+      {
+        $pull: {
+          usersLiked: userId,
+        },
+      },
+      async (err, user) => {
+        if (err) {
+          console.log(`err\n`, err);
+          return res.send({ error: err });
+        }
+
+        return res.status(200).json({ userIsLiked: false });
+      }
+    );
+  }
+})
 
 module.exports = router;
