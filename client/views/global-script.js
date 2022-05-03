@@ -38,3 +38,48 @@ setTimeout(() => {
     }
   }
 }, 1000);
+
+if (typeof globalThis === 'object') {
+  globalThis.toast = (type, message) => {
+    localStorage.setItem('my_match_display_toast', JSON.stringify({ type, message }));
+    location.reload();
+  }
+};
+
+Object.defineProperty(Object.prototype, '__magic__', {
+  get: function () {
+    return this;
+  },
+  configurable: true // This makes it possible to `delete` the getter later.
+});
+__magic__.globalThis = __magic__; // lolwat
+delete Object.prototype.__magic__;
+
+(() => {
+  const myMatchDisplayToast = localStorage.getItem('my_match_display_toast');
+
+  if (myMatchDisplayToast) {
+    const toastData = JSON.parse(myMatchDisplayToast);
+
+    setTimeout(() => {
+      const toastElement = document.querySelector('.toast');
+      const toastMessage = document.querySelector('.toast-message');
+  
+      toastElement.classList.add('show-toast');
+      toastElement.classList.add('toast-success');
+  
+      if (toastData.type === 'success') {
+        toastElement.classList.add('toast-success');
+      } else (
+        toastElement.classList.add('toast-error')
+      )
+  
+      toastMessage.innerHTML = toastData.message;
+  
+      setTimeout(() => {
+        toastElement.classList.remove('show-toast');
+        localStorage.removeItem('my_match_display_toast');
+      }, 3000)
+    })
+  }
+})();

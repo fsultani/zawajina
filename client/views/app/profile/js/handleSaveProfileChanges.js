@@ -147,9 +147,6 @@ const handleSaveProfileChanges = async () => {
     return;
   }
 
-  const toast = document.querySelector('.toast');
-  const toastMessage = document.querySelector('.toast-message');
-
   const images = document.forms.namedItem('profileForm');
   const userData = new FormData(images);
   userData.append('userInfo', JSON.stringify(userInfo));
@@ -172,7 +169,7 @@ const handleSaveProfileChanges = async () => {
   await axios
     .put('/user/api/profile-details', userData)
     .then(() => {
-      localStorage.setItem('my_match_profile_update', 'true');
+      globalThis.toast('success', 'Profile successfully updated!');
 
       const modal = getQuerySelector('.modal');
       const modalContent = getQuerySelector('.modal-content');
@@ -184,21 +181,15 @@ const handleSaveProfileChanges = async () => {
 
       setTimeout(() => {
         modal.style.display = 'none';
-        location.reload();
       }, 200)
     })
     .catch(error => {
-      console.error('error.message:\n', error.message);
+      console.log(`error\n`, error);
       window.scroll({
         top: 0,
         behavior: 'smooth',
       });
 
-      toast.classList.add('show-toast')
-      toast.classList.add('toast-error')
-      toastMessage.innerHTML = 'There was an error';
-      setTimeout(() => {
-        toast.classList.remove('show-toast')
-      }, 3000);
+      globalThis.toast('error', 'There was an error');
     });
 };
