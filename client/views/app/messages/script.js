@@ -17,9 +17,45 @@ const fullPageLoadingSpinner = `
   </div>
 `;
 
-let pageContent = `
+let mobilePageContent = `
   <div class="sidebar-conversations-container">
     ${fullPageLoadingSpinner}
+  </div>
+`;
+
+const pageContent = `
+  <div class="sidebar-conversations-container">
+    <div class="search-box-container">
+      <div class="search-box-wrapper">
+        <div class="form-group">
+          <input id="searchTextInput" type="text" class="form-control" name="searchText" placeholder="Search">
+          <span class="glyphicon glyphicon-search form-control-feedback">
+            <img src="/static/client/images/search_icon.png" />
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="sidebar-conversations-wrapper">
+      ${fullPageLoadingSpinner}
+    </div>
+  </div>
+
+  <div class="right-container">
+    <div class="conversation-wrapper">
+      <div class="chat-image-container">
+        <img src="/static/client/images/chat_icon.png" class="chat-image" />
+      </div>
+      <div class="bottom"></div>
+    </div>
+
+    <div class="input-container">
+      <div class="input-wrapper">
+        <form name="messageForm" class="message-form" onsubmit="handleSendMessage(event)" novalidate>
+          <textarea name="messageText" class="message-input"></textarea>
+          <button class="send-message-button">Send</button>
+        </form>
+      </div>
+    </div>
   </div>
 `;
 
@@ -133,7 +169,7 @@ const renderConversationMessages = ({ conversationId }) => {
     highlightActiveConversation({ conversationId });
 
     if (isMobileDevice) {
-      pageContent = `
+      mobilePageContent = `
       <div class="sidebar-conversations-container">
         <div class="conversation-wrapper"></div>
         <div class="input-container">
@@ -147,7 +183,7 @@ const renderConversationMessages = ({ conversationId }) => {
       </div>
     `;
 
-      document.querySelector('.container').innerHTML = pageContent;
+      document.querySelector('.container').innerHTML = mobilePageContent;
     }
 
     document.querySelector('.conversation-wrapper').innerHTML = userInfoDiv;
@@ -164,6 +200,7 @@ const renderConversationWithState = (conversationId) => {
     renderConversationMessages({ conversationId })
     window.history.pushState({ conversationId }, '', `/messages/${conversationId}`)
     if (pageValue === 1) {
+      document.querySelector('.container').innerHTML = pageContent;
       renderAllConversationsSidebar();
     }
   }
@@ -428,44 +465,8 @@ window.onpopstate = function (event) {
 
 (() => {
   if (isMobileDevice) {
-    document.querySelector('.container').innerHTML = pageContent;
+    document.querySelector('.container').innerHTML = mobilePageContent;
   } else {
-    pageContent = `
-      <div class="sidebar-conversations-container">
-        <div class="search-box-container">
-          <div class="search-box-wrapper">
-            <div class="form-group">
-              <input id="searchTextInput" type="text" class="form-control" name="searchText" placeholder="Search">
-              <span class="glyphicon glyphicon-search form-control-feedback">
-                <img src="/static/client/images/search_icon.png" />
-              </span>
-            </div>
-          </div>
-        </div>
-        <div class="sidebar-conversations-wrapper">
-          ${fullPageLoadingSpinner}
-        </div>
-      </div>
-
-      <div class="right-container">
-        <div class="conversation-wrapper">
-          <div class="chat-image-container">
-            <img src="/static/client/images/chat_icon.png" class="chat-image" />
-          </div>
-          <div class="bottom"></div>
-        </div>
-
-        <div class="input-container">
-          <div class="input-wrapper">
-            <form name="messageForm" class="message-form" onsubmit="handleSendMessage(event)" novalidate>
-              <textarea name="messageText" class="message-input"></textarea>
-              <button class="send-message-button">Send</button>
-            </form>
-          </div>
-        </div>
-      </div>
-    `;
-
     document.querySelector('.container').innerHTML = pageContent;
     searchTextInput = document.querySelector('#searchTextInput');
     handleSearchText();
