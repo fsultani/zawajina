@@ -270,26 +270,17 @@ router.get('/api/conversations/search', async (req, res) => {
             }
           },
           message: {
-            $reduce: {
-              input: '$messages.messageText',
-              initialValue: false,
-              in: {
-                $cond: [
-                  {
-                    $eq: [
-                      {
-                        $regexMatch: {
-                          input: '$$this',
-                          regex: searchQueryRegex
-                        }
-                      },
-                      true
-                    ]
-                  },
-                  '$$this',
-                  '$$this',
-                ]
-              }
+            $last: {
+              $filter: {
+                input: '$messages.messageText',
+                as: 'message',
+                cond: {
+                  $regexMatch: {
+                    input: '$$message',
+                    regex: searchQueryRegex
+                  }
+                }
+              },
             }
           },
           username: {
@@ -353,6 +344,7 @@ router.get('/api/conversations/search', async (req, res) => {
     res.status(200).json({
       searchMessages,
     });
+
   } catch (error) {
     console.log(`Error in /api/conversations\n`, error);
     throw new Error(error);

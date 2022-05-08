@@ -84,6 +84,7 @@ const highlightActiveConversation = ({ conversationId }) => {
 };
 
 const renderConversationMessages = ({ conversationId }) => {
+  // eslint-disable-next-line no-undef
   axios.get(`/messages/api/conversation/${conversationId}`).then(({ data }) => {
     const userInfo = data.recipient;
 
@@ -206,61 +207,64 @@ const renderConversationWithState = (conversationId) => {
   }
 }
 
+const getUserSearchTextInput = () => (
+  searchTextInput.addEventListener(
+    'input',
+    debounce(async () => {
+      const searchQuery = searchTextInput.value;
+      if (!searchQuery) {
+        searchQueryRegex = undefined;
+        searchMessagesApiWasCalled = false;
+        window.history.pushState({ conversationId: '' }, '', `/messages`)
+        document.querySelector('.container').innerHTML = pageContent;
+        renderAllConversationsSidebar();
+        return false;
+      }
+
+      searchQueryRegex = new RegExp(searchQuery, 'ig')
+      const { searchMessages } = await getSearchResults(searchQuery);
+      const searchMessagesResults = searchMessages.map(conversation => `
+        <button class="sidebar-message-container conversationId-${conversation._id}" onclick="renderConversationWithState('${conversation._id}')">
+          <div class="sidebar-user-message-wrapper">
+            <p class="sidebar-info">${conversation.username}</p>
+            <p class="sidebar-message-preview ${conversation.lastMessageWasRead ? `read-message` : `unread-message`}">
+              ${highlightSearchResults(conversation.message, searchQueryRegex)}
+            </p>
+          </div>
+          <p class="sidebar-info">${conversation.unreadMessagesCount > 1 ? conversation.unreadMessagesCount : ''}</p>
+        </button>
+      `).join('');
+
+      document.querySelector('.sidebar-conversations-wrapper').innerHTML = searchMessagesResults;
+      sidebarMessageContainerBorderBottom();
+    }, 250)
+  )
+);
+
+const handleSearchText = () => {
+  searchTextInput.addEventListener('keyup', () => {
+    if (!searchMessagesApiWasCalled) {
+      getUserSearchTextInput()
+      searchMessagesApiWasCalled = true;
+    }
+  });
+};
+
 const renderAllConversationsSidebar = () => {
-  const fullPageLoadingSpinner = document.querySelector('.full-page-loading-spinner');
+  const loadingSpinner = document.querySelector('.full-page-loading-spinner');
 
-  if (searchQueryRegex === undefined) {
-    fullPageLoadingSpinner.style.cssText = `display: inline-block`;
+  loadingSpinner.style.cssText = `display: inline-block`;
 
-    axios.get(`/messages/api/conversations?page=${pageValue}`).then(({ data }) => {
-      fullPageLoadingSpinner.style.display = 'none';
+  if (searchMessagesApiWasCalled) {
+    searchMessagesApiWasCalled = false;
+  }
 
-      if (isMobileDevice) {
-        if (data.allConversationsSidebar.length > 0) {
-          const allConversationsSidebar = data.allConversationsSidebar.map(conversation => `
-            <button
-              class="sidebar-message-container conversationId-${conversation._id}"
-              onclick="renderConversationWithState('${conversation._id}')"
-            >
-              <div class="sidebar-user-message-wrapper">
-                <p class="sidebar-info">${conversation.otherUser}</p>
-                <p class="sidebar-message-preview ${conversation.lastMessageWasRead ? `read-message` : `unread-message`}">${conversation.lastMessagePreview}</p>
-              </div>
-              <p class="sidebar-info">${conversation.unreadMessagesCount > 1 ? conversation.unreadMessagesCount : ''}</p>
-            </button>
-          `).join('');
+  // eslint-disable-next-line no-undef
+  axios.get(`/messages/api/conversations?page=${pageValue}`).then(({ data }) => {
+    loadingSpinner.style.display = 'none';
 
-          document.querySelector('.sidebar-conversations-container').innerHTML = `
-            <div class="search-box-container">
-              <div class="search-box-wrapper">
-                <div class="form-group">
-                  <input id="searchTextInput" type="text" class="form-control" name="searchText" placeholder="Search">
-                  <span class="glyphicon glyphicon-search form-control-feedback">
-                    <img src="/static/client/images/search_icon.png" />
-                  </span>
-                </div>
-              </div>
-            </div>
-            <div class="chat-wrapper">
-              <div class="sidebar-conversations-wrapper">${allConversationsSidebar}</div>
-            </div>`;
-
-          searchTextInput = document.querySelector('#searchTextInput');
-          handleSearchText();
-          sidebarMessageContainerBorderBottom();
-          handleSidebarConversationsContainerScroll();
-
-          /* Update the number of unread conversations in the top navbar */
-          document.querySelector('.allConversationsCount').innerHTML = data.allConversationsCount > 0 ? `Messages (${data.allConversationsCount})` : 'Messages';
-        } else {
-          document.querySelector('.sidebar-conversations-container').innerHTML = `
-            <div class="chat-image-container">
-              <img src="/static/client/images/chat_icon.png" class="chat-image" />
-            </div>
-            <div class="bottom"></div>
-            <div class="sidebar-conversations-wrapper"></div>`;
-        }
-      } else {
+    if (isMobileDevice) {
+      if (data.allConversationsSidebar.length > 0) {
         const allConversationsSidebar = data.allConversationsSidebar.map(conversation => `
           <button
             class="sidebar-message-container conversationId-${conversation._id}"
@@ -274,29 +278,58 @@ const renderAllConversationsSidebar = () => {
           </button>
         `).join('');
 
-        document.querySelector('.sidebar-conversations-wrapper').innerHTML = allConversationsSidebar;
+        document.querySelector('.sidebar-conversations-container').innerHTML = `
+          <div class="search-box-container">
+            <div class="search-box-wrapper">
+              <div class="form-group">
+                <input id="searchTextInput" type="text" class="form-control" name="searchText" placeholder="Search">
+                <span class="glyphicon glyphicon-search form-control-feedback">
+                  <img src="/static/client/images/search_icon.png" />
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="chat-wrapper">
+            <div class="sidebar-conversations-wrapper">${allConversationsSidebar}</div>
+          </div>`;
+
+        searchTextInput = document.querySelector('#searchTextInput');
+        handleSearchText();
         sidebarMessageContainerBorderBottom();
+        handleSidebarConversationsContainerScroll();
 
         /* Update the number of unread conversations in the top navbar */
         document.querySelector('.allConversationsCount').innerHTML = data.allConversationsCount > 0 ? `Messages (${data.allConversationsCount})` : 'Messages';
+      } else {
+        document.querySelector('.sidebar-conversations-container').innerHTML = `
+          <div class="chat-image-container">
+            <img src="/static/client/images/chat_icon.png" class="chat-image" />
+          </div>
+          <div class="bottom"></div>
+          <div class="sidebar-conversations-wrapper"></div>`;
       }
-    });
-  }
-};
+    } else {
+      const allConversationsSidebar = data.allConversationsSidebar.map(conversation => `
+        <button
+          class="sidebar-message-container conversationId-${conversation._id}"
+          onclick="renderConversationWithState('${conversation._id}')"
+        >
+          <div class="sidebar-user-message-wrapper">
+            <p class="sidebar-info">${conversation.otherUser}</p>
+            <p class="sidebar-message-preview ${conversation.lastMessageWasRead ? `read-message` : `unread-message`}">${conversation.lastMessagePreview}</p>
+          </div>
+          <p class="sidebar-info">${conversation.unreadMessagesCount > 1 ? conversation.unreadMessagesCount : ''}</p>
+        </button>
+      `).join('');
 
-const handleMessageInput = () => {
-  const messageInput = document.querySelector('.message-input')
-  messageInput.addEventListener('input', e => {
-    e.target.style.height = '40px';
-    e.target.style.height = `${e.target.scrollHeight + 2}px`;
-  })
-};
+      document.querySelector('.sidebar-conversations-wrapper').innerHTML = allConversationsSidebar;
 
-const handleSearchText = () => {
-  searchTextInput.addEventListener('keydown', () => {
-    if (!searchMessagesApiWasCalled) {
-      getUserSearchTextInput()
-      searchMessagesApiWasCalled = true;
+      searchTextInput = document.querySelector('#searchTextInput');
+      handleSearchText();
+      sidebarMessageContainerBorderBottom();
+
+      /* Update the number of unread conversations in the top navbar */
+      document.querySelector('.allConversationsCount').innerHTML = data.allConversationsCount > 0 ? `Messages (${data.allConversationsCount})` : 'Messages';
     }
   });
 };
@@ -341,6 +374,7 @@ const handleSendMessage = event => {
     element.style.fontWeight = 'initial';
   })
 
+  // eslint-disable-next-line no-undef
   axios.post('/messages/api/new-message', {
     conversationId,
     messageText,
@@ -388,38 +422,6 @@ const getSearchResults = async searchQuery => {
     return error.response;
   }
 };
-
-const getUserSearchTextInput = () =>
-  searchTextInput.addEventListener(
-    'input',
-    debounce(async () => {
-      const searchQuery = searchTextInput.value;
-      if (!searchQuery) {
-        searchQueryRegex = undefined;
-        searchMessagesApiWasCalled = false;
-        window.history.pushState({ conversationId: '' }, '', `/messages`)
-        renderAllConversationsSidebar();
-        return false;
-      }
-
-      searchQueryRegex = new RegExp(searchQuery, 'ig')
-      const { searchMessages } = await getSearchResults(searchQuery);
-      const searchMessagesResults = searchMessages.map(conversation => `
-        <button class="sidebar-message-container conversationId-${conversation._id}" onclick="renderConversationWithState('${conversation._id}')">
-          <div class="sidebar-user-message-wrapper">
-            <p class="sidebar-info">${highlightSearchResults(conversation.username, searchQueryRegex)} - <code><em>${conversation._id}</em></code></p>
-            <p class="sidebar-message-preview ${conversation.lastMessageWasRead ? `read-message` : `unread-message`}">
-              ${highlightSearchResults(conversation.message, searchQueryRegex)}
-            </p>
-          </div>
-          <p class="sidebar-info">${conversation.unreadMessagesCount > 1 ? conversation.unreadMessagesCount : ''}</p>
-        </button>
-      `).join('');
-
-      document.querySelector('.sidebar-conversations-wrapper').innerHTML = searchMessagesResults;
-      sidebarMessageContainerBorderBottom();
-    }, 250)
-  );
 
 const handleSidebarConversationsContainerScroll = () => {
   const sidebarConversationsContainer = document.querySelector('.sidebar-conversations-wrapper');
