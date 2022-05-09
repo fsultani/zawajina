@@ -196,3 +196,13 @@
   background-color: #008cff;
   color: #ffffff;
 }
+
+.like-icon {
+  font-size: 25px;
+}
+
+@media (min-width: 600px) {
+  .like-icon {
+    font-size: 32px;
+  }
+}
