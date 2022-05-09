@@ -1,3 +1,5 @@
+const disableForm = (disabled) => document.querySelectorAll('form *').forEach(item => item.disabled = disabled);
+
 const handleEmailValidation = () => {
   const email = document.login.elements.email.value;
   const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
@@ -28,7 +30,7 @@ const handleLogin = async event => {
       cursor: not-allowed;
     `;
 
-    document.querySelectorAll('form *').forEach(item => item.disabled = true);
+    disableForm(true);
 
     const userIPAddress = await getUserIPAddress();
     axios
@@ -43,6 +45,7 @@ const handleLogin = async event => {
         window.location.pathname = '/users';
       })
       .catch(() => {
+        disableForm(false);
         loadingSpinner.style.display = 'none';
         loginButton.innerHTML = 'Login';
           loginButton.style.cssText = `
@@ -59,17 +62,20 @@ const handleLogin = async event => {
       document.login.email.blur();
       document.getElementById('email').classList.add('email-error');
       document.getElementById('email-wrapper').classList.add('form-error');
+      disableForm(false);
     }
 
     const emailHasError = document.getElementById('email').classList.contains('email-error');
     if (emailIsValid && emailHasError) {
       document.getElementById('email').classList.remove('email-error');
       document.getElementById('email-wrapper').classList.remove('form-error');
+      disableForm(false);
     }
 
     if (!passwordIsValid) {
       document.login.password.blur();
       document.getElementById('password').classList.add('form-error');
+      disableForm(false);
     }
   }
 };
