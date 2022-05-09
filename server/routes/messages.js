@@ -449,6 +449,25 @@ router.get('/api/conversation/:conversationId', async (req, res) => {
   }
 })
 
+router.delete('/api/conversation/delete/:conversationId', async (req, res) => {
+  const conversationId = req.params.conversationId;
+
+  try {
+    const conversationsCollection = await messagesCollection().findOne({ _id: ObjectId(conversationId) })
+
+    if (conversationsCollection?.messages?.length === 0) {
+      await messagesCollection().deleteOne({ _id: ObjectId(conversationId) });
+
+      res.status(200).json({
+        conversationIsDeleted: true,
+      })
+    }
+  } catch (error) {
+    console.log(`Error in /api/conversation/delete/:conversationId\n`, error);
+    throw new Error(error);
+  }
+})
+
 /* ************************************************** */
 /*
   Send a new message to a user
