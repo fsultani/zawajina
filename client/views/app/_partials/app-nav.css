@@ -200,6 +200,7 @@ h5 {
 
   .navbar--header-links li {
     display: flex;
+    justify-content: space-around;
     align-items: center;
     height: 100%;
   }
@@ -222,6 +223,10 @@ h5 {
   .navbar--header-links a:hover,
   .navbar--header-links a:active {
     color: #fff;
+  }
+
+  .messages {
+    margin-right: 2px;
   }
 
   .dropdown-menu-container {

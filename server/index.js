@@ -14,6 +14,7 @@ const JWT_SECRET = Buffer.from('fe1a1915a379f3be5394b64d14794932', 'hex');
 const { connectToServer, usersCollection, messagesCollection } = require('./db.js');
 const {
   register,
+  likes,
   login,
   password,
   users,
@@ -346,6 +347,7 @@ app.use('*', async (req, res, next) => {
 });
 
 app.use('/register', register);
+app.use('/likes*', likes);
 app.use('/login', login);
 app.use('/password', password);
 app.use('/users', users);

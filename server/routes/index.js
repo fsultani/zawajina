@@ -1,4 +1,5 @@
 const register = require('./register/index');
+const likes = require('./likes');
 const login = require('./login');
 const password = require('./password');
 const users = require('./users');
@@ -9,6 +10,7 @@ const settings = require('./settings');
 
 module.exports = {
   register,
+  likes,
   login,
   password,
   users,

@@ -469,7 +469,22 @@ router.put('/', async (req, res) => {
   let userIsLiked = !!await usersCollection().findOne({ _id: ObjectId(authUser._id), usersLiked: { $in: [userId] } });
 
   if (!userIsLiked) {
-    usersCollection().findOneAndUpdate(
+    await usersCollection().findOneAndUpdate(
+      { _id: ObjectId(userId) },
+      {
+        $push: {
+          likedByUsers: authUser._id.toString(),
+        },
+      },
+      async (err, user) => {
+        if (err) {
+          console.log(`err\n`, err);
+          return res.send({ error: err });
+        }
+      }
+    );
+
+    await usersCollection().findOneAndUpdate(
       { _id: authUser._id },
       {
         $push: {
@@ -487,7 +502,22 @@ router.put('/', async (req, res) => {
       }
     );
   } else {
-    usersCollection().findOneAndUpdate(
+    await usersCollection().findOneAndUpdate(
+      { _id: ObjectId(userId) },
+      {
+        $pull: {
+          likedByUsers: authUser._id.toString(),
+        },
+      },
+      async (err, user) => {
+        if (err) {
+          console.log(`err\n`, err);
+          return res.send({ error: err });
+        }
+      }
+    );
+
+    await usersCollection().findOneAndUpdate(
       { _id: authUser._id },
       {
         $pull: {
