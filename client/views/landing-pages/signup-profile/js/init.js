@@ -87,6 +87,11 @@ const displayLoadingSpinner = (isLoading) => {
 
     displayLoadingSpinner(false);
 
+    const allSelectFields = document.querySelectorAll('select')
+    allSelectFields.forEach((field, index) => {
+      field.options[0].disabled = true;
+    });
+
     return globalThis = {
       allLocations,
       userLocationData,
