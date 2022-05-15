@@ -28,33 +28,6 @@ const getUserIPAddress = async () => {
   }
 };
 
-setTimeout(() => {
-  const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
-  // Display slow network message for non Safari users after 5 seconds
-  if (connection) {
-    const type = connection.effectiveType;
-    if (type === '2g' || type === '3g') {
-      document.querySelector('#slow-network-warning').style.display = 'block';
-    }
-  }
-}, 1000);
-
-if (typeof globalThis === 'object') {
-  globalThis.toast = (type, message) => {
-    localStorage.setItem('my_match_display_toast', JSON.stringify({ type, message }));
-    location.reload();
-  }
-};
-
-Object.defineProperty(Object.prototype, '__magic__', {
-  get: function () {
-    return this;
-  },
-  configurable: true // This makes it possible to `delete` the getter later.
-});
-__magic__.globalThis = __magic__; // lolwat
-delete Object.prototype.__magic__;
-
 (() => {
   const myMatchDisplayToast = localStorage.getItem('my_match_display_toast');
 
@@ -82,4 +55,38 @@ delete Object.prototype.__magic__;
       }, 3000)
     })
   }
+
+  const lowerCaseString = string => string.split(' ').join('').toLowerCase();
+
+  const toast = (type, message) => {
+    localStorage.setItem('my_match_display_toast', JSON.stringify({ type, message }));
+    location.reload();
+  }
+
+  if (typeof globalThis === 'object') {
+    return globalThis = {
+      lowerCaseString,
+      toast,
+    }
+  }
+
+  Object.defineProperty(Object.prototype, '__magic__', {
+    get: function () {
+      return this;
+    },
+    configurable: true // This makes it possible to `delete` the getter later.
+  });
+  __magic__.globalThis = __magic__; // lolwat
+  delete Object.prototype.__magic__;
 })();
+
+setTimeout(() => {
+  const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+  // Display slow network message for non Safari users after 5 seconds
+  if (connection) {
+    const type = connection.effectiveType;
+    if (type === '2g' || type === '3g') {
+      document.querySelector('#slow-network-warning').style.display = 'block';
+    }
+  }
+}, 1000);

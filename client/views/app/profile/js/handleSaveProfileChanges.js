@@ -1,3 +1,5 @@
+const toast = globalThis.toast;
+
 const addErrorClass = element => {
   document.querySelector(`${element}`).classList.add('form-error')
 
@@ -169,7 +171,7 @@ const handleSaveProfileChanges = async () => {
   await axios
     .put('/user/api/profile-details', userData)
     .then(() => {
-      globalThis.toast('success', 'Profile successfully updated!');
+      toast('success', 'Profile successfully updated!');
 
       const modal = getQuerySelector('.modal');
       const modalContent = getQuerySelector('.modal-content');
@@ -190,6 +192,6 @@ const handleSaveProfileChanges = async () => {
         behavior: 'smooth',
       });
 
-      globalThis.toast('error', 'There was an error');
+      toast('error', 'There was an error');
     });
 };

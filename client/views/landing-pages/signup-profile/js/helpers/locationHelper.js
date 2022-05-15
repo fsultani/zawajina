@@ -7,7 +7,7 @@ let results = [];
 
 locationInput.placeholder = locationInputPlaceholder;
 
-const lowerCaseString = string => string.split(' ').join('').toLowerCase();
+const lowerCaseString = globalThis.lowerCaseString;
 
 const getAllCities = async userInput => {
   const { allLocations, userLocationData } = globalThis;

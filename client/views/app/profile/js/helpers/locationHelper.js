@@ -1,4 +1,4 @@
-const lowerCaseString = string => string.split(' ').join('').toLowerCase();
+const lowerCaseString = globalThis.lowerCaseString;
 
 const locationHelper = () => {
   const locationInput = document.querySelector('#locationInput');
