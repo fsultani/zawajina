@@ -1,6 +1,6 @@
 const handleLikeUser = userId => {
   axios
-    .put('/user', {
+    .put('/user/like', {
       userId,
     })
     .then(({ data }) => {

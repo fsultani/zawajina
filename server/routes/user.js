@@ -462,7 +462,7 @@ router.put(
   }
 );
 
-router.put('/', async (req, res) => {
+router.put('/like', async (req, res) => {
   const { authUser } = req;
   const { userId } = req.body;
 
@@ -476,7 +476,7 @@ router.put('/', async (req, res) => {
           likedByUsers: authUser._id.toString(),
         },
       },
-      async (err, user) => {
+      async (err, _user) => {
         if (err) {
           console.log(`err\n`, err);
           return res.send({ error: err });
@@ -491,7 +491,7 @@ router.put('/', async (req, res) => {
           usersLiked: userId,
         },
       },
-      async (err, user) => {
+      async (err, _user) => {
         if (err) {
           console.log(`err\n`, err);
           return res.send({ error: err });
@@ -509,7 +509,7 @@ router.put('/', async (req, res) => {
           likedByUsers: authUser._id.toString(),
         },
       },
-      async (err, user) => {
+      async (err, _user) => {
         if (err) {
           console.log(`err\n`, err);
           return res.send({ error: err });
@@ -524,7 +524,7 @@ router.put('/', async (req, res) => {
           usersLiked: userId,
         },
       },
-      async (err, user) => {
+      async (err, _user) => {
         if (err) {
           console.log(`err\n`, err);
           return res.send({ error: err });
