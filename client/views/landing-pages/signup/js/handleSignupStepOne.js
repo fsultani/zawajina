@@ -1,8 +1,8 @@
-const user_name = document.querySelector('.user_name');
-const user_email = document.querySelector('.user_email');
-const user_password = document.querySelector('.user_password');
-const signupButton = document.querySelector('#signupButton');
-const loadingSpinner = document.querySelector('.loading-spinner');
+const username = getQuerySelector('.username');
+const userEmail = getQuerySelector('.userEmail');
+const userPassword = getQuerySelector('.userPassword');
+const signupButton = getQuerySelector('#signupButton');
+const loadingSpinner = getQuerySelector('.loading-spinner');
 
 let handleNameValidationValue = false;
 let handleEmailValidationValue = false;
@@ -56,9 +56,9 @@ const handlePasswordValidation = password => {
 };
 
 const handleSignupStepOne = async () => {
-  const nameValue = user_name.value;
-  const email = user_email.value;
-  const password = user_password.value;
+  const nameValue = username.value;
+  const email = userEmail.value;
+  const password = userPassword.value;
 
   handleNameValidation(nameValue);
   handleEmailValidation(email);

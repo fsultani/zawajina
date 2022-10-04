@@ -35,6 +35,10 @@
   opacity: 0;
 }
 
+.modal-content section {
+  display: none;
+}
+
 @media (min-width: 600px) {
   .modal-content {
     margin: auto;
@@ -50,7 +54,7 @@
 }
 
 /* The Close Button */
-.close {
+.close-modal {
   color: #aaaaaa;
   background-color: transparent;
   box-shadow: none;
@@ -66,8 +70,8 @@
   border: none;
 }
 
-.close:hover,
-.close:focus {
+.close-modal:hover,
+.close-modal:focus {
   color: #000;
   text-decoration: none;
   cursor: pointer;

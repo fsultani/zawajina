@@ -37,18 +37,38 @@ const addActive = (element, currentFocus) => {
   element[currentFocus].classList.add('autocomplete-active');
 };
 
-(() => {
-  document.getElementById('about-me').addEventListener('keyup', e => {
-    let characterCount = e.target.value.length;
-    document.getElementById('about-me-character-count').innerHTML = `${characterCount}/100`;
-    document.getElementById('about-me-character-count').style.cssText =
-      characterCount < 100 ? 'color: #777;' : 'color: green;';
-  });
+(async () => {
+  displayLoadingSpinner(true);
 
-  document.getElementById('about-my-match').addEventListener('keyup', e => {
-    let characterCount = e.target.value.length;
-    document.getElementById('about-my-match-character-count').innerHTML = `${characterCount}/100`;
-    document.getElementById('about-my-match-character-count').style.cssText =
-      characterCount < 100 ? 'color: #777;' : 'color: green;';
+  if (typeof globalThis === 'object') {
+    const {
+      allLocations,
+      userLocationData,
+    } = await locationData();
+
+    const { countries } = await getAllCountries();
+    const { allEthnicities } = await getAllEthnicities();
+    const { allLanguages } = await getAllLanguages();
+    const { allHobbies } = await getAllHobbies();
+
+    displayLoadingSpinner(false);
+
+    return globalThis = {
+      allLocations,
+      userLocationData,
+      countries,
+      allEthnicities,
+      allLanguages,
+      allHobbies,
+    }
+  };
+
+  Object.defineProperty(Object.prototype, '__magic__', {
+    get: function () {
+      return this;
+    },
+    configurable: true // This makes it possible to `delete` the getter later.
   });
+  __magic__.globalThis = __magic__; // lolwat
+  delete Object.prototype.__magic__;
 })();

@@ -2,11 +2,7 @@ require('dotenv').config();
 const { MongoClient } = require("mongodb");
 const cloudinary = require("cloudinary");
 
-cloudinary.config({
-  cloud_name: require("/Users/farid/_repos/my-match/server/credentials.json").CLOUDINARY_CLOUD_NAME,
-  api_key: require("/Users/farid/_repos/my-match/server/credentials.json").CLOUDINARY_API_KEY,
-  api_secret: require("/Users/farid/_repos/my-match/server/credentials.json").CLOUDINARY_API_SECRET,
-});
+require('../../config/cloudinary');
 
 const uri = process.env.MONGODB_URI;
 

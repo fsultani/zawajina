@@ -146,14 +146,14 @@
         if (element.state) {
           return element.state
             .toLowerCase()
-            .startsWith(userInput.split(',')[1].toLowerCase().trim());
+            .startsWith(userInput.split(',')[1]);
         } else {
           return element.country
             .toLowerCase()
-            .startsWith(userInput.split(',')[1].toLowerCase().trim());
+            .startsWith(userInput.split(',')[1]);
         }
       } else {
-        return element.city.toLowerCase().startsWith(userInput.toLowerCase());
+        return element.city.toLowerCase().startsWith(userInput);
       }
     });
 
@@ -201,7 +201,7 @@
     locationInput.addEventListener(
       'input',
       debounce(async event => {
-        const userInput = event.target.value;
+        const userInput = event.target.value.toLowerCase().trim();
         if (!userInput) {
           closeAllLists('#locationInput');
           return false;

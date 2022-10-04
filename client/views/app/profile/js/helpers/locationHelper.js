@@ -1,6 +1,15 @@
 const lowerCaseString = globalThis.lowerCaseString;
 
-const locationHelper = () => {
+const locationHelper = async () => {
+  displaySmallLoadingSpinner(true, '.modal-content', '.close-modal');
+
+  const {
+    allLocations,
+    userLocationData,
+  } = await locationData();
+
+  displaySmallLoadingSpinner(false, '.modal-content', '.close-modal');
+
   const locationInput = document.querySelector('#locationInput');
   const locationResults = document.querySelector('#location-results');
   const locationInputPlaceholder = 'Enter your city';
@@ -11,7 +20,6 @@ const locationHelper = () => {
   locationInput.placeholder = locationInputPlaceholder;
   
   const getAllCities = async userInput => {
-    const { allLocations, userLocationData } = globalThis;
     const filteredResults = [];
     const userCity = userLocationData.city;
     const userState = userLocationData.region;
@@ -23,14 +31,14 @@ const locationHelper = () => {
         if (element.state) {
           return element.state
             .toLowerCase()
-            .startsWith(userInput.split(',')[1].toLowerCase().trim());
+            .startsWith(userInput.split(',')[1]);
         } else {
           return element.country
             .toLowerCase()
-            .startsWith(userInput.split(',')[1].toLowerCase().trim());
+            .startsWith(userInput.split(',')[1]);
         }
       } else {
-        return element.city.toLowerCase().startsWith(userInput.toLowerCase());
+        return element.city.toLowerCase().startsWith(userInput);
       }
     });
 
@@ -78,7 +86,7 @@ const locationHelper = () => {
     locationInput.addEventListener(
       'input',
       debounce(async event => {
-        const userInput = locationInput.value;
+        const userInput = event.target.value.toLowerCase().trim();
         if (!userInput) {
           closeAllLists('#locationInput');
           locationInput.setAttribute('data-city', '');

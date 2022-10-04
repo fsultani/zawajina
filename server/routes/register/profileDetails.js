@@ -4,8 +4,7 @@ const fs = require('fs');
 const JWT_SECRET = Buffer.from('fe1a1915a379f3be5394b64d14794932', 'hex');
 const { compress } = require('compress-images/promise');
 
-const { FetchData } = require('../../utils');
-const { usersCollection } = require('../../db.js');
+const { usersCollection, insertLogs } = require('../../db.js');
 
 const uploadToCloudinary = async ({ req, userId }) => {
   try {
@@ -19,8 +18,8 @@ const uploadToCloudinary = async ({ req, userId }) => {
         source: file.path,
         destination: 'compressed/',
         enginesSetup: {
-          jpg: { engine: 'mozjpeg', command: ['-quality', '60']},
-          png: { engine: 'pngquant', command: ['--quality=20-50', '-o']},
+          jpg: { engine: 'mozjpeg', command: ['-quality', '60'] },
+          png: { engine: 'pngquant', command: ['--quality=20-50', '-o'] },
         },
         params: {
           statistic: false,
@@ -56,7 +55,6 @@ const uploadToCloudinary = async ({ req, userId }) => {
         api_key: upload.api_key,
       }
 
-      // photos[`photo_${index}`] = { ...uploadResponse }
       photos.push({ ...uploadResponse });
     })
 
@@ -94,7 +92,7 @@ const profileDetails = async (req, res) => {
       hasChildren,
       wantsChildren,
       height,
-      relocate,
+      canRelocate,
       diet,
       smokes,
       hobbies,
@@ -124,55 +122,54 @@ const profileDetails = async (req, res) => {
       photos = [...upload];
     }
 
-    const geoLocationData = await FetchData(`http://ip-api.com/json/${userIPAddress}`);
-    const latitude = geoLocationData.lat;
-    const longitude = geoLocationData.lon;
+    const userObject = {
+      fullDob,
+      age,
+      gender,
+      country,
+      state,
+      city,
+      photos,
+      ethnicity,
+      countryRaisedIn,
+      languages,
+      religiousConviction,
+      religiousValues,
+      maritalStatus,
+      education,
+      profession,
+      hijab,
+      hasChildren,
+      wantsChildren,
+      height,
+      canRelocate,
+      diet,
+      smokes,
+      hobbies,
+      aboutMe,
+      aboutMyMatch,
+    }
 
     usersCollection().findOneAndUpdate(
       { _id: ObjectId(userId) },
       {
         $set: {
-          fullDob,
-          age,
-          gender,
-          country,
-          state,
-          city,
-          photos,
-          ethnicity,
-          countryRaisedIn,
-          languages,
-          religiousConviction,
-          religiousValues,
-          maritalStatus,
-          education,
-          profession,
-          hijab,
-          hasChildren,
-          wantsChildren,
-          height,
-          relocate,
-          diet,
-          smokes,
-          hobbies,
-          aboutMe,
-          aboutMyMatch,
+          ...userObject,
           completedRegistrationAt: new Date(),
-          location: { type: "Point", coordinates: [longitude, latitude] },
-        },
-        $push: {
-          loginData: {
-            $each: [{
-              time: new Date(),
-              geoLocationData,
-            }],
-            $position: 0,
-          },
         },
       },
       { new: true },
-      (err, user) => {
+      async (err, user) => {
         if (err) return res.send({ error: err });
+
+        const endpoint = req.originalUrl;
+        await insertLogs({
+          ...userObject,
+        },
+          userIPAddress,
+          endpoint,
+          userId
+        );
         const token = jwt.sign({ my_match_userId: user.value._id }, JWT_SECRET, {
           expiresIn: '1 day',
         });

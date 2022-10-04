@@ -24,7 +24,10 @@ const FetchData = async (apiUrl, params = {}) => {
   }
 };
 
+const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
 module.exports = {
   getAllFiles,
   FetchData,
+  sleep,
 };

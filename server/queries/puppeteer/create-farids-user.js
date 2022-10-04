@@ -3,11 +3,7 @@ const { MongoClient } = require('mongodb');
 const puppeteer = require("puppeteer");
 const cloudinary = require("cloudinary");
 
-cloudinary.config({
-  cloud_name: require("/Users/farid/_repos/my-match/server/credentials.json").CLOUDINARY_CLOUD_NAME,
-  api_key: require("/Users/farid/_repos/my-match/server/credentials.json").CLOUDINARY_API_KEY,
-  api_secret: require("/Users/farid/_repos/my-match/server/credentials.json").CLOUDINARY_API_SECRET,
-});
+require('../../config/cloudinary');
 
 const uri = process.env.MONGODB_URI;
 const client = new MongoClient(uri, {
@@ -70,21 +66,17 @@ const run = async () => {
 
   await page.goto("http://localhost:3000/signup");
 
-  await page.waitForSelector("#user_name");
-  await page.focus("#user_name");
+  // await page.waitForSelector(".username");
+  await page.focus(".username");
   await page.keyboard.type("Farid", { delay: keyboardTypeDelay });
 
-  await page.focus("#user_email");
+  await page.focus(".userEmail");
   await page.keyboard.type("farid@me.com", { delay: keyboardTypeDelay });
 
-  await page.focus("#user_password");
+  await page.focus(".userPassword");
   await page.keyboard.type("asdfasdf", { delay: keyboardTypeDelay });
 
   await page.click("#signupButton");
-
-  await page.waitForSelector('.verification-token');
-  await page.waitForTimeout(1000);
-  await page.click("#submitButton");
 
   await page.waitForSelector(".dob-month");
   await page.select(".dob-month", "10");
@@ -141,8 +133,8 @@ const run = async () => {
   await page.waitForSelector(".user-height");
   await page.select(".user-height", `180`);
 
-  await page.waitForSelector(".relocate");
-  await page.select(".relocate", 'No');
+  await page.waitForSelector(".can-relocate");
+  await page.select(".can-relocate", 'No');
 
   await page.waitForSelector(".diet");
   await page.select(".diet", 'Halal when possible');

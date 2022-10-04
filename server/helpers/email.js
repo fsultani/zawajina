@@ -1,13 +1,13 @@
 const nodemailer = require('nodemailer');
 // const { google } = require('googleapis');
 
-// const GOOGLE_CLIENT_ID = process.env.NODE_ENV === 'localhost' ?
+// const GOOGLE_CLIENT_ID = process.env.NODE_ENV === 'development' ?
 //   require('../credentials.json').GOOGLE_CLIENT_ID : process.env.GOOGLE_CLIENT_ID;
 
-// const GOOGLE_CLIENT_SECRET = process.env.NODE_ENV === 'localhost' ?
+// const GOOGLE_CLIENT_SECRET = process.env.NODE_ENV === 'development' ?
 //   require('../credentials.json').GOOGLE_CLIENT_SECRET : process.env.GOOGLE_CLIENT_SECRET;
 
-// const GOOGLE_REFRESH_TOKEN = process.env.NODE_ENV === 'localhost' ?
+// const GOOGLE_REFRESH_TOKEN = process.env.NODE_ENV === 'development' ?
 //   require('../credentials.json').GOOGLE_REFRESH_TOKEN : process.env.GOOGLE_REFRESH_TOKEN;
 
 // const OAuth2 = google.auth.OAuth2;
@@ -58,7 +58,7 @@ const sendEmail = async (address, subject, body) => {
     return { status: 201 };
   } catch (error) {
     console.log(`error\n`, error);
-    if (process.env.NODE_ENV === 'localhost') {
+    if (process.env.NODE_ENV === 'development') {
       throw Error(`Error in sendEmail: ${error}`)
     }
   }

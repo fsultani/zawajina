@@ -1,4 +1,4 @@
-(async () => {
+(() => {
   const countryRaisedInInput = document.querySelector('#countryRaisedInInput');
   const raisedResults = document.querySelector('#country-raised-in-results');
   const raisedInputPlaceholder = 'Enter country';
@@ -13,7 +13,7 @@
 
     const userInputRegex = new RegExp(userInput, 'gi');
     const filteredResults = countries
-      .filter(element => element.country.toLowerCase().indexOf(userInput.toLowerCase()) > -1)
+      .filter(element => element.country.toLowerCase().indexOf(userInput) > -1)
       .map(({ country }) => country.replace(userInputRegex, match => `<strong>${match}</strong>`));
 
     return filteredResults;
@@ -23,7 +23,7 @@
     countryRaisedInInput.addEventListener(
       'input',
       debounce(async event => {
-        const userInput = countryRaisedInInput.value;
+        const userInput = event.target.value.toLowerCase().trim();
         if (!userInput) {
           closeAllLists('#countryRaisedInInput');
           return false;

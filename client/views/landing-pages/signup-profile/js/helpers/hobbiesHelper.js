@@ -1,4 +1,4 @@
-(async () => {
+(() => {
   const hobbiesInput = document.querySelector('#hobbies-input');
   const hobbiesResults = document.querySelector('#hobbies-results');
   const hobbiesInputPlaceholder = 'Select up to 5';
@@ -13,7 +13,7 @@
     const { allHobbies } = globalThis;
 
     const filteredResults = allHobbies.filter(
-      element => element.toLowerCase().indexOf(userInput.toLowerCase()) > -1
+      element => element.toLowerCase().indexOf(userInput) > -1
     );
     filteredResults.sort((a, b) => b < a);
 
@@ -24,7 +24,7 @@
     hobbiesInput.addEventListener(
       'input',
       debounce(async event => {
-        const userInput = hobbiesInput.value;
+        const userInput = event.target.value.toLowerCase().trim();
         if (!userInput) {
           closeAllLists('#hobbies-input');
           return false;

@@ -1,7 +1,7 @@
 (() => {
-  const relocate = document.querySelector('.relocate');
-  const relocateValue = relocate.getAttribute('data-relocate');
-  const relocateArray = Array.from(relocate);
+  const canRelocate = document.querySelector('.can-relocate');
+  const relocateValue = canRelocate.getAttribute('data-can-relocate');
+  const relocateArray = Array.from(canRelocate);
   const index = relocateArray.findIndex(item => item.value === relocateValue);
-  relocate.selectedIndex = index;
+  canRelocate.selectedIndex = index;
 })();

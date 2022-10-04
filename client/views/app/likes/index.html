@@ -3,8 +3,8 @@
 
     <div class="nav-container">
       <nav class="nav nav-borders">
-        <a class="nav-link likes" href="/likes">Likes</a>
-        <a class="nav-link likes-me" href="/likes-me">Likes Me</a>
+        <a class="nav-link" id="likes" href="/likes">Likes</a>
+        <a class="nav-link" id="likes-me" href="/likes-me">Likes Me</a>
       </nav>
       <hr class="mt-0 mb-4">
     </div>
@@ -22,12 +22,11 @@
             <div class="testimonial-name">${user.name}, ${user.age}</div>
             <p class="location">
               ${(user.city.length + 2 + (user.state ? user.state.length + 2 : 0) + user.country.length) < 30 ?
-                `${user.city}, ${user.state !==null ? `${user.state}, ${user.country}` : user.country}` :
-                `${user.city}, ${user.state !==null ? `${user.state}, ${user.country}` : user.country.slice(0, -10)}...`}
-            </p>
-            <p class="ethnicity">
-              ${user.ethnicity.map(ethnicity => ethnicity).join(' | ')}
-            </p>
+                `${user.city}, ${user.state !==null ? `${user.state}, ${user.country}` : user.country}` : `${user.city},
+                ${user.state !==null ? `${user.state}, ${user.country}` : user.country.slice(0, -10)}...`} </p>
+                <p class="ethnicity">
+                  ${user.ethnicity.map(ethnicity => ethnicity).join(' | ')}
+                </p>
           </div>
         </div>
       </a>
@@ -48,4 +47,4 @@
       ${nextPage ? `<a href="/users?page=${currentPage + 1}">❯</a>` : ''}
     </div>
   </div>
-</div
+</div>

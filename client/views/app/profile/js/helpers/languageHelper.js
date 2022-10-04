@@ -1,4 +1,6 @@
-const languageHelper = () => {
+const languageHelper = async () => {
+  const { allLanguages } = await getAllLanguages();
+
   const languageInput = document.querySelector('#languageInput');
   const languageResults = document.querySelector('#language-results');
   const languageInputPlaceholder = 'Select up to 3';
@@ -8,30 +10,27 @@ const languageHelper = () => {
   
   languageInput.placeholder = languageInputPlaceholder;
   
-  const getAllLanguages = async userInput => {
-    try {
-      const data = await FetchData('/register/api/languages', {
-        params: {
-          userInput,
-        },
-      });
-      return data;
-    } catch (error) {
-      return error.response;
-    }
+  const langauges = async userInput => {
+    const filteredResults = allLanguages.filter(
+      element => element.toLowerCase().indexOf(userInput) > -1
+    );
+
+    filteredResults.sort((a, b) => b < a);
+
+    return filteredResults;
   };
   
   const getUserLanguageInput = () =>
     languageInput.addEventListener(
       'input',
       debounce(async event => {
-        const userInput = languageInput.value;
+        const userInput = event.target.value.toLowerCase().trim();
         if (!userInput) {
           closeAllLists('#languageInput');
           return false;
         }
   
-        results = await getAllLanguages(userInput);
+        results = await langauges(userInput);
         currentFocus = -1;
   
         let searchResultsWrapper = '<div class="autocomplete-items">';

@@ -5,7 +5,7 @@ const { usersCollection } = require('../db.js');
 
 const router = express.Router();
 
-router.get('/', async (req, res, next) => {
+router.get('/', async (req, res) => {
   try {
     const validRoutes = ['/likes', '/likes-me'];
     if (validRoutes.indexOf(req.originalUrl) === -1) return res.redirect('/users');

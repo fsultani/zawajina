@@ -2,27 +2,46 @@ let slideWidth;
 let index = 0;
 let translateValue = 0;
 
-const userPhotosLength = parseInt(
-  document.querySelector('.profile-photos-container').dataset.userPhotos
-);
+let modalData;
+let editAboutMe = false;
+let editAboutMyMatch = false;
 
-const profilePhotosContainer = document.querySelector('.profile-photos-container');
+const sliderWrapper = translateValue => {
+  getQuerySelector('.slider-wrapper').style.transform = `translateX(${translateValue}px)`;
+};
+
+const goToImage = imageIndex => {
+  translateValue = translateValue - slideWidth * (imageIndex - index);
+  sliderWrapper(translateValue);
+
+  const allDots = getQuerySelector('.dots-wrapper').getElementsByTagName('span');
+  for (let i = 0; i < allDots.length; i++) {
+    if (allDots[i].classList.contains('active')) {
+      allDots[i].classList.remove('active');
+    }
+  }
+  allDots[imageIndex].classList.add('active');
+  index = imageIndex;
+};
+
+const profilePhotosContainer = getQuerySelector('.profile-photos-container');
+const userPhotosLength = parseInt(profilePhotosContainer.dataset.userPhotos);
 
 if (userPhotosLength > 1) {
-  document.querySelector('.profile-photos-container').style.height = '390px';
-  slideWidth = document.querySelector('.slide').clientWidth;
+  profilePhotosContainer.style.height = '390px';
+  slideWidth = getQuerySelector('.slide').clientWidth;
 
-  document.querySelector('.dot').classList.add('active');
+  getQuerySelector('.dot').classList.add('active');
   profilePhotosContainer.style.marginBottom = userPhotosLength < 1 ? 0 : '80px';
 
-  const carousel = document.querySelector('.slider-wrapper');
+  const carousel = getQuerySelector('.slider-wrapper');
   const elements = document.querySelectorAll('.slider-wrapper > *');
   const elementIndices = {};
   let currentIndex = 0;
 
-  const allDots = document.querySelector('.dots-wrapper').getElementsByTagName('span');
+  const allDots = getQuerySelector('.dots-wrapper').getElementsByTagName('span');
   const observer = new IntersectionObserver(
-    function (entries, observer) {
+    function (entries, _observer) {
       const activated = entries.reduce(function (max, entry) {
         return entry.intersectionRatio > max.intersectionRatio ? entry : max;
       });
@@ -47,23 +66,5 @@ if (userPhotosLength > 1) {
     observer.observe(elements[i]);
   }
 } else {
-  document.querySelector('.profile-photos-container').style.height = '390px';
+  profilePhotosContainer.style.height = '390px';
 }
-
-const sliderWrapper = translateValue => {
-  document.querySelector('.slider-wrapper').style.transform = `translateX(${translateValue}px)`;
-};
-
-const goToImage = imageIndex => {
-  translateValue = translateValue - slideWidth * (imageIndex - index);
-  sliderWrapper(translateValue);
-
-  const allDots = document.querySelector('.dots-wrapper').getElementsByTagName('span');
-  for (let i = 0; i < allDots.length; i++) {
-    if (allDots[i].classList.contains('active')) {
-      allDots[i].classList.remove('active');
-    }
-  }
-  allDots[imageIndex].classList.add('active');
-  index = imageIndex;
-};

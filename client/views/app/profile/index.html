@@ -1,7 +1,7 @@
-<div class="container" data-user-id="${authUser._id}">
-  <div class="wrapper">
+<div class="profile-page-container" data-user-id="${authUser._id}">
+  <div class="profile-page-wrapper">
     <div class="profile-photos-container position-relative" data-user-photos="${user.photos.length}">
-      <div class="${user.photos.length > 0 ? 'photos-slider-wrapper' : 'no-photos-slider-wrapper'}" data-name='edit-button' data-section="photos">
+      <div class="${user.photos.length > 0 ? 'photos-slider-wrapper' : 'no-photos-slider-wrapper'}">
         <div class="photos-container">
           <div class="slider-wrapper">
             ${user.photos.length > 0 ? user.photos.filter(photo => photo).map((photo, index) => `
@@ -36,12 +36,13 @@
     </div>
 
     <div class="user-main-info-container position-relative">
-      <div class="flex-space-between" data-name='edit-button' data-section="location">
+      <div class="flex-space-between">
         <div class="user-main-info-wrapper">
           <h5 class="user-name-age" data-user-name-age="${user.name},${user.age}">${user.name}, ${user.age}</h5>
           <p class="user-location">
-            Lives in ${user.city}, ${user.state !== null ? `${user.state}, ${user.country}` :
-            user.country}
+            Lives in ${user.city},
+            ${user.state !== null ? `${user.state}, ` : ``}
+            ${user.country}
           </p>
           <p>Last Active: ${lastActive}</p>
         </div>
@@ -78,7 +79,7 @@
     </div>
 
     <div class="user-details-container position-relative">
-      <div class="user-details-wrapper" data-name='edit-button' data-section="user-details">
+      <div class="user-details-wrapper">
         <h5 class="user-details-header">Details</h5>
         <div class="details-container">
           <div class="details-wrapper">
@@ -153,336 +154,17 @@
     </div>
 
     <div class="about-me position-relative">
-      <div data-name='edit-button' data-section="about-me">
+      <div>
         <h5>About me</h5>
         <p>${user.aboutMe || 'No Answer'}</p>
       </div>
     </div>
 
     <div class="about-match position-relative">
-      <div data-name='edit-button' data-section="about-match">
+      <div>
         <h5>About my match</h5>
         <p>${user.aboutMyMatch || 'No Answer'}</p>
       </div>
     </div>
-  </div>
-</div>
-
-<div class="modal">
-  <div class="modal-loading-spinner">
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-  </div>
-
-  <div class="modal-content">
-    <button class="close">&times;</button>
-    <form name="profileForm" enctype="multipart/form-data" onsubmit="return false" novalidate autocomplete="off"
-      class="settings-form">
-      <section class="flex-center" data-modal-section="location">
-        <section class="flex-center">
-          <div class="full-width form-header">
-            <h2>Location</h2>
-          </div>
-        </section>
-
-        <div class="full-width user-location">
-          <label for="locationInput">What city do you live in?</label>
-          <div class="autocomplete">
-            <div class="user-location-selection"></div>
-            <input data-location="${authUser.city}|${authUser.state}|${authUser.country}" id="locationInput"
-              class="custom-height" type="text" />
-            <div id="location-results"></div>
-          </div>
-          <div id="city-error"></div>
-        </div>
-      </section>
-
-      <section class="flex-center" data-modal-section="user-details">
-        <section class="flex-center">
-          <div class="full-width form-header">
-            <h2>Details</h2>
-          </div>
-        </section>
-
-        <section class="flex-space-between">
-          <div class="form-half-row">
-            <label>Conviction</label>
-            <select data-religiousConviction="${authUser.religiousConviction}"
-              class="religious-convictions religious-conviction-error" onchange="handleConviction(event)">
-              <option selected disabled>Select Conviction</option>
-              <option value="Sunni">Sunni</option>
-              <option value="Shia">Shia</option>
-              <option value="Just Muslim">Just Muslim</option>
-              <option value="Other">Other</option>
-            </select>
-          </div>
-          <div class="form-half-row">
-            <label>Values</label>
-            <select data-religiousValues="${authUser.religiousValues}" class="religious-values religious-values-error"
-              onchange="handleReligiousValues(event)">
-              <option selected disabled>Select Values</option>
-              <option value="Conservative">Conservative</option>
-              <option value="Moderate">Moderate</option>
-              <option value="Liberal">Liberal</option>
-            </select>
-          </div>
-        </section>
-        
-        <section class="flex-space-between">
-          <div class="form-half-row">
-            <label>Marital Status</label>
-            <select data-maritalStatus="${authUser.maritalStatus}" class="marital-status marital-status-error"
-              onchange="handleMaritalStatus(event)">
-              <option selected disabled>Marital Status</option>
-              <option value="Never Married">Never Married</option>
-              <option value="Divorced">Divorced</option>
-              <option value="Widowed">Widowed</option>
-            </select>
-          </div>
-          <div class="form-half-row">
-            <label>Education</label>
-            <select data-education="${authUser.education}" class="education education-error" onchange="handleEducation(event)">
-              <option selected disabled>Education Level</option>
-              <option value="High School">High School</option>
-              <option value="Associate degree">Associate degree</option>
-              <option value="Bachelor's degree">Bachelor's degree</option>
-              <option value="Master's degree">Master's degree</option>
-              <option value="Doctoral degree">Doctoral degree</option>
-            </select>
-          </div>
-        </section>
-        
-        <section class="flex-space-between">
-          <div class="form-half-row">
-            <label>Profession</label>
-            <select data-profession="${authUser.profession}" class="profession professions-list profession-error"
-              onchange="handleProfession(event)"></select>
-          </div>
-          <div class="form-half-row">
-            <label>Can you relocate?</label>
-            <select data-relocate="${authUser.relocate}" class="relocate relocate-error" onchange="handleRelocate(event)">
-              <option selected disabled>Select One</option>
-              <option value="Yes">Yes</option>
-              <option value="No">No</option>
-              <option value="Maybe">Maybe</option>
-            </select>
-          </div>
-        </section>
-        
-        <section class="flex-space-between">
-          <div class="form-half-row">
-            <label>Diet</label>
-            <select data-diet="${authUser.diet}" class="diet diet-error" onchange="handleDiet(event)">
-              <option selected disabled>Diet</option>
-              <option value="Halal only">Halal only</option>
-              <option value="Halal when possible">Halal when possible</option>
-              <option value="Eat anything">Eat anything</option>
-              <option value="Eat anything except pork">Eat anything except pork</option>
-              <option value="Vegetarian">Vegetarian</option>
-            </select>
-          </div>
-          <div class="form-half-row form-radio">
-            <label for="smokes">Do you smoke?</label>
-            <div data-smokes="${authUser.smokes}" class="smokes form-flex smokes-error">
-              <input type="radio" name="smokes" id="smokes-yes" onchange="handleSmokes('Yes')" />
-              <label for="smokes-yes">Yes</label>
-              <input type="radio" name="smokes" id="smokes-no" onchange="handleSmokes('No')" />
-              <label for="smokes-no">No</label>
-            </div>
-          </div>
-        </section>
-        
-        <section class="flex-space-between">
-          <div class="form-half-row form-radio">
-            <label for="has-children">Do you have children?</label>
-            <div data-hasChildren="${authUser.hasChildren}" class="has-children form-flex has-children-error">
-              <input type="radio" name="has-children" id="has-children-yes" onchange="handleHasChildren('Yes')" />
-              <label for="has-children-yes">Yes</label>
-              <input type="radio" name="has-children" id="has-children-no" onchange="handleHasChildren('No')" />
-              <label for="has-children-no">No</label>
-            </div>
-          </div>
-        
-          <div class="form-half-row form-radio">
-            <label for="wants-children">Do you want children?</label>
-            <div data-wantsChildren="${authUser.wantsChildren}" class="wants-children form-flex wants-children-error">
-              <input type="radio" name="wants-children" id="wants-children-yes" onchange="handleWantsChildren('Yes')" />
-              <label for="wants-children-yes">Yes</label>
-              <input type="radio" name="wants-children" id="wants-children-no" onchange="handleWantsChildren('No')" />
-              <label for="wants-children-no">No</label>
-            </div>
-          </div>
-        </section>
-        
-        <section class="flex-space-between">
-          <div class="form-half-row form-radio">
-            <div class="${authUser.hijab !== 'null' ? 'show-hijab-container' : 'hide-hijab-container'}">
-              <label for="hijab">Hijab</label>
-              <div data-gender="${authUser.gender}" data-hijab="${authUser.hijab}" class="hijab form-flex hijab-error">
-                <input type="radio" name="hijab" id="hijab-yes" onchange="handleHijab('Yes')" />
-                <label for="hijab-yes">Yes</label>
-                <input type="radio" name="hijab" id="hijab-no" onchange="handleHijab('No')" />
-                <label for="hijab-no">No</label>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section>
-          <div class="user-languages">
-            <label for="languageInput">What language(s) do you speak?</label>
-            <div class="autocomplete">
-              <div class="user-languages-selection"></div>
-              <input data-languages="${authUser.languages}" id="languageInput" class="languages" type="text" />
-              <div id="language-results"></div>
-            </div>
-            <div id="languages-error"></div>
-          </div>
-        </section>
-
-        <section>
-          <div class="user-hobbies">
-            <label for="hobbies-input">Hobbies and Interests (Optional)</label>
-            <div class="autocomplete">
-              <div class="user-hobbies-selection"></div>
-              <input data-hobbies="${authUser.hobbies}" id="hobbies-input" class="hobbies" type="text" />
-              <div id="hobbies-results"></div>
-            </div>
-          </div>
-        </section>
-      </section>
-
-      <section class="flex-center" data-modal-section="photos">
-        <section class="flex-center">
-          <div class="full-width form-header">
-            <h2>Photos</h2>
-          </div>
-        </section>
-
-        <p class="photos-subtitle">
-          Photos are optional, but highly recommended.
-        </p>
-        <div class="invalid-file-type">
-          Please upload only JPEG or PNG
-        </div>
-        <div class="flex-space-between">
-          <div data-photos="${authUser.photos}" data-photosLength="${authUser.photos.length}" class="images-wrapper">
-            <input type="file" name="image-0" class="image-0" hidden="hidden" accept=".jpg,.jpeg,.png" />
-            <div class="image-upload-container">
-              <div class="custom-button-0"></div>
-              <div class="image-upload-0">
-                <img src="" class="image-preview-0" data-photo-0="${authUser?.photos[0]?.secure_url}" />
-              </div>
-              <div class="remove-image-0"></div>
-              <div class="processing-bar-0"></div>
-              <div class="success-box-0"></div>
-            </div>
-            <input type="file" name="image-1" class="image-1" hidden="hidden" accept=".jpg,.jpeg,.png" />
-            <div class="image-upload-container">
-              <div class="custom-button-1"></div>
-              <div class="image-upload-1">
-                <img src="" class="image-preview-1" data-photo-1="${authUser?.photos[1]?.secure_url}" />
-              </div>
-              <div class="remove-image-1"></div>
-              <div class="processing-bar-1"></div>
-              <div class="success-box-1"></div>
-            </div>
-            <input type="file" name="image-2" class="image-2" hidden="hidden" accept=".jpg,.jpeg,.png" />
-            <div class="image-upload-container">
-              <div class="custom-button-2"></div>
-              <div class="image-upload-2">
-                <img src="" class="image-preview-2" data-photo-2="${authUser?.photos[2]?.secure_url}" />
-              </div>
-              <div class="remove-image-2"></div>
-              <div class="processing-bar-2"></div>
-              <div class="success-box-2"></div>
-            </div>
-
-            <input type="file" name="image-3" class="image-3" hidden="hidden" accept=".jpg,.jpeg,.png" />
-            <div class="image-upload-container">
-              <div class="custom-button-3"></div>
-              <div class="image-upload-3">
-                <img src="" class="image-preview-3" data-photo-3="${authUser?.photos[3]?.secure_url}" />
-              </div>
-              <div class="remove-image-3"></div>
-              <div class="processing-bar-3"></div>
-              <div class="success-box-3"></div>
-            </div>
-            <input type="file" name="image-4" class="image-4" hidden="hidden" accept=".jpg,.jpeg,.png" />
-            <div class="image-upload-container">
-              <div class="custom-button-4"></div>
-              <div class="image-upload-4">
-                <img src="" class="image-preview-4" data-photo-4="${authUser?.photos[4]?.secure_url}" />
-              </div>
-              <div class="remove-image-4"></div>
-              <div class="processing-bar-4"></div>
-              <div class="success-box-4"></div>
-            </div>
-            <input type="file" name="image-5" class="image-5" hidden="hidden" accept=".jpg,.jpeg,.png" />
-            <div class="image-upload-container">
-              <div class="custom-button-5"></div>
-              <div class="image-upload-5">
-                <img src="" class="image-preview-5" data-photo-5="${authUser?.photos[5]?.secure_url}" />
-              </div>
-              <div class="remove-image-5"></div>
-              <div class="processing-bar-5"></div>
-              <div class="success-box-5"></div>
-            </div>
-          </div>
-          <!-- <div class="photos-buttons-container">
-            <div class="photos-button">
-              <button>Make Default</button>
-            </div>
-          </div> -->
-        </div>
-      </section>
-
-      <section class="flex-center" data-modal-section="about-me">
-        <section class="flex-center">
-          <div class="full-width form-header">
-            <h2>About Me</h2>
-          </div>
-        </section>
-      
-        <div class="full-width">
-          <div id="about-me-error-text"></div>
-          <textarea data-aboutMe="${authUser.aboutMe}" class="edit-about-me about-me-error" id="edit-about-me" name="about-me"
-            placeholder="Describe yourself."></textarea>
-          <p class="character-count" id="about-me-character-count">0/100</p>
-        </div>
-      </section>
-
-      <section class="flex-center" data-modal-section="about-match">
-        <section class="flex-center">
-          <div class="full-width form-header">
-            <h2>About My Match</h2>
-          </div>
-        </section>
-      
-        <div class="full-width">
-          <div id="about-my-match-error-text"></div>
-          <textarea data-aboutMyMatch="${authUser.aboutMyMatch}" class="edit-about-my-match about-my-match-error" id="edit-about-my-match"
-            name="about-my-match" placeholder="Describe your ideal match."></textarea>
-          <p class="character-count" id="about-my-match-character-count">0/100</p>
-        </div>
-      </section>
-
-      <section class="flex-center">
-        <div class="loading-spinner">
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-        </div>
-
-        <div class="flex-center full-width signup-button-wrapper">
-          <button type="submit" onclick="handleSaveProfileChanges()" class="modal-button">
-            Save
-          </button>
-        </div>
-      </section>
-    </form>
   </div>
 </div>

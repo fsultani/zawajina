@@ -14,12 +14,22 @@ const languagesList = require('../data/languages');
 const hobbiesList = require('../data/hobbies');
 
 /*
-  node server/queries/apiCalls/create-accounts.js --numberOfUsers=100
+  node server/queries/apiCalls/create-accounts.js --numberOfUsers=5 --gender=female
 */
 const processArgv = process.argv.slice(2);
 
-if (!processArgv) {
-  console.log(`Missing arguments`);
+if (!processArgv[0] && !processArgv[1]) {
+  console.log(`Missing arguments: --numberOfUsers=5 --gender=female`);
+  process.exit(1);
+}
+
+if (!processArgv[0]) {
+  console.log(`Missing argument: --numberOfUsers=5`);
+  process.exit(1);
+}
+
+if (!processArgv[1]) {
+  console.log(`Missing argument: --gender=female`);
   process.exit(1);
 }
 
@@ -171,7 +181,7 @@ MongoClient.connect(process.env.MONGODB_URI, {
       profession,
       religiousConviction,
       religiousValues,
-      relocate: yesNoMaybeOptions[Math.floor(Math.random() * 3)],
+      canRelocate: yesNoMaybeOptions[Math.floor(Math.random() * 3)],
       smokes: yesNoOptions[Math.floor(Math.random() * 2)],
       state: selectLocation.state,
       wantsChildren: yesNoOptions[Math.floor(Math.random() * 2)],

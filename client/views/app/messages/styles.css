@@ -235,7 +235,7 @@ textarea {
 }
 
 .chat-container {
-  height: calc(100vh - 165px);
+  height: 60vh;
   overflow-y: scroll;
   background-color: #f7f7f7;
   padding: 20px 20px 0 20px;

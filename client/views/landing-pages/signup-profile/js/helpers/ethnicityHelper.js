@@ -1,4 +1,4 @@
-(async () => {
+(() => {
   const ethnicityInput = document.querySelector('#ethnicityInput');
   const ethnicityResults = document.querySelector('#ethnicity-results');
   const ethnicityInputPlaceholder = 'Select up to 2';
@@ -13,7 +13,7 @@
     const { allEthnicities } = globalThis;
 
     const filteredResults = allEthnicities.filter(
-      element => element.toLowerCase().indexOf(userInput.toLowerCase()) > -1
+      element => element.toLowerCase().indexOf(userInput) > -1
     );
 
     filteredResults.sort((a, b) => b < a);
@@ -25,7 +25,7 @@
     ethnicityInput.addEventListener(
       'input',
       debounce(async event => {
-        const userInput = ethnicityInput.value;
+        const userInput = event.target.value.toLowerCase().trim();
         if (!userInput) {
           closeAllLists('#ethnicityInput');
           return false;

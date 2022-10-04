@@ -26,7 +26,7 @@ const getUserLocationInput = () =>
   locationInput.addEventListener(
     'input',
     debounce(async event => {
-      const userInput = locationInput.value;
+      const userInput = event.target.value.toLowerCase().trim();
       if (!userInput) {
         closeAllLists('#locationInput');
         locationInput.setAttribute('data-city', '');

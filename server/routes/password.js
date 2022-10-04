@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const JWT_SECRET = Buffer.from('fe1a1915a379f3be5394b64d14794932', 'hex');
 
-const { usersCollection } = require('../db.js');
+const { usersCollection, insertLogs } = require('../db.js');
 const { FetchData, getAllFiles } = require('../utils.js');
 
 const sendEmail = require('../helpers/email.js');
@@ -87,39 +87,30 @@ router.get('/reset', (_req, res) => {
 });
 
 router.post('/api/request', async (req, res) => {
-  const { email, userIPAddress } = req.body;
+  const { userIPAddress, endpoint, userId } = req;
+  const { email } = req.body;
 
   const geoLocationData = await FetchData(`http://ip-api.com/json/${userIPAddress}`);
-  const latitude = geoLocationData.lat;
-  const longitude = geoLocationData.lon;
 
-  const authUser = await usersCollection().findOneAndUpdate(
+  const authUser = await usersCollection().findOne(
     { email, },
-    {
-      $push: {
-        loginData: {
-          $each: [{
-            time: new Date(),
-            geoLocationData,
-          }],
-          $position: 0,
-        },
-      },
-      $set: {
-        location: { type: "Point", coordinates: [longitude, latitude] },
-      }
-    }
   );
 
-  if (authUser.lastErrorObject.updatedExisting) {
-    const token = jwt.sign({ my_match_user_email: authUser.value.email }, JWT_SECRET, {
+  const password = authUser.password;
+
+  await insertLogs({
+    password,
+  },
+    userIPAddress,
+    endpoint,
+    userId);
+
+  if (authUser) {
+    const token = jwt.sign({ my_match_user_email: authUser.email }, JWT_SECRET, {
       expiresIn: '10 minutes',
     });
 
-    let url = `${process.env.MY_MATCH_HEROKU}/password/reset?token=${token}`;
-    if (process.env.NODE_ENV === 'localhost') {
-      url = `${process.env.MY_MATCH_LOCALHOST}/password/reset?token=${token}`;
-    }
+    const url = `${process.env.HOST_URL}/password/reset?token=${token}`;
 
     const now = new Date();
     const localTime = now.toLocaleString();
@@ -127,21 +118,21 @@ router.post('/api/request', async (req, res) => {
     const subject = 'Reset your password';
     const emailBody = `
       <div style="${emailBodyContainerStyles}">
-        ${emailHeader({ recipientName: authUser.value.name })}
+        ${emailHeader({ recipientName: authUser.name })}
         <p style="${paragraphStyles({})}">
           You are receiving this email because you requested to reset your password. If you did not make this request, please
           log in to your account and change your password immediately.
         </p>
         ${ctaButton({
-          ctaButtonUrl: url,
-          ctaButtonText: 'Reset Password'
-        })}
+      ctaButtonUrl: url,
+      ctaButtonText: 'Reset Password'
+    })}
         ${emailSignature}
 
         <div style="padding-top: 16px; margin-top: 16px; border-top: solid 1px #cccccc;">
           <p style="${paragraphStyles({
-            customStyles: `font-weight: bold;`,
-          })}">
+      customStyles: `font-weight: bold;`,
+    })}">
             Where this request came from:
           </p>
 
@@ -180,7 +171,7 @@ router.post('/api/request', async (req, res) => {
       </div>
     `;
 
-    await sendEmail(authUser.value.email, subject, emailBody);
+    await sendEmail(authUser.email, subject, emailBody);
     res.status(201).json({ token });
   } else {
     res.sendStatus(201);
@@ -196,29 +187,29 @@ router.post('/api/reset', async (req, res) => {
       passwordResetToken,
     } = req.body;
 
-    const jwtVerify = await jwt.verify(passwordResetToken, JWT_SECRET);
-    const geoLocationData = await FetchData(`http://ip-api.com/json/${userIPAddress}`);
-    const latitude = geoLocationData.lat;
-    const longitude = geoLocationData.lon;
+    const jwtVerify = jwt.verify(passwordResetToken, JWT_SECRET);
 
-    const bcryptHashPassword = await bcrypt.hash(newPassword, 10);
+    const { _id: userId } = await usersCollection().findOne({ email: jwtVerify.my_match_user_email });
+
+    const bcryptGenSalt = await bcrypt.genSalt(10);
+    const bcryptHash = await bcrypt.hash(newPassword, bcryptGenSalt);
+
     const authUser = await usersCollection().findOneAndUpdate(
       { email: jwtVerify.my_match_user_email, },
       {
-        $push: {
-          loginData: {
-            $each: [{
-              time: new Date(),
-              geoLocationData,
-            }],
-            $position: 0,
-          },
-        },
         $set: {
-          location: { type: "Point", coordinates: [longitude, latitude] },
-          password: bcryptHashPassword,
+          password: bcryptHash,
         }
       }
+    );
+
+    const endpoint = req.originalUrl;
+    await insertLogs({
+      password: bcryptHash,
+    },
+      userIPAddress,
+      endpoint,
+      userId
     );
 
     const token = jwt.sign({ my_match_userId: authUser.value._id }, JWT_SECRET, {

@@ -1,14 +1,12 @@
 const bcrypt = require('bcryptjs');
 const { validationResult } = require('express-validator/check');
 
-const { usersCollection } = require('../../db.js');
-const sendEmail = require('../../helpers/email.js');
-const { FetchData } = require('../../utils.js');
-const emailVerification = require('../../email-templates/email-verification.js');
+const { usersCollection, insertLogs } = require('../../db.js');
 
 const personalInfo = (req, res) => {
   const { nameValue, email, userIPAddress } = req.body;
   let { password } = req.body;
+
   const getErrors = validationResult(req);
   const name = nameValue
     .split(',')
@@ -23,98 +21,97 @@ const personalInfo = (req, res) => {
     return res.status(400).json({ error: getErrors.array() });
   } else {
     usersCollection().findOne({ email }, async (err, userExists) => {
-      if (!userExists) {
+      try {
+        let endpoint = req.originalUrl;
 
-        try {
+        if (!err && !userExists) {
           /* User does not exist; create a new account */
-          const geoLocationData = await FetchData(`http://ip-api.com/json/${userIPAddress}`);
-          const latitude = geoLocationData.lat;
-          const longitude = geoLocationData.lon;
-
-          const { emailVerificationToken, subject, emailBody } = emailVerification({ name });
-          console.log(`emailVerificationToken\n`, emailVerificationToken);
-
-          const bcryptHash = await bcrypt.hash(password, 10);
+          const bcryptGenSalt = await bcrypt.genSalt(10);
+          const bcryptHash = await bcrypt.hash(password, bcryptGenSalt);
           password = bcryptHash;
-          const newUser = {
+
+          const newUserData = {
             name,
             email,
             password,
-            loginData: [{
-              time: new Date(),
-              geoLocationData,
-            }],
-            location: { type: "Point", coordinates: [longitude, latitude] },
+          }
+
+          const newUser = {
+            ...newUserData,
             startedRegistrationAt: new Date(),
             completedRegistrationAt: false,
-            emailVerified: false,
-            emailVerificationToken,
-            emailVerificationTokenDateSent: new Date(),
           };
 
           const insertUser = await usersCollection().insertOne(newUser);
           const userId = insertUser.insertedId;
 
-          // if (process.env.NODE_ENV !== 'localhost') {
-          //   await sendEmail(email, subject, emailBody);
-          // }
+          await insertLogs(newUser, userIPAddress, endpoint);
 
           return res.status(201).json({
             userId,
-            emailVerified: false,
-            emailVerificationToken: process.env.NODE_ENV === 'localhost' ? emailVerificationToken : null,
           });
-        } catch (error) {
-          if (process.env.NODE_ENV === 'localhost') {
-            throw Error(`Error in personalInfo: ${error}`)
-          }
-        }
-      } else if (userExists.startedRegistrationAt && !userExists.completedRegistrationAt) {
-        /* User completed step 1 only */
-        if (userExists.emailVerificationToken && !userExists.emailVerified) {
-          /* User completed step 1 only and was sent a token, but did not enter it. */
-          bcrypt.genSalt(10, (err, salt) => {
-            bcrypt.hash(password, salt, (err, hash) => {
-              password = hash;
-              usersCollection().findOneAndUpdate(
-                { _id: userExists._id },
-                {
-                  $set: {
-                    name,
-                    password,
-                  },
+        } else if (userExists.startedRegistrationAt && !userExists.completedRegistrationAt) {
+          /* User completed step 1; allow the user to proceed to step 2 */
+          endpoint += ' | startedRegistrationAt && !completedRegistrationAt';
+
+          const userId = userExists._id;
+
+          let response = await usersCollection().findOneAndUpdate(
+            { _id: userId },
+            {
+              $set: {
+                name,
+              },
+            },
+          );
+
+          const isNewPassword = !await bcrypt.compare(password, userExists.password)
+
+          if (isNewPassword) {
+            const bcryptGenSalt = await bcrypt.genSalt(10);
+            const bcryptHash = await bcrypt.hash(password, bcryptGenSalt);
+            password = bcryptHash;
+
+            response = await usersCollection().findOneAndUpdate(
+              { _id: userId },
+              {
+                $set: {
+                  password,
                 },
-                (err, user) => {
-                  if (err) {
-                    return res.json({ error: 'Unknown error' });
-                  } else {
-                    res.status(201).json({
-                      userId: userExists._id,
-                      emailVerified: false,
-                    });
-                  }
-                }
-              );
-            });
+              },
+            );
+
+            await insertLogs({
+              name,
+              password,
+            },
+              userIPAddress,
+              endpoint,
+              userId
+            );
+          } else {
+            await insertLogs({
+              name,
+            },
+              userIPAddress,
+              endpoint,
+              userId
+            );
+          }
+
+          return res.status(201).json({
+            userId: response.value._id,
           });
-        } else if (userExists.emailVerificationToken && userExists.emailVerified) {
-          /* User completed step 1 and verified their email with a token. */
-          return res.status(200).json({
-            userId: userExists._id,
-          });
+        } else if (userExists.startedRegistrationAt && userExists.completedRegistrationAt) {
+          /* Email address already exists */
+          return res.status(403).json({ error: 'Account already exists' });
         } else {
-          /*
-            User created an account, but no token was sent and the email was never verified.
-            Possibly a server or db error.
-          */
+          /* The user never started registration.  Possibly a server or db error. */
           return res.status(500).send();
         }
-      } else if (userExists.startedRegistrationAt && userExists.completedRegistrationAt) {
-        /* Email address already exists */
-        return res.status(403).json({ error: 'Account already exists' });
-      } else {
-        /* The user never started registration.  Possibly a server or db error. */
-        return res.status(500).send();
+      } catch (error) {
+        console.log(`error\n`, error);
+        return res.json({ error: 'Unknown error' });
       }
     });
   }

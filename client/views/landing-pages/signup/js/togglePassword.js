@@ -1,6 +1,6 @@
 const togglePassword = () => {
-  const passwordType = document.querySelector('#user_password');
-  const eye = document.getElementById('passwordEye');
+  const passwordType = getQuerySelector('.userPassword');
+  const eye = getQuerySelector('#passwordEye');
 
   if (passwordType.type === 'password') {
     passwordType.type = 'text';

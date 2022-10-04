@@ -1,8 +1,5 @@
 require('dotenv').config();
 const express = require('express');
-// const AdminJS = require('adminjs');
-// const AdminJSExpress = require('@adminjs/express');
-
 const es6Renderer = require('express-es6-template-engine');
 const path = require('path');
 const cookieParser = require('cookie-parser');
@@ -38,22 +35,12 @@ app.engine('html', es6Renderer);
 app.set('views', path.join(__dirname, '../client/views'));
 app.set('view engine', 'html');
 
-let mongoDb;
 app.use((_req, _res, next) => {
   connectToServer((err, db) => {
     if (err) throw err;
-    mongoDb = db;
     next();
   });
 });
-
-// const adminJs = new AdminJS({
-//   databases: [],
-//   rootPath: '/admin',
-// });
-
-// const router = AdminJSExpress.buildRouter(adminJs);
-// app.use(adminJs.options.rootPath, router); 
 
 /* Catch all GET requests, and respond with an html file */
 app.get('*', (req, res, next) => {
@@ -64,8 +51,8 @@ app.get('*', (req, res, next) => {
   } = req.cookies;
 
   if (
-    requestUrl.split('/').indexOf('api') !== -1 ||
-    requestUrl.indexOf('password') !== -1 ||
+    requestUrl.split('/').indexOf('api') > -1 ||
+    requestUrl.indexOf('password') > -1 ||
     my_match_authToken
   ) {
     return next();
@@ -250,11 +237,21 @@ app.get('*', (req, res, next) => {
         '/static/assets/apis/js.cookie.min.js',
       ];
 
+      /* Move the init.js file to the beginning of the array, after the axis and js.cookie imports since init.js uses axios */
+      const scriptsArray = getAllFiles({ directoryPath: scriptsDirectoryPath, fileType: 'js', filesArray: scripts });
+      const initFileIndex = scriptsArray.findIndex(file => {
+        const isInitFile = file.split('/').indexOf('init.js') > -1;
+        if (isInitFile) return isInitFile;
+      });
+
+      const element = scriptsArray.splice(initFileIndex, 1)[0];
+      scriptsArray.splice(2, 0, element);
+
       res.render('landing-pages/_layouts/index', {
         locals: {
           title: 'Sign Up - My Match',
           styles: getAllFiles({ directoryPath: stylesDirectoryPath, fileType: 'css', filesArray: styles }),
-          scripts: getAllFiles({ directoryPath: scriptsDirectoryPath, fileType: 'js', filesArray: scripts }),
+          scripts: scriptsArray,
         },
         partials: {
           nav: 'landing-pages/_partials/landing-page-nav',
@@ -291,13 +288,13 @@ app.use('*', async (req, res, next) => {
   try {
     const requestUrl = req.originalUrl.split('/')
     const { my_match_authToken } = req.cookies;
-  
+
     if (!my_match_authToken &&
       (
-        requestUrl.indexOf('signup-user-first-name') !== -1 ||
-        requestUrl.indexOf('login') !== -1 ||
-        requestUrl.indexOf('api') !== -1 ||
-        requestUrl.indexOf('password') !== -1
+        requestUrl.indexOf('signup-user-first-name') > -1 ||
+        requestUrl.indexOf('login') > -1 ||
+        requestUrl.indexOf('api') > -1 ||
+        requestUrl.indexOf('password') > -1
       )
     ) return next();
 
@@ -315,9 +312,15 @@ app.use('*', async (req, res, next) => {
 
     req.authUser = userDocument;
     req.allConversationsCount = allConversationsCount;
+    req.userIPAddress = req.body.userIPAddress;
+    req.endpoint = req.originalUrl;
+    req.userId = userDocument._id;
     next();
   } catch (error) {
-    console.log(`error\n`, error);
+    if (process.env.NODE_ENV === 'development') {
+      console.log(`error\n`, error);
+    }
+
     return res.render('landing-pages/_layouts/index', {
       locals: {
         title: 'Login - My Match',
@@ -362,7 +365,7 @@ app.use('/*', (_req, res) => res.redirect('/users'));
 const port = process.env.PORT || 3000;
 
 /* Reload the app on every file change in development mode only */
-if (process.env.NODE_ENV === 'localhost') {
+if (process.env.NODE_ENV === 'development') {
   osascript.execute(
     `
     tell application "Google Chrome"

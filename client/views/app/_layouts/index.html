@@ -6,8 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
     <title>${title}</title>
 
+    <link rel="stylesheet" type="text/css" href="/static/client/views/app/_layouts/app-global-styles.css" />
     ${styles.map(style => `
-    <link rel="stylesheet" type="text/css" href="${style}" />
+      <link rel="stylesheet" type="text/css" href="${style}" />
     `).join('')}
 
     <!-- Navbar script -->
@@ -15,6 +16,13 @@
     <script type="text/javascript" src="/static/client/views/global-script.js"></script>
   </head>
   <body>
+    <div class="full-page-loading-spinner">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+
     ${nav}
     <div style="margin-top: 55px; height: 100vh;">
       <div class="toast">

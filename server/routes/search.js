@@ -190,7 +190,6 @@ router.get('/results', async (req, res) => {
   };
 
   try {
-    console.log(`searchQuery\n`, searchQuery);
     const page = parseInt(req.query.page);
     const skipRecords = page > 1 ? (page - 1) * 20 : 0;
 
@@ -198,12 +197,20 @@ router.get('/results', async (req, res) => {
       .find(searchQuery)
       .count();
 
-    const allUsers = await usersCollection()
+    let allUsers = await usersCollection()
       .find(searchQuery)
       .sort(sortResultsDictionary[sortResults])
       .skip(skipRecords)
       .limit(20)
       .toArray();
+
+    allUsers = allUsers.map(user => {
+      const userPHotos = user.photos.map(photo => photo.secure_url)
+      return {
+        ...user,
+        photos: userPHotos,
+      }
+    })
 
     const numberOfPages = Math.ceil(allUsersCount / 20);
     const currentPage = page || 1;

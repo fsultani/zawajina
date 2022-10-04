@@ -1,3 +1,7 @@
+.modal-section > div {
+  padding-bottom: 16px;
+}
+
 .form-half-row {
   width: 45%;
 }

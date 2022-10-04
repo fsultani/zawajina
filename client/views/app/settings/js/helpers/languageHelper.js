@@ -25,7 +25,7 @@
     languageInput.addEventListener(
       'input',
       debounce(async event => {
-        const userInput = languageInput.value;
+        const userInput = event.target.value.toLowerCase().trim();
         if (!userInput) {
           closeAllLists('#languageInput');
           return false;

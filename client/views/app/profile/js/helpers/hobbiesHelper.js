@@ -1,4 +1,6 @@
-const hobbiesHelper = () => {
+const hobbiesHelper = async () => {
+  const { allHobbies } = await getAllHobbies();
+
   const hobbiesInput = document.querySelector('#hobbies-input');
   const hobbiesResults = document.querySelector('#hobbies-results');
   const hobbiesInputPlaceholder = 'Select up to 5';
@@ -8,30 +10,26 @@ const hobbiesHelper = () => {
   
   hobbiesInput.placeholder = hobbiesInputPlaceholder;
   
-  const getAllHobbies = async userInput => {
-    try {
-      const data = await FetchData('/register/api/hobbies', {
-        params: {
-          userInput,
-        },
-      });
-      return data;
-    } catch (error) {
-      return error.response;
-    }
+  const hobbies = async userInput => {
+    const filteredResults = allHobbies.filter(
+      element => element.toLowerCase().indexOf(userInput) > -1
+    );
+    filteredResults.sort((a, b) => b < a);
+
+    return filteredResults;
   };
   
   const getUserHobbyINput = () =>
     hobbiesInput.addEventListener(
       'input',
       debounce(async event => {
-        const userInput = hobbiesInput.value;
+        const userInput = event.target.value.toLowerCase().trim();
         if (!userInput) {
           closeAllLists('#hobbies-input');
           return false;
         }
   
-        results = await getAllHobbies(userInput);
+        results = await hobbies(userInput);
         currentFocus = -1;
   
         let searchResultsWrapper = '<div class="autocomplete-items">';

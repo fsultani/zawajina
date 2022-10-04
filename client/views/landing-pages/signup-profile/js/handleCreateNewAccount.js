@@ -11,7 +11,7 @@ let hijab;
 let hasChildren;
 let wantsChildren;
 let height;
-let relocate;
+let canRelocate;
 let diet;
 let smokes;
 let countryRaisedIn;
@@ -36,7 +36,7 @@ const handleHijab = value => (hijab = value);
 const handleHasChildren = value => (hasChildren = value);
 const handleWantsChildren = value => (wantsChildren = value);
 const handleHeight = event => (height = Number(event.target.value));
-const handleRelocate = event => (relocate = event.target.value);
+const handleCanRelocate = event => (canRelocate = event.target.value);
 const handleDiet = event => (diet = event.target.value);
 const handleSmokes = value => (smokes = value);
 
@@ -191,10 +191,10 @@ const handleCreateNewAccount = async () => {
     removeErrorClass('.user-height');
   }
 
-  if (!relocate) {
-    addErrorClass('.relocate');
+  if (!canRelocate) {
+    addErrorClass('.can-relocate');
   } else {
-    removeErrorClass('.relocate');
+    removeErrorClass('.can-relocate');
   }
 
   if (!diet) {
@@ -307,7 +307,7 @@ const handleCreateNewAccount = async () => {
     hasChildren &&
     wantsChildren &&
     height &&
-    relocate &&
+    canRelocate &&
     diet &&
     smokes &&
     aboutMeIsValid &&
@@ -340,7 +340,7 @@ const handleCreateNewAccount = async () => {
       hasChildren,
       wantsChildren,
       height,
-      relocate,
+      canRelocate,
       diet,
       smokes,
       hobbies,

@@ -1,98 +1,99 @@
-const locationInput = document.querySelector('#locationInput');
-const locationResults = document.querySelector('#location-results');
-const locationInputPlaceholder = 'Enter your city';
+(() => {
+  const locationInput = document.querySelector('#locationInput');
+  const locationResults = document.querySelector('#location-results');
+  const locationInputPlaceholder = 'Enter your city';
 
-let currentFocus = 0;
-let results = [];
+  let currentFocus = 0;
+  let results = [];
 
-locationInput.placeholder = locationInputPlaceholder;
+  locationInput.placeholder = locationInputPlaceholder;
 
-const lowerCaseString = globalThis.lowerCaseString;
+  const lowerCaseString = globalThis.lowerCaseString;
 
-const getAllCities = async userInput => {
-  const { allLocations, userLocationData } = globalThis;
-  const filteredResults = [];
-  const userCity = userLocationData.city;
-  const userState = userLocationData.region;
-  const userCountry = userLocationData.country;
+  const getAllCities = async userInput => {
+    const { allLocations, userLocationData } = globalThis;
+    const filteredResults = [];
+    const userCity = userLocationData.city;
+    const userState = userLocationData.region;
+    const userCountry = userLocationData.country;
 
-  const filteredLocations = allLocations.filter(element => {
-    const hasComma = userInput.indexOf(',') !== -1;
-    if (hasComma) {
-      if (element.state) {
-        return element.state
-          .toLowerCase()
-          .startsWith(userInput.split(',')[1].toLowerCase().trim());
+    const filteredLocations = allLocations.filter(element => {
+      const hasComma = userInput.indexOf(',') !== -1;
+      if (hasComma) {
+        if (element.state) {
+          return element.state
+            .toLowerCase()
+            .startsWith(userInput.split(',')[1]);
+        } else {
+          return element.country
+            .toLowerCase()
+            .startsWith(userInput.split(',')[1]);
+        }
       } else {
-        return element.country
-          .toLowerCase()
-          .startsWith(userInput.split(',')[1].toLowerCase().trim());
+        return element.city.toLowerCase().startsWith(userInput);
       }
-    } else {
-      return element.city.toLowerCase().startsWith(userInput.toLowerCase());
+    });
+
+    filteredLocations.sort((a, b) => {
+      if (a.state && lowerCaseString(a.city) === lowerCaseString(userCity) && lowerCaseString(a.state) === lowerCaseString(userState)) return -1;
+
+      if (b.city.startsWith(userCity) > a.city.startsWith(userCity)) return 1;
+      if (b.city.startsWith(userCity) < a.city.startsWith(userCity)) return -1;
+
+      if (b.country.startsWith(userCountry) > a.country.startsWith(userCountry)) return 1;
+      if (b.country.startsWith(userCountry) < a.country.startsWith(userCountry)) return -1;
+
+      if (a.state === b.state) {
+        return 0;
+      } else if (a.state === null) {
+        return 1;
+      } else if (b.state === null) {
+        return -1;
+      } else {
+        return b.state.startsWith(userState) - a.state.startsWith(userState);
+      }
+    });
+
+    for (let i = 0; i < filteredLocations.length; i++) {
+      const country = filteredLocations[i].country;
+      const fullLocation = `${filteredLocations[i].city}, ${filteredLocations[i].state ? `${filteredLocations[i].state}, ${country}` : country
+        }`;
+
+      if (lowerCaseString(fullLocation.substring(0, userInput.length)) == lowerCaseString(userInput)) {
+        const search = new RegExp(userInput, 'gi');
+        const match = fullLocation.replace(search, match => `<strong>${match}</strong>`);
+        filteredResults.push({
+          match,
+          city: filteredLocations[i].city,
+          state: filteredLocations[i].state,
+          country: country,
+        });
+      }
     }
-  });
 
-  filteredLocations.sort((a, b) => {
-    if (a.state && lowerCaseString(a.city) === lowerCaseString(userCity) && lowerCaseString(a.state) === lowerCaseString(userState)) return -1;
-
-    if (b.city.startsWith(userCity) > a.city.startsWith(userCity)) return 1;
-    if (b.city.startsWith(userCity) < a.city.startsWith(userCity)) return -1;
-
-    if (b.country.startsWith(userCountry) > a.country.startsWith(userCountry)) return 1;
-    if (b.country.startsWith(userCountry) < a.country.startsWith(userCountry)) return -1;
-
-    if (a.state === b.state) {
-      return 0;
-    } else if (a.state === null) {
-      return 1;
-    } else if (b.state === null) {
-      return -1;
-    } else {
-      return b.state.startsWith(userState) - a.state.startsWith(userState);
-    }
-  });
-
-  for (let i = 0; i < filteredLocations.length; i++) {
-    const country = filteredLocations[i].country;
-    const fullLocation = `${filteredLocations[i].city}, ${filteredLocations[i].state ? `${filteredLocations[i].state}, ${country}` : country
-      }`;
-
-    if (lowerCaseString(fullLocation.substring(0, userInput.length)) == lowerCaseString(userInput)) {
-      const search = new RegExp(userInput, 'gi');
-      const match = fullLocation.replace(search, match => `<strong>${match}</strong>`);
-      filteredResults.push({
-        match,
-        city: filteredLocations[i].city,
-        state: filteredLocations[i].state,
-        country: country,
-      });
-    }
+    return filteredResults.slice(0, 7);
   }
 
-  return filteredResults.slice(0, 7);
-}
+  const getUserLocationInput = () =>
+    locationInput.addEventListener(
+      'input',
+      debounce(async event => {
+        const userInput = event.target.value.toLowerCase().trim();
+        if (!userInput) {
+          closeAllLists('#locationInput');
+          locationInput.setAttribute('data-city', '');
+          locationInput.setAttribute('data-state', '');
+          locationInput.setAttribute('data-country', '');
+          return false;
+        }
 
-const getUserLocationInput = () =>
-  locationInput.addEventListener(
-    'input',
-    debounce(async event => {
-      const userInput = locationInput.value;
-      if (!userInput) {
-        closeAllLists('#locationInput');
-        locationInput.setAttribute('data-city', '');
-        locationInput.setAttribute('data-state', '');
-        locationInput.setAttribute('data-country', '');
-        return false;
-      }
+        results = await getAllCities(userInput);
+        currentFocus = -1;
 
-      results = await getAllCities(userInput);
-      currentFocus = -1;
+        let searchResultsWrapper = '<div class="autocomplete-items">';
 
-      let searchResultsWrapper = '<div class="autocomplete-items">';
-
-      results.map(({ match, city, state, country }) => {
-        searchResultsWrapper += `
+        results.map(({ match, city, state, country }) => {
+          searchResultsWrapper += `
       <div
         data-city=${JSON.stringify(city)}
         data-state=${JSON.stringify(state)}
@@ -107,15 +108,15 @@ const getUserLocationInput = () =>
         />
       </div>
     `;
-      });
+        });
 
-      searchResultsWrapper += '</div>';
-      document.querySelector('#location-results').innerHTML = searchResultsWrapper;
-    }, 250)
-  );
+        searchResultsWrapper += '</div>';
+        document.querySelector('#location-results').innerHTML = searchResultsWrapper;
+      }, 250)
+    );
 
-const renderLocation = (data, city, state, country) => {
-  const result = `
+  const renderLocation = (data, city, state, country) => {
+    const result = `
     <div class='user-selection-container'>
       <div class='user-selection-wrapper display-user-location'>
         <div class='user-selection-content user-location-content'>${data}</div>
@@ -129,55 +130,54 @@ const renderLocation = (data, city, state, country) => {
       </div>
     </div>`;
 
-  const userSelection = document.querySelector('.user-location-selection');
-  userSelection.innerHTML = result;
-  document.querySelector('.display-user-location').style.display = 'flex';
-  locationInput.placeholder = '';
-  locationInput.disabled = true;
-  closeAllLists('#locationInput');
+    const userSelection = document.querySelector('.user-location-selection');
+    userSelection.innerHTML = result;
+    document.querySelector('.display-user-location').style.display = 'flex';
+    locationInput.placeholder = '';
+    locationInput.disabled = true;
+    closeAllLists('#locationInput');
 
-  locationInput.setAttribute('data-city', city);
-  locationInput.setAttribute('data-state', state);
-  locationInput.setAttribute('data-country', country);
+    locationInput.setAttribute('data-city', city);
+    locationInput.setAttribute('data-state', state);
+    locationInput.setAttribute('data-country', country);
 
-  removeLocationSelection();
-};
+    removeLocationSelection();
+  };
 
-const getKeyDirection = (event, callback) => {
-  let element = document.querySelector('.autocomplete-items');
-  if (element) {
-    element = element.getElementsByTagName('div');
-  }
-  if (event.key === 'ArrowDown' && currentFocus < results.length - 1) {
-    currentFocus++;
-    addActive(element, currentFocus);
-  } else if (event.key === 'ArrowUp' && currentFocus > 0) {
-    currentFocus--;
-    addActive(element, currentFocus);
-  } else if (event.key === 'Enter') {
-    event.preventDefault();
-    if (currentFocus > -1) {
-      if (element) {
-        callback(element);
+  const getKeyDirection = (event, callback) => {
+    let element = document.querySelector('.autocomplete-items');
+    if (element) {
+      element = element.getElementsByTagName('div');
+    }
+    if (event.key === 'ArrowDown' && currentFocus < results.length - 1) {
+      currentFocus++;
+      addActive(element, currentFocus);
+    } else if (event.key === 'ArrowUp' && currentFocus > 0) {
+      currentFocus--;
+      addActive(element, currentFocus);
+    } else if (event.key === 'Enter') {
+      event.preventDefault();
+      if (currentFocus > -1) {
+        if (element) {
+          callback(element);
+        }
       }
     }
-  }
-};
+  };
 
-const removeLocationSelection = () => {
-  document.querySelector('.user-location-remove').addEventListener('click', () => {
-    locationInput.removeAttribute('data-city');
-    locationInput.removeAttribute('data-state');
-    locationInput.removeAttribute('data-country');
+  const removeLocationSelection = () => {
+    document.querySelector('.user-location-remove').addEventListener('click', () => {
+      locationInput.removeAttribute('data-city');
+      locationInput.removeAttribute('data-state');
+      locationInput.removeAttribute('data-country');
 
-    document.querySelector('.display-user-location').style.display = 'none';
-    locationInput.placeholder = locationInputPlaceholder;
-    locationInput.disabled = false;
-    locationInput.focus();
-  });
-};
+      document.querySelector('.display-user-location').style.display = 'none';
+      locationInput.placeholder = locationInputPlaceholder;
+      locationInput.disabled = false;
+      locationInput.focus();
+    });
+  };
 
-(async () => {
   locationInput.addEventListener('keydown', event => {
     getUserLocationInput();
     getKeyDirection(event, element => {

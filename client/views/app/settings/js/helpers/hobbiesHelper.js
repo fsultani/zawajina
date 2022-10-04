@@ -25,7 +25,7 @@
     hobbiesInput.addEventListener(
       'input',
       debounce(async event => {
-        const userInput = hobbiesInput.value;
+        const userInput = event.target.value.toLowerCase().trim();
         if (!userInput) {
           closeAllLists('#hobbies-input');
           return false;

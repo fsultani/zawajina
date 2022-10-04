@@ -215,6 +215,7 @@ textarea:-ms-input-placeholder {
 
 .input-wrapper {
   width: 100%;
+  height: 45px;
   position: relative;
   border-bottom: 2px solid #adadad;
   margin-bottom: 37px;
@@ -229,7 +230,7 @@ textarea:-ms-input-placeholder {
   line-height: 1.2;
   display: block;
   width: 100%;
-  height: 45px;
+  height: 100%;
   background: transparent;
   padding: 0 5px;
 }
@@ -365,8 +366,11 @@ textarea:-ms-input-placeholder {
 
 .field-icon {
   position: absolute;
-  top: 20px;
-  right: 20px;
+  top: 0;
+  right: 10px;
+  display: flex;
+  align-items: center;
+  height: 100%;
   color: #555;
 }
 

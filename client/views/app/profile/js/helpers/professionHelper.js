@@ -49,13 +49,13 @@ const professionsList = [
   'Other',
 ];
 
-const professionOptions = ['<option selected disabled>Select Profession</option>'];
-professionsList.map(item => professionOptions.push(`<option>${item}</option>`));
-document.querySelector('.professions-list').innerHTML = professionOptions;
+const professionHelper = () => {
+  const professionOptions = ['<option selected disabled>Select Profession</option>'];
+  professionsList.map(item => professionOptions.push(`<option>${item}</option>`));
 
-(() => {
-  const profession = document.querySelector('.profession');
+  const profession = document.querySelector('#profession');
+  profession.innerHTML = professionOptions;
+
   const professionValue = profession.getAttribute('data-profession');
-
   profession.selectedIndex = professionsList.indexOf(professionValue) + 1;
-})();
+};

@@ -1,4 +1,4 @@
-(async () => {
+(() => {
   const languageInput = document.querySelector('#languageInput');
   const languageResults = document.querySelector('#language-results');
   const languageInputPlaceholder = 'Select up to 3';
@@ -13,7 +13,7 @@
     const { allLanguages } = globalThis;
 
     const filteredResults = allLanguages.filter(
-      element => element.toLowerCase().indexOf(userInput.toLowerCase()) > -1
+      element => element.toLowerCase().indexOf(userInput) > -1
     );
 
     filteredResults.sort((a, b) => b < a);
@@ -25,7 +25,7 @@
     languageInput.addEventListener(
       'input',
       debounce(async event => {
-        const userInput = languageInput.value;
+        const userInput = event.target.value.toLowerCase().trim();
         if (!userInput) {
           closeAllLists('#languageInput');
           return false;
