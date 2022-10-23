@@ -4,6 +4,7 @@ const { FetchData, sleep } = require('./utils');
 let db;
 const connectToServer = callback => {
   if (!db) {
+    console.log(`process.env.MONGODB_URI\n`, process.env.MONGODB_URI);
     MongoClient.connect(
       process.env.MONGODB_URI,
       {
