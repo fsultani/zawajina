@@ -5,7 +5,6 @@ const JWT_SECRET = Buffer.from('fe1a1915a379f3be5394b64d14794932', 'hex');
 
 const { usersCollection, insertLogs } = require('../db.js');
 const { comparePassword } = require('../models/user');
-const { FetchData } = require('../utils.js');
 
 const router = express.Router();
 
