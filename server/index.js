@@ -384,7 +384,7 @@ if (process.env.NODE_ENV === 'development') {
     end tell
 
     `,
-    (err, result, raw) => {
+    (err, _result, _raw) => {
       if (err) return console.error(err);
     }
   );
