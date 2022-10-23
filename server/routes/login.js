@@ -13,7 +13,8 @@ router.post('/', async (req, res, next) => {
   const { email, password, userIPAddress } = req.body;
 
   const user = await usersCollection().findOne({ email });
-  if (!user) return res.sendStatus(401);
+  console.log(`user\n`, user);
+  if (!user) return res.sendStatus(403);
 
   const isPasswordValid = await comparePassword(password, user.password);
   if (!isPasswordValid) return res.sendStatus(401);
