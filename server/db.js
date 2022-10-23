@@ -4,7 +4,6 @@ const { FetchData, sleep } = require('./utils');
 let db;
 const connectToServer = callback => {
   if (!db) {
-    console.log(`process.env.MONGODB_URI\n`, process.env.MONGODB_URI);
     MongoClient.connect(
       process.env.MONGODB_URI,
       {
@@ -12,8 +11,6 @@ const connectToServer = callback => {
         useUnifiedTopology: true,
       },
       (err, client) => {
-        console.log(`err\n`, err);
-        console.log(`client\n`, client);
         if (err) throw err;
         db = client.db();
         return callback(err, db);
