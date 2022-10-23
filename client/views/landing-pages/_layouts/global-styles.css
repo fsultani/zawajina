@@ -40,8 +40,8 @@ ol {
   list-style: decimal;
 }
 
-li > ul,
-li > ol {
+li>ul,
+li>ol {
   margin-bottom: 0;
 }
 
@@ -140,6 +140,10 @@ td:last-child {
   font-size: 16px;
 }
 
+.slow-network-message {
+  margin-bottom: 0;
+}
+
 #application-error {
   top: 70px;
   left: 40vw;
@@ -158,12 +162,24 @@ td:last-child {
 
 @media (min-width: 600px) {
   #slow-network-warning {
-    top: 70px;
-    left: 35vw;
+    width: 100%;
+    background-color: transparent;
+  }
+
+  .slow-network-message {
+    width: 515px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    margin: 0 auto;
+    padding: 10px;
+    background-color: #fff5be;
+    border-radius: 4px;
   }
 }
 
 @media (min-width: 481px) {
+
   .navbar--container,
   .container,
   .container-sm {
@@ -692,6 +708,7 @@ h1,
 }
 
 @media (min-width: 641px) {
+
   h1,
   .h1 {
     font-size: 44px;
@@ -708,6 +725,7 @@ h2,
 }
 
 @media (min-width: 641px) {
+
   h2,
   .h2 {
     font-size: 34px;
@@ -725,6 +743,7 @@ blockquote {
 }
 
 @media (min-width: 641px) {
+
   h3,
   .h3,
   blockquote {
@@ -751,16 +770,19 @@ h6,
     line-height: 44px;
     letter-spacing: 0px;
   }
+
   .h2-mobile {
     font-size: 30px;
     line-height: 40px;
     letter-spacing: 0px;
   }
+
   .h3-mobile {
     font-size: 24px;
     line-height: 34px;
     letter-spacing: 0px;
   }
+
   .h4-mobile,
   .h5-mobile,
   .h6-mobile {
@@ -1071,12 +1093,14 @@ label {
     padding-top: 160px;
     padding-bottom: 128px;
   }
+
   .hero::after {
     left: calc(50% - 720px);
     width: 1440px;
     height: 307px;
     background-size: 1440px 307px;
   }
+
   .hero-paragraph {
     padding-left: 72px;
     padding-right: 72px;
@@ -1122,6 +1146,7 @@ label {
     transform: translateY(-100%);
     opacity: 0;
   }
+
   to {
     transform: translateY(0);
     opacity: 1;
@@ -1133,6 +1158,7 @@ label {
     transform: translateY(-40px);
     opacity: 0;
   }
+
   to {
     transform: translateY(0);
     opacity: 1;
@@ -1143,6 +1169,7 @@ label {
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }

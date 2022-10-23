@@ -3,23 +3,19 @@ const photosHelper = () => {
     const image = getQuerySelector(`.image-${index}`);
     let imagePreview = getQuerySelector(`.image-preview-${index}`);
     let customButton = getQuerySelector(`.custom-button-${index}`);
-    const imageUpload = getQuerySelector(`.image-upload-${index}`);
     let removeImageButton = getQuerySelector(`.remove-image-${index}`);
-    const processingBar = getQuerySelector(`.processing-bar-${index}`);
-    // const successBox = getQuerySelector(`.success-box-${index}`);
-    const imageUploadContainer = getQuerySelector('.image-upload-container');
 
     const removeImageButtonStyles = {
-        height: "24px",
-        width: "24px",
-        background: "#727272",
-        border: 'none',
-        borderRadius: "30px",
-        boxShadow: '0 1px 2px rgb(0, 0, 0, 0.7)',
-        position: "absolute",
-        bottom: "-8px",
-        right: "-8px",
-      };
+      height: "24px",
+      width: "24px",
+      background: "#727272",
+      border: 'none',
+      borderRadius: "30px",
+      boxShadow: '0 1px 2px rgb(0, 0, 0, 0.7)',
+      position: "absolute",
+      bottom: "-8px",
+      right: "-8px",
+    };
 
     if (imagePreview) {
       Object.assign(imagePreview.style, {
@@ -44,20 +40,36 @@ const photosHelper = () => {
         Object.assign(removeImageButton.style, removeImageButtonStyles)
       });
 
-      removeImageButton.addEventListener('click', event => {
-        imagePreview.src = 'undefined';
+      removeImageButton.addEventListener('click', () => {
+        const imageUploadWrapper = getQuerySelector(`.image-upload-wrapper-${index}`);
+
+        imageUploadWrapper.innerHTML = `<div class="custom-button-${index}"></div>`;
+        customButton = getQuerySelector(`.custom-button-${index}`);
+
+        imagePreview.src = 'deletePhoto';
         imagePreview.style.display = 'none';
-        imageUpload.classList.remove(displayImage);
         customButton.style.display = 'block';
-
-        processingBar.style.opacity = '';
-        processingBar.style.transition = '';
-        processingBar.style.width = '';
-
         removeImageButton.style.display = 'none';
+
+        const customButtonStyles = {
+          width: "100%",
+          height: "100%",
+          color: "#fff",
+          backgroundColor: "#d3d3d3",
+          borderRadius: "12px",
+          cursor: "pointer",
+          boxShadow: "0 1px 2px rgb(0, 0, 0, 0.7)",
+          opacity: 1,
+        }
+
+        Object.assign(customButton.style, customButtonStyles);
+        Object.assign(imageUploadWrapper.style, {
+          width: "100%",
+          height: "100%",
+        });
       });
+
     } else {
-      // const customButton = getQuerySelector(`.custom-button-${index}`);
       const imageUploadWrapper = getQuerySelector(`.image-upload-wrapper-${index}`);
 
       const customButtonStyles = {
@@ -113,31 +125,6 @@ const photosHelper = () => {
         });
 
         Object.assign(removeImageButton.style, removeImageButtonStyles)
-
-        // imagePreview.src = uploadedFile;
-        // imagePreview.style.display = 'block';
-        // customButton.style.display = 'none';
-        // imageUpload.classList.add(`display-image-${index}`);
-
-        // let width = 1;
-        // let identity = setInterval(frame, 10);
-        // function frame() {
-        //   if (width < imageUploadContainer - 19) {
-        //     width++;
-        //     processingBar1.style.width = `${width}px`;
-        //   } else {
-        //     clearInterval(identity);
-        //     document.querySelector('.display-image-0').style.opacity = 1;
-        //     successBox1.style.display = 'inline-block';
-        //     processingBar1.style.transition = '0.75s';
-        //     processingBar1.style.transitionDelay = '2.25s';
-        //     processingBar1.style.opacity = 0;
-        //     setTimeout(() => {
-        //       successBox1.style.display = 'none';
-        //       removeImageButton1.style.display = 'block';
-        //     }, 3000);
-        //   }
-        // }
       });
     }
   });

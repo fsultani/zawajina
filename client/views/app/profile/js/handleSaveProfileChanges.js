@@ -12,7 +12,7 @@ const toast = globalThis.toast;
 // }
 
 const addErrorClass = element => {
-	document.querySelector(`${element}`).classList.add('form-error')
+	document.querySelector(`${element}`).classList.add('form-error');
 
 	headerElements.forEach(element => {
 		element.style.height = '55px';
