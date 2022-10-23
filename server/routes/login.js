@@ -11,10 +11,11 @@ const router = express.Router();
 
 router.post('/', async (req, res, next) => {
   const { email, password, userIPAddress } = req.body;
+  console.log(`email\n`, email);
 
   const user = await usersCollection().findOne({ email });
   console.log(`user\n`, user);
-  if (!user) return res.sendStatus(403);
+  if (!user) return res.sendStatus(401);
 
   const isPasswordValid = await comparePassword(password, user.password);
   if (!isPasswordValid) return res.sendStatus(401);

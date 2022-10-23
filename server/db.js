@@ -11,6 +11,8 @@ const connectToServer = callback => {
         useUnifiedTopology: true,
       },
       (err, client) => {
+        console.log(`err\n`, err);
+        console.log(`client\n`, client);
         if (err) throw err;
         db = client.db();
         return callback(err, db);
