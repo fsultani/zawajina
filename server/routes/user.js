@@ -3,11 +3,11 @@ const { ObjectId } = require('mongodb');
 const { compress } = require('compress-images/promise');
 const fs = require('fs');
 
-const router = express.Router();
-
 const upload = require('../helpers/multer');
 const { usersCollection, insertLogs } = require('../db.js');
 const { getAllFiles } = require('../utils')
+
+const router = express.Router();
 
 const calculateImperialHeight = height => {
 	const totalHeight = (height / 30.48).toString().split('.')
