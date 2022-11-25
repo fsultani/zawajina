@@ -1,22 +1,13 @@
 const express = require('express');
-const {
-	ObjectId
-} = require('mongodb');
-const {
-	compress
-} = require('compress-images/promise');
+const { ObjectId } = require('mongodb');
+const { compress } = require('compress-images/promise');
 const fs = require('fs');
 
 const router = express.Router();
 
 const upload = require('../helpers/multer');
-const {
-	usersCollection,
-	insertLogs
-} = require('../db.js');
-const {
-	getAllFiles
-} = require('../utils')
+const { usersCollection, insertLogs } = require('../db.js');
+const { getAllFiles } = require('../utils')
 
 const calculateImperialHeight = height => {
 	const totalHeight = (height / 30.48).toString().split('.')
@@ -29,10 +20,7 @@ const calculateImperialHeight = height => {
 	}
 };
 
-const uploadToCloudinary = async ({
-	req,
-	userId
-}) => {
+const uploadToCloudinary = async ({ req, userId }) => {
 	try {
 		const cloudinary = require('cloudinary');
 		require('../config/cloudinary');
@@ -59,10 +47,7 @@ const uploadToCloudinary = async ({
 				}
 			});
 
-			const {
-				statistics,
-				errors
-			} = result;
+			const { statistics, errors } = result;
 			if (errors.length > 0) return new Error('Error in uploadToCloudinary');
 			const upload = await cloudinary.v2.uploader.upload(statistics[0].path_out_new, {
 				folder: userId,
@@ -107,9 +92,7 @@ const uploadToCloudinary = async ({
 	}
 };
 
-const deleteFromCloudinary = async ({
-	publicIds
-}) => {
+const deleteFromCloudinary = async ({ publicIds }) => {
 	try {
 		const cloudinary = require('cloudinary');
 		require('../config/cloudinary');
@@ -278,19 +261,12 @@ const checkUserInfo = (userDocument, userInfo) => {
 
 router.get('/:userId', async (req, res) => {
 	try {
-		const {
-			userId
-		} = req.params;
-		const {
-			authUser,
-			allConversationsCount
-		} = req;
+		const { userId } = req.params;
+		const { authUser, allConversationsCount } = req;
 		let userDocument;
 
 		if (userId !== 'undefined') {
-			userDocument = await usersCollection().findOne({
-				_id: ObjectId(userId)
-			});
+			userDocument = await usersCollection().findOne({ _id: ObjectId(userId) });
 		}
 
 		if (!userDocument) return res.redirect('/users');
@@ -386,9 +362,7 @@ router.get('/:userId', async (req, res) => {
 
 router.get('/api/:userId', async (req, res) => {
 	try {
-		const {
-			userId
-		} = req.params;
+		const { userId } = req.params;
 		let userDocument;
 
 		if (userId !== 'undefined') {
@@ -408,9 +382,7 @@ router.get('/api/:userId', async (req, res) => {
 			lastActive: 'Just now',
 		};
 
-		res.status(200).json({
-			authUser
-		});
+		res.status(200).json({ authUser });
 	} catch (error) {
 		console.log(`error\n`, error);
 	}
@@ -419,29 +391,29 @@ router.get('/api/:userId', async (req, res) => {
 router.put(
 	'/api/profile-details',
 	upload.fields([{
-			name: 'image-0',
-			maxCount: 1,
-		},
-		{
-			name: 'image-1',
-			maxCount: 1,
-		},
-		{
-			name: 'image-2',
-			maxCount: 1,
-		},
-		{
-			name: 'image-3',
-			maxCount: 1,
-		},
-		{
-			name: 'image-4',
-			maxCount: 1,
-		},
-		{
-			name: 'image-5',
-			maxCount: 1,
-		},
+		name: 'image-0',
+		maxCount: 1,
+	},
+	{
+		name: 'image-1',
+		maxCount: 1,
+	},
+	{
+		name: 'image-2',
+		maxCount: 1,
+	},
+	{
+		name: 'image-3',
+		maxCount: 1,
+	},
+	{
+		name: 'image-4',
+		maxCount: 1,
+	},
+	{
+		name: 'image-5',
+		maxCount: 1,
+	},
 	]),
 	async (req, res) => {
 		try {
@@ -452,9 +424,7 @@ router.put(
 				userId
 			} = req;
 
-			let userDocument = await usersCollection().findOne({
-				_id: ObjectId(userId)
-			});
+			let userDocument = await usersCollection().findOne({ _id: ObjectId(userId) });
 			userDocument = Object.keys(userDocument).filter(item => item !== 'loginData').reduce((obj, key) => {
 				return Object.assign(obj, {
 					[key]: userDocument[key]
@@ -513,16 +483,14 @@ router.put(
 				photos: updatedPhotos,
 			}
 
-			usersCollection().findOneAndUpdate({
-					_id: userId
-				}, {
-					$set: {
-						...updatedUserInfo,
-					},
-				}, {
-					returnDocument: 'after',
-					returnNewDocument: true,
+			usersCollection().findOneAndUpdate({ _id: userId }, {
+				$set: {
+					...updatedUserInfo,
 				},
+			}, {
+				returnDocument: 'after',
+				returnNewDocument: true,
+			},
 				async (err, _user) => {
 					if (err) {
 						console.log(`err\n`, err);
@@ -543,27 +511,27 @@ router.put(
 
 			if (updatedUserInfo.country !== userDocument.country) {
 				await insertLogs({
-						city: updatedUserInfo.city,
-						state: updatedUserInfo.state,
-						country: updatedUserInfo.country,
-					},
+					city: updatedUserInfo.city,
+					state: updatedUserInfo.state,
+					country: updatedUserInfo.country,
+				},
 					userIPAddress,
 					endpoint,
 					userId
 				);
 			} else if (updatedUserInfo.state !== userDocument.state) {
 				await insertLogs({
-						city: updatedUserInfo.city,
-						state: updatedUserInfo.state,
-					},
+					city: updatedUserInfo.city,
+					state: updatedUserInfo.state,
+				},
 					userIPAddress,
 					endpoint,
 					userId
 				);
 			} else if (updatedUserInfo.city !== userDocument.city) {
 				await insertLogs({
-						city: updatedUserInfo.city,
-					},
+					city: updatedUserInfo.city,
+				},
 					userIPAddress,
 					endpoint,
 					userId
@@ -578,8 +546,8 @@ router.put(
 			Object.entries(updatedUserInfo).map(async ([key, value]) => {
 				if (userDocument[key] !== value) {
 					await insertLogs({
-							[key]: value,
-						},
+						[key]: value,
+					},
 						userIPAddress,
 						endpoint,
 						userId
@@ -599,29 +567,29 @@ router.put(
 router.put(
 	'/api/profile-details/photos',
 	upload.fields([{
-			name: 'image-0',
-			maxCount: 1,
-		},
-		{
-			name: 'image-1',
-			maxCount: 1,
-		},
-		{
-			name: 'image-2',
-			maxCount: 1,
-		},
-		{
-			name: 'image-3',
-			maxCount: 1,
-		},
-		{
-			name: 'image-4',
-			maxCount: 1,
-		},
-		{
-			name: 'image-5',
-			maxCount: 1,
-		},
+		name: 'image-0',
+		maxCount: 1,
+	},
+	{
+		name: 'image-1',
+		maxCount: 1,
+	},
+	{
+		name: 'image-2',
+		maxCount: 1,
+	},
+	{
+		name: 'image-3',
+		maxCount: 1,
+	},
+	{
+		name: 'image-4',
+		maxCount: 1,
+	},
+	{
+		name: 'image-5',
+		maxCount: 1,
+	},
 	]),
 	async (req, res) => {
 		try {
@@ -694,15 +662,15 @@ router.put(
 			}
 
 			usersCollection().updateOne({
-					_id: userId
-				}, {
-					$set: {
-						photos: updatedPhotos,
-					},
-				}, {
-					returnDocument: 'after',
-					returnNewDocument: true,
+				_id: userId
+			}, {
+				$set: {
+					photos: updatedPhotos,
 				},
+			}, {
+				returnDocument: 'after',
+				returnNewDocument: true,
+			},
 				async (err, user) => {
 					if (err) {
 						console.log(`err\n`, err);
@@ -793,12 +761,12 @@ router.put('/like', async (req, res) => {
 
 	if (!userIsLiked) {
 		await usersCollection().findOneAndUpdate({
-				_id: ObjectId(userId)
-			}, {
-				$push: {
-					likedByUsers: authUser._id.toString(),
-				},
+			_id: ObjectId(userId)
+		}, {
+			$push: {
+				likedByUsers: authUser._id.toString(),
 			},
+		},
 			async (err, _user) => {
 				if (err) {
 					console.log(`err\n`, err);
@@ -810,12 +778,12 @@ router.put('/like', async (req, res) => {
 		);
 
 		await usersCollection().findOneAndUpdate({
-				_id: authUser._id
-			}, {
-				$push: {
-					usersLiked: userId,
-				},
+			_id: authUser._id
+		}, {
+			$push: {
+				usersLiked: userId,
 			},
+		},
 			async (err, _user) => {
 				if (err) {
 					console.log(`err\n`, err);
@@ -835,12 +803,12 @@ router.put('/like', async (req, res) => {
 		);
 	} else {
 		await usersCollection().findOneAndUpdate({
-				_id: ObjectId(userId)
-			}, {
-				$pull: {
-					likedByUsers: authUser._id.toString(),
-				},
+			_id: ObjectId(userId)
+		}, {
+			$pull: {
+				likedByUsers: authUser._id.toString(),
 			},
+		},
 			async (err, _user) => {
 				if (err) {
 					console.log(`err\n`, err);
@@ -852,12 +820,12 @@ router.put('/like', async (req, res) => {
 		);
 
 		await usersCollection().findOneAndUpdate({
-				_id: authUser._id
-			}, {
-				$pull: {
-					usersLiked: userId,
-				},
+			_id: authUser._id
+		}, {
+			$pull: {
+				usersLiked: userId,
 			},
+		},
 			async (err, _user) => {
 				if (err) {
 					console.log(`err\n`, err);
