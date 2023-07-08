@@ -146,7 +146,7 @@ textarea:-ms-input-placeholder {
   }
 }
 
-.form-submission-error {
+#form-submission-error {
   display: none;
   position: relative;
   padding: 12px 0;
@@ -158,6 +158,10 @@ textarea:-ms-input-placeholder {
   color: #721c24;
   background-color: #f8d7da;
   border-color: #f5c6cb;
+}
+
+#form-submission-error p {
+  padding: 0 8px;
 }
 
 .form-title {
@@ -177,7 +181,14 @@ textarea:-ms-input-placeholder {
   width: 100%;
   position: relative;
   border-bottom: 2px solid #adadad;
+}
+
+.password-one-margin {
   margin-bottom: 30px;
+}
+
+.password-two-margin {
+  margin-bottom: 5px;
 }
 
 .form-input {
@@ -298,7 +309,7 @@ textarea:-ms-input-placeholder {
   margin: 8px;
   border: 3px solid #fff;
   border-radius: 50%;
-  animation: loading-spinner 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  animation: animation-360-loading-spinner 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
   border-color: #fff transparent transparent transparent;
 }
 
@@ -320,15 +331,6 @@ textarea:-ms-input-placeholder {
   }
 }
 
-@keyframes loading-spinner {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
 .form-submit {
   width: 100%;
   height: 50px;
@@ -344,13 +346,10 @@ textarea:-ms-input-placeholder {
   color: #fff;
   text-transform: uppercase;
   border: none;
+  cursor: pointer;
   background-image: -moz-linear-gradient(to left, #74ebd5, #9face6);
   background-image: -ms-linear-gradient(to left, #74ebd5, #9face6);
   background-image: -o-linear-gradient(to left, #74ebd5, #9face6);
   background-image: -webkit-linear-gradient(to left, #74ebd5, #9face6);
   background-image: linear-gradient(to left, #74ebd5, #9face6);
-}
-
-.form-submit-button {
-  cursor: pointer;
 }

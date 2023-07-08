@@ -1,6 +1,6 @@
 const handleLikeUser = userId => {
   axios
-    .put('/user/like', {
+    .put('/api/user/like', {
       userId,
     })
     .then(({ data }) => {
@@ -14,7 +14,7 @@ const handleLikeUser = userId => {
       `;
 
       if (userIsLiked) {
-        globalThis.toast('success', `You liked ${data.userName}!`);
+        toast('success', `You liked ${data.userName}!`);
       }
     })
     .catch(error => {

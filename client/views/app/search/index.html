@@ -1,151 +1,455 @@
-<div class="signup-container">
-  <section>
-    <div class="signup-wrapper">
-      <h2 class="title-text">Search</h2>
-      <div class="signup-content">
-        <form name="signupForm" enctype="multipart/form-data" onsubmit="return false" novalidate autocomplete="off">
-          <div class="signup-form-wrapper">
+<section class='signup-container'>
+  <div class='signup-wrapper'>
+    <h2 class='title-text'>Search</h2>
+    <div class='signup-content'>
+      <form name='signupForm' onsubmit='handleSearch(event)' novalidate autocomplete='off'>
+        <div class='signup-form-wrapper'>
 
-            <div class="column-one">
-              <div class="age-range-container">
-                <label>Age Range</label>
-                <p>Between
-                  <span class="min-age-range"></span>
-                  <span> and </span>
-                  <span class="max-age-range"></span> years old
-                </p>
-                <div class="double-range-wrapper">
-                  <div class="double-range-container">
-                    <div class="age-range-slider-track"></div>
-                    <input type="range" min="18" max="60" value="18" class="min-age-slider" oninput="minAge()">
-                    <input type="range" min="18" max="60" value="60" class="max-age-slider" oninput="maxAge()">
-                  </div>
-                </div>
+          <div class='section-row'>
+            <div class='half-column user-location'>
+              <div class='display-flex space-between'>
+                <label for='locationInput'>Locations (up to 5)</label>
               </div>
 
-              <div class="form-row user-location">
-                <label for="locationInput">Location</label>
-                <div class="autocomplete">
-                  <div class="user-location-selection"></div>
-                  <textarea id="locationInput" class="location-textarea" cols="43" rows="1"></textarea>
-                  <div class="location-results"></div>
-                </div>
-              </div>
-
-              <div>
-                <label>Conviction</label>
-                <select class="religious-conviction-error" onchange="handleConviction(event)">
-                  <option selected disabled>Select Conviction</option>
-                  <option value="Sunni">Sunni</option>
-                  <option value="Shia">Shia</option>
-                  <option value="Just Muslim">Just Muslim</option>
-                  <option value="Other">Other</option>
-                </select>
-              </div>
-              <div>
-                <label>Height</label>
-                <p>Between
-                  <span class="min-height-range"></span>
-                  <span> and </span>
-                  <span class="max-height-range"></span>
-                </p>
-                <div class="double-range-wrapper">
-                  <div class="double-range-container">
-                    <div class="heights-slider-track"></div>
-                    <input type="range" min="147" max="196" value="147" class="min-height-slider" oninput="minHeight()">
-                    <input type="range" min="147" max="196" value="196" class="max-height-slider" oninput="maxHeight()">
-                  </div>
-                </div>
-              </div>
-              <div>
-                <label>Values</label>
-                <select class="religious-values-error" onchange="handleReligiousValues(event)">
-                  <option selected disabled>Select Values</option>
-                  <option value="Conservative">Conservative</option>
-                  <option value="Moderate">Moderate</option>
-                  <option value="Liberal">Liberal</option>
-                </select>
+              <div class='autocomplete'>
+                <div class='user-location-selection'></div>
+                <input id='locationInput' class='input-text-field' type='text' />
+                <div id='location-results'></div>
               </div>
             </div>
 
-            <div class="column-two">
-              <div>
-                <label>Marital Status</label>
-                <select class="marital-status-error" onchange="handleMaritalStatus(event)">
-                  <option selected disabled>Marital Status</option>
-                  <option value="Never Married">Never Married</option>
-                  <option value="Divorced">Divorced</option>
-                  <option value="Widowed">Widowed</option>
-                </select>
+            <div class='half-column user-languages'>
+              <div class='display-flex space-between'>
+                <label for='languageInput'>Languages (up to 3)</label>
               </div>
-              <div class="form-row user-ethnicity">
-                <label for="ethnicityInput">Ethnicity</label>
-                <div class="autocomplete">
-                  <div class="user-ethnicity-selection"></div>
-                  <textarea id="ethnicityInput" class="ethnicity-textarea" cols="43" rows="1"></textarea>
-                  <div id="ethnicity-results"></div>
-                </div>
-              </div>
-              <div>
-                <label>Education</label>
-                <select class="education-error" onchange="handleEducation(event)">
-                  <option selected disabled>Education Level</option>
-                  <option value="High School">High School</option>
-                  <option value="Associate degree">Associate degree</option>
-                  <option value="Bachelor's degree">Bachelor's degree</option>
-                  <option value="Master's degree">Master's degree</option>
-                  <option value="Doctoral degree">Doctoral degree</option>
-                </select>
-              </div>
-              <div class="hijab-container form-radio">
-                <label for="hijab">Hijab</label>
-                <div class="form-flex hijab-error">
-                  <input type="radio" name="hijab" id="hijab-yes" onchange="handleHijab('Yes')" />
-                  <label for="hijab-yes">Yes</label>
-                  <input type="radio" name="hijab" id="hijab-no" onchange="handleHijab('No')" />
-                  <label for="hijab-no">No</label>
-                </div>
-              </div>
-              <div>
-                <label>Sort results by</label>
-                <select onchange="handleSortResults(event)">
-                  <option value="lastActive">Last Active</option>
-                  <option value="newestMembers">Newest Members</option>
-                  <option value="nearestToYou">Nearest to you</option>
-                </select>
 
-                <div class="has-photo-wrapper">
-                  <div class="has-photo-container">
-                    <input type="checkbox" id="photos-only-checkbox">
-                    <label for="photos-only-checkbox">Profiles with photos only</label>
-                  </div>
-                </div>
+              <div class='autocomplete'>
+                <div class='user-languages-selection'></div>
+                <input id='languageInput' class='input-text-field' type='text' />
+                <div id='language-results'></div>
               </div>
             </div>
           </div>
 
-          <!-- ************************************************** -->
+          <div class='section-row'>
+            <div class='half-column user-profession'>
+              <div class='display-flex space-between'>
+                <label for='professionInput'>Professions (up to 3)<span id='profession-error-message'></span></label>
+              </div>
 
-          <div class="search-button-wrapper">
-            <div class="submit-loading-spinner">full-page-loading-spinner
-              <div></div>
-              <div></div>
-              <div></div>
-              <div></div>
+              <input id='professionInput' class='input-text-field' type='text' placeholder='Search' />
+              <div class='boxed-list' id='professions-list'></div>
             </div>
-            <button type="submit" onclick="handleSearch()" class="form-submit-search-button">
+
+            <div class='half-column user-hobbies'>
+              <div class='display-flex space-between'>
+                <label for='hobbiesInput'>Interests (up to 5)<span id='hobbies-error-message'></span></label>
+              </div>
+
+              <input id='hobbiesInput' class='input-text-field' type='text' placeholder='Search' />
+              <div class='boxed-list' id='hobbies-list'></div>
+            </div>
+          </div>
+
+          <div class='section-row'>
+            <div id="maritalStatus" class='half-column form-check-wrapper'>
+              <div class='display-flex space-between'>
+                <label class='form-check-label'>Marital Status</label>
+              </div>
+
+              <div class='form-check'>
+                <label class='form-check-label' for='Never Married'>
+                  <input class='form-check-input marital-status' type='checkbox' id='Never Married'>
+                  Never Married
+                </label>
+              </div>
+              <div class='form-check'>
+                <label class='form-check-label' for='Divorced'>
+                  <input class='form-check-input marital-status' type='checkbox' id='Divorced'>
+                  Divorced
+                </label>
+              </div>
+              <div class='form-check'>
+                <label class='form-check-label' for='Widowed'>
+                  <input class='form-check-input marital-status' type='checkbox' id='Widowed'>
+                  Widowed
+                </label>
+              </div>
+            </div>
+
+            <div class='half-column form-check-wrapper'>
+              <div id="religiousConviction" class='display-flex space-between'>
+                <label class='form-check-label'>Conviction</label>
+              </div>
+
+              <div class='form-check'>
+                <label class='form-check-label' for='Sunni'>
+                  <input class='form-check-input religious-convictions' type='checkbox' id='Sunni'>
+                  Sunni
+                </label>
+              </div>
+              <div class='form-check'>
+                <label class='form-check-label' for='Shia'>
+                  <input class='form-check-input religious-convictions' type='checkbox' id='Shia'>
+                  Shia
+                </label>
+              </div>
+              <div class='form-check'>
+                <label class='form-check-label' for='Just Muslim'>
+                  <input class='form-check-input religious-convictions' type='checkbox' id='Just Muslim'>
+                  Just Muslim
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="section-row">
+            <div class='half-column form-check-wrapper'>
+              <div class='display-flex space-between'>
+                <label class='form-check-label'>Values</label>
+              </div>
+
+              <div class='form-check'>
+                <label class='form-check-label' for='Conservative'>
+                  <input class='form-check-input religious-values' type='checkbox' id='Conservative'>
+                  Conservative
+                </label>
+              </div>
+              <div class='form-check'>
+                <label class='form-check-label' for='Moderate'>
+                  <input class='form-check-input religious-values' type='checkbox' id='Moderate'>
+                  Moderate
+                </label>
+              </div>
+              <div class='form-check'>
+                <label class='form-check-label' for='Liberal'>
+                  <input class='form-check-input religious-values' type='checkbox' id='Liberal'>
+                  Liberal
+                </label>
+              </div>
+            </div>
+
+            <div class='half-column form-check-wrapper'>
+              <div class='display-flex space-between'>
+                <label class='form-check-label'>Education</label>
+              </div>
+
+              <div class='form-check'>
+                <label class='form-check-label' for='High School'>
+                  <input class='form-check-input education' type='checkbox' id='High School'>
+                  High School
+                </label>
+              </div>
+              <div class='form-check'>
+                <label class='form-check-label' for='Associate degree'>
+                  <input class='form-check-input education' type='checkbox' id='Associate degree'>
+                  Associate degree
+                </label>
+              </div>
+              <div class='form-check'>
+                <label class='form-check-label' for="Bachelor's degree">
+                  <input class='form-check-input education' type='checkbox' id="Bachelor's degree">
+                  Bachelor&#x27;s degree
+                </label>
+              </div>
+              <div class='form-check'>
+                <label class='form-check-label' for="Master's degree">
+                  <input class='form-check-input education' type='checkbox' id="Master's degree">
+                  Master&#x27;s degree
+                </label>
+              </div>
+              <div class='form-check'>
+                <label class='form-check-label' for='Doctoral degree'>
+                  <input class='form-check-input education' type='checkbox' id='Doctoral degree'>
+                  Doctoral degree
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="section-row">
+            <div class='half-column form-check-wrapper'>
+              <div class='display-flex space-between'>
+                <label>Has children</label>
+              </div>
+
+              <div class='form-check'>
+                <input class='form-check-input' type='radio' name='has-children' id='hasChildrenYes'>
+                <label class='form-check-label' for='hasChildrenYes'>
+                  Yes
+                </label>
+              </div>
+              <div class='form-check'>
+                <input class='form-check-input' type='radio' name='has-children' id='hasChildrenNo'>
+                <label class='form-check-label' for='hasChildrenNo'>
+                  No
+                </label>
+              </div>
+              <div class='form-check'>
+                <input class='form-check-input' type='radio' name='has-children' id='hasChildrenDoesNotMatter'>
+                <label class='form-check-label' for='hasChildrenDoesNotMatter'>
+                  Doesn&#x27;t matter
+                </label>
+              </div>
+            </div>
+
+            <div class='half-column form-check-wrapper'>
+              <div class='display-flex space-between'>
+                <label>Wants children</label>
+              </div>
+
+              <div class='form-check'>
+                <input class='form-check-input' type='radio' name='wants-children' id='wantsChildrenYes'>
+                <label class='form-check-label' for='wantsChildrenYes'>
+                  Yes
+                </label>
+              </div>
+              <div class='form-check'>
+                <input class='form-check-input' type='radio' name='wants-children' id='wantsChildrenNo'>
+                <label class='form-check-label' for='wantsChildrenNo'>
+                  No
+                </label>
+              </div>
+              <div class='form-check'>
+                <input class='form-check-input' type='radio' name='wants-children' id='wantsChildrenDoesNotMatter'>
+                <label class='form-check-label' for='wantsChildrenDoesNotMatter'>
+                  Doesn&#x27;t matter
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="section-row">
+            <div class='half-column form-check-wrapper'>
+              <div class='display-flex space-between'>
+                <label>Hijab</label>
+              </div>
+
+              <div class='form-check'>
+                <input class='form-check-input' type='radio' name='hijab' id='hijabYes'>
+                <label class='form-check-label' for='hijabYes'>
+                  Yes
+                </label>
+              </div>
+              <div class='form-check'>
+                <input class='form-check-input' type='radio' name='hijab' id='hijabNo'>
+                <label class='form-check-label' for='hijabNo'>
+                  No
+                </label>
+              </div>
+              <div class='form-check'>
+                <input class='form-check-input' type='radio' name='hijab' id='hijabDoesNotMatter'>
+                <label class='form-check-label' for='hijabDoesNotMatter'>
+                  Doesn&#x27;t matter
+                </label>
+              </div>
+            </div>
+
+            <div class='half-column form-check-wrapper'>
+              <div class='display-flex space-between'>
+                <label>Can relocate</label>
+              </div>
+
+              <div class='form-check'>
+                <input class='form-check-input' type='radio' name='can-relocate' id='canRelocateYes'>
+                <label class='form-check-label' for='canRelocateYes'>
+                  Yes
+                </label>
+              </div>
+              <div class='form-check'>
+                <input class='form-check-input' type='radio' name='can-relocate' id='canRelocateNo'>
+                <label class='form-check-label' for='canRelocateNo'>
+                  No
+                </label>
+              </div>
+              <div class='form-check'>
+                <input class='form-check-input' type='radio' name='can-relocate' id='canRelocateDoesNotMatter'>
+                <label class='form-check-label' for='canRelocateDoesNotMatter'>
+                  Doesn&#x27;t matter
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="section-row">
+            <div class='half-column form-check-wrapper'>
+              <div class="padding-bottom">
+                <div class='display-flex space-between'>
+                  <label>Smokes</label>
+                </div>
+            
+                <div class='form-check'>
+                  <input class='form-check-input' type='radio' name='smokes' id='smokesYes'>
+                  <label class='form-check-label' for='smokesYes'>
+                    Yes
+                  </label>
+                </div>
+                <div class='form-check'>
+                  <input class='form-check-input' type='radio' name='smokes' id='smokesNo'>
+                  <label class='form-check-label' for='smokesNo'>
+                    No
+                  </label>
+                </div>
+                <div class='form-check'>
+                  <input class='form-check-input' type='radio' name='smokes' id='smokesDoesNotMatter'>
+                  <label class='form-check-label' for='smokesDoesNotMatter'>
+                    Doesn&#x27;t matter
+                  </label>
+                </div>
+              </div>
+            
+              <div class='user-ethnicity'>
+                <div class='display-flex space-between'>
+                  <label for='ethnicityInput'>Ethnicities (up to 3)</label>
+                </div>
+            
+                <div class='autocomplete'>
+                  <div class='user-ethnicity-selection'></div>
+                  <input id='ethnicityInput' class='input-text-field' type='text' />
+                  <div id='ethnicity-results'></div>
+                </div>
+              </div>
+            </div>
+
+            <div class='half-column form-check-wrapper'>
+              <div class='display-flex space-between'>
+                <label class='form-check-label'>Diet</label>
+              </div>
+
+              <div class='form-check'>
+                <label class='form-check-label' for='Halal only'>
+                  <input class='form-check-input diet' type='checkbox' id='Halal only'>
+                  Halal only
+                </label>
+              </div>
+              <div class='form-check'>
+                <label class='form-check-label' for='Halal when possible'>
+                  <input class='form-check-input diet' type='checkbox' id='Halal when possible'>
+                  Halal when possible
+                </label>
+              </div>
+              <div class='form-check'>
+                <label class='form-check-label' for='Eat anything'>
+                  <input class='form-check-input diet' type='checkbox' id='Eat anything'>
+                  Eat anything
+                </label>
+              </div>
+              <div class='form-check'>
+                <label class='form-check-label' for='Eat anything except pork'>
+                  <input class='form-check-input diet' type='checkbox' id='Eat anything except pork'>
+                  Eat anything except pork
+                </label>
+              </div>
+              <div class='form-check'>
+                <label class='form-check-label' for='Vegetarian'>
+                  <input class='form-check-input diet' type='checkbox' id='Vegetarian'>
+                  Vegetarian
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class='section-row'>
+            <div class='half-column'>
+              <div class='display-flex space-between'>
+                <label>Age Range</label>
+              </div>
+
+              <div class='age-range-wrapper'>
+                <p>Between</p>
+                <div class='min-age-wrapper'>
+                  <p><span class='min-age-range'></span></p>
+                </div>
+                <p><span>and</span></p>
+                <div class='max-age-wrapper'>
+                  <p><span class='max-age-range'></span></p>
+                </div>
+                <p>years old</p>
+              </div>
+              <div class='double-range-wrapper'>
+                <div class='age-range-slider-track'></div>
+                <input type='range' min='18' max='60' value='18' class='min-age-slider' oninput='minAge()'>
+                <input type='range' min='18' max='60' value='60' class='max-age-slider' oninput='maxAge()'>
+              </div>
+            </div>
+
+            <div class='half-column form-check-wrapper'>
+              <div class='display-flex space-between'>
+                <label>Height</label>
+              </div>
+
+              <div class='height-range-wrapper'>
+                <p>Between&nbsp;</p>
+                <div class='min-height-wrapper'>
+                  <p class='min-height-range-imperial-value'></p>
+                  <p class='min-height-range-metric-value'></p>
+                </div>
+                <p><span>&nbsp;and&nbsp;</span></p>
+                <div class='max-height-wrapper'>
+                  <p class='max-height-range-imperial-value'></p>
+                  <p class='max-height-range-metric-value'></p>
+                </div>
+              </div>
+              <div class='double-range-wrapper'>
+                <div class='heights-slider-track'></div>
+                <input type='range' min='147' max='196' value='147' class='min-height-slider' oninput='minHeight()'>
+                <input type='range' min='147' max='196' value='196' class='max-height-slider' oninput='maxHeight()'>
+              </div>
+            </div>
+          </div>
+
+          <div class='section-row baseline'>
+            <div class='half-column form-check-wrapper'>
+              <div class='display-flex space-between'>
+                <label class='form-check-label'>Prayer Level</label>
+              </div>
+
+              <div class='form-check'>
+                <label class='form-check-label' for='Rarely'>
+                  <input class='form-check-input prayer-level' type='checkbox' id='Rarely'>
+                  Rarely
+                </label>
+              </div>
+              <div class='form-check'>
+                <label class='form-check-label' for='Sometimes'>
+                  <input class='form-check-input prayer-level' type='checkbox' id='Sometimes'>
+                  Sometimes
+                </label>
+              </div>
+              <div class='form-check'>
+                <label class='form-check-label' for='Always'>
+                  <input class='form-check-input prayer-level' type='checkbox' id='Always'>
+                  Always
+                </label>
+              </div>
+            </div>
+
+            <div class='half-column form-check-wrapper'>
+              <label class='form-check-label'>Sort results by</label>
+              <div class='padding-bottom'>
+                <select id='sort-results'>
+                  <option value='lastActive'>Last Active</option>
+                  <option value='newestMembers'>Newest Members</option>
+                  <option value='nearestToYou'>Nearest To You</option>
+                </select>
+              </div>
+
+              <div class='form-check'>
+                <input class='form-check-input' type='checkbox' id='photos-only-checkbox'>
+                <label class='form-check-label' for='photos-only-checkbox'>Profiles with photos only</label>
+              </div>
+            </div>
+          </div>
+        </div> 
+
+        <div class='search-button-wrapper'>
+          <div id='search-button-loading-spinner-wrapper' class='half-width'>
+            <button type='submit' class='form-submit-search-button'>
               Search
             </button>
-
-            <div class="reset-form-button-wrapper">
-              <button type="submit" onclick="handleCreateNewAccount()" class="reset-form-button">
-                Reset fields
-              </button>
-            </div>
-
           </div>
-        </form>
-      </div>
+        </div>
+      </form>
     </div>
-  </section>
-</div>
+  </div>
+</section>

@@ -1,15 +1,16 @@
-const languageHelper = async () => {
+let userLanguages = [];
+
+const languageHelper = async (langaugesValue) => {
   const { allLanguages } = await getAllLanguages();
 
   const languageInput = document.querySelector('#languageInput');
   const languageResults = document.querySelector('#language-results');
   const languageInputPlaceholder = 'Select up to 3';
-  let userLanguagesResult = [];
   let currentFocus = 0;
   let results = [];
-  
+
   languageInput.placeholder = languageInputPlaceholder;
-  
+
   const langauges = async userInput => {
     const filteredResults = allLanguages.filter(
       element => element.toLowerCase().indexOf(userInput) > -1
@@ -19,7 +20,7 @@ const languageHelper = async () => {
 
     return filteredResults;
   };
-  
+
   const getUserLanguageInput = () =>
     languageInput.addEventListener(
       'input',
@@ -29,13 +30,13 @@ const languageHelper = async () => {
           closeAllLists('#languageInput');
           return false;
         }
-  
+
         results = await langauges(userInput);
         currentFocus = -1;
-  
+
         let searchResultsWrapper = '<div class="autocomplete-items">';
         const userInputRegex = new RegExp(userInput, 'gi');
-  
+
         results.map(language => {
           const languageMatch = language.replace(userInputRegex, x => `<strong>${x}</strong>`);
           searchResultsWrapper += `
@@ -49,12 +50,12 @@ const languageHelper = async () => {
         </div>
       `;
         });
-  
+
         searchResultsWrapper += '</div>';
         document.querySelector('#language-results').innerHTML = searchResultsWrapper;
       }, 250)
     );
-  
+
   const renderLanguages = data => {
     const results = resultsData =>
       resultsData
@@ -74,7 +75,7 @@ const languageHelper = async () => {
             `;
         })
         .join('');
-  
+
     const selection = () => `
       <div class='user-selection-container'>
         ${results(data)}
@@ -82,13 +83,13 @@ const languageHelper = async () => {
     `;
     const userSelection = document.querySelector('.user-languages-selection');
     userSelection.innerHTML = selection();
-  
+
     document.querySelectorAll('.display-user-language').forEach(element => {
       element.style.display = 'flex';
     });
-  
+
     document.querySelector('#languageInput').placeholder = '';
-  
+
     if (data.length === 0) {
       document.querySelector('#languageInput').disabled = false;
       document.querySelector('#languageInput').placeholder = languageInputPlaceholder;
@@ -100,21 +101,21 @@ const languageHelper = async () => {
       const locationElement = document
         .querySelector(`#remove-language-${data.length - 1}`)
         .getBoundingClientRect();
-  
+
       document.querySelector('.languages').style.cssText = `padding-left: ${
         locationElement.x - selectionElement.x + 30
       }px`;
       languageInput.focus();
-  
+
       removeLanguageSelection();
     } else {
       document.querySelector('#languageInput').disabled = true;
       removeLanguageSelection();
     }
-  
+
     closeAllLists('#languageInput');
   };
-  
+
   const getKeyDirection = (event, callback) => {
     let element = document.querySelector('.autocomplete-items');
     if (element) {
@@ -135,46 +136,45 @@ const languageHelper = async () => {
       }
     }
   };
-  
+
   const removeLanguageSelection = () => {
     document.querySelectorAll('.user-language-remove').forEach(element => {
       element.addEventListener('click', el => {
         const elementId = el.currentTarget.id.split('-')[2];
-        userLanguagesResult.splice(elementId, 1);
-        renderLanguages(userLanguagesResult);
+        userLanguages.splice(elementId, 1);
+        renderLanguages(userLanguages);
       });
     });
   };
-  
-  const userLanguages = languageInput.getAttribute('data-languages').split(',')
-  userLanguagesResult = [...userLanguages];
-  renderLanguages(userLanguagesResult);
-  
+
+  userLanguages = langaugesValue;
+  renderLanguages(userLanguages);
+
   languageInput.addEventListener('keydown', event => {
     getUserLanguageInput();
-  
+
     getKeyDirection(event, element => {
       const value = element[currentFocus].id;
       const languageSelection = value;
       languageInput.value = '';
-  
-      if (userLanguagesResult.indexOf(languageSelection) === -1) {
-        userLanguagesResult.push(languageSelection);
+
+      if (userLanguages.indexOf(languageSelection) === -1) {
+        userLanguages.push(languageSelection);
       }
-  
-      renderLanguages(userLanguagesResult);
+
+      renderLanguages(userLanguages);
     });
   });
-  
+
   languageResults.addEventListener('click', event => {
     const value = event.target.id;
     const languageSelection = value;
     languageInput.value = '';
-  
-    if (userLanguagesResult.indexOf(languageSelection) === -1) {
-      userLanguagesResult.push(languageSelection);
+
+    if (userLanguages.indexOf(languageSelection) === -1) {
+      userLanguages.push(languageSelection);
     }
-  
-    renderLanguages(userLanguagesResult);
+
+    renderLanguages(userLanguages);
   });
 }

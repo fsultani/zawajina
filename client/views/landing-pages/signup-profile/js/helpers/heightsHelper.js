@@ -1,4 +1,4 @@
-const heightsDictionary = [
+const heightsOptions = [
   147,
   148,
   149,
@@ -63,13 +63,13 @@ const calculateImperialHeight = height => {
 };
 
 const heightOptions = ['<option selected disabled>Select Height</option>'];
-heightsDictionary.map((height, index) => {
+heightsOptions.map((height, index) => {
   const imperialHeight = calculateImperialHeight(height);
   let optionText = `${imperialHeight.heightInFeet}'${imperialHeight.heightInInches}" (${height} cm)`;
 
   if (index === 0) {
     optionText = `< ${imperialHeight.heightInFeet}'${imperialHeight.heightInInches}" (${height} cm)`;
-  } else if (index === heightsDictionary.length - 1) {
+  } else if (index === heightsOptions.length - 1) {
     optionText = `> ${imperialHeight.heightInFeet}'${imperialHeight.heightInInches}" (${height} cm)`;
   }
   return heightOptions.push(`<option value=${height}>${optionText}</option>`)

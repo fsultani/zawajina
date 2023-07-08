@@ -1,71 +1,98 @@
-<div class="main">
-  <div class="main-container">
+<div class='main'>
+  <div class='main-container'>
 
-    <div class="nav-container">
-      <nav class="nav nav-borders">
-        <a class="nav-link" id="account-page" href="/settings/account">Account</a>
-        <a class="nav-link" id="blocked-users-page" href="/settings/blocked">Blocked Users</a>
-        <a class="nav-link" id="security-page" href="/settings/security">Security</a>
-      </nav>
-      <hr class="horizontal-divider">
+    <div class='nav-container'></div>
+
+    <div class='form-container' id='account' data-account-deactivated='${authUser.accountDeactivated}'>
+      <div class='form-wrapper border-bottom'>
+        <div class='form-content' id='account-information-form'>
+          <form onsubmit='handleUpdateAccount(event)' novalidate class='form'>
+            <div class='form-section'>
+              <h1 class='form-title'>Account Information</h1>
+              <div class='form-submission-error'></div>
+
+              <div class='input-wrapper' id='name-wrapper'>
+                <label for='name' class='form-label'>Name</label>
+                <input type='text' class='form-input' id='name' placeholder='Enter your name' value='${authUser.name}' />
+                <div id='name-error-text'></div>
+              </div>
+
+              <div class='input-wrapper' id='email-wrapper'>
+                <label for='email' class='form-label'>Email</label>
+                <input type='email' class='form-input' id='email' placeholder='Enter your email' value='${authUser.email}' />
+                <div id='email-error-text'></div>
+              </div>
+            </div>
+
+            <div class='form-section form-group submit-button'>
+              <div class='form-submit-wrapper'>
+                <div id='form-submit-account-loading-spinner-wrapper'>
+                  <button type='submit' class='form-submit-account'>
+                    Update Account
+                  </button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
 
-    <div class="form-wrapper" id="account">
-      <div class="form-content">
-        <form name="signupForm" onsubmit="return false" novalidate class="signup-form-wrapper">
-          <div class="form-section">
-            <h1 class="form-title">Profile Information</h1>
-            <div class="form-submission-error"></div>
+    <div class='form-container' data-account-deactivated='${authUser.accountDeactivated}'>
+      <div class='form-wrapper border-bottom-alert'>
+        <div class='form-content'>
+          <div class='form-section'>
+            <h1 class='form-title' id='account-activation-title'>Deactivate account</h1>
 
-            <div class="input-wrapper validate-input" id="name-wrapper">
-              <label for="name" class="form-label">Name</label>
-              <input type="text" class="form-input name" placeholder="Enter your name" data-name="${authUser.name}" />
-            </div>
+            <p class='form-subtitle' id='account-activation-subtitle'>
+              You may deactivate your account to hide your profile from search results.
+              <br>
+              <br>
+              Your information will remain in our database if you decide to reactivate it in the future.
+              <br>
+              <br>
+              To reactivate your account, simply log in.
+            </p>
           </div>
 
-          <div class="form-section">
-            <h1 class="form-title">Account Email Address</h1>
-            <div class="input-wrapper validate-input" id="email-wrapper">
-              <label for="email" class="form-label">Email</label>
-              <input type="email" class="form-input email" placeholder="Enter your email" value="${authUser.email}" />
-            </div>
-          </div>
-
-          <div class="form-section">
-            <h1 class="form-title">Password</h1>
-            <div class="input-wrapper validate-input" id="password-wrapper">
-              <label for="new-password" class="form-label">New Password</label>
-              <div class="form-input-wrapper">
-                <input name="new-password" class="form-input user-password" type="password"
-                  placeholder="Enter new password" />
-                <span class="field-icon" onclick="togglePassword('1')">
-                  <i class="fa fa-eye-slash password-eye"></i>
-                </span>
-              </div>
-
-              <label for="confirm-new-password" class="form-label">Confirm New Password</label>
-              <input name="confirm-new-password" class="form-input confirm-user-password" type="password"
-                placeholder="Enter your new password again" />
-            </div>
-            <div class="password-helper-text">
-              Password must be at least 8 characters long
-            </div>
-          </div>
-
-          <div class="form-section form-group submit-button">
-            <div class="form-submit-wrapper">
-              <div class="loading-spinner">
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-              </div>
-              <button type="submit" onclick="handleUpdateAccount()" class="form-submit">
-                Update Account
+          <div class='form-section form-group submit-button'>
+            <div class='form-submit-wrapper'>
+              <div class='loading-spinner-wrapper'></div>
+              <button type='button' onclick="handleDeactivateAccountModal()" class='form-submit-deactivate'>
+                Deactivate account
               </button>
             </div>
           </div>
-        </form>
+        </div>
+      </div>
+    </div>
+
+    <div class='form-container' data-account-deactivated='${authUser.accountDeactivated}'>
+      <div class='form-wrapper'>
+        <div class='form-content'>
+          <div class='form-section'>
+            <h1 class='form-title alert'>Delete Account</h1>
+
+            <p class='form-subtitle' id='account-activation-subtitle'>
+              You may permanently delete your account.
+              <br>
+              <br>
+              Your information will be removed from our database.
+              <br>
+              <br>
+              This option cannot be reverted: once you delete your account, you will not be able to reactivate it.
+            </p>
+          </div>
+
+          <div class='form-section form-group submit-button'>
+            <div class='form-submit-wrapper'>
+              <div class='loading-spinner-wrapper'></div>
+              <button type='button' onclick="handleDeleteAccountModal()" class='form-submit-delete'>
+                Delete Account
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>

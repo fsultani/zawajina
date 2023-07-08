@@ -1,99 +1,66 @@
 @font-face {
-  font-family: 'Montserrat';
-  font-style: normal;
-  font-weight: 300;
-  src: url('/static/client/fonts/montserrat/Montserrat-Light.ttf');
+  font-family: Poppins-Regular;
+  src: url('/static/client/fonts/poppins/Poppins-Regular.ttf');
 }
 
 @font-face {
-  font-family: 'Montserrat';
-  font-style: normal;
-  font-weight: 400;
-  src: url('/static/client/fonts/montserrat/Montserrat-Regular.ttf');
+  font-family: Poppins-Medium;
+  src: url('/static/client/fonts/poppins/Poppins-Medium.ttf');
 }
 
 @font-face {
-  font-family: 'Montserrat';
-  font-style: italic;
-  font-weight: 400;
-  src: url('/static/client/fonts/montserrat/Montserrat-Italic.ttf');
+  font-family: Poppins-Bold;
+  src: url('/static/client/fonts/poppins/Poppins-Bold.ttf');
 }
 
 @font-face {
-  font-family: 'Montserrat';
-  font-style: normal;
-  font-weight: 500;
-  src: url('/static/client/fonts/montserrat/Montserrat-Medium.ttf');
+  font-family: Poppins-SemiBold;
+  src: url('../fonts/poppins/Poppins-SemiBold.ttf');
 }
 
-@font-face {
-  font-family: 'Montserrat';
-  font-style: normal;
-  font-weight: 600;
-  src: url('/static/client/fonts/montserrat/Montserrat-SemiBold.ttf');
+* {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
 }
 
-@font-face {
-  font-family: 'Montserrat';
-  font-style: normal;
-  font-weight: 700;
-  src: url('/static/client/fonts/montserrat/Montserrat-Bold.ttf');
-}
-
-@font-face {
-  font-family: 'Montserrat';
-  font-style: italic;
-  font-weight: 700;
-  src: url('/static/client/fonts/montserrat/Montserrat-BoldItalic.ttf');
-}
-
-@font-face {
-  font-family: 'Montserrat';
-  font-style: italic;
-  font-weight: 900;
-  src: url('/static/client/fonts/montserrat/montserrat-v12-latin-900.ttf'),
-    url('/static/client/fonts/montserrat/montserrat-v12-latin-900.eot') format('embedded-opentype'),
-    url('/static/client/fonts/montserrat/montserrat-v12-latin-900.svg') format('woff2'),
-    url('/static/client/fonts/montserrat/montserrat-v12-latin-900.woff') format('woff'),
-    url('/static/client/fonts/montserrat/montserrat-v12-latin-900.woff2') format('truetype');
-}
-
-body {
-  font-size: 14px;
-  line-height: 1.8;
-  color: #222;
-  font-weight: 400;
-  background: #ffffff;
+body,
+html {
+  height: 100%;
+  margin: 0px;
+  font-family: Poppins-Regular, sans-serif;
 }
 
 section {
   height: 100%;
 }
 
-p {
-  font-size: 15px;
+a {
+  font-family: Poppins-Regular;
+  font-size: 14px;
+  line-height: 1.7;
+  color: #666666;
+  margin: 0px;
+}
+
+a:hover {
+  text-decoration: none;
+  color: -webkit-linear-gradient(left, #21d4fd, #b721ff);
+  color: -o-linear-gradient(left, #21d4fd, #b721ff);
+  color: -moz-linear-gradient(left, #21d4fd, #b721ff);
+  color: linear-gradient(left, #21d4fd, #b721ff);
 }
 
 input {
-  border: 1px solid #d3d3d3;
-  border-radius: 5px;
-  -moz-border-radius: 5px;
-  -webkit-border-radius: 5px;
-  -o-border-radius: 5px;
-  -ms-border-radius: 5px;
-  box-sizing: border-box;
-  padding: 15px 20px;
-  margin-bottom: 15px;
-  font-size: 14px;
-  font-weight: bold;
-  font-family: 'Montserrat';
+  outline: none;
+  border: none;
 }
 
 /* Hide arrows */
 /* Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
+  display: none;
 }
 
 /* Firefox */
@@ -101,56 +68,129 @@ input[type=number] {
   -moz-appearance: textfield;
 }
 
-input[type='submit'] {
-  background-color: DodgerBlue;
-  color: #fff;
-  cursor: pointer;
-}
-
-label,
-input {
-  display: block;
-  width: 100%;
-}
-
-label {
-  font-weight: 700;
-  font-size: 14px;
-  color: #727272;
-  margin-bottom: 3px;
-}
-
-input:focus {
+textarea {
   outline: none;
-  border: 1px solid #6dabe4;
+  border: none;
 }
 
-.signup-container {
-  padding: 60px 0;
-  background: linear-gradient(57deg, #00c6a7 0%, #1e4d92 100%);
-  background: -webkit-linear-gradient(57deg, #00c6a7 0%, #1e4d92 100%);
-  background: -o-linear-gradient(57deg, #00c6a7 0%, #1e4d92 100%);
-  background: -moz-linear-gradient(57deg, #00c6a7 0%, #1e4d92 100%);
+textarea:focus,
+input:focus {
+  border-color: transparent !important;
 }
 
-.signup-wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 660px;
-  height: 100%;
-  position: relative;
+input:focus::-webkit-input-placeholder {
+  color: transparent;
+}
+
+input:focus:-moz-placeholder {
+  color: transparent;
+}
+
+input:focus::-moz-placeholder {
+  color: transparent;
+}
+
+input:focus:-ms-input-placeholder {
+  color: transparent;
+}
+
+textarea:focus::-webkit-input-placeholder {
+  color: transparent;
+}
+
+textarea:focus:-moz-placeholder {
+  color: transparent;
+}
+
+textarea:focus::-moz-placeholder {
+  color: transparent;
+}
+
+textarea:focus:-ms-input-placeholder {
+  color: transparent;
+}
+
+input::-webkit-input-placeholder {
+  color: #adadad;
+}
+
+input:-moz-placeholder {
+  color: #adadad;
+}
+
+input::-moz-placeholder {
+  color: #adadad;
+}
+
+input:-ms-input-placeholder {
+  color: #adadad;
+}
+
+textarea::-webkit-input-placeholder {
+  color: #adadad;
+}
+
+textarea:-moz-placeholder {
+  color: #adadad;
+}
+
+textarea::-moz-placeholder {
+  color: #adadad;
+}
+
+textarea:-ms-input-placeholder {
+  color: #adadad;
+}
+
+.login-page-container {
+  width: 100%;
   margin: 0 auto;
 }
 
-.signup-content {
+.signup {
+  font-family: Poppins-Regular;
+  font-size: 13px;
+  color: #333333;
+  line-height: 1.5;
+}
+
+.logo {
+  position: absolute;
+  top: 24px;
+  left: 87.5px;
+}
+
+.form-container {
+  width: 100%;
+  height: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 200px 20px;
+  background: linear-gradient(-135deg, #c850c0, #4158d0);
+  background: linear-gradient(57deg, #00c6a7 0%, #1e4d92 100%);
+}
+
+.form-wrapper {
+  width: 390px;
   background: #fff;
   border-radius: 10px;
-  -moz-border-radius: 10px;
-  -webkit-border-radius: 10px;
-  -o-border-radius: 10px;
-  -ms-border-radius: 10px;
-  padding: 50px 85px 0;
+  overflow: hidden;
+  padding: 30px;
+  box-shadow: 0 5px 10px 0px rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: 0 5px 10px 0px rgba(0, 0, 0, 0.1);
+  -webkit-box-shadow: 0 5px 10px 0px rgba(0, 0, 0, 0.1);
+  -o-box-shadow: 0 5px 10px 0px rgba(0, 0, 0, 0.1);
+  -ms-box-shadow: 0 5px 10px 0px rgba(0, 0, 0, 0.1);
+}
+
+.form {
+  width: 100%;
 }
 
 #verification-code-error {
@@ -168,59 +208,208 @@ input:focus {
 }
 
 .form-title {
-  line-height: 1.66;
-  margin: 0;
-  padding: 0;
-  font-weight: 900;
-  color: #222;
-  font-family: 'Montserrat';
-  font-size: 24px;
-  text-transform: uppercase;
+  display: block;
+  font-family: Poppins-Bold;
+  font-size: 30px;
+  color: #333333;
+  line-height: 1.2;
   text-align: center;
-  margin-bottom: 40px;
+  padding-bottom: 26px;
 }
 
 .form-subtitle {
+  line-height: 1.5;
   margin: 8px auto;
   text-align: center;
   font-size: 16px;
+  color: #333333;
+}
+
+.input-wrapper {
+  width: 100%;
+  position: relative;
+  border-bottom: 2px solid #adadad;
+  margin-bottom: 37px;
 }
 
 .input-field {
+  font-family: Poppins-Regular;
+  font-size: 15px;
+  color: #555555;
+  line-height: 1.2;
+  display: block;
+  width: 100%;
+  height: 45px;
+  background: transparent;
+  padding: 0 5px;
   text-align: center;
 }
 
-.form-group {
+.input-focus {
+  position: absolute;
+  display: block;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+
+.input-focus::before {
+  content: '';
+  display: block;
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  -webkit-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  -moz-transition: all 0.4s;
+  transition: all 0.4s;
+  background: #6a7dfe;
+  background: -webkit-linear-gradient(left, #21d4fd, #b721ff);
+  background: -o-linear-gradient(left, #21d4fd, #b721ff);
+  background: -moz-linear-gradient(left, #21d4fd, #b721ff);
+  background: linear-gradient(left, #21d4fd, #b721ff);
+}
+
+.input-focus.email-error::before {
+  content: '';
+  display: block;
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  -webkit-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  -moz-transition: all 0.4s;
+  transition: all 0.4s;
+  border-bottom: 2px solid red;
+}
+
+.input-focus::after {
+  font-family: Poppins-Regular;
+  font-size: 15px;
+  color: #999999;
+  line-height: 1.2;
+  content: attr(data-placeholder);
+  display: block;
+  width: 100%;
+  position: absolute;
+  top: 16px;
+  left: 0px;
+  padding-left: 5px;
+  -webkit-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  -moz-transition: all 0.4s;
+  transition: all 0.4s;
+}
+
+#email-error {
+  width: 100%;
+  text-align: center;
+  position: absolute;
+  bottom: -25px;
+  font-size: 14px;
+  color: red;
+}
+
+.input-field:focus+.input-focus::after {
+  top: -20px;
+}
+
+.input-field:focus+.input-focus::before {
+  width: 100%;
+}
+
+.has-value.input-field+.input-focus::after {
+  top: -20px;
+}
+
+.has-value.input-field+.input-focus::before {
+  width: 100%;
+}
+
+.password-icon-wrapper {
+  font-size: 15px;
+  color: #999999;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  align-items: center;
+  position: absolute;
+  height: 100%;
+  top: 0;
+  right: 0;
+  padding-right: 5px;
+  -webkit-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  -moz-transition: all 0.4s;
+  transition: all 0.4s;
+}
+
+.button-container {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding-top: 13px;
+}
+
+.button-wrapper {
+  width: 100%;
+  display: block;
   position: relative;
+  z-index: 1;
+  border-radius: 25px;
   overflow: hidden;
+  margin: 0 auto;
+}
+
+.button-background {
+  position: absolute;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  background-image: linear-gradient(to left, #74ebd5, #9face6);
 }
 
 .form-submit {
+  font-family: Poppins-Medium;
+  font-size: 15px;
+  color: #fff;
+  line-height: 1.2;
+  text-transform: uppercase;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 20px;
   width: 100%;
   height: 50px;
-  cursor: pointer;
-  border-radius: 5px;
-  -moz-border-radius: 5px;
-  -webkit-border-radius: 5px;
-  -o-border-radius: 5px;
-  -ms-border-radius: 5px;
-  padding: 17px 20px;
-  box-sizing: border-box;
-  font-size: 14px;
-  font-weight: 700;
-  color: #fff;
-  text-transform: uppercase;
+  outline: none;
   border: none;
-  background-image: -moz-linear-gradient(to left, #74ebd5, #9face6);
-  background-image: -ms-linear-gradient(to left, #74ebd5, #9face6);
-  background-image: -o-linear-gradient(to left, #74ebd5, #9face6);
-  background-image: -webkit-linear-gradient(to left, #74ebd5, #9face6);
-  background-image: linear-gradient(to left, #74ebd5, #9face6);
+  background: transparent;
+}
+
+.form-submit:hover {
+  background-image: linear-gradient(to left, #5ae8ce, #8d9ce3);
+  cursor: pointer;
 }
 
 .helper-text-wrapper {
   text-align: center;
-  padding: 25px 0;
+  padding-top: 14px;
 }
 
 .helper-text {
@@ -228,16 +417,35 @@ input:focus {
   font-weight: 500;
 }
 
+.validate-input {
+  position: relative;
+}
+
+.bottom-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-top: 14px;
+}
+
 @media screen and (max-width: 768px) {
-  .signup-container {
-    height: 100vh;
+  .form-wrapper {
+    margin-top: 32px;
   }
-  .signup-wrapper {
-    width: calc(100% - 40px);
-    max-width: 100%;
+
+  .wrap-login {
+    padding: 77px 15px 33px 15px;
   }
-  .signup-content {
-    padding: 50px 25px;
+}
+
+@media (max-width: 325px) {
+  .form-wrapper {
+    padding: 32px 15px;
+  }
+
+  .bottom-container {
+    padding-top: 32px;
   }
 }
 
@@ -245,7 +453,7 @@ input:focus {
   display: none;
   position: absolute;
   top: 2px;
-  left: 40%;
+  left: 95px;
 }
 
 .loading-spinner div {
@@ -257,7 +465,7 @@ input:focus {
   margin: 8px;
   border: 3px solid #fff;
   border-radius: 50%;
-  animation: loading-spinner 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  animation: animation-360-loading-spinner 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
   border-color: #fff transparent transparent transparent;
 }
 
@@ -276,14 +484,5 @@ input:focus {
 @media (min-width: 600px) {
   .loading-spinner {
     left: 45%;
-  }
-}
-
-@keyframes loading-spinner {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
   }
 }

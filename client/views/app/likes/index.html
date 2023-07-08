@@ -1,32 +1,36 @@
-<div class="main">
-  <div class="main-container">
+<div class='main'>
+  <div class='main-container'>
 
-    <div class="nav-container">
-      <nav class="nav nav-borders">
-        <a class="nav-link" id="likes" href="/likes">Likes</a>
-        <a class="nav-link" id="likes-me" href="/likes-me">Likes Me</a>
+    <div class='nav-container'>
+      <nav class='nav nav-borders'>
+        <a class='nav-link' id='likes' href='/likes'>Likes</a>
+        <a class='nav-link' id='likes-me' href='/likes-me'>Likes Me</a>
       </nav>
-      <hr class="mt-0 mb-4">
+      <hr class='mt-0 mb-4'>
     </div>
 
-    <div class="users-container">
+    <div class='users-container'>
       ${allUsers.map(user => `
-      <a href="/user/${user._id}">
-        <div class="testimonial-wrapper">
-          <div class="testimonial-image">
+      <a href='/user/${user._id}'>
+        <div class='testimonial-wrapper'>
+          <div class='testimonial-image'>
             <img
-              src="${user.photos.length > 0 ? user.photos[0] : user.gender === 'male' ? '/static/assets/icons/male_profile.jpeg' : '/static/assets/icons/female_profile.jpeg'}"
-              alt="Photo 1" />
+              src='${user.photos.length > 0 ? user.photos[0] : user.gender === `male` ? `/static/assets/icons/male_profile.jpeg` : `/static/assets/icons/female_profile.jpeg`}'
+              alt='Photo 1' />
           </div>
-          <div class="testimonial-body">
-            <div class="testimonial-name">${user.name}, ${user.age}</div>
-            <p class="location">
-              ${(user.city.length + 2 + (user.state ? user.state.length + 2 : 0) + user.country.length) < 30 ?
-                `${user.city}, ${user.state !==null ? `${user.state}, ${user.country}` : user.country}` : `${user.city},
-                ${user.state !==null ? `${user.state}, ${user.country}` : user.country.slice(0, -10)}...`} </p>
-                <p class="ethnicity">
-                  ${user.ethnicity.map(ethnicity => ethnicity).join(' | ')}
-                </p>
+          <div class='testimonial-body'>
+            <div class='testimonial-name'>${user.name}, ${user.age}</div>
+            <div>
+              ${user.state !== null ?
+              `<p class='location'>${user.city.length < 20 ? `${user.city}` : `${user.city.slice(0, 20)}...`},
+                  ${user.state}</p>` :
+                  `<p class='location'>${user.city.length < 25 ? `${user.city}` : `${user.city.slice(0, 25)}...`}</p>`
+                      }
+                      <p class='location'>${user.country}</p>
+            </div>
+            <p class='ethnicity'>
+              ${user.ethnicity.map(ethnicity => ethnicity).join(' | ')}
+            </p>
           </div>
         </div>
       </a>
@@ -34,17 +38,21 @@
     </div>
   </div>
 
-  <div class="pagination-container">
-    <div class="pagination">
-      ${ previousPage ? previousPage === 1 ? `<a href="/users">❮</a>` : `<a href="/users?page=${currentPage - 1}">❮</a>`
-      : '' } ${numberOfPages > 2 && currentPage === numberOfPages ? `<a
-        href="/users?page=${previousPage - 1}">${previousPage - 1}</a>` : ''} ${ previousPage ? previousPage === 1 ? `<a
-        href="/users">${previousPage}</a>` : `<a href="/users?page=${previousPage}">${previousPage}</a>` : '' }
+  <div class='pagination-container'>
+    <div class='pagination'>
+      ${previousPage === 1 ? `<a href='${originalUrl}'>&#10094;</a>` : '' }
+      ${previousPage > 1 ? `<a href='${originalUrl}?page=${currentPage - 1}'>&#10094;</a>` : '' }
 
-      ${numberOfPages > 1 ? `<a href="#" style="pointer-events: none;" class="active">${currentPage}</a>` : ''}
-      ${nextPage ? `<a href="/users?page=${nextPage}">${nextPage}</a>` : ''} ${numberOfPages > 2 &&
-      currentPage === 1 ? `<a href="/users?page=${nextPage + 1}">${nextPage + 1}</a>` : ''}
-      ${nextPage ? `<a href="/users?page=${currentPage + 1}">❯</a>` : ''}
+      ${numberOfPages === 3 && currentPage === numberOfPages ? `<a href='${originalUrl}'>${previousPage - 1}</a>` : ''}
+
+      ${numberOfPages > 3 && currentPage === numberOfPages ? `<a href='${originalUrl}?page=${previousPage - 1}'>${previousPage - 1}</a>` : ''}
+
+      ${previousPage ? previousPage === 1 ? `<a href='${originalUrl}'>${previousPage}</a>` : `<a href='${originalUrl}?page=${previousPage}'>${previousPage}</a>` : '' }
+
+      ${numberOfPages > 1 ? `<a href='#' style='pointer-events: none;' class='active'>${currentPage}</a>` : ''}
+      ${nextPage ? `<a href='${originalUrl}?page=${nextPage}'>${nextPage}</a>` : ''} ${numberOfPages > 2 &&
+      currentPage === 1 ? `<a href='${originalUrl}?page=${nextPage + 1}'>${nextPage + 1}</a>` : ''}
+      ${nextPage ? `<a href='${originalUrl}?page=${currentPage + 1}'>&#10095;</a>` : ''}
     </div>
   </div>
 </div>

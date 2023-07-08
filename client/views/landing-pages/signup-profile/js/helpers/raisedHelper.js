@@ -9,10 +9,10 @@
   countryRaisedInInput.placeholder = raisedInputPlaceholder;
 
   const getAllCountries = async userInput => {
-    const { countries } = globalThis;
+    const { allCountries } = globalThis;
 
     const userInputRegex = new RegExp(userInput, 'gi');
-    const filteredResults = countries
+    const filteredResults = allCountries
       .filter(element => element.country.toLowerCase().indexOf(userInput) > -1)
       .map(({ country }) => country.replace(userInputRegex, match => `<strong>${match}</strong>`));
 

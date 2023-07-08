@@ -1,0 +1,51 @@
+<div class='main'>
+  <div class='main-container'>
+
+    <div class='nav-container'></div>
+
+    <div class='form-wrapper' id='blocked-users'>
+      <div class='users-container'>
+        ${allUsers.map(user => `
+        <a href='/user/${user._id}'>
+          <div class='testimonial-wrapper'>
+            <div class='testimonial-image'>
+              <img
+                src='${user.photos.length > 0 ? user.photos[0] : user.gender === `male` ? `/static/assets/icons/male_profile.jpeg` : `/static/assets/icons/female_profile.jpeg`}'
+                alt='Photo 1' />
+            </div>
+            <div class='testimonial-body'>
+              <div class='testimonial-name'>${user.name}, ${user.age}</div>
+              <p class='location'>
+                ${(user.city.length + 2 + (user.state ? user.state.length + 2 : 0) + user.country.length) < 30 ?
+                  `${user.city}, ${user.state !==null ? `${user.state}, ${user.country}` : user.country}` :
+                  `${user.city}, ${user.state !==null ? `${user.state}, ${user.country}` : user.country.slice(0,
+                  -10)}...`} </p>
+                  <p class='ethnicity'>
+                    ${user.ethnicity.map(ethnicity => ethnicity).join(' | ')}
+                  </p>
+            </div>
+          </div>
+        </a>
+        `).join('')}
+      </div>
+    </div>
+  </div>
+
+  <div class='pagination-container'>
+    <div class='pagination'>
+      ${previousPage === 1 ? `<a href='${originalUrl}'>&#10094;</a>` : '' }
+      ${previousPage > 1 ? `<a href='${originalUrl}?page=${currentPage - 1}'>&#10094;</a>` : '' }
+
+      ${numberOfPages === 3 && currentPage === numberOfPages ? `<a href='${originalUrl}'>${previousPage - 1}</a>` : ''}
+
+      ${numberOfPages > 3 && currentPage === numberOfPages ? `<a href='${originalUrl}?page=${previousPage - 1}'>${previousPage - 1}</a>` : ''}
+
+      ${previousPage ? previousPage === 1 ? `<a href='${originalUrl}'>${previousPage}</a>` : `<a href='${originalUrl}?page=${previousPage}'>${previousPage}</a>` : '' }
+
+      ${numberOfPages > 1 ? `<a href='#' style='pointer-events: none;' class='active'>${currentPage}</a>` : ''}
+      ${nextPage ? `<a href='${originalUrl}?page=${nextPage}'>${nextPage}</a>` : ''} ${numberOfPages > 2 &&
+      currentPage === 1 ? `<a href='${originalUrl}?page=${nextPage + 1}'>${nextPage + 1}</a>` : ''}
+      ${nextPage ? `<a href='${originalUrl}?page=${currentPage + 1}'>&#10095;</a>` : ''}
+    </div>
+  </div>
+</div>

@@ -1,15 +1,16 @@
-const hobbiesHelper = async () => {
+let userHobbies = [];
+
+const hobbiesHelper = async (hobbiesValue) => {
   const { allHobbies } = await getAllHobbies();
 
   const hobbiesInput = document.querySelector('#hobbies-input');
   const hobbiesResults = document.querySelector('#hobbies-results');
   const hobbiesInputPlaceholder = 'Select up to 5';
-  let userHobbiesResults = [];
   let currentFocus = 0;
   let results = [];
-  
+
   hobbiesInput.placeholder = hobbiesInputPlaceholder;
-  
+
   const hobbies = async userInput => {
     const filteredResults = allHobbies.filter(
       element => element.toLowerCase().indexOf(userInput) > -1
@@ -18,7 +19,7 @@ const hobbiesHelper = async () => {
 
     return filteredResults;
   };
-  
+
   const getUserHobbyINput = () =>
     hobbiesInput.addEventListener(
       'input',
@@ -28,13 +29,13 @@ const hobbiesHelper = async () => {
           closeAllLists('#hobbies-input');
           return false;
         }
-  
+
         results = await hobbies(userInput);
         currentFocus = -1;
-  
+
         let searchResultsWrapper = '<div class="autocomplete-items">';
         const userInputRegex = new RegExp(userInput, 'gi');
-  
+
         results.map(hobby => {
           const hobbyMatch = hobby.replace(userInputRegex, x => `<strong>${x}</strong>`);
           searchResultsWrapper += `
@@ -48,12 +49,12 @@ const hobbiesHelper = async () => {
         </div>
       `;
         });
-  
+
         searchResultsWrapper += '</div>';
         document.querySelector('#hobbies-results').innerHTML = searchResultsWrapper;
       }, 250)
     );
-  
+
   const renderHobby = data => {
     const results = resultsData =>
       resultsData
@@ -73,7 +74,7 @@ const hobbiesHelper = async () => {
             `;
         })
         .join('');
-  
+
     const selection = () => `
       <div class='user-selection-container'>
         ${results(data)}
@@ -81,21 +82,24 @@ const hobbiesHelper = async () => {
     `;
     const userSelection = document.querySelector('.user-hobbies-selection');
     userSelection.innerHTML = selection();
-  
+
     document.querySelectorAll('.display-user-hobby').forEach(element => {
       element.style.cssText = `
         display: flex;
         margin-bottom: 8px;
       `;
     });
-  
+
     document.querySelector('#hobbies-input').placeholder = '';
-  
+
     const selectionElement = userSelection.getBoundingClientRect();
-    const locationElement = document
-      .querySelector(`#remove-hobby-${data.length - 1}`)
-      .getBoundingClientRect();
-  
+    let locationElement;
+    if (data.length > 0) {
+      locationElement = document
+        .querySelector(`#remove-hobby-${data.length - 1}`)
+        .getBoundingClientRect();
+    }
+
     if (data.length === 0) {
       hobbiesInput.disabled = false;
       hobbiesInput.placeholder = hobbiesInputPlaceholder;
@@ -109,7 +113,7 @@ const hobbiesHelper = async () => {
         padding-left: 8px;
       `;
       hobbiesInput.focus();
-  
+
       removeHobbySelection();
     } else {
       document.querySelector('.hobbies').style.cssText = `
@@ -119,10 +123,10 @@ const hobbiesHelper = async () => {
       document.querySelector('#hobbies-input').disabled = true;
       removeHobbySelection();
     }
-  
+
     closeAllLists('#hobbies-input');
   };
-  
+
   const getKeyDirection = (event, callback) => {
     let element = document.querySelector('.autocomplete-items');
     if (element) {
@@ -143,45 +147,50 @@ const hobbiesHelper = async () => {
       }
     }
   };
-  
+
   const removeHobbySelection = () => {
     document.querySelectorAll('.user-hobby-remove').forEach(element => {
       element.addEventListener('click', el => {
         const elementId = el.currentTarget.id.split('-')[2];
-        userHobbiesResults.splice(elementId, 1);
-        renderHobby(userHobbiesResults);
+        userHobbies.splice(elementId, 1);
+        renderHobby(userHobbies);
       });
     });
   };
-  
-  const userHobbies = hobbiesInput.getAttribute('data-hobbies').split(',')
-  userHobbiesResults = [...userHobbies];
-  renderHobby(userHobbiesResults);
-  
+
+  userHobbies = hobbiesValue;
+  if (userHobbies.length === 1 && userHobbies[0] === '') {
+    userHobbies = [];
+  } else {
+    userHobbies = [...userHobbies]
+  }
+
+  renderHobby(userHobbies);
+
   hobbiesInput.addEventListener('keydown', event => {
     getUserHobbyINput();
-  
+
     getKeyDirection(event, element => {
       const value = element[currentFocus].id;
       const hobbySelection = value;
       hobbiesInput.value = '';
-      if (userHobbiesResults.indexOf(hobbySelection) === -1) {
-        userHobbiesResults.push(hobbySelection);
+      if (userHobbies.indexOf(hobbySelection) === -1) {
+        userHobbies.push(hobbySelection);
       }
-  
-      renderHobby(userHobbiesResults);
+
+      renderHobby(userHobbies);
     });
   });
-  
+
   hobbiesResults.addEventListener('click', event => {
     const value = event.target.id;
     const hobbySelection = value;
     hobbiesInput.value = '';
-  
-    if (userHobbiesResults.indexOf(hobbySelection) === -1) {
-      userHobbiesResults.push(hobbySelection);
+
+    if (userHobbies.indexOf(hobbySelection) === -1) {
+      userHobbies.push(hobbySelection);
     }
-  
-    renderHobby(userHobbiesResults);
+
+    renderHobby(userHobbies);
   });
 }

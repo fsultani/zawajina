@@ -155,6 +155,9 @@ textarea:-ms-input-placeholder {
 
 .signup-container {
   padding: 200px 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
   background: linear-gradient(57deg, #00c6a7 0%, #1e4d92 100%);
   background: -webkit-linear-gradient(57deg, #00c6a7 0%, #1e4d92 100%);
   background: -o-linear-gradient(57deg, #00c6a7 0%, #1e4d92 100%);
@@ -162,11 +165,7 @@ textarea:-ms-input-placeholder {
 }
 
 .signup-wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
   width: 390px;
-  height: 100%;
   position: relative;
   margin: 0 auto;
 }
@@ -218,11 +217,7 @@ textarea:-ms-input-placeholder {
   height: 45px;
   position: relative;
   border-bottom: 2px solid #adadad;
-  margin-bottom: 37px;
-}
-
-.validate-input {
-  position: relative;
+  margin-bottom: 55px;
 }
 
 .form-input {
@@ -233,6 +228,13 @@ textarea:-ms-input-placeholder {
   height: 100%;
   background: transparent;
   padding: 0 5px;
+}
+
+#name-error,
+#email-error {
+  color: red;
+  width: 100%;
+  text-align: center;
 }
 
 .input-focus {
@@ -298,12 +300,6 @@ textarea:-ms-input-placeholder {
   background: -o-linear-gradient(left, #21d4fd, #b721ff);
   background: -moz-linear-gradient(left, #21d4fd, #b721ff);
   background: linear-gradient(left, #21d4fd, #b721ff);
-}
-
-/* Used in client/views/landing-pages/signup/js/handleSignupStepOne.js */
-.form-error {
-  background: transparent;
-  border-bottom: 2px solid red;
 }
 
 .form-submit {
@@ -415,7 +411,7 @@ textarea:-ms-input-placeholder {
   margin: 8px;
   border: 3px solid #fff;
   border-radius: 50%;
-  animation: loading-spinner 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  animation: animation-360-loading-spinner 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
   border-color: #fff transparent transparent transparent;
 }
 
@@ -434,14 +430,5 @@ textarea:-ms-input-placeholder {
 @media (min-width: 600px) {
   .loading-spinner {
     left: 45%;
-  }
-}
-
-@keyframes loading-spinner {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
   }
 }

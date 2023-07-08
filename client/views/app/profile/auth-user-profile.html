@@ -1,0 +1,239 @@
+<div class='profile-page-container' data-user-id='${authUser._id}'>
+  <div class='profile-page-wrapper'>
+    <div class='profile-photos-container position-relative' data-user-photos='${authUser.photos.length}'
+      data-photos='${JSON.stringify(authUser.photos)}'>
+      <div class='${authUser.photos.length > 0 ? `photos-slider-wrapper` : `no-photos-slider-wrapper`}'
+        data-name='edit-button' data-section='photos'>
+        <div class='photos-container'>
+          <div class='slider-wrapper'>
+            ${authUser.photos.length > 0 ? authUser.photos.filter(photo => photo).map((photo, index) => `
+            <div class='slide slide-${index}' id='${index}'>
+              ${photo.approvalStatus !== 'Approved' ? `<h3 class='photo-approval-status'>${photo.approvalStatus}</h3>` :
+              '' }
+              <img src='${photo.secure_url}' />
+            </div>
+            `).join('') : `<img
+              src='${authUser.gender === `male` ? `/static/assets/icons/male_profile.jpeg` : `/static/assets/icons/female_profile.jpeg`}' />`
+            }
+          </div>
+          <div class='dots-wrapper'>
+            ${authUser.photos.length > 1 ? authUser.photos.filter(photo => photo).map(() => `
+            <span class='dot'></span>
+            `).join('') : ''}
+          </div>
+        </div>
+
+        ${authUser.photos.length > 1 ? `
+        <div class='image-previews-container'>
+          ${authUser.photos.filter(photo => photo).map((photo, index) => `
+          <div class='image-preview-wrapper'>
+            ${photo.approvalStatus === 'Pending Approval' ? `<i
+              class="fa fa-user-circle photo-approval-status-thumbnail" aria-hidden="true" style="color: #ffffff"></i>`
+            : '' }
+            ${photo.approvalStatus === 'Denied' ? `<i class="fa fa-ban photo-approval-status-thumbnail"
+              aria-hidden="true" style="color: red"></i>` : '' }
+            <img src='${photo.secure_url}' class='user-photo' onclick="goToImage('${index}')" />
+          </div>
+          `).join('')}
+        </div>` : ''
+        }
+
+        <div class='edit-button-container'>
+          <button onclick='handleProfileEdit("photos")' class='edit-button'>Edit</button>
+        </div>
+      </div>
+    </div>
+
+    <div class='user-main-info-container position-relative'>
+      <div class='flex-space-between' data-name='edit-button' data-section='location'>
+        <div class='user-main-info-wrapper'>
+          <h5 class='user-name-age' data-user-name-age='${authUser.name},${authUser.age}'>${authUser.name},
+            ${authUser.age}</h5>
+          <p class='user-location'>
+            Lives in
+            <span id='user-city' data-city='${authUser.city}'>${authUser.city}</span>,
+            ${authUser.state !== null ? `<span id='user-state' data-state='${authUser.state}'>${authUser.state}</span>,
+            ` : ``}
+            <span id='user-country' data-country='${authUser.country}'>${authUser.country}</span>
+          </p>
+          <p>${lastActive}</p>
+        </div>
+      </div>
+      <div class='contact-wrapper'>
+        <button disabled class='message-button'>
+          <i class='far fa-envelope fa-2x'></i>
+        </button>
+        <button disabled class='like-button'>
+          <i class='like-icon far fa-star fa-2x'></i>
+        </button>
+      </div>
+
+      <div class='edit-button-container'>
+        <button onclick='handleProfileEdit("location")' class='edit-button'>Edit</button>
+      </div>
+    </div>
+
+    <div class='user-details-container position-relative'>
+      <div class='user-details-wrapper' data-name='edit-button' data-section='user-details'>
+        <h5 class='user-details-header'>Details</h5>
+        <div class='details-container'>
+          <div class='details-wrapper'>
+            <span class='details-key'>Ethnicity:</span>
+            <span class='details-value'>${authUser.ethnicity.length > 0 ? authUser.ethnicity.map(ethnicity =>
+              ethnicity).join('&nbsp;<span>&#9679;</span>&nbsp;') : 'No Answer'}</span>
+          </div>
+          <div class='details-wrapper'>
+            <span class='details-key'>Raised in:</span>
+            <span class='details-value'>${authUser.countryRaisedIn || 'No Answer'}</span>
+          </div>
+          <div class='details-wrapper'>
+            <span class='details-key'>Conviction:</span>
+            <span class='details-value' data-religious-Conviction='${authUser.religiousConviction}'>${authUser.religiousConviction || 'No Answer'}</span>
+          </div>
+          <div class='details-wrapper'>
+            <span class='details-key'>Values:</span>
+            <span class='details-value' data-religious-Values='${authUser.religiousValues}'>${authUser.religiousValues || 'No Answer'}</span>
+          </div>
+          <div class='details-wrapper'>
+            <span class='details-key'>Marital Status:</span>
+            <span class='details-value' data-marital-Status='${authUser.maritalStatus}'>${authUser.maritalStatus || 'No Answer'}</span>
+          </div>
+          <div class='details-wrapper'>
+            <span class='details-key'>Education:</span>
+            <span class='details-value' data-education='${authUser.education}'>${authUser.education || 'No Answer'}</span>
+          </div>
+          <div class='details-wrapper'>
+            <span class='details-key'>Profession:</span>
+            <span class='details-value' data-profession='${authUser.profession}'>${authUser.profession || 'No Answer'}</span>
+          </div>
+          <div class='details-wrapper'>
+            <span class='details-key'>Languages:</span>
+            <span class='details-value' data-languages='${authUser.languages}'>${authUser.languages.length > 0 ? authUser.languages.map(language =>
+              language).join('&nbsp;<span>&#9679;</span>&nbsp;') : 'No Answer'}</span>
+          </div>
+          ${authUser.gender === 'female' ? `
+          <div class='details-wrapper'>
+            <span class='details-key'>Hijab:</span>
+            <span class='details-value' data-hijab='${authUser.hijab}'>${authUser.hijab || 'No Answer'}</span>
+          </div>
+          ` : ''
+          }
+          <div class='details-wrapper'>
+            <span class='details-key'>Has children:</span>
+            <span class='details-value' data-has-Children='${authUser.hasChildren}'>${authUser.hasChildren.split(/(?=[A-Z])/)[authUser.hasChildren.split(/(?=[A-Z])/).length - 1] || 'No Answer'}</span>
+          </div>
+          <div class='details-wrapper'>
+            <span class='details-key'>Wants children:</span>
+            <span class='details-value' data-wants-Children='${authUser.wantsChildren}'>${authUser.wantsChildren.split(/(?=[A-Z])/)[authUser.wantsChildren.split(/(?=[A-Z])/).length - 1] || 'No Answer'}</span>
+          </div>
+          <div class='details-wrapper'>
+            <span class='details-key'>Height:</span>
+            <span class='details-value'>${authUser.height || 'No Answer'}</span>
+          </div>
+          <div class='details-wrapper'>
+            <span class='details-key'>Can relocate:</span>
+            <span class='details-value' data-can-Relocate='${authUser.canRelocate}'>${authUser.canRelocate.split(/(?=[A-Z])/)[authUser.canRelocate.split(/(?=[A-Z])/).length - 1] || 'No Answer'}</span>
+          </div>
+          <div class='details-wrapper'>
+            <span class='details-key'>Diet:</span>
+            <span class='details-value' data-diet='${authUser.diet}'>${authUser.diet || 'No Answer'}</span>
+          </div>
+          <div class='details-wrapper'>
+            <span class='details-key'>Smokes:</span>
+            <span class='details-value' data-smokes='${authUser.smokes}'>${authUser.smokes.split(/(?=[A-Z])/)[authUser.smokes.split(/(?=[A-Z])/).length - 1] || 'No Answer'}</span>
+          </div>
+          <div class='details-wrapper'>
+            <span class='details-key'>Interests:</span>
+            <span class='details-value' data-hobbies='${authUser.hobbies}'>${authUser.hobbies.length > 0 ? authUser.hobbies.map(hobby =>
+              hobby).join('&nbsp;<span>&#9679;</span>&nbsp;') : 'No Answer'}</span>
+          </div>
+        </div>
+
+        <div class='edit-button-container'>
+          <button onclick='handleProfileEdit("user-details")' class='edit-button'>Edit</button>
+        </div>
+      </div>
+    </div>
+
+    <div class='about-me position-relative'>
+      <div data-name='edit-button' data-section='about-me'>
+        <h5>About me</h5>
+        <p id='about-me-value'>${authUser.aboutMe || 'No Answer'}</p>
+
+        <div class='edit-button-container'>
+          <button onclick='handleProfileEdit("about-me")' class='edit-button'>Edit</button>
+        </div>
+      </div>
+    </div>
+
+    <div class='about-my-match position-relative'>
+      <div data-name='edit-button' data-section='about-my-match'>
+        <h5>About my match</h5>
+        <p id='about-my-match-value'>${authUser.aboutMyMatch || 'No Answer'}</p>
+
+        <div class='edit-button-container'>
+          <button onclick='handleProfileEdit("about-my-match")' class='edit-button'>Edit</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<!-- This modal is a custom modal for the profile photos. -->
+<div class='edit-photos-modal'>
+  <div class='edit-photos-modal-content'>
+    <button onclick='closePhotosModal()' class='close-photos-modal'>&times;</button>
+    <form name='editPhotosForm' enctype='multipart/form-data' onsubmit='return false' novalidate autocomplete='off'
+      class='settings-form'>
+      <section id='photos' class='modal-section'>
+        <div class='flex-center'>
+          <div class='full-width form-header'>
+            <h2>Photos</h2>
+          </div>
+        </div>
+
+        <p class='photos-subtitle'>
+          Photos are optional, but highly recommended.
+        </p>
+        <div class='photo-error'></div>
+        <div class='flex-space-between'>
+          <div data-photos='${authUser.photos}' class='images-wrapper'>
+            ${Array(3).fill().map((_, index) => `
+            <input type='file' name='image-${index}' class='image-${index}' hidden='hidden' accept='.jpg,.jpeg,.png' />
+            <div class='image-upload-container'>
+              ${authUser.photos[index]?.secure_url ? `
+              <div class='image-upload-wrapper-${index}'>
+                <div class='image-upload-${index} image-selection' id='image-upload-selection-${index}'>
+                  <img src='${authUser.photos[index]?.secure_url}' class='image-preview-${index}'
+                    id='image-selection-${index}' />
+                </div>
+                <button class='remove-image-${index}'></button>
+              </div>
+              ` : `
+              <div class='image-upload-wrapper-${index}'>
+                <div class='custom-button-${index}'></div>
+              </div>
+              `}
+            </div>
+            `).join('')}
+          </div>
+        </div>
+      </section>
+
+      <div class='edit-photos-form-submit-container'>
+        <div class='hide-div-mobile'></div>
+
+        <div class='make-default-button-container'>
+          <button class='modal-button make-default-button'>Make Default</button>
+        </div>
+
+        <div id='edit-photos-modal-submit-button-loading-spinner-wrapper'>
+          <button type='submit' onclick='handleSaveProfileChanges(profileSection)' class='modal-button edit-photos-form-submit'>
+            Save
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

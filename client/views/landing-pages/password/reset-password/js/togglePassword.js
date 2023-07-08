@@ -1,5 +1,5 @@
 const togglePassword = (number) => {
-  if (number === '1') {
+  if (number === 1) {
     const passwordOneType = document.querySelector('.user-password-one');
     const eyeOne = document.querySelector('.password-one-eye');
   

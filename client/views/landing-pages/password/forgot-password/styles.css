@@ -181,7 +181,7 @@ textarea:-ms-input-placeholder {
   width: 100%;
 }
 
-.email-sent-message {
+#email-sent-message {
   display: none;
   position: relative;
   padding: 0.75rem 1.25rem;
@@ -190,8 +190,8 @@ textarea:-ms-input-placeholder {
   border-radius: 0.25rem;
   text-align: center;
   font-size: 16px;
-  color: #333333;
-  background-color: #e3e7eb;
+  color: #fff;
+  background-color: #00c6a7;
 }
 
 .form-title {
@@ -213,10 +213,6 @@ textarea:-ms-input-placeholder {
   position: relative;
   border-bottom: 2px solid #adadad;
   margin-bottom: 37px;
-}
-
-.form-error {
-  border-bottom: 2px solid red;
 }
 
 .input-field {
@@ -293,18 +289,13 @@ textarea:-ms-input-placeholder {
   transition: all 0.4s;
 }
 
-.invalid-email,
-.invalid-password {
+#email-error {
+  width: 100%;
+  text-align: center;
   position: absolute;
-  left: 4px;
-  font-size: 12px;
+  bottom: -25px;
+  font-size: 14px;
   color: red;
-  padding-top: 4px;
-}
-
-#invalid-email,
-#invalid-password {
-  display: none;
 }
 
 .input-field:focus + .input-focus::after {
@@ -372,7 +363,7 @@ textarea:-ms-input-placeholder {
   background-image: linear-gradient(to left, #74ebd5, #9face6);
 }
 
-.reset-password-button {
+.form-submit {
   font-family: Poppins-Medium;
   font-size: 15px;
   color: #fff;
@@ -393,7 +384,7 @@ textarea:-ms-input-placeholder {
   background: transparent;
 }
 
-.reset-password-button:hover {
+.form-submit:hover {
   background-image: linear-gradient(to left, #5ae8ce, #8d9ce3);
   cursor: pointer;
 }
@@ -446,7 +437,7 @@ textarea:-ms-input-placeholder {
   margin: 8px;
   border: 3px solid #fff;
   border-radius: 50%;
-  animation: loading-spinner 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  animation: animation-360-loading-spinner 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
   border-color: #fff transparent transparent transparent;
 }
 
@@ -465,14 +456,5 @@ textarea:-ms-input-placeholder {
 @media (min-width: 600px) {
   .loading-spinner {
     left: 45%;
-  }
-}
-
-@keyframes loading-spinner {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
   }
 }

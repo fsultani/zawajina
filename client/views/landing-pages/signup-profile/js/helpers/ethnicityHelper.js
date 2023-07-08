@@ -88,7 +88,7 @@
       element.style.display = 'flex';
     });
 
-    document.querySelector('#ethnicityInput').placeholder = '';
+    ethnicityInput.placeholder = '';
 
     if (data.length === 0) {
       document.querySelector('#ethnicityInput').disabled = false;

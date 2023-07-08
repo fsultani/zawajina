@@ -1,4 +1,4 @@
-(() => {
+window.onload = () => {
   const pathname = window.location.pathname;
 
   if (pathname === '/likes') {
@@ -6,4 +6,4 @@
   } else if (pathname === '/likes-me') {
     document.getElementById('likes-me').classList.add('active');
   }
-})();
+};

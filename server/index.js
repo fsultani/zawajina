@@ -4,24 +4,37 @@ const es6Renderer = require('express-es6-template-engine');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const osascript = require('node-osascript');
-const { ObjectId } = require('mongodb');
-const jwt = require('jsonwebtoken');
-const JWT_SECRET = Buffer.from('fe1a1915a379f3be5394b64d14794932', 'hex');
 
-const { connectToServer, usersCollection, messagesCollection } = require('./db.js');
+const { connectToServer } = require('./db.js');
+const { checkAuthentication } = require('./middleware/checkAuthentication');
 const {
   register,
   likes,
-  login,
+  authSessionLogin,
+  authSessionLogout,
   password,
+  passwordApi,
+  profile,
   users,
   user,
+  userApi,
   search,
   messages,
   settings,
+  settingsAccountApi,
+  settingsPasswordApi,
 } = require('./routes/index');
 
-const { getAllFiles } = require('./utils.js');
+const {
+  aboutPage,
+  indexPage,
+  loginPage,
+  resendEmailPage,
+  signupPage,
+  signupProfilePage,
+  termsPage,
+  verifyEmailPage,
+} = require('./views/index');
 
 const app = express();
 
@@ -36,331 +49,79 @@ app.set('views', path.join(__dirname, '../client/views'));
 app.set('view engine', 'html');
 
 app.use((_req, _res, next) => {
-  connectToServer((err, db) => {
+  connectToServer((err, _) => {
     if (err) throw err;
     next();
   });
 });
 
-/* Catch all GET requests, and respond with an html file */
+/* Public APIs */
+app.use('/api/auth-session/login', authSessionLogin);
+app.use('/password', password);
+app.use('/api/password', passwordApi);
+app.use('/api/register', register);
+
+/* Private APIs */
+app.use('/likes', checkAuthentication, likes);
+app.use('/likes-me', checkAuthentication, likes);
+app.use('/api/auth-session/logout', checkAuthentication, authSessionLogout);
+app.use('/messages', checkAuthentication, messages);
+app.use('/search', checkAuthentication, search);
+app.use('/settings', checkAuthentication, settings);
+app.use('/api/settings/account', checkAuthentication, settingsAccountApi);
+app.use('/api/settings/password', checkAuthentication, settingsPasswordApi);
+app.use('/user', checkAuthentication, user);
+app.use('/profile', checkAuthentication, profile);
+app.use('/api/user', checkAuthentication, userApi);
+app.use('/users', checkAuthentication, users);
+
+/* Catch all public GET requests, and respond with an html file */
 app.get('*', (req, res, next) => {
-  const requestUrl = req.originalUrl
-  const {
-    my_match_userId,
-    my_match_authToken
-  } = req.cookies;
+  const requestUrl = req.originalUrl;
 
-  if (
-    requestUrl.split('/').indexOf('api') > -1 ||
-    requestUrl.indexOf('password') > -1 ||
-    my_match_authToken
-  ) {
-    return next();
-  }
-
-  let stylesDirectoryPath = [];
-  let scriptsDirectoryPath = [];
-
-  let styles = [];
-  let scripts = [];
+  // my_match_userId is to check for a user that lands on a public page without an ID
+  // my_match_authToken is to redirect an authenticated user that visited an invalid route
+  const { my_match_userId, my_match_authToken } = req.cookies;
 
   switch (requestUrl) {
     case '/':
-      res.render('landing-pages/_layouts/index', {
-        locals: {
-          title: 'My Match',
-          styles: [
-            '/static/assets/styles/fonts_googleapis.css',
-            '/static/client/views/landing-pages/_layouts/global-styles.css',
-            '/static/client/views/landing-pages/_partials/styles/landing-page-nav.css',
-            '/static/client/views/landing-pages/_partials/styles/footer.css',
-            '/static/client/views/landing-pages/home/styles.css',
-          ],
-          scripts: [
-            'https://unpkg.com/scrollreveal',
-            '/static/assets/apis/axios.min.js',
-            '/static/client/views/landing-pages/home/animations.js',
-          ],
-        },
-        partials: {
-          nav: 'landing-pages/_partials/landing-page-nav',
-          body: 'landing-pages/home/index',
-          footer: 'landing-pages/_partials/footer',
-        },
-      });
+      indexPage(res);
       break;
     case '/about':
-      res.render('landing-pages/_layouts/index', {
-        locals: {
-          title: 'About Us - My Match',
-          styles: [
-            '/static/assets/styles/fonts_googleapis.css',
-            '/static/client/views/landing-pages/_layouts/global-styles.css',
-            '/static/client/views/landing-pages/_partials/styles/landing-page-nav.css',
-            '/static/client/views/landing-pages/_partials/styles/footer.css',
-            '/static/client/views/landing-pages/about/styles.css',
-          ],
-          scripts: [
-            'https://unpkg.com/scrollreveal@4.0.5/dist/scrollreveal.min.js',
-            '/static/client/views/landing-pages/home/animations.js',
-          ],
-        },
-        partials: {
-          nav: 'landing-pages/_partials/landing-page-nav',
-          body: 'landing-pages/about/index',
-          footer: 'landing-pages/_partials/footer',
-        },
-      });
+      aboutPage(res);
       break;
     case '/login':
-      res.render('landing-pages/_layouts/index', {
-        locals: {
-          title: 'Login - My Match',
-          styles: [
-            '/static/assets/styles/material-design-iconic-font.min.css',
-            '/static/assets/styles/bootstrap.min.css',
-            '/static/client/views/landing-pages/_layouts/global-styles.css',
-            '/static/client/views/landing-pages/_partials/styles/landing-page-nav.css',
-            '/static/client/views/landing-pages/_partials/styles/footer.css',
-            '/static/client/views/landing-pages/login/styles.css',
-          ],
-          scripts: [
-            '/static/assets/apis/axios.min.js',
-            '/static/assets/apis/js.cookie.min.js',
-            '/static/client/views/landing-pages/login/handleFocusEvent.js',
-            '/static/client/views/landing-pages/login/handleLogin.js',
-            '/static/client/views/landing-pages/login/init.js',
-          ],
-        },
-        partials: {
-          nav: 'landing-pages/_partials/landing-page-nav',
-          body: 'landing-pages/login/index',
-          footer: 'landing-pages/_partials/footer',
-        },
-      });
+      loginPage(res);
       break;
     case '/signup':
-      res.render('landing-pages/_layouts/index', {
-        locals: {
-          title: 'Sign Up - My Match',
-          styles: [
-            'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css',
-            '/static/client/views/landing-pages/_layouts/global-styles.css',
-            '/static/client/views/landing-pages/_partials/styles/landing-page-nav.css',
-            '/static/client/views/landing-pages/_partials/styles/footer.css',
-            '/static/client/views/landing-pages/signup/styles.css',
-          ],
-          scripts: [
-            '/static/assets/apis/axios.min.js',
-            '/static/assets/apis/js.cookie.min.js',
-            '/static/client/views/landing-pages/signup/js/includeHTML.js',
-            '/static/client/views/landing-pages/signup/js/togglePassword.js',
-            '/static/client/views/landing-pages/signup/js/handleSignupStepOne.js',
-          ],
-        },
-        partials: {
-          nav: 'landing-pages/_partials/landing-page-nav',
-          body: 'landing-pages/signup/index',
-          footer: 'landing-pages/_partials/footer',
-        },
-      });
+      signupPage(res);
       break;
     case '/verify-email':
-      /* If someone lands on this pathname without a my_match_userId, redirect them to /signup. */
+      /* If a visitor lands on this pathname without a my_match_userId, redirect them to /signup. */
       if (!my_match_userId) return res.redirect('/signup');
-      res.render('landing-pages/_layouts/index', {
-        locals: {
-          title: 'Sign Up - My Match',
-          styles: [
-            'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css',
-            '/static/client/views/landing-pages/_layouts/global-styles.css',
-            '/static/client/views/landing-pages/_partials/styles/landing-page-nav.css',
-            '/static/client/views/landing-pages/_partials/styles/footer.css',
-            '/static/client/views/landing-pages/verify-email/styles.css',
-          ],
-          scripts: [
-            '/static/assets/apis/axios.min.js',
-            '/static/assets/apis/js.cookie.min.js',
-            '/static/client/views/landing-pages/verify-email/init.js',
-            '/static/client/views/landing-pages/verify-email/handleVerityEmail.js',
-          ],
-        },
-        partials: {
-          nav: 'landing-pages/_partials/landing-page-nav',
-          body: 'landing-pages/verify-email/index',
-          footer: 'landing-pages/_partials/footer',
-        },
-      });
+      verifyEmailPage(res);
       break;
     case '/resend-email':
-      /* If someone lands on this pathname without a my_match_userId, redirect them to /signup. */
+      /* If a visitor lands on this pathname without a my_match_userId, redirect them to /signup. */
       if (!my_match_userId) return res.redirect('/signup');
-      res.render('landing-pages/_layouts/index', {
-        locals: {
-          title: 'Sign Up - My Match',
-          styles: [
-            'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css',
-            '/static/client/views/landing-pages/_layouts/global-styles.css',
-            '/static/client/views/landing-pages/_partials/styles/landing-page-nav.css',
-            '/static/client/views/landing-pages/_partials/styles/footer.css',
-            '/static/client/views/landing-pages/resend-email/styles.css',
-          ],
-          scripts: [
-            '/static/assets/apis/axios.min.js',
-            '/static/assets/apis/js.cookie.min.js',
-            '/static/client/views/landing-pages/resend-email/js/includeHTML.js',
-            '/static/client/views/landing-pages/resend-email/js/handleResendVerificationCode.js',
-          ],
-        },
-        partials: {
-          nav: 'landing-pages/_partials/landing-page-nav',
-          body: 'landing-pages/resend-email/index',
-          footer: 'landing-pages/_partials/footer',
-        },
-      });
+      resendEmailPage(res);
       break;
     case '/signup/profile':
-      /* If someone lands on this pathname without a my_match_userId, redirect them to /signup. */
+      /* If a visitor lands on this pathname without a my_match_userId, redirect them to /signup. */
       if (!my_match_userId) return res.redirect('/signup');
-      stylesDirectoryPath = ['client/views/landing-pages/signup-profile'];
-      scriptsDirectoryPath = ['client/views/landing-pages/signup-profile/js', 'client/views/landing-pages/signup-profile/js/helpers'];
-
-      styles = [
-        'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css',
-        '/static/client/views/landing-pages/_layouts/global-styles.css',
-        '/static/client/views/landing-pages/_partials/styles/landing-page-nav.css',
-        '/static/client/views/landing-pages/_partials/styles/footer.css',
-      ];
-
-      scripts = [
-        '/static/assets/apis/axios.min.js',
-        '/static/assets/apis/js.cookie.min.js',
-      ];
-
-      /* Move the init.js file to the beginning of the array, after the axis and js.cookie imports since init.js uses axios */
-      const scriptsArray = getAllFiles({ directoryPath: scriptsDirectoryPath, fileType: 'js', filesArray: scripts });
-      const initFileIndex = scriptsArray.findIndex(file => {
-        const isInitFile = file.split('/').indexOf('init.js') > -1;
-        if (isInitFile) return isInitFile;
-      });
-
-      const element = scriptsArray.splice(initFileIndex, 1)[0];
-      scriptsArray.splice(2, 0, element);
-
-      res.render('landing-pages/_layouts/index', {
-        locals: {
-          title: 'Sign Up - My Match',
-          styles: getAllFiles({ directoryPath: stylesDirectoryPath, fileType: 'css', filesArray: styles }),
-          scripts: scriptsArray,
-        },
-        partials: {
-          nav: 'landing-pages/_partials/landing-page-nav',
-          body: 'landing-pages/signup-profile/index',
-          footer: 'landing-pages/_partials/footer',
-        },
-      });
+      signupProfilePage(res);
       break;
     case '/terms':
-      res.render('landing-pages/_layouts/index', {
-        locals: {
-          title: 'Terms of Service - My Match',
-          styles: [
-            '/static/assets/styles/fonts_googleapis.css',
-            '/static/client/views/landing-pages/_layouts/global-styles.css',
-            '/static/client/views/landing-pages/_partials/styles/landing-page-nav.css',
-            '/static/client/views/landing-pages/_partials/styles/footer.css',
-            '/static/client/views/landing-pages/terms/styles.css',
-          ],
-        },
-        partials: {
-          nav: 'landing-pages/_partials/landing-page-nav',
-          body: 'landing-pages/terms/index',
-          footer: 'landing-pages/_partials/footer',
-        },
-      });
+      termsPage(res);
       break;
     default:
-      res.redirect('/login');
+      if (!my_match_authToken) return res.redirect('/login');
+      next();
   }
 });
 
-app.use('*', async (req, res, next) => {
-  try {
-    const requestUrl = req.originalUrl.split('/')
-    const { my_match_authToken } = req.cookies;
-
-    if (!my_match_authToken &&
-      (
-        requestUrl.indexOf('signup-user-first-name') > -1 ||
-        requestUrl.indexOf('login') > -1 ||
-        requestUrl.indexOf('api') > -1 ||
-        requestUrl.indexOf('password') > -1
-      )
-    ) return next();
-
-    const jwtVerify = await jwt.verify(my_match_authToken, JWT_SECRET);
-    const userDocument = await usersCollection().findOne({ _id: ObjectId(jwtVerify.my_match_userId) });
-
-    const allConversationsCount = await messagesCollection().countDocuments({
-      messages: {
-        $elemMatch: {
-          recipient: ObjectId(userDocument._id),
-          read: false,
-        }
-      },
-    });
-
-    req.authUser = userDocument;
-    req.allConversationsCount = allConversationsCount;
-    req.userIPAddress = req.body.userIPAddress;
-    req.endpoint = req.originalUrl;
-    req.userId = userDocument._id;
-    next();
-  } catch (error) {
-    if (process.env.NODE_ENV === 'development') {
-      console.log(`error\n`, error);
-    }
-
-    return res.render('landing-pages/_layouts/index', {
-      locals: {
-        title: 'Login - My Match',
-        styles: [
-          '/static/assets/styles/material-design-iconic-font.min.css',
-          '/static/assets/styles/bootstrap.min.css',
-          '/static/client/views/landing-pages/_layouts/global-styles.css',
-          '/static/client/views/landing-pages/_partials/styles/landing-page-nav.css',
-          '/static/client/views/landing-pages/_partials/styles/footer.css',
-          '/static/client/views/landing-pages/login/styles.css',
-        ],
-        scripts: [
-          '/static/assets/apis/axios.min.js',
-          '/static/assets/apis/js.cookie.min.js',
-          '/static/client/views/landing-pages/login/handleFocusEvent.js',
-          '/static/client/views/landing-pages/login/handleLogin.js',
-          '/static/client/views/landing-pages/login/init.js',
-        ],
-      },
-      partials: {
-        nav: 'landing-pages/_partials/landing-page-nav',
-        body: 'landing-pages/login/index',
-        footer: 'landing-pages/_partials/footer',
-      },
-    });
-  }
-});
-
-app.use('/register', register);
-app.use('/likes*', likes);
-app.use('/login', login);
-app.use('/password', password);
-app.use('/users', users);
-app.use('/user', user);
-app.use('/search', search);
-app.use('/messages', messages);
-app.use('/settings', settings);
-
-/* Redirect to the main view for any nonmatching routes where a valid my_match_authToken exists */
-app.use('/*', (_req, res) => res.redirect('/users'));
+/* Redirect to the main view for any non-matching routes where a valid my_match_authToken exists */
+app.use('/*', checkAuthentication, (_, res) => res.redirect('/users'));
 
 const port = process.env.PORT || 3000;
 
@@ -368,13 +129,8 @@ const port = process.env.PORT || 3000;
 if (process.env.NODE_ENV === 'development') {
   osascript.execute(
     `
-    tell application "Google Chrome"
-      set current_site to URL of active tab of front window
-      if current_site contains ("localhost") then
-        reload active tab of front window
-      end if
-    end tell
     tell application "Safari"
+			# activate
       set current_site to URL of document 1
       if current_site contains ("localhost") then
         tell window 1
@@ -383,9 +139,36 @@ if (process.env.NODE_ENV === 'development') {
       end if
     end tell
 
+    # tell application "Firefox"
+    # 	activate
+    # end tell
+
+    # tell application "System Events"
+    # 	tell process "Firefox"
+    # 		keystroke "r" using {command down}
+    # 	end tell
+    # end tell
+
+    tell application "Google Chrome"
+			# activate
+      set current_site to URL of active tab of front window
+      if current_site contains ("localhost") then
+        reload active tab of front window
+      end if
+    end tell
+
+    tell application "iTerm"
+			# activate
+    end tell
+
+    tell application "Visual Studio Code"
+      if it is running then
+				# activate
+      end if
+    end tell
     `,
     (err, _result, _raw) => {
-      if (err) return console.error(err);
+      if (err) return console.log(`err - server/index.js:149\n`, err);
     }
   );
 };

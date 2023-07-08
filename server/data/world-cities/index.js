@@ -4,11 +4,15 @@ const __importDefault =
     return mod && mod.__esModule ? mod : { default: mod };
   };
 Object.defineProperty(exports, '__esModule', { value: true });
-const countries = __importDefault(require('./countries.json'));
-const unitedStates = __importDefault(require('./unitedStates.json'));
+
 const cities = __importDefault(require('./cities.json'));
+const countries = __importDefault(require('./countries.json'));
+const geoCoordinates = __importDefault(require('./geoCoordinates.json'));
+const unitedStates = __importDefault(require('./unitedStates.json'));
+
 exports.default = {
   getAllCities: () => cities.default,
-  getAllUnitedStates: () => unitedStates.default,
   getAllCountries: () => countries.default,
+  getGeoCoordinates: () => geoCoordinates.default,
+  getAllUnitedStates: () => unitedStates.default,
 };

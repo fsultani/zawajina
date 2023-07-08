@@ -6,7 +6,9 @@
 #about-me-error-text,
 #about-my-match-error-text {
   display: none;
+  width: 100%;
+  justify-content: center;
   position: absolute;
-  top: 30px;
+  top: -20px;
   color: red;
 }

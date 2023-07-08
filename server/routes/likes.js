@@ -1,6 +1,6 @@
 const express = require('express');
 
-const { getAllFiles } = require('../utils');
+const { getAllFiles, redirectToLogin } = require('../utils');
 const { usersCollection } = require('../db.js');
 
 const router = express.Router();
@@ -8,21 +8,22 @@ const router = express.Router();
 router.get('/', async (req, res) => {
   try {
     const validRoutes = ['/likes', '/likes-me'];
-    if (validRoutes.indexOf(req.originalUrl) === -1) return res.redirect('/users');
+    const originalUrl = req.originalUrl.split('?')[0];
+    if (validRoutes.indexOf(originalUrl) === -1) return res.redirect('/users');
 
     const { authUser, allConversationsCount } = req;
-    const authUserId = authUser._id.toString();
-    const page = parseInt(req.query.page);
+    const page = parseInt(req.query.page) || 1;
     const skipRecords = page > 1 ? (page - 1) * 20 : 0;
 
-    const allUsersCount = await usersCollection()
-      .find({ gender: authUser.gender === 'male' ? 'female' : 'male' })
-      .count();
-
-    let likeFilter = { likedByUsers: { $in: [authUserId] } }
-    if (req.originalUrl === '/likes-me') {
-      likeFilter = { usersLiked: { $in: [authUserId] } }
+    const likeFilter = {
+      _id: {
+        $in: originalUrl === '/likes' ? authUser.usersLiked : authUser.likedByUsers,
+      }
     }
+
+    const allUsersCount = await usersCollection()
+      .find(likeFilter)
+      .count();
 
     let allUsers = await usersCollection()
       .find(likeFilter)
@@ -46,23 +47,25 @@ router.get('/', async (req, res) => {
 
     const directoryPath = ['client/views/app/likes'];
 
-    const styles = [
+    const stylesArray = [
       '/static/client/views/app/likes/styles.css',
       '/static/client/views/app/_partials/app-nav.css',
-      '/static/client/views/app/_layouts/app-global-styles.css',
     ];
 
-    const scripts = [
+    const scriptsArray = [
       '/static/assets/apis/axios.min.js',
       '/static/assets/apis/js.cookie.min.js',
-    ]
+    ];
+
+    const styles = getAllFiles({ directoryPath, fileType: 'css', filesArray: stylesArray });
+    const scripts = getAllFiles({ directoryPath, fileType: 'js', filesArray: scriptsArray });
 
     if (currentPage <= numberOfPages) {
       res.render('app/_layouts/index', {
         locals: {
           title: 'My Match',
-          styles: getAllFiles({ directoryPath, fileType: 'css', filesArray: styles }),
-          scripts: getAllFiles({ directoryPath, fileType: 'js', filesArray: scripts }),
+          styles,
+          scripts,
           authUser,
           allConversationsCount,
           allUsersCount,
@@ -71,6 +74,7 @@ router.get('/', async (req, res) => {
           numberOfPages,
           currentPage,
           nextPage,
+          originalUrl,
         },
         partials: {
           nav: 'app/_partials/app-nav',
@@ -81,8 +85,8 @@ router.get('/', async (req, res) => {
       res.render('app/_layouts/index', {
         locals: {
           title: 'My Match',
-          styles: getAllFiles({ directoryPath, fileType: 'css', filesArray: styles }),
-          scripts: getAllFiles({ directoryPath, fileType: 'js', filesArray: scripts }),
+          styles,
+          scripts,
           authUser,
           allConversationsCount,
           allUsersCount: 0,
@@ -91,6 +95,7 @@ router.get('/', async (req, res) => {
           numberOfPages: 1,
           currentPage: 1,
           nextPage,
+          originalUrl,
         },
         partials: {
           nav: 'app/_partials/app-nav',
@@ -101,7 +106,7 @@ router.get('/', async (req, res) => {
       res.redirect(`/users?page=${numberOfPages}`);
     }
   } catch (error) {
-    console.log(`error\n`, error);
+    redirectToLogin(error, res);
   }
 });
 

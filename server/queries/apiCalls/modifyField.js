@@ -3,34 +3,6 @@ const { MongoClient } = require('mongodb');
 
 const client = new MongoClient(process.env.MONGODB_URI);
 
-// MongoClient.connect(process.env.MONGODB_URI, {
-//   useNewUrlParser: true,
-//   useUnifiedTopology: true,
-// }, async (client) => {
-//   try {
-//     const db = client.db();
-  
-//     const allUsers = await db.collection('users')
-//       .find({ gender: 'female' })
-//       .sort({ lastLogin: -1 })
-//       .toArray();
-  
-//     allUsers.map(async (user) => {
-//       const heightValueSplit = user.height.split('');
-//       const heightLeftParenthesis = heightValueSplit.indexOf('(');
-//       if (heightLeftParenthesis > -1) {
-//         const userHeight = heightValueSplit.slice(heightLeftParenthesis + 1, -3).join('');
-//         await db.collection('users').updateOne({ _id: user._id }, { $set: { height: userHeight.trim() }})
-//         console.log(`done`);
-//       }
-//     })
-  
-//     client.close();
-//   } catch (error) {
-//     throw Error(error);
-//   }
-// })
-
 async function run() {
   try {
     await client.connect();
@@ -48,6 +20,9 @@ async function run() {
 
     const result = await usersCollection.updateMany(filter, updateDocument);
     console.log(`Updated ${result.modifiedCount} documents`);
+  } catch (error) {
+    console.log(`error - server/queries/apiCalls/modifyField.js:23\n`, error);
+    process.exit(1);
   } finally {
     await client.close();
   }

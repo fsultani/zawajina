@@ -1,39 +1,39 @@
 const { ObjectId } = require('mongodb');
 const { usersCollection } = require('../../db.js');
+const { returnServerError } = require('../../utils.js');
 
-const verifyEmail = (req, res) => {
-  const verificationToken = Number(req.query.verificationToken);
-  const { my_match_userId } = req.cookies;
+const verifyEmail = async (req, res) => {
+  try {
+    const tokenString = req.body.token.toString();
+    const verificationToken = Number(req.body.token);
+    const { my_match_userId } = req.cookies;
 
-  usersCollection().findOne({ _id: ObjectId(my_match_userId) }, (err, userExists) => {
-    if (err) {
-      console.log(`err\n`, err);
-      return res.json({ error: 'Error in verifyEmail' });
-    }
+    if (
+      !tokenString.length ||
+      tokenString.length !== 5 ||
+      isNaN(verificationToken)
+    ) return res.status(404).send({ message: 'Invalid Token' });
 
-    const { emailVerificationToken } = userExists;
+    usersCollection().findOne({ _id: ObjectId(my_match_userId) }, async (_, userExists) => {
+      const { emailVerificationToken } = userExists;
+  
+      if (verificationToken === emailVerificationToken) {
+        await usersCollection().findOneAndUpdate(
+          { _id: ObjectId(my_match_userId) },
+          {
+            $set: {
+              emailVerified: new Date(),
+            },
+          });
 
-    if (verificationToken === emailVerificationToken) {
-      usersCollection().findOneAndUpdate(
-        { _id: ObjectId(my_match_userId) },
-        {
-          $set: {
-            emailVerified: new Date(),
-          },
-        },
-        (err, user) => {
-          if (err) {
-            return res.json({ error: 'Unknown error' });
-          } else {
-            if (user.lastErrorObject.updatedExisting) return res.status(200).send();
-            return res.json({ error: 'Unknown error' });
-          }
-        }
-      );
-    } else {
-      return res.status(401).send({ message: 'Invalid Token' });
-    }
-  })
+        return res.status(200).send({ url: '/signup/profile' });
+      } else {
+        return res.status(404).send({ message: 'Invalid Token' });
+      }
+    })
+  } catch (error) {
+    returnServerError(res, error);
+  }
 };
 
 module.exports = verifyEmail;

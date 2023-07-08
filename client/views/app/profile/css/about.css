@@ -1,5 +1,5 @@
 .about-me,
-.about-match {
+.about-my-match {
   display: grid;
   align-items: center;
   height: 100%;
@@ -18,12 +18,12 @@
   }
 }
 
-.about-match {
+.about-my-match {
   border-top: 1px solid rgba(22, 30, 42, 0.16);
 }
 
 @media only screen and (min-width: 800px) {
-  .about-match {
+  .about-my-match {
     grid-row: 4 / -1;
     grid-column: 2 / -1;
     height: fit-content;

@@ -1,8 +1,8 @@
-// Grab all class names of 'form-input'
-const elements = document.getElementsByClassName('form-input');
+// Grab all class names of 'input-field'
+const elements = document.getElementsByClassName('input-field');
 
 /* Return an array from the HTMLCollections object */
-const allElements = Array.from(elements);
+allElements = Array.from(elements);
 allElements.map(element => {
   element.addEventListener('blur', () => {
     if (element.value.trim() !== '') {

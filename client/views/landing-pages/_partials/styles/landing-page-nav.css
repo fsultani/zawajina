@@ -23,9 +23,11 @@
 .navbar--header-links {
   display: inline-flex;
 }
+
 .navbar--header-links li {
   display: inline-flex;
 }
+
 .navbar--header-links a:not(.button) {
   font-size: 13px;
   line-height: 20px;
@@ -37,6 +39,7 @@
   line-height: 16px;
   padding: 8px 24px;
 }
+
 .navbar--header-links a:not(.button):hover,
 .navbar--header-links a:not(.button):active {
   color: #fff;

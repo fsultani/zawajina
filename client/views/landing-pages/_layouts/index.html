@@ -1,35 +1,46 @@
 <!DOCTYPE html>
-<html lang="en" class="no-js">
+<html lang='en' class='no-js'>
 
 <head>
-  <meta charset="utf-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <meta charset='utf-8' />
+  <meta http-equiv='X-UA-Compatible' content='IE=edge' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0' />
   <title>${title}</title>
 
   <!-- Page styles -->
   ${styles.map(style => `
-  <link rel="stylesheet" type="text/css" href="${style}" />
-  `).join('')}
+  <link rel='stylesheet' type='text/css' href='${style}' />`).join('')}
 
-  <script type="text/javascript" src="/static/client/views/global-script.js"></script>
+  <!-- Order matters -->
+  <script type='text/javascript' src='/static/client/views/global-scripts/utils.js'></script>
+  <script type='text/javascript' src='/static/client/views/global-scripts/axios-instance.js'></script>
+  <script type='text/javascript' src='/static/client/views/global-scripts/api-requests.js'></script>
+
+  <!-- Order doesn't matter -->
+  <script type='text/javascript' src='/static/client/views/global-scripts/loading-spinners.js'></script>
+  <script type='text/javascript' src='/static/client/views/global-scripts/main.js'></script>
+  <script type='text/javascript' src='/static/client/views/global-scripts/toasts.js'></script>
 </head>
 
 <body>
+  <div class='full-page-loading-spinner'></div>
+
   ${nav}
-  <div class="main-content">
-    <div id="application-error">
-      <p>There was an error. Please try again later.</p>
+  <div class='main-content'>
+    <div id='application-error'>
+      <p class='application-error-message'>There was an error. Please try again later.</p>
     </div>
-    <div id="slow-network-warning">
-      <p class="slow-network-message">Looks like you're on a slow network. Data may take longer to load.</p>
+    <div id='slow-network-warning'>
+      <p class='slow-network-message'>Looks like you're on a slow network. Data may take longer to load.</p>
     </div>
     ${body}
     ${footer}
   </div>
+
   ${scripts.map(script => `
-  <script type="text/javascript" src="${script}"></script>
-  `).join('')}
+  <script type='text/javascript' src='${script}'></script>`).join('')}
+
+  <script type='text/javascript' src='/static/client/views/landing-pages/_layouts/main.js'></script>
 </body>
 
 </html>

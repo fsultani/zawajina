@@ -1,4 +1,7 @@
 const nodemailer = require('nodemailer');
+
+const { returnServerError } = require('../utils');
+
 // const { google } = require('googleapis');
 
 // const GOOGLE_CLIENT_ID = process.env.NODE_ENV === 'development' ?
@@ -44,24 +47,21 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-const sendEmail = async (address, subject, body) => {
+const sendEmail = async ({ emailAddress, subject, emailBody }) => {
   const mailOptions = {
     /* To prevent emails from going to spam */
     from: `"My Match Admin" <${process.env.NODEMAILER_AUTH_USERNAME}>`,
-    to: address,
+    to: emailAddress,
     subject,
-    html: body,
+    html: emailBody,
   };
 
   try {
     await transporter.sendMail(mailOptions);
     return { status: 201 };
   } catch (error) {
-    console.log(`error\n`, error);
-    if (process.env.NODE_ENV === 'development') {
-      throw Error(`Error in sendEmail: ${error}`)
-    }
+    returnServerError(res, error);
   }
 };
 
-module.exports = sendEmail;
+module.exports = { sendEmail };

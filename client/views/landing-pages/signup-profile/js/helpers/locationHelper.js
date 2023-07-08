@@ -8,8 +8,6 @@
 
   locationInput.placeholder = locationInputPlaceholder;
 
-  const lowerCaseString = globalThis.lowerCaseString;
-
   const getAllCities = async userInput => {
     const { allLocations, userLocationData } = globalThis;
     const filteredResults = [];

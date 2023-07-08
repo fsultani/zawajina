@@ -1,9 +1,9 @@
 const aboutMeHelper = ({ reset }) => {
   const editAboutMe = document.querySelector('.edit-about-me');
-  const aboueMeValue = editAboutMe.getAttribute('data-aboutMe');
-  editAboutMe.value = handleReplaceBrTag(aboueMeValue)
+  const aboutMeValue = getQuerySelector('#about-me-value').innerHTML;
+  editAboutMe.innerHTML = replaceBreakTag(aboutMeValue);
 
-  let characterCount = aboueMeValue.length;
+  let characterCount = aboutMeValue.length;
   document.getElementById('about-me-character-count').innerHTML = `${characterCount}/100`;
   document.getElementById('about-me-character-count').style.cssText =
     characterCount < 100 ? 'color: #777;' : 'color: green;';

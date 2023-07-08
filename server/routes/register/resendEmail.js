@@ -1,50 +1,46 @@
-const { ObjectId } = require('mongodb');
-
 const { usersCollection } = require('../../db.js');
-const emailVerification = require('../../email-templates/email-verification.js');
-const sendEmail = require('../../helpers/email.js');
+const { emailVerification } = require('../../email-templates/email-verification.js');
+const { sendEmail } = require('../../helpers/email.js');
+const { returnServerError } = require('../../utils.js');
 
 const resendEmail = (req, res) => {
-  const { my_match_userId } = req.cookies;
-  const { email } = req.body;
+  try {
+    const email = req.body.email.trim();
 
-  usersCollection().findOne({ _id: ObjectId(my_match_userId) }, (err, user) => {
-    usersCollection().findOne({ email }, (err, accountExists) => {
-      if (err) {
-        return res.status(500).send();
+    usersCollection().findOne({ email }, (_err, userAccount) => {
+      /* For security, redirect the user to the '/verify-email' route even if the account doesn't exist. */
+      if (!userAccount) return res.status(201).send({ url: '/verify-email' });
+
+      if (userAccount?.startedRegistrationAt && userAccount?.completedRegistrationAt) {
+        return res.status(403).send({ message: 'Account already exists' });
       }
 
-      if (accountExists && accountExists.startedRegistrationAt && accountExists.completedRegistrationAt) {
-        return res.status(403).json({ error: 'Account already exists' });
-      }
+      if (userAccount?.startedRegistrationAt && !userAccount?.completedRegistrationAt) {
+        const { emailVerificationToken, subject, emailBody } = emailVerification({ name: userAccount.name });
 
-      if (user.startedRegistrationAt && !user.completedRegistrationAt) {
-        const { emailVerificationToken, subject, emailBody } = emailVerification({ name: user.name });
-
-          usersCollection().updateOne(
-            { _id: user._id },
-            {
-              $set: {
-                email,
-                emailVerificationToken,
-                emailVerificationTokenDateSent: new Date(),
-              },
+        usersCollection().findOneAndUpdate(
+          { _id: userAccount._id },
+          {
+            $set: {
+              emailVerificationToken,
+              emailVerificationTokenDateSent: new Date(),
             },
-            async (err, user) => {
-              if (err) {
-                return res.json({ error: 'Unknown error' });
-              } else {
-                await sendEmail(email, subject, emailBody)
-                return res.status(201).send();
-              }
+          },
+          async (_, user) => {
+            const emailAddress = user.value.email;
+
+            if (process.env.NODE_ENV !== 'development') {
+              await sendEmail({ emailAddress, subject, emailBody })
             }
-          );
-      } else {
-        /* The user never started registration.  Possibly a server or db error. */
-        return res.status(500).send();
+
+            return res.status(201).send({ url: '/verify-email' });
+          }
+        );
       }
     })
-  })
+  } catch (error) {
+    returnServerError(error)
+  }
 };
 
-module.exports = resendEmail;
+module.exports = { resendEmail };

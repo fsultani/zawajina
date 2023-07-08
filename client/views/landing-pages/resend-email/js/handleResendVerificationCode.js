@@ -1,6 +1,4 @@
-const user_email = document.querySelector('#user_email');
-const signupButton = document.querySelector('#signupButton');
-const loadingSpinner = document.querySelector('.loading-spinner');
+const userEmail = getQuerySelector('#userEmail');
 
 let handleEmailValidationValue = false;
 
@@ -8,63 +6,52 @@ const handleEmailValidation = email => {
   const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
   if (!emailRegex.test(email)) {
-    document.getElementById('email').classList.remove('animate-border-bottom');
-    document.getElementById('email-wrapper').classList.add('form-error');
+    getQuerySelector('#email-wrapper').style.cssText = `border-bottom: 2px solid red;`
+    getQuerySelector('#email-error').innerHTML = 'Invalid email';
     handleEmailValidationValue = false;
-  } else if (emailRegex.test(email)) {
-    if (document.getElementById('email-wrapper').classList.contains('form-error')) {
-      document.getElementById('email-wrapper').classList.remove('form-error');
-      document.getElementById('email').classList.add('animate-border-bottom');
-    }
+  } else {
+    getQuerySelector('#email-wrapper').style.cssText = `border-bottom: 2px solid #adadad;`
+    getQuerySelector('#email-error').innerHTML = '';
     handleEmailValidationValue = true;
   }
 };
 
-const handleResendVerificationCode = () => {
-  const email = user_email.value;
+const handleResendVerificationCode = (event) => {
+  event.preventDefault();
+  const email = userEmail.value;
   handleEmailValidation(email);
 
-  if (handleEmailValidationValue) {
-    loadingSpinner.style.display = 'inline-block';
-    signupButton.innerHTML = '';
-    signupButton.disabled = true;
-    signupButton.style.cursor = 'not-allowed';
+  const resendCodeButton = getQuerySelector('.form-submit').innerHTML.trim() === 'Resend Code'
 
-    document.querySelectorAll('form *').forEach(item => item.disabled = true);
+  if (handleEmailValidationValue && resendCodeButton) {
+    isSubmitting('submit-button-loading-spinner-wrapper', true);
 
-    axios
-      .post('/register/api/resend-email', {
+    Axios({
+      method: 'post',
+      apiUrl: '/api/register/resend-email', // server/routes/register/resendEmail.js
+      params: {
         email,
-      })
-      .then(res => {
-        if (res.status === 201) {
-          window.location.pathname = '/verify-email';
-        } else {
-          window.location.pathname = '/signup';
-        }
+      }
+    })
+      .then(({ data }) => {
+        isSubmitting('submit-button-loading-spinner-wrapper', false);
+        const emailSentMessage = getQuerySelector('#email-sent-message');
+        emailSentMessage.innerHTML =
+          `A password reset email was sent.<br>If the email exists in our database, you should receive it soon.`;
+        emailSentMessage.style.display = 'block';
+
+        const formButton = getQuerySelector('.form-submit');
+        const url = data?.url;
+
+        formButton.innerHTML = 'Back';
+        formButton.onclick = () => window.location.pathname = url;
       })
       .catch(error => {
-        console.error(error.response);
-        if (error.response.status === 403) {
-          // Email address already exists
-          loadingSpinner.style.display = 'none';
-          signupButton.innerHTML = 'Create Account';
-          signupButton.disabled = false;
-          signupButton.style.cursor = 'pointer';
+        isSubmitting('submit-button-loading-spinner-wrapper', false);
 
-          document.getElementById('email-exists-error').innerHTML = error.response.data.error;
-          document.getElementById('email-exists-error').style.display = 'block';
-        } else {
-          // Display generic error message
-          loadingSpinner.style.display = 'none';
-          signupButton.innerHTML = 'Create Account';
-          signupButton.disabled = false;
-          signupButton.style.cursor = 'pointer';
-
-          document.getElementById('email-exists-error').innerHTML =
-            'We could not complete your request at this time.';
-          document.getElementById('email-exists-error').style.display = 'block';
-        }
+        const message = error.response.data.message || error.response.statusText || 'We could not complete your request at this time.';
+        getQuerySelector('#form-error').innerHTML = message;
+        getQuerySelector('#form-error').style.display = 'block';
       });
   }
 };

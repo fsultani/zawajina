@@ -1,71 +1,58 @@
-const handleEmailValidation = () => {
-  const email = document.resetPassword.elements.email.value;
+const userEmail = getQuerySelector('#userEmail');
+
+let handleEmailValidationValue = false;
+
+const handleEmailValidation = email => {
   const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-  return emailRegex.test(email);
+
+  if (!emailRegex.test(email)) {
+    getQuerySelector('#email-wrapper').style.cssText = `border-bottom: 2px solid red;`
+    getQuerySelector('#email-error').innerHTML = 'Invalid email';
+    handleEmailValidationValue = false;
+  } else {
+    getQuerySelector('#email-wrapper').style.cssText = `border-bottom: 2px solid #adadad;`
+    getQuerySelector('#email-error').innerHTML = '';
+    handleEmailValidationValue = true;
+  }
+
 };
 
 const handlePasswordResetEmail = async event => {
   event.preventDefault();
-  const email = document.resetPassword.elements.email.value.toLowerCase()
-  const resetPasswordButton = document.resetPassword.elements.resetPasswordButton;
-  const loadingSpinner = document.querySelector('.loading-spinner');
+  const email = userEmail.value;
 
-  const emailIsValid = handleEmailValidation();
+  handleEmailValidation(email);
 
-  if (emailIsValid) {
-    loadingSpinner.style.cssText = `display: inline-block`;
-    resetPasswordButton.innerHTML = '';
-    resetPasswordButton.style.cssText = `
-      disabled: true;
-      opacity: 0.5;
-      cursor: not-allowed;
-    `;
+  if (handleEmailValidationValue) {
+    isSubmitting('submit-button-loading-spinner-wrapper', true);
 
-    document.querySelectorAll('form *').forEach(item => item.disabled = true);
-
-    const userIPAddress = await getUserIPAddress();
-    axios
-      .post('/password/api/request', {
+    Axios({
+      method: 'post',
+      apiUrl: '/api/password/request-email', // server/routes/password/api.js
+      params: {
         email,
-        userIPAddress,
-      })
-      .then(res => {
-        loadingSpinner.style.display = 'none';
-        resetPasswordButton.innerHTML = 'Login';
-        resetPasswordButton.style.cssText = `
-          disabled: false;
-          opacity: 1;
-          cursor: pointer;
-        `;
+      }
+    })
+      .then(({ data }) => {
+        isSubmitting('submit-button-loading-spinner-wrapper', false);
 
-        const emailSentMessage = document.querySelector('.email-sent-message');
+        const emailSentMessage = getQuerySelector('#email-sent-message');
+        emailSentMessage.innerHTML =
+          `A password reset email was sent.
+          <br>
+          If the email exists in our database, you should receive it soon.`;
+        emailSentMessage.style.display = 'block';
 
-        if (res.status === 201) {
-          emailSentMessage.innerHTML =
-            `A password reset email was sent.  If the email exists in our database, you should receive it soon.`;
-          emailSentMessage.style.display = 'block';
-        }
+        const formButton = getQuerySelector('.form-submit');
+        const url = data?.url;
+
+        formButton.innerHTML = 'Back';
+        formButton.onclick = () => window.location.pathname = url;
       })
       .catch(() => {
-        loadingSpinner.style.display = 'none';
-        resetPasswordButton.innerHTML = 'Login';
-          resetPasswordButton.style.cssText = `
-          disabled: false;
-          opacity: 1;
-          cursor: pointer;
-        `;
+        isSubmitting('submit-button-loading-spinner-wrapper', false);
+  
+        getQuerySelector('#email-error').innerHTML = 'Unknown error';
       });
-  } else {
-    if (!emailIsValid) {
-      document.resetPassword.email.blur();
-      document.getElementById('email').classList.add('email-error');
-      document.getElementById('email-wrapper').classList.add('form-error');
-    }
-
-    const emailHasError = document.getElementById('email').classList.contains('email-error');
-    if (emailIsValid && emailHasError) {
-      document.getElementById('email').classList.remove('email-error');
-      document.getElementById('email-wrapper').classList.remove('form-error');
-    }
   }
 };

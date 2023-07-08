@@ -1,12 +1,13 @@
 const express = require('express');
-const { check, validationResult } = require('express-validator/check');
+const { check, validationResult } = require('express-validator');
 const { ObjectId } = require('mongodb');
 
 const router = express.Router();
 
+const googleAuth = require('./googleAuth');
 const personalInfo = require('./personalInfo');
-const sendVerificationEmail = require('./sendVerificationEmail');
-const resendEmail = require('./resendEmail');
+const checkEmailVerification = require('./checkEmailVerification');
+const { resendEmail } = require('./resendEmail');
 const verifyEmail = require('./verifyEmail');
 const profileDetails = require('./profileDetails');
 
@@ -20,11 +21,12 @@ const upload = require('../../helpers/multer');
 
 const { usersCollection } = require('../../db.js');
 
+router.post('/google-auth', (req, res) => googleAuth(req, res));
+
 router.post(
-  '/api/personal-info',
+  '/personal-info',
   [
-    check('nameValue').not().isEmpty().trim().escape().withMessage('Enter your name'),
-    check('email').isEmail().withMessage('Enter a valid email address'),
+    check('email').isEmail().withMessage('Invalid email'),
     check('password').not().isEmpty().withMessage('Enter a password'),
     check('password').isLength({ min: 8 }),
   ],
@@ -37,9 +39,9 @@ router.post(
   }
 );
 
-router.get('/api/send-verification-email', (req, res) => sendVerificationEmail(req, res));
+router.get('/check-email-verification', (req, res) => checkEmailVerification(req, res));
 
-router.post('/api/resend-email', [
+router.post('/resend-email', [
   check('email').isEmail().withMessage('Enter a valid email address'),
 ], (req, res) => {
   const errors = validationResult(req);
@@ -49,43 +51,23 @@ router.post('/api/resend-email', [
   resendEmail(req, res);
 })
 
-router.get(
-  '/api/verify-email',
-  [
-    check('verificationToken').not().isEmpty().withMessage('Enter a verification code'),
-    check('verificationToken').isLength({ min: 5, max: 5 }),
-  ],
-  (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-    verifyEmail(req, res);
-  }
-);
+router.put('/verify-email', (req, res) => verifyEmail(req, res));
 
-router.get('/api/signup-user-first-name', (req, res, next) => {
+router.get('/signup-user-first-name', (req, res) => {
   usersCollection().findOne({ _id: ObjectId(req.cookies.my_match_userId) }, (err, user) => {
     if (err || !user) return res.sendStatus(401);
     res.status(201).send({ name: user.name });
-    // if (user.startedRegistrationAt && !user.emailVerified) {
-    //   res.status(200).json({ message: 'Token Sent' })
-    // } else if (user.startedRegistrationAt && user.emailVerified && !user.completedRegistrationAt) {
-    //   res.status(201).send({ name: user.name });
-    // } else {
-    //   res.sendStatus(401);
-    // }
   });
 });
 
-router.get('/api/location', (req, res) => location(req, res));
-router.get('/api/ethnicities', (req, res) => ethnicities(req, res));
-router.get('/api/countries', (req, res) => countries(req, res));
-router.get('/api/languages', (req, res) => languages(req, res));
-router.get('/api/hobbies', (req, res) => hobbies(req, res));
+router.get('/location', (req, res) => location(req, res));
+router.get('/ethnicities', (req, res) => ethnicities(req, res));
+router.get('/countries', (req, res) => countries(req, res));
+router.get('/languages', (req, res) => languages(req, res));
+router.get('/hobbies', (req, res) => hobbies(req, res));
 
 router.post(
-  '/api/profile-details',
+  '/profile-details',
   upload.fields([
     {
       name: 'image-0',

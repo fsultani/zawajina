@@ -1,131 +1,79 @@
+/*
+node server/queries/apiCalls/messages.js
+*/
+
 require('dotenv').config();
-const { default: axios } = require('axios');
-const { MongoClient, ObjectId } = require('mongodb');
+const axios = require('axios');
 
-MongoClient.connect(process.env.MONGODB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-}, async (err, client) => {
-  const db = client.db();
+(async () => {
+  try {
+    const email = 'faridsultani.ba@gmail.com';
+    const password = 'asdfasdf';
 
-  const login = await axios.post('http://localhost:3000/login', {
-    email: 'farid@me.com',
-    password: 'asdfasdf'
-  })
-  const { token } = login.data;
+    const { data: login } = await axios.post('http://localhost:3000/api/auth-session/login', {
+      email,
+      password,
+    })
 
-  const allUsers = await db.collection('users')
-    .find({ gender: 'female' })
-    .sort({ lastLogin: -1 })
-    .toArray();
+    const token = login.cookie.value;
+    console.log(`token - server/queries/apiCalls/messages.js:50\n`, token);
 
-  allUsers.map(async (user, index) => {
-    const getConversation = await axios.get(`http://localhost:3000/messages/api/conversation/user/${user._id}`, {
+    const { data: users } = await axios.get('http://localhost:3000/users', {
       headers: {
         Cookie: `my_match_authToken=${token}`
       }
     })
 
-    await axios.post(`http://localhost:3000/messages/api/new-message`, {
-      conversationId: getConversation.data.conversationId,
-      messageText: `As-salāmu ʿalaykum, ${user.name}.  This is message #${index}.`
-    },
-    {
-      headers: {
-        Cookie: `my_match_authToken=${token}`
-      }
+    const usersHTMLResponse = users.replace(/\s/g, '');
+
+    const userIDsArray = [...usersHTMLResponse.matchAll(/\/user\//g)]
+    const userIDs = userIDsArray.map(item => {
+      return usersHTMLResponse.slice(item.index + 6, item.index + 30)
     })
-  })
 
-  client.close();
-})
+    const userNamesArray = [...usersHTMLResponse.matchAll(/testimonial-name/g)]
+    const userNames = userNamesArray.map(item => {
+      const stringToSearch = usersHTMLResponse.slice(item.index + 0, -1);
+      const startingPoint = stringToSearch.search('testimonial-name') + 18;
+      const endPoint = stringToSearch.search('location') - 23;
+      const userName = stringToSearch.slice(startingPoint, endPoint);
 
-// MongoClient.connect(process.env.MONGODB_URI, {
-//   useNewUrlParser: true,
-//   useUnifiedTopology: true,
-// }, async (err, client) => {
-//   const db = client.db();
+      return userName;
+    })
 
-//   const allMaleUsers = await db.collection('users')
-//     .find({ gender: 'male' })
-//     .sort({ lastLogin: -1 })
-//     .toArray();
+    const usersArray = [...Array(userIDs.length)].map((_, index) => ({
+      userId: userIDs[index],
+      userName: userNames[index]
+    }))
 
-//   const allFemaleUsers = await db.collection('users')
-//     .find({ gender: 'female' })
-//     .sort({ lastLogin: -1 })
-//     .toArray();
+    for (const userData of usersArray) {
+      const { userId, userName } = userData;
+      const index = usersArray.findIndex(item => item.userId === userId)
 
-//   const allConversations = await db.collection('messages').find().toArray();
+      const { data } = await axios.get(`http://localhost:3000/messages/api/conversation/user/${userId}`, {
+        headers: {
+          Cookie: `my_match_authToken=${token}`
+        }
+      })
 
-//   if (allConversations.length > 0) {
-//     allConversations.map(async (conversation, conversationIndex) => {
-//       const now = new Date();
-//       const messageDate = now.toLocaleDateString();
-//       const message = {
-//         $set: { updatedAt: new Date() },
-//         $push: {
-//           messages: {
-//             sender: conversation.recipientId,
-//             recipient: conversation.createdByUserId,
-//             messageText: `As-salāmu ʿalaykum, ${conversation.users.createdByUser.name}.  My name is ${conversation.users.recipient.name}. This is message #${conversationIndex + 1}.`,
-//             messageDate,
-//             read: false,
-//           }
-//         }
-//       }
+      const conversationId = data.url.split('/')[2];
 
-//       await db.collection('messages').updateOne({ _id: conversation._id }, message);
+      await axios.post('http://localhost:3000/messages/api/new-message', {
+        conversationId,
+        messageText: `As-salāmu ʿalaykum, ${userName}.  This is message ${index}.`,
+        otherUserId: userId,
+      },
+      {
+        headers: {
+          Cookie: `my_match_authToken=${token}`
+        }
+      })
 
-//       if (conversationIndex === allConversations.length - 1) {
-//         console.log(`done`);
-//         client.close();
-//       }
-//     })
-//   } else {
-//     allMaleUsers.map(async (maleUser, maleUserIndex) => {
-//       allFemaleUsers.map(async (femaleUser, femaleUserIndex) => {
-//         const conversation = {
-//           createdAt: new Date(),
-//           updatedAt: new Date(),
-//           createdByUserId: maleUser._id,
-//           recipientId: femaleUser._id,
-//           users: {
-//             createdByUser: maleUser,
-//             recipient: femaleUser,
-//           },
-//           messages: [],
-//         }
-
-//         /* Create the new conversation in.  Send the ID. */
-//         const { insertedId } = await db.collection('messages').insertOne(conversation);
-
-//         let conversationsCollection = await db.collection('messages').findOne({ _id: ObjectId(insertedId) })
-//         const now = new Date();
-//         const messageDate = now.toLocaleDateString();
-//         const message = {
-//           $set: { updatedAt: new Date() },
-//           $push: {
-//             messages: {
-//               sender: maleUser._id,
-//               recipient: String(maleUser._id) === String(conversationsCollection.recipientId) ? conversationsCollection.createdByUserId : conversationsCollection.recipientId,
-//               messageText: `As-salāmu ʿalaykum, ${femaleUser.name}.  My name is ${maleUser.name}. This is message #${femaleUserIndex + 1}.`,
-//               messageDate,
-//               read: false,
-//             }
-//           }
-//         }
-
-//         await db.collection('messages').updateOne({ _id: conversationsCollection._id }, message);
-
-//         const allFemaleUsersDone = femaleUserIndex === allFemaleUsers.length - 2;
-//         const allMaleUsersDone = maleUserIndex === allMaleUsers.length - 1;
-
-//         if (allFemaleUsersDone && allMaleUsersDone) {
-//           console.log(`done`);
-//           client.close();
-//         }
-//       })
-//     })
-//   }
-// });
+      console.log(`${index + 1} of ${usersArray.length} messages sent`);
+    }
+  } catch (error) {
+    const errorMessage = error.response?.data.message ?? error.message;
+    console.log(`errorMessage - server/queries/apiCalls/messages.js:54\n`, errorMessage);
+    process.exit(1);
+  }
+})();

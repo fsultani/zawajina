@@ -1,24 +1,18 @@
-const lowerCaseString = globalThis.lowerCaseString;
-
 const locationHelper = async () => {
-  displaySmallLoadingSpinner(true, '.modal-content', '.close-modal');
-
   const {
     allLocations,
     userLocationData,
   } = await locationData();
 
-  displaySmallLoadingSpinner(false, '.modal-content', '.close-modal');
-
   const locationInput = document.querySelector('#locationInput');
   const locationResults = document.querySelector('#location-results');
   const locationInputPlaceholder = 'Enter your city';
-  
+
   let currentFocus = 0;
   let results = [];
-  
+
   locationInput.placeholder = locationInputPlaceholder;
-  
+
   const getAllCities = async userInput => {
     const filteredResults = [];
     const userCity = userLocationData.city;
@@ -94,12 +88,12 @@ const locationHelper = async () => {
           locationInput.setAttribute('data-country', '');
           return false;
         }
-  
+
         results = await getAllCities(userInput);
         currentFocus = -1;
-  
+
         let searchResultsWrapper = '<div class="autocomplete-items">';
-  
+
         results.map(({ match, city, state, country }) => {
           searchResultsWrapper += `
         <div
@@ -117,12 +111,12 @@ const locationHelper = async () => {
         </div>
       `;
         });
-  
+
         searchResultsWrapper += '</div>';
         document.querySelector('#location-results').innerHTML = searchResultsWrapper;
       }, 250)
     );
-  
+
   const renderLocation = (data, city, state, country) => {
     const result = `
       <div class='user-selection-container'>
@@ -137,21 +131,21 @@ const locationHelper = async () => {
           </div>
         </div>
       </div>`;
-  
+
     const userSelection = document.querySelector('.user-location-selection');
     userSelection.innerHTML = result;
     document.querySelector('.display-user-location').style.display = 'flex';
     locationInput.placeholder = '';
     locationInput.disabled = true;
     closeAllLists('#locationInput');
-  
+
     locationInput.setAttribute('data-city', city);
     locationInput.setAttribute('data-state', state);
     locationInput.setAttribute('data-country', country);
-  
+
     removeLocationSelection();
   };
-  
+
   const getKeyDirection = (event, callback) => {
     let element = document.querySelector('.autocomplete-items');
     if (element) {
@@ -172,56 +166,64 @@ const locationHelper = async () => {
       }
     }
   };
-  
+
   const removeLocationSelection = () => {
     document.querySelector('.user-location-remove').addEventListener('click', () => {
       locationInput.removeAttribute('data-city');
       locationInput.removeAttribute('data-state');
       locationInput.removeAttribute('data-country');
-  
+
       document.querySelector('.display-user-location').style.display = 'none';
       locationInput.placeholder = locationInputPlaceholder;
       locationInput.disabled = false;
       locationInput.focus();
     });
   };
-  
-  (() => {
-    const userLocation = locationInput.getAttribute('data-location').split('|');
-    const city = userLocation[0];
-    const state = userLocation[1] || 'null';
-    const country = userLocation[2];
-  
-    const locationSelection = `${city}, ${state !== 'null' ? `${state}, ${country}` : country}`;
-    locationInput.value = '';
-  
-    renderLocation(locationSelection, city, state, country);
-  
-    locationInput.addEventListener('keydown', event => {
-      getUserLocationInput();
-      getKeyDirection(event, element => {
-        const value = element[currentFocus].getElementsByTagName('input')[0];
-        const city = value.dataset.city;
-        const state = value.dataset.state;
-        const country = value.dataset.country;
-        const locationSelection = `${city}, ${state !== 'null' ? `${state}, ${country}` : country}`;
-        locationInput.value = '';
-  
-        renderLocation(locationSelection, city, state, country);
-      });
+
+  locationInput.addEventListener('keydown', event => {
+    getUserLocationInput();
+    getKeyDirection(event, element => {
+      const value = element[currentFocus].getElementsByTagName('input')[0];
+      const city = value.dataset.city;
+      const state = value.dataset.state;
+      const country = value.dataset.country;
+      const locationSelection = `${city}, ${state !== 'null' ? `${state}, ${country}` : country}`;
+      locationInput.value = '';
+
+      renderLocation(locationSelection, city, state, country);
     });
-  
-    locationResults.addEventListener('click', event => {
-      const inputTag = event.target.dataset;
-      if (inputTag?.city) {
-        const city = inputTag.city;
-        const state = inputTag.state;
-        const country = inputTag.country;
-        const locationSelection = `${city}, ${state !== 'null' ? `${state}, ${country}` : country}`;
-        locationInput.value = '';
-  
-        renderLocation(locationSelection, city, state, country);
-      }
-    });
-  })();
+  });
+
+  locationResults.addEventListener('click', event => {
+    const inputTag = event.target.dataset;
+    if (inputTag?.city) {
+      const city = inputTag.city;
+      const state = inputTag.state;
+      const country = inputTag.country;
+      const locationSelection = `${city}, ${state !== 'null' ? `${state}, ${country}` : country}`;
+      locationInput.value = '';
+
+      renderLocation(locationSelection, city, state, country);
+    }
+  });
+
+  const profilePageContainer = getQuerySelector('.profile-page-container');
+  const userId = profilePageContainer.getAttribute('data-user-id');
+  Axios({
+    apiUrl: `/api/user/profile-details/auth-user/${userId}` // server/routes/user/api.js
+  })
+    .then(({ authUser }) => {
+      displaySmallLoadingSpinner(false, '.modal-content', '.close-modal');
+      const city = authUser.city;
+      const state = authUser.state;
+      const country = authUser.country;
+
+      const locationSelection = `${city}, ${state !== null ? `${state}, ${country}` : country}`;
+      locationInput.value = '';
+
+      renderLocation(locationSelection, city, state, country);
+    })
+    .catch(error => {
+      console.log(`error\n`, error, `\n`);
+    })
 }

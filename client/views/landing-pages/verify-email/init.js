@@ -1,16 +1,14 @@
-(() => {
-  // const emailVerificationToken = Cookies.get('emailVerificationToken')
-  // console.log(`emailVerificationToken\n`, emailVerificationToken);
-
-  // const inputElement = document.querySelector('.verification-token');
-  // inputElement.value = emailVerificationToken;
-  axios.get('/register/api/send-verification-email').then(res => {
-    if (res.data.message === 'Email verified') {
-      window.location.pathname = '/signup/profile';
-    }
-  }).catch(error => {
-    Cookies.remove('my_match_authToken');
-    Cookies.remove('my_match_userId');
-    window.location.pathname = '/signup';
+window.onload = () => {
+  Axios({
+    method: 'get',
+    apiUrl: '/api/register/check-email-verification', // server/routes/register/checkEmailVerification.js
   })
-})();
+    .then(response => {
+      const emailWasVerified = response?.emailWasVerified;
+      if (emailWasVerified) window.location.pathname = response?.url;
+    }).catch(() => {
+      Cookies.remove('my_match_authToken');
+      Cookies.remove('my_match_userId');
+      window.location.pathname = '/signup';
+    })
+};

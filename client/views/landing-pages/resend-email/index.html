@@ -1,33 +1,25 @@
-<section class="signup-container">
-  <div class="signup-wrapper">
-    <div class="signup-content">
-      <div id="email-exists-error"></div>
-      <form name="signupForm" onsubmit="return false" novalidate>
-        <h2 class="form-title">Enter email address</h2>
+<section>
+  <div class='form-container'>
+    <div class='form-wrapper'>
+      <form class='form' name='resetPassword' onsubmit='handleResendVerificationCode(event)' novalidate>
+        <div id='email-sent-message'></div>
+        <div id='form-error'></div>
+        <h3 class='form-title'>Enter email address</h3>
 
-        <div class="input-wrapper validate-input" id="email-wrapper">
-          <input type="email" class="form-input" id="user_email" required />
-          <span
-            class="input-focus animate-border-bottom"
-            id="email"
-            data-placeholder="Email"
-          ></span>
+        <div class='input-wrapper validate-input' id='email-wrapper'>
+          <input class='input-field' type='email' id='userEmail' />
+          <span class='input-focus' id='email' data-placeholder='Email'></span>
+          <div id='email-error'></div>
         </div>
-        <div class="form-group submit-button">
-          <div class="loading-spinner">
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
+        <div class='button-container'>
+          <div class='button-wrapper'>
+            <div class='button-background'></div>
+            <div id='submit-button-loading-spinner-wrapper'>
+              <button class='form-submit' type='submit'>
+                Resend Code
+              </button>
+            </div>
           </div>
-          <button
-            type="submit"
-            onclick="handleResendVerificationCode()"
-            class="form-submit"
-            id="signupButton"
-          >
-            Resend Code
-          </button>
         </div>
       </form>
     </div>

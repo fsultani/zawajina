@@ -15,7 +15,7 @@ const emailHeader = ({ recipientName }) => (`
     style="
       padding: 0 0 8px 0;
       margin-bottom: 8px;
-      border-bottom: solid 1px #cccccc;
+      border-bottom: solid 1px #eee;
     "
   >
     As-salāmu ʿalaykum ${recipientName},

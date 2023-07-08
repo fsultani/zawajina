@@ -1,81 +1,77 @@
-const disableForm = (disabled) => document.querySelectorAll('form *').forEach(item => item.disabled = disabled);
+const userEmail = getQuerySelector('#userEmail');
+const userPassword = getQuerySelector('#userPassword');
 
-const handleEmailValidation = () => {
-  const email = document.login.elements.email.value;
+let handleEmailValidationValue = false;
+let handlePasswordValidationValue = false;
+
+const handleEmailValidation = email => {
   const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-  return emailRegex.test(email);
+
+  if (!emailRegex.test(email)) {
+    handleEmailValidationValue = false;
+    getQuerySelector('#email-wrapper').style.cssText = `border-bottom: 2px solid red;`
+    getQuerySelector('#email-span').classList.remove('input-focus')
+    getQuerySelector('#email-error').innerHTML = 'Invalid email';
+    return;
+  }
+
+  getQuerySelector('#email-wrapper').style.cssText = `border-bottom: 2px solid #adadad;`
+  getQuerySelector('#email-span').classList.add('input-focus')
+  getQuerySelector('#email-error').innerHTML = '';
+
+  handleEmailValidationValue = true;
 };
 
-const handlePasswordValidation = () => {
-  const password = document.login.elements.password.value;
-  return password.length > 0;
+const handlePasswordValidation = password => {
+  if (!password.length) {
+    getQuerySelector('#password-wrapper').style.cssText = `border-bottom: 2px solid red;`
+    getQuerySelector('#password-span').classList.remove('input-focus');
+    getQuerySelector('#password-error').innerHTML = 'Password cannot be blank';
+    handlePasswordValidationValue = false;
+    return;
+  }
+
+  getQuerySelector('#password-wrapper').style.cssText = `border-bottom: 2px solid #adadad;`
+  getQuerySelector('#password-span').classList.add('input-focus');
+  getQuerySelector('#password-error').innerHTML = '';
+
+  handlePasswordValidationValue = true;
 };
+
 
 const handleLogin = async event => {
   event.preventDefault();
-  const email = document.login.elements.email.value.toLowerCase();
-  const password = document.login.elements.password.value;
-  const loginButton = document.login.elements.loginButton;
-  const loadingSpinner = document.querySelector('.loading-spinner');
+  const email = userEmail.value;
+  const password = userPassword.value;
 
-  const emailIsValid = handleEmailValidation();
-  const passwordIsValid = handlePasswordValidation();
+  handleEmailValidation(email);
+  handlePasswordValidation(password);
 
-  if (emailIsValid && passwordIsValid) {
-    loadingSpinner.style.cssText = `display: inline-block`;
-    loginButton.innerHTML = '';
-    loginButton.style.cssText = `
-      disabled: true;
-      opacity: 0.5;
-      cursor: not-allowed;
-    `;
+  if (handleEmailValidationValue && handlePasswordValidationValue) {
+    isSubmitting('login-button-loading-spinner-wrapper', true);
 
-    disableForm(true);
-
-    const userIPAddress = await getUserIPAddress();
-    axios
-      .post('/login', {
+    Axios({
+      method: 'post',
+      apiUrl: '/api/auth-session/login', // server/routes/auth/login.js
+      params: {
         email,
-        password,
-        userIPAddress,
-      })
+        password
+      }
+    })
       .then(res => {
-        const { token } = res.data;
-        Cookies.set('my_match_authToken', token, { sameSite: 'strict' });
-        window.location.pathname = '/users';
+        const { cookie, url } = res.data;
+        Cookies.set(cookie.type, cookie.value, { sameSite: 'strict' });
+        window.location.pathname = url;
       })
       .catch(() => {
-        disableForm(false);
-        loadingSpinner.style.display = 'none';
-        loginButton.innerHTML = 'Login';
-          loginButton.style.cssText = `
-          disabled: false;
-          opacity: 1;
-          cursor: pointer;
-        `;
+        isSubmitting('login-button-loading-spinner-wrapper', false);
 
         // For any login errors, only display 'Invalid password' for security purposes
-        document.getElementById('invalid-password').style.display = 'block';
+        getQuerySelector('#password-wrapper').style.cssText = `border-bottom: 2px solid red;`
+        getQuerySelector('#password-wrapper').style.cssText = `border-bottom: 2px solid red;`
+        getQuerySelector('#password-span').classList.remove('input-focus');
+
+        getQuerySelector('#password-error').innerHTML = 'Invalid Password';
       });
-  } else {
-    if (!emailIsValid) {
-      document.login.email.blur();
-      document.getElementById('email').classList.add('email-error');
-      document.getElementById('email-wrapper').classList.add('form-error');
-      disableForm(false);
-    }
-
-    const emailHasError = document.getElementById('email').classList.contains('email-error');
-    if (emailIsValid && emailHasError) {
-      document.getElementById('email').classList.remove('email-error');
-      document.getElementById('email-wrapper').classList.remove('form-error');
-      disableForm(false);
-    }
-
-    if (!passwordIsValid) {
-      document.login.password.blur();
-      document.getElementById('password').classList.add('form-error');
-      disableForm(false);
-    }
   }
 };

@@ -1,7 +1,7 @@
 const aboutMyMatchHelper = ({ reset }) => {
   const editAboutMyMatch = document.querySelector('.edit-about-my-match');
-  const aboutMyMatchValue = editAboutMyMatch.getAttribute('data-aboutMyMatch');
-  editAboutMyMatch.value = handleReplaceBrTag(aboutMyMatchValue);
+  const aboutMyMatchValue = getQuerySelector('#about-my-match-value').innerHTML;
+  editAboutMyMatch.innerHTML = replaceBreakTag(aboutMyMatchValue);
 
   let characterCount = aboutMyMatchValue.length;
   document.getElementById('about-my-match-character-count').innerHTML = `${characterCount}/100`;

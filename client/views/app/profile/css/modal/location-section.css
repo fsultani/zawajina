@@ -64,3 +64,9 @@
   background-color: DodgerBlue !important;
   color: #ffffff;
 }
+
+#city-error {
+	position: absolute;
+	bottom: -3px;
+	color: red;
+}

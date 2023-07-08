@@ -1,40 +1,72 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-    <title>${title}</title>
+<html lang='en'>
 
-    <link rel="stylesheet" type="text/css" href="/static/client/views/app/_layouts/app-global-styles.css" />
-    ${styles.map(style => `
-      <link rel="stylesheet" type="text/css" href="${style}" />
-    `).join('')}
+<head>
+  <meta charset='UTF-8' />
+  <meta http-equiv='X-UA-Compatible' content='ie=edge' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0' />
+  <title>${title}</title>
 
-    <!-- Navbar script -->
-    <script type="text/javascript" src="/static/client/views/app/scripts/main.js"></script>
-    <script type="text/javascript" src="/static/client/views/global-script.js"></script>
-  </head>
-  <body>
-    <div class="full-page-loading-spinner">
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
+  <link rel='stylesheet' type='text/css' href='/static/client/views/app/_layouts/app-global-styles.css' />
+  ${styles.map(style => `<link rel='stylesheet' type='text/css' href='${style}' />`).join('')}
+
+  <!-- Navbar script -->
+  <script defer type='text/javascript' src='/static/client/views/app/scripts/dropdownMenu.js'></script>
+  <script defer type='text/javascript' src='/static/client/views/app/scripts/navbar.js'></script>
+  <script defer type='text/javascript' src='/static/client/views/app/scripts/handleLogout.js'></script>
+
+  <!-- Order matters -->
+  <script defer type='text/javascript' src='/static/client/views/global-scripts/utils.js'></script>
+  <script defer type='text/javascript' src='/static/client/views/global-scripts/axios-instance.js'></script>
+  <script defer type='text/javascript' src='/static/client/views/global-scripts/api-requests.js'></script>
+
+  <!-- Order doesn't matter -->
+  <script defer type='text/javascript' src='/static/client/views/global-scripts/loading-spinners.js'></script>
+  <script defer type='text/javascript' src='/static/client/views/global-scripts/main.js'></script>
+  <script defer type='text/javascript' src='/static/client/views/global-scripts/toasts.js'></script>
+</head>
+
+<body>
+  <div class='full-page-loading-spinner'></div>
+
+  ${nav}
+  <div id='app'>
+    <div class='toast'>
+      <p class='toast-message'></p>
     </div>
 
-    ${nav}
-    <div style="margin-top: 55px; height: 100vh;">
-      <div class="toast">
-        <p class="toast-message"></p>
-      </div>
+    <div class='modal'>
+      <div class='modal-content'>
+        <button onclick='closeModal()' class='close-modal'>&times;</button>
+        <form name='modal-form' novalidate class='modal-form'>
+          <h1 class='modal-header'></h1>
 
+          <div class='modal-body'></div>
+
+          <div class='modal-button-wrapper'>
+            <div id='modal-button-loading-spinner-wrapper'>
+              <button class='modal-button' id='modal-form-submit'></button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div
+      data-account-Status="${authUser._account.admin.accountStatus}"
+      data-user-Facing-Message="${authUser._account.admin.userFacingMessage}"
+      id='account-status'
+    ></div>
+
+    <div class='body-wrapper'>
       ${body}
     </div>
-    ${scripts.map(script => `
-    <script type="text/javascript" src="${script}"></script>
-    `).join('')}
+  </div>
 
-    <script type="text/javascript" src="/static/client/views/app/main.js"></script>
-  </body>
+  ${scripts.map(script => `
+  <script defer type='text/javascript' src='${script}'></script>`).join('')}
+
+  <script defer type='text/javascript' src='/static/client/views/app/main.js'></script>
+</body>
+
 </html>

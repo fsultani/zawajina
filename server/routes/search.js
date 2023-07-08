@@ -1,34 +1,37 @@
 const express = require('express');
+const { ObjectId } = require('mongodb');
 const { getAllFiles } = require('../utils');
-
 const { usersCollection } = require('../db.js');
-const search = require('../helpers/search');
-const worldCities = require('../data/world-cities');
+const locations = require('../data/world-cities');
+const unitedStates = locations.default.getAllUnitedStates();
 
 const router = express.Router();
 
-router.get('/', async (req, res) => {
+router.get('/', (req, res) => {
   const { authUser, allConversationsCount } = req;
 
-  const stylesDirectoryPath = ['client/views/app/search'];
-  const scriptsDirectoryPath = ['client/views/app/search/js', 'client/views/app/search/js/helpers'];
+  const directoryPath = ['client/views/app/search'];
 
-  const styles = [
+  const stylesArray = [
     '/static/assets/styles/fontawesome-free-5.15.4-web/css/all.css',
     '/static/client/views/app/_partials/app-nav.css',
-    '/static/client/views/app/_layouts/app-global-styles.css',
+    'https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css',
   ];
 
-  const scripts = [
+  const scriptsArray = [
     '/static/assets/apis/axios.min.js',
     '/static/assets/apis/js.cookie.min.js',
+    'https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js',
   ];
+
+  const styles = getAllFiles({ directoryPath, fileType: 'css', filesArray: stylesArray });
+  const scripts = getAllFiles({ directoryPath, fileType: 'js', filesArray: scriptsArray });
 
   res.render('app/_layouts/index', {
     locals: {
       title: 'My Match',
-      styles: getAllFiles({ directoryPath: stylesDirectoryPath, fileType: 'css', filesArray: styles }),
-      scripts: getAllFiles({ directoryPath: scriptsDirectoryPath, fileType: 'js', filesArray: scripts }),
+      styles,
+      scripts,
       authUser,
       allConversationsCount,
     },
@@ -39,246 +42,196 @@ router.get('/', async (req, res) => {
   });
 });
 
-router.get('/api', (req, res) => search(req, res));
+router.get('/api/user-data', (req, res) => {
+  const { authUser } = req;
 
-router.get('/results', async (req, res) => {
-  const { authUser, allConversationsCount } = req;
-  const {
+  const locations = authUser.searchOptions.data.$or?.map(location => {
+    const city = location.city.$exists ? 'null' : location.city;
+    const state = location.state.$exists ? 'null' : unitedStates.find(item => item.abbreviation === location.state).name;
+    const country = location.country;
+
+    return {
+      city,
+      state,
+      country,
+    }
+  }) ?? [];
+
+  const searchOptionsIn = [
+    'languages',
+    'profession',
+    'hobbies',
+    'maritalStatus',
+    'religiousConviction',
+    'religiousValues',
+    'education',
+    'diet',
+    'prayerLevel',
+  ];
+
+  const searchData = [
+    'hasChildren',
+    'wantsChildren',
+    'hijab',
+    'canRelocate',
+    'smokes',
+    'age',
+    'height', 
+    'photos', 
+  ];
+
+  const searchOptionsList = searchOptionsIn.map(option => ({
+    [option]: authUser.searchOptions.data[option]?.$in ?? [],
+  }))
+
+  const searchDataList = searchData.map(option => ({
+    [option]: authUser.searchOptions.data[option],
+  }))
+
+  let searchOptionsObject = {};
+  for (const option of [...searchOptionsList, ...searchDataList]) {
+    Object.assign(searchOptionsObject, option)
+  }
+
+  const { sortResults } = authUser.searchOptions;
+
+  const searchOptions = {
     locations,
-    ethnicity,
-    minAgeValue,
-    maxAgeValue,
-    maritalStatus,
-    religiousConviction,
-    education,
-    minHeight,
-    maxHeight,
-    hijab,
-    religiousValues,
-    showPhotosOnly,
+    ...searchOptionsObject,
     sortResults,
-  } = req.query;
-
-  const countryAbbreviations = {
-    'United States': {
-      name: 'USA',
-    },
-    'United Arab Emirates': {
-      name: 'UAE'
-    }
-  };
-
-  let searchQuery = {
-    gender: authUser.gender === 'male' ? 'female' : 'male',
-    age: {
-      $gte: Number(minAgeValue),
-      $lte: Number(maxAgeValue)
-    },
-    height: {
-      $gte: Number(minHeight),
-      $lte: Number(maxHeight)
-    },
-  };
-
-  let locationsArray = [];
-  let locationsList = [];
-  if (locations) {
-    const allUnitedStates = worldCities.default.getAllUnitedStates();
-    locationsArray = new Array(locations).flat();
-    locationsList = locationsArray.map(location => {
-      const jsonLocation = JSON.parse(location);
-      const city = jsonLocation.city === 'null' ? { $exists: true } : jsonLocation.city;
-
-      let state = { $exists: true };
-      if (jsonLocation.state !== 'null') {
-        if (jsonLocation.city === 'null') {
-          const stateData = allUnitedStates.find(state => state.name === jsonLocation.state);
-          state = stateData.abbreviation;
-        } else {
-          state = jsonLocation.state;
-        }
-      }
-
-      let country = jsonLocation.country;
-      if (countryAbbreviations.hasOwnProperty(jsonLocation.country)) {
-        country = countryAbbreviations[jsonLocation.country].name;
-      }
-
-      return {
-        city,
-        state,
-        country,
-      }
-    });
-  
-    searchQuery = {
-      ...searchQuery,
-      $or: [...locationsList],
-    }
   }
 
-  if (ethnicity) {
-    searchQuery = {
-      ...searchQuery,
-      ethnicity: { $all: [ethnicity].flat() },
-    }
-  };
+  res.status(200).send({ searchOptions });
+})
 
-  if (maritalStatus) {
-    searchQuery = {
-      ...searchQuery,
-      maritalStatus,
-    }
-  };
-
-  if (religiousConviction) {
-    searchQuery = {
-      ...searchQuery,
-      religiousConviction,
-    }
-  };
-
-  if (education) {
-    searchQuery = {
-      ...searchQuery,
-      education,
-    }
-  };
-
-  if (hijab) {
-    searchQuery = {
-      ...searchQuery,
-      hijab,
-    }
-  };
-
-  if (religiousValues) {
-    searchQuery = {
-      ...searchQuery,
-      religiousValues,
-    }
-  };
-
-  if (showPhotosOnly) {
-    searchQuery = {
-      ...searchQuery,
-      photos: { $exists: true, $ne: [] },
-    }
-  };
-
-  if (sortResults === 'nearestToYou') {
-    searchQuery = {
-      ...searchQuery,
-      location:
-      {
-        $near:
-        {
-          $geometry: { type: "Point", coordinates: [...authUser.location.coordinates] },
-        }
-      }
-    }
-  }
-
-  const sortResultsDictionary = {
-    'lastActive': {
-      'loginData.time': -1
-    },
-    'newestMembers': {
-      completedRegistrationAt: -1,
-    },
-    'nearestToYou': {},
-  };
-
+router.put('/api', async (req, res) => {
   try {
-    const page = parseInt(req.query.page);
-    const skipRecords = page > 1 ? (page - 1) * 20 : 0;
+    const { authUser } = req;
 
-    const allUsersCount = await usersCollection()
-      .find(searchQuery)
-      .count();
+    const {
+      locations,
+      languages,
+      profession,
+      hobbies,
+      maritalStatus,
+      religiousConviction,
+      religiousValues,
+      education,
+      hasChildren,
+      wantsChildren,
+      hijab,
+      canRelocate,
+      diet,
+      smokes,
+      ethnicity,
+      age,
+      height,
+      prayerLevel,
+      sortResults,
+      showPhotosOnly,
+    } = req.body;
 
-    let allUsers = await usersCollection()
-      .find(searchQuery)
-      .sort(sortResultsDictionary[sortResults])
-      .skip(skipRecords)
-      .limit(20)
-      .toArray();
+    const blockedUsers = authUser.blockedUsers;
 
-    allUsers = allUsers.map(user => {
-      const userPHotos = user.photos.map(photo => photo.secure_url)
-      return {
-        ...user,
-        photos: userPHotos,
+    let searchOptions = {
+      _id: {
+        $nin: blockedUsers,
+      },
+      gender: authUser.gender === 'male' ? 'female' : 'male',
+      '_account.user.accountStatus': 'active',
+      '_account.admin.accountStatus': 'approved',
+      languages: { $in: languages },
+      profession: { $in: profession },
+      hobbies: { $in: hobbies },
+      maritalStatus: { $in: maritalStatus },
+      religiousConviction: { $in: religiousConviction },
+      religiousValues: { $in: religiousValues },
+      education: { $in: education },
+      hasChildren,
+      wantsChildren,
+      hijab,
+      canRelocate,
+      smokes,
+      ethnicity: { $in: ethnicity },
+      diet: { $in: diet },
+      age: {
+        $exists: true,
+      },
+      height: {
+        $gte: Number(height.minHeightValue),
+        $lte: Number(height.maxHeightValue),
+      },
+      prayerLevel: { $in: prayerLevel },
+      photos: showPhotosOnly,
+    };
+
+    let locationsList = [];
+    if (locations.length > 0) {
+      locationsList = locations.map(location => {
+        const city = location.city === 'null' ? { $exists: true } : location.city;
+        const state = location.state === 'null' ? { $exists: true } : unitedStates.find(item => item.name === location.state).abbreviation;
+        const country = location.country;
+
+        return {
+          city,
+          state,
+          country,
+        }
+      })
+
+      searchOptions = {
+        ...searchOptions,
+        $or: [...locationsList],
       }
-    })
-
-    const numberOfPages = Math.ceil(allUsersCount / 20);
-    const currentPage = page || 1;
-    const previousPage = currentPage > 1 ? currentPage - 1 : null;
-    const nextPage = currentPage < numberOfPages ? currentPage + 1 : null;
-
-    const styles = [
-      '/static/client/views/app/_partials/app-nav.css',
-      '/static/client/views/app/_layouts/app-global-styles.css',
-    ];
-
-    const scripts = [
-      '/static/assets/apis/axios.min.js',
-      '/static/assets/apis/js.cookie.min.js',
-    ];
-
-    if (currentPage <= numberOfPages) {
-      res.render('app/_layouts/index', {
-        locals: {
-          title: 'My Match',
-          styles: getAllFiles({ directoryPath: ['client/views/app/searchResults'], fileType: 'css', filesArray: styles }),
-          scripts: getAllFiles({ directoryPath: ['client/views/app/searchResults'], fileType: 'js', filesArray: scripts }),
-          authUser,
-          allConversationsCount,
-          allUsersCount,
-          allUsers,
-          previousPage,
-          numberOfPages,
-          currentPage,
-          nextPage,
-        },
-        partials: {
-          nav: 'app/_partials/app-nav',
-          body: 'app/searchResults/index',
-        },
-      });
-    } else if (numberOfPages === 0) {
-      res.render('app/_layouts/index', {
-        locals: {
-          title: 'My Match',
-          styles: [
-            '/static/client/views/app/searchResults/styles.css',
-            '/static/client/views/app/_partials/app-nav.css',
-            '/static/client/views/app/_layouts/app-global-styles.css',
-          ],
-          scripts: [
-            '/static/assets/apis/axios.min.js',
-            '/static/assets/apis/js.cookie.min.js',
-          ],
-          authUser,
-          allConversationsCount,
-          allUsersCount: 0,
-          allUsers: [],
-          previousPage: 0,
-          numberOfPages: 1,
-          currentPage: 1,
-          nextPage,
-        },
-        partials: {
-          nav: 'app/_partials/app-nav',
-          body: 'app/searchResults/index',
-        },
-      });
-    } else {
-      res.redirect(`/users?page=${numberOfPages}`);
     }
+
+    if (Number(age.minAgeValue) !== 18 || Number(age.maxAgeValue) !== 60) {
+      searchOptions = {
+        ...searchOptions,
+        age: {
+          $gte: Number(age.minAgeValue),
+          $lte: Number(age.maxAgeValue)
+        },
+      }
+    }
+
+    if (sortResults === 'nearestToYou') {
+      const coordinates = authUser.geolocationCoordinates;
+
+      searchOptions = {
+        ...searchOptions,
+        geolocationCoordinates: {
+          $near: {
+            $geometry: { type: "Point", coordinates },
+          }
+        }
+      }
+    } else if (sortResults !== 'nearestToYou') {
+      delete searchOptions.geolocationCoordinates;
+    }
+
+    searchOptions = {
+      data: { ...searchOptions },
+      sortResults,
+    }
+
+    const userId = authUser._id;
+    await usersCollection().findOneAndUpdate(
+      { _id: ObjectId(userId) },
+      {
+        $set: {
+          searchOptions,
+        },
+      },
+      {
+        returnDocument: 'after',
+        returnNewDocument: true,
+      }
+    )
+
+    res.status(201).send({ url: '/users' });
   } catch (error) {
-    console.log(`error\n`, error);
+    console.log(`error - server/routes/search.js:380\n`, error);
   }
 });
 

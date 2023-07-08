@@ -1,6 +1,6 @@
-.modal-section > div {
+/* .modal-section > div {
   padding-bottom: 16px;
-}
+} */
 
 .form-half-row {
   width: 45%;
@@ -12,11 +12,6 @@
   column-gap: 10px;
   grid-row-gap: 16px;
   margin-bottom: 7px;
-}
-
-.form-error {
-  border: 1px solid red;
-  border-radius: 5px;
 }
 
 .form-row {
@@ -125,6 +120,15 @@
   border-left: none;
 }
 
+.user-languages {
+  padding-bottom: 8px;
+}
+
+#languages-error {
+  position: absolute;
+  color: red;
+}
+
 @media (max-width: 768px) {
   .signup-wrapper {
     width: calc(100% - 40px);
@@ -151,15 +155,6 @@
   .select-container {
     grid-template-columns: 1fr;
     grid-row-gap: 7px;
-  }
-
-  .conviction-container,
-  .values-container {
-    width: 100%;
-  }
-
-  .conviction-container {
-    margin-bottom: 8px;
   }
 }
 

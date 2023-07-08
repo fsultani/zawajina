@@ -1,23 +1,25 @@
-<div class="main">
-  <div class="main-container">
-    <h2 class="testimonials-header">Search Results</h2>
-    <div class="users-container">
+<div class='main'>
+  <div class='main-container'>
+    <h2 class='testimonials-header'>Search Results</h2>
+    <div class='users-container'>
       ${allUsers.map(user => `
-      <a href="/user/${user._id}">
-        <div class="testimonial-wrapper">
-          <div class="testimonial-image">
+      <a href='/user/${user._id}'>
+        <div class='testimonial-wrapper'>
+          <div class='testimonial-image'>
             <img
-              src="${user.photos.length > 0 ? user.photos[0] : user.gender === 'male' ? '/static/assets/icons/male_profile.jpeg' : '/static/assets/icons/female_profile.jpeg'}"
-              alt="Photo 1" />
+              src='${user.photos.length > 0 ? user.photos[0] : user.gender === `male` ? `/static/assets/icons/male_profile.jpeg` : `/static/assets/icons/female_profile.jpeg`}'
+              alt='Photo 1' />
           </div>
-          <div class="testimonial-body">
-            <div class="testimonial-name">${user.name}, ${user.age}</div>
-            <p class="location">
-              ${(user.city.length + 2 + (user.state ? user.state.length + 2 : 0) + user.country.length) < 30 ?
-                `${user.city}, ${user.state !==null ? `${user.state}, ${user.country}` : user.country}` :
-                `${user.city}, ${user.state !==null ? `${user.state}, ${user.country}` : user.country.slice(0, -10)}...`}
-            </p>
-            <p class="ethnicity">
+          <div class='testimonial-body'>
+            <div class='testimonial-name'>${user.name}, ${user.age}</div>
+            <div>
+              ${user.state !== null ?
+                `<p class='location'>${user.city.length < 20 ? `${user.city}` : `${user.city.slice(0, 20)}...`}, ${user.state}</p>` :
+                `<p class='location'>${user.city.length < 25 ? `${user.city}` : `${user.city.slice(0, 25)}...`}</p>`
+              }
+              <p class='location'>${user.country}</p>
+            </div>
+            <p class='ethnicity'>
               ${user.ethnicity.map(ethnicity => ethnicity).join(' | ')}
             </p>
           </div>
@@ -27,9 +29,9 @@
     </div>
   </div>
 
-  <div class="pagination-container">
+  <div class='pagination-container'>
     <div
-      class="pagination"
+      class='pagination'
       data-previousPage=${previousPage}
       data-numberOfPages=${numberOfPages}
       data-currentPage=${currentPage}
