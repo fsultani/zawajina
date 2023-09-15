@@ -2,7 +2,7 @@ const axios = require('axios');
 const express = require('express');
 
 const { getLastActive, calculateImperialHeight } = require('./utils.js');
-const { getAllFiles, redirectToLogin } = require('../../utils');
+const { getAllFiles, redirectToLogin, camelCaseToTitleCase } = require('../../utils');
 
 const router = express.Router();
 
@@ -10,14 +10,6 @@ router.get('/', async (req, res) => {
 	try {
 		let { authUser, allConversationsCount } = req;
     const userId = authUser._id;
-
-    const imperialHeight = calculateImperialHeight(authUser.height);
-    const userHeight = `${imperialHeight.heightInFeet}'${imperialHeight.heightInInches}" (${authUser.height} cm)`;
-
-    authUser = {
-      ...authUser,
-      height: userHeight,
-    };
 
     const validPhotos = await Promise.all(authUser.photos.map(async photo => {
       const photoUrl = photo?.secure_url;
@@ -42,6 +34,29 @@ router.get('/', async (req, res) => {
     authUser = {
       ...authUser,
       photos,
+    };
+
+    const imperialHeight = calculateImperialHeight(authUser.height);
+    const userHeight = `${imperialHeight.heightInFeet}'${imperialHeight.heightInInches}" (${authUser.height} cm)`;
+
+    authUser = {
+      ...authUser,
+      height: userHeight,
+    };
+
+    const hijab = authUser.hijab ? camelCaseToTitleCase(authUser.hijab).split(' ')[1] : null;
+    const hasChildren = camelCaseToTitleCase(authUser.hasChildren).split(' ')[2];
+    const wantsChildren = camelCaseToTitleCase(authUser.wantsChildren).split(' ')[2];
+    const canRelocate = camelCaseToTitleCase(authUser.canRelocate).split(' ').slice(2).map((word, index) => index > 0 ? word.toLowerCase() : word).join(', ');
+    const smokes = camelCaseToTitleCase(authUser.smokes).split(' ')[1];
+
+    authUser = {
+      ...authUser,
+      hasChildren,
+      wantsChildren,
+      canRelocate,
+      smokes,
+      hijab,
     };
 
 		const lastActive = await getLastActive(userId);

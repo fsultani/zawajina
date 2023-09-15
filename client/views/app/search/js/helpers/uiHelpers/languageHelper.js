@@ -93,7 +93,7 @@ const renderLanguages = data => {
   languageInput.disabled = false;
   if (data.length === 0) {
     languageInput.placeholder = languageInputPlaceholder;
-    languageInput.style.cssText = `padding-left: 20px`;
+    languageInput.style.cssText = `padding-left: 10px`;
     languageInput.focus();
   } else {
     const selectionElement = userSelection.getBoundingClientRect();

@@ -1,7 +1,5 @@
 const axios = require('axios');
 const { MongoClient, ObjectId } = require('mongodb');
-const { getGeoCoordinates, getAllUnitedStates } = require('./data/world-cities').default;
-const unitedStates = getAllUnitedStates();
 
 let db;
 const connectToServer = callback => {
@@ -23,41 +21,33 @@ const connectToServer = callback => {
   }
 };
 
-const geoLocationData = async (userIPAddress, updates) => {
-  let data = {};
+const geoLocationData = async userIPAddress => {
+  let userIPData = {};
 
-  if (process.env.NODE_ENV === 'development') {
-    const geoCoordinates = getGeoCoordinates();
-
-    if (updates?.city) {
-      let coordinatesData = geoCoordinates.find(item => item.city === updates?.city && item.state === updates?.state);
-
-      if (!coordinatesData) {
-        coordinatesData = geoCoordinates.find(item => item.state === updates?.state);
-      }
-
-      data = {
+  if (process.env.NODE_ENV !== 'development') {
+    userIPData = {
+      data: {
         status: 'success',
         country: 'United States',
         countryCode: 'US',
-        region: updates?.state,
-        regionName: unitedStates.find(item => item.abbreviation === updates?.state)?.name,
-        city: updates?.city,
-        zip: '92869',
-        lon: coordinatesData.coordinates.longitude,
-        lat: coordinatesData.coordinates.latitude,
+        region: 'CA',
+        regionName: 'California',
+        city: 'Orange',
+        zip: '92868',
+        lat: 33.7871,
+        lon: -117.8821,
         timezone: 'America/Los_Angeles',
         isp: 'Charter Communications',
         org: 'Spectrum',
         as: 'AS20001 Charter Communications Inc',
         query: '98.148.238.157'
-      };
-    }
+      }
+    };
   } else {
-    data = await axios.get(`http://ip-api.com/json/${userIPAddress}`);
+    userIPData = await axios.get(`http://ip-api.com/json/${userIPAddress}`);
   }
 
-  let locationData = data.status === 'success' ? data : { locationError: 'No location data available' };
+  let locationData = userIPData.data.status === 'success' ? userIPData.data : { locationError: 'No location data available' };
   locationData = {
     ...locationData,
     userIPAddress: locationData.query,

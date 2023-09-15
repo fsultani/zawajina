@@ -122,7 +122,6 @@
       const { allCountries } = await getAllCountries();
       const { allEthnicities } = await getAllEthnicities();
       const { allLanguages } = await getAllLanguages();
-      const { allHobbies } = await getAllHobbies();
 
       displayFullPageLoadingSpinner(false);
 
@@ -134,7 +133,6 @@
         allCountries,
         allEthnicities,
         allLanguages,
-        allHobbies,
       }
     };
 

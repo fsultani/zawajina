@@ -18,13 +18,14 @@ const handleEmailValidation = email => {
 
 const handleResendVerificationCode = (event) => {
   event.preventDefault();
+
   const email = userEmail.value;
   handleEmailValidation(email);
 
   const resendCodeButton = getQuerySelector('.form-submit').innerHTML.trim() === 'Resend Code'
 
   if (handleEmailValidationValue && resendCodeButton) {
-    isSubmitting('submit-button-loading-spinner-wrapper', true);
+    isSubmitting('form-button-loading-spinner-wrapper', true);
 
     Axios({
       method: 'post',
@@ -34,11 +35,11 @@ const handleResendVerificationCode = (event) => {
       }
     })
       .then(({ data }) => {
-        isSubmitting('submit-button-loading-spinner-wrapper', false);
-        const emailSentMessage = getQuerySelector('#email-sent-message');
-        emailSentMessage.innerHTML =
+        isSubmitting('form-button-loading-spinner-wrapper', false);
+        const emailSentMessage =
           `A password reset email was sent.<br>If the email exists in our database, you should receive it soon.`;
-        emailSentMessage.style.display = 'block';
+
+        formMessage('success', emailSentMessage);
 
         const formButton = getQuerySelector('.form-submit');
         const url = data?.url;
@@ -47,11 +48,10 @@ const handleResendVerificationCode = (event) => {
         formButton.onclick = () => window.location.pathname = url;
       })
       .catch(error => {
-        isSubmitting('submit-button-loading-spinner-wrapper', false);
+        isSubmitting('form-button-loading-spinner-wrapper', false);
 
-        const message = error.response.data.message || error.response.statusText || 'We could not complete your request at this time.';
-        getQuerySelector('#form-error').innerHTML = message;
-        getQuerySelector('#form-error').style.display = 'block';
+        const errorMessage = error.response.data.message || error.response.statusText || 'We could not complete your request at this time.';
+        formMessage('error', errorMessage);
       });
   }
 };

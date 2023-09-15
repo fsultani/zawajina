@@ -1,36 +1,35 @@
-<section>
-  <div class='login-container'>
-    <div class='login-wrapper'>
-      <form class='login-form validate-form' name='login' onsubmit='handleLogin(event)' novalidate>
-        <span class='login-form-title'>
-          Login
-        </span>
-        <div class='input-wrapper validate-input' id='email-wrapper'>
-          <input class='input-field' type='email' id='userEmail' />
-          <span class='input-focus' id='email-span' data-placeholder='Email'></span>
-          <div id='email-error'></div>
-        </div>
-        <div class='input-wrapper validate-input' id='password-wrapper'>
-          <input class='input-field' type='password' id='userPassword' />
-          <span class='input-focus' id='password-span' data-placeholder='Password'></span>
-          <div id='password-error'></div>
-        </div>
-        <div class='login-button-container'>
-          <div class='login-button-wrapper'>
-            <div class='login-button-background'></div>
-            <div id='login-button-loading-spinner-wrapper'>
-              <button class='form-submit' type='submit' name='loginButton'>
-                Login
-              </button>
-            </div>
+<div class='flex flex-wrap justify-content-center align-items-flex-start page-container background-green'>
+  <div class='box-shadow-1 page-wrapper'>
+    <form name='loginForm' onsubmit='handleLogin(event)' novalidate>
+      <h1 class='form-title'>Login</h1>
+
+      <div class='input-wrapper position-relative' id='email-wrapper'>
+        <input class='input-field' id='userEmail' required type='email' />
+        <span class='input-focus' id='email-span' data-placeholder='Email'></span>
+        <div id='email-error'></div>
+      </div>
+
+      <div class='input-wrapper position-relative password-position' id='password-wrapper'>
+        <input class='input-field userPassword' id='userPassword' required type='password' />
+        <span class='input-focus animate-border-bottom' id='password-span' data-placeholder='Password'></span>
+        <div id='password-error'></div>
+      </div> 
+
+      <div class='flex justify-content-center flex-wrap form-button-container'>
+        <div class='full-width'>
+          <div id='form-button-loading-spinner-wrapper'>
+            <button class='flex justify-content-center align-items-center form-submit' type='submit'>
+              Login
+            </button>
           </div>
         </div>
-        <div class='bottom-container'>
-          <a href='/password/request' class='forgot-password'>
-            Forgot your password?
-          </a>
-        </div>
-      </form>
-    </div>
+      </div>
+
+      <div class='bottom-container'>
+        <a href='/password/request' class='forgot-password'>
+          Forgot your password?
+        </a>
+      </div>
+    </form>
   </div>
-</section>
+</div>

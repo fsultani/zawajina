@@ -138,7 +138,7 @@
 }
 
 .pagination a.active {
-  background: linear-gradient(57deg, #00c6a7 0%, #1e4d92 100%);
+  background: #009000;;
   color: white;
   border: none;
 }

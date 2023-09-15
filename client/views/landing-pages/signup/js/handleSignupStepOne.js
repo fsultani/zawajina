@@ -23,8 +23,8 @@ const handleNameValidation = name => {
     preventWebLinks(name)
   ) {
     handleNameValidationValue = false;
-    getQuerySelector('#name').classList.remove('animate-border-bottom');
-    getQuerySelector('#name-wrapper').style.cssText = `border-bottom: 2px solid red;`
+    getQuerySelectorById('name').classList.remove('animate-border-bottom');
+    getQuerySelectorById('name-wrapper').style.cssText = `border-bottom: 2px solid red;`
 
     let errorMessage = '';
     if (name.length === 0) {
@@ -41,12 +41,12 @@ const handleNameValidation = name => {
       errorMessage = 'Web links are not allowed';
     }
 
-    getQuerySelector('#name-error').innerHTML = errorMessage;
+    getQuerySelectorById('name-error').innerHTML = errorMessage;
   } else {
     handleNameValidationValue = true;
-    getQuerySelector('#name-wrapper').classList.remove('form-error-border-bottom');
-    getQuerySelector('#name').classList.add('animate-border-bottom');
-    getQuerySelector('#name-error').innerHTML = '';
+    getQuerySelectorById('name-wrapper').classList.remove('form-error-border-bottom');
+    getQuerySelectorById('name').classList.add('animate-border-bottom');
+    getQuerySelectorById('name-error').innerHTML = '';
   }
 };
 
@@ -55,14 +55,14 @@ const handleEmailValidation = email => {
 
   if (!emailRegex.test(email)) {
     handleEmailValidationValue = false;
-    getQuerySelector('#email').classList.remove('animate-border-bottom');
-    getQuerySelector('#email-wrapper').style.cssText = `border-bottom: 2px solid red;`
-    getQuerySelector('#email-error').innerHTML = 'Invalid email';
+    getQuerySelectorById('email').classList.remove('animate-border-bottom');
+    getQuerySelectorById('email-wrapper').style.cssText = `border-bottom: 2px solid red;`
+    getQuerySelectorById('email-error').innerHTML = 'Invalid email';
   } else if (emailRegex.test(email)) {
-    if (getQuerySelector('#email-wrapper').classList.contains('form-error-border-bottom')) {
-      getQuerySelector('#email-wrapper').classList.remove('form-error-border-bottom');
-      getQuerySelector('#email').classList.add('animate-border-bottom');
-      getQuerySelector('#email-error').innerHTML = '';
+    if (getQuerySelectorById('email-wrapper').classList.contains('form-error-border-bottom')) {
+      getQuerySelectorById('email-wrapper').classList.remove('form-error-border-bottom');
+      getQuerySelectorById('email').classList.add('animate-border-bottom');
+      getQuerySelectorById('email-error').innerHTML = '';
     }
     handleEmailValidationValue = true;
   }
@@ -70,19 +70,21 @@ const handleEmailValidation = email => {
 
 const handlePasswordValidation = password => {
   if (password.length < 8) {
-    getQuerySelector('#password').classList.remove('animate-border-bottom');
-    getQuerySelector('#password-wrapper').style.cssText = `border-bottom: 2px solid red;`
+    getQuerySelectorById('password').classList.remove('animate-border-bottom');
+    getQuerySelectorById('password-wrapper').style.cssText = `border-bottom: 2px solid red;`
     handlePasswordValidationValue = false;
   } else if (password.length >= 8) {
-    if (getQuerySelector('#password-wrapper').classList.contains('form-error-border-bottom')) {
-      getQuerySelector('#password-wrapper').classList.remove('form-error-border-bottom');
-      getQuerySelector('#password').classList.add('animate-border-bottom');
+    if (getQuerySelectorById('password-wrapper').classList.contains('form-error-border-bottom')) {
+      getQuerySelectorById('password-wrapper').classList.remove('form-error-border-bottom');
+      getQuerySelectorById('password').classList.add('animate-border-bottom');
     }
     handlePasswordValidationValue = true;
   }
 };
 
-const handleSignupStepOne = async () => {
+const handleSignupStepOne = async event => {
+  event.preventDefault();
+
   const nameValue = username.value;
   const email = userEmail.value;
   const password = userPassword.value;
@@ -92,7 +94,7 @@ const handleSignupStepOne = async () => {
   handlePasswordValidation(password);
 
   if (handleNameValidationValue && handleEmailValidationValue && handlePasswordValidationValue) {
-    isSubmitting('submit-button-loading-spinner-wrapper', true);
+    isSubmitting('form-button-loading-spinner-wrapper', true);
 
     Axios({
       method: 'post',
@@ -109,13 +111,12 @@ const handleSignupStepOne = async () => {
         window.location.pathname = url;
       })
       .catch(error => {
-        isSubmitting('submit-button-loading-spinner-wrapper', false);
+        isSubmitting('form-button-loading-spinner-wrapper', false);
 
         if (error.response.status === 403) {
           /* Email address already exists */
           const message = error.response.data.message;
-          getQuerySelector('#email-exists-error').innerHTML = message;
-          getQuerySelector('#email-exists-error').style.display = 'block';
+          formMessage('error', message);
         } else if (error.response?.data) {
           /*
             This conditional only checks for the 'name' value.
@@ -125,9 +126,9 @@ const handleSignupStepOne = async () => {
             const querySelector = error.response.data.querySelector;
             const message = error.response.data.message;
 
-            getQuerySelector(`#${querySelector}`).classList.remove('animate-border-bottom');
-            getQuerySelector(`#${querySelector}-wrapper`).style.cssText = `border-bottom: 2px solid red;`
-            getQuerySelector(`#${querySelector}-error`).innerHTML = message;
+            getQuerySelectorById(querySelector).classList.remove('animate-border-bottom');
+            getQuerySelectorById(`${querySelector}-wrapper`).style.cssText = `border-bottom: 2px solid red;`
+            getQuerySelectorById(`${querySelector}-error`).innerHTML = message;
           }
 
           /*
@@ -140,9 +141,7 @@ const handleSignupStepOne = async () => {
           })
         } else {
           /* Display generic error message */
-          getQuerySelector('#email-exists-error').innerHTML =
-            'We could not complete your request at this time.';
-          getQuerySelector('#email-exists-error').style.display = 'block';
+          formMessage('error', 'We could not complete your request at this time.');
         }
       });
   }

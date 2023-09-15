@@ -1,20 +1,32 @@
-<header class="navbar--site-header">
-  <div class="navbar--container">
-    <div class="navbar--site-header-inner">
-      <div>
-        <a href="/"><img src="/static/client/images/home.svg" alt="Home" /></a>
-      </div>
-      <ul class="navbar--header-links list-reset margin-0">
-        <li>
-          <a href="/about">About</a>
-        </li>
-        <li>
-          <a href="/login">Login</a>
-        </li>
-        <li>
-          <a class="button navbar--button-sm navbar--button-shadow" href="/signup">Signup</a>
-        </li>
-      </ul>
+<nav class='nav-container'>
+  <div class='nav-home-link'>
+    <a href='/'>My Match</a>
+  </div>
+
+  <div class='nav-wrapper'>
+    <ul class='nav-links'>
+      <li><a href='/#about' onclick='scrollToSection("about")'>About</a></li>
+      <li><a href='/#how-it-works'>How It Works</a></li>
+      <li><a href='/faq'>FAQ</a></li>
+      <li><a href='/login'>Login</a></li>
+      <li><a href='/signup'>Sign Up</a></li>
+    </ul>
+  </div>
+
+  <div class='mobile-view'>
+    <button class='open-nav' onclick='openNav()'>
+      <hr class='menu-line' />
+      <hr class='menu-line' />
+      <hr class='menu-line' />
+    </button>
+
+    <div class='side-menu-mobile'>
+      <div class='close-menu-button' onclick='closeNav()'>&times;</div>
+      <a href='/#about' onclick='closeNav()'>About</a>
+      <a href='/#how-it-works' onclick='closeNav()'>How It Works</a>
+      <a href='/faq' onclick='closeNav()'>FAQ</a>
+      <a href='/login'>Login</a>
+      <a href='/signup'>Sign Up</a>
     </div>
   </div>
-</header>
+</nav>

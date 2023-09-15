@@ -2,6 +2,7 @@ const { ObjectId } = require('mongodb');
 const jwt = require('jsonwebtoken');
 const JWT_SECRET = Buffer.from('fe1a1915a379f3be5394b64d14794932', 'hex');
 
+const { checkIPAddress } = require('../../middleware/checkAuthentication.js');
 const { usersCollection, insertLogs, geoLocationData } = require('../../db.js');
 const { uploadToCloudinary } = require('../../helpers/cloudinary.js');
 const {
@@ -36,7 +37,7 @@ const allHobbiesData = hobbiesData.default.getAllHobbies();
 const profileDetails = async (req, res) => {
   try {
     const { userId } = req.body;
-    const userIPAddress = req.headers.useripaddress;
+    const { userIPAddress } = await checkIPAddress(req);
     let {
       birthMonth,
       birthDay,
@@ -260,6 +261,7 @@ const profileDetails = async (req, res) => {
       likedByUsers: [],
       usersLiked: [],
       _account,
+      strikes: [],
     }
 
     const searchOptions = {

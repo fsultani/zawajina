@@ -12,7 +12,7 @@ const verifyEmail = async (req, res) => {
       !tokenString.length ||
       tokenString.length !== 5 ||
       isNaN(verificationToken)
-    ) return res.status(404).send({ message: 'Invalid Token' });
+    ) return res.status(403).send({ message: 'Invalid Token' });
 
     usersCollection().findOne({ _id: ObjectId(my_match_userId) }, async (_, userExists) => {
       const { emailVerificationToken } = userExists;
@@ -27,9 +27,9 @@ const verifyEmail = async (req, res) => {
           });
 
         return res.status(200).send({ url: '/signup/profile' });
-      } else {
-        return res.status(404).send({ message: 'Invalid Token' });
       }
+
+      return res.status(403).send({ message: 'Invalid Token' });
     })
   } catch (error) {
     returnServerError(res, error);

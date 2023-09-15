@@ -20,10 +20,10 @@ const getLocations = async userInput => {
     }));
 
   const cities = allCities
-    .filter(location => location.city.toLowerCase().indexOf(userInput) > -1 && location.state === null)
+    .filter(location => location.city.toLowerCase().indexOf(userInput.toLowerCase()) > -1)
     .map(location => ({
       city: location.city,
-      state: null,
+      state: location.state,
       country: location.country,
     }));
 
@@ -57,12 +57,16 @@ const getUserLocationInput = () => locationInput.addEventListener(
 
     renderResults.map(({ city, state, country }) => {
       let fullLocation = '';
-      if (city) {
-        fullLocation = `${city}, ${country}`;
+      if (city && state) {
+        fullLocation = `${city}, ${state}, ${country}`;
       }
 
-      if (state) {
+      if (!city && state) {
         fullLocation = `${state}, ${country}`;
+      }
+
+      if (city && !state) {
+        fullLocation = `${city}, ${country}`;
       }
 
       if (!city && !state) {
@@ -131,7 +135,7 @@ const renderLocations = data => {
   locationInput.disabled = false;
   if (data.length === 0) {
     locationInput.placeholder = locationInputPlaceholder;
-    locationInput.style.cssText = `padding-left: 20px`;
+    locationInput.style.cssText = `padding-left: 10px`;
     locationInput.focus();
   } else {
     const selectionElement = userSelection.getBoundingClientRect();

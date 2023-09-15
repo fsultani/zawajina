@@ -13,34 +13,9 @@
   src: url('/static/client/fonts/poppins/Poppins-Bold.ttf');
 }
 
-@font-face {
-  font-family: Poppins-SemiBold;
-  src: url('../fonts/poppins/Poppins-SemiBold.ttf');
-}
-
-* {
-  margin: 0px;
-  padding: 0px;
-  box-sizing: border-box;
-}
-
-body,
-html {
-  height: 100%;
-  margin: 0px;
-  font-family: Poppins-Regular, sans-serif;
-}
-
 section {
-  height: 100%;
-}
-
-a {
-  font-family: Poppins-Regular;
-  font-size: 14px;
-  line-height: 1.7;
-  color: #666666;
-  margin: 0px;
+  flex: 1;
+  background-color: var(--color-green);
 }
 
 a:hover {
@@ -130,25 +105,7 @@ textarea:-ms-input-placeholder {
   color: #adadad;
 }
 
-.login-page-container {
-  width: 100%;
-  margin: 0 auto;
-}
-
-.signup {
-  font-family: Poppins-Regular;
-  font-size: 13px;
-  color: #333333;
-  line-height: 1.5;
-}
-
-.logo {
-  position: absolute;
-  top: 24px;
-  left: 87.5px;
-}
-
-.form-container {
+.page-container {
   width: 100%;
   height: 100%;
   display: -webkit-box;
@@ -159,12 +116,18 @@ textarea:-ms-input-placeholder {
   flex-wrap: wrap;
   justify-content: center;
   align-items: flex-start;
-  padding: 200px 20px;
+  padding: 40px 20px;
   background: linear-gradient(-135deg, #c850c0, #4158d0);
-  background: linear-gradient(57deg, #00c6a7 0%, #1e4d92 100%);
+  background: var(--color-green);
 }
 
-.form-wrapper {
+@media (min-width: 600px) {
+  .page-container {
+    padding: 200px 20px;
+  }
+}
+
+.page-wrapper {
   width: 390px;
   background: #fff;
   border-radius: 10px;
@@ -177,23 +140,13 @@ textarea:-ms-input-placeholder {
   -ms-box-shadow: 0 5px 10px 0px rgba(0, 0, 0, 0.1);
 }
 
-.form {
-  width: 100%;
+@media (max-width: 325px) {
+  .page-wrapper {
+    padding: 32px 15px;
+  }
 }
 
-#form-error {
-  display: none;
-  position: relative;
-  padding: 0.75rem 1.25rem;
-  margin-bottom: 1rem;
-  border: 1px solid transparent;
-  border-radius: 0.25rem;
-  text-align: center;
-  font-size: 16px;
-  color: #fff;
-  background-color: #00c6a7;
-}
-
+#form-error,
 #email-sent-message {
   display: none;
   position: relative;
@@ -203,8 +156,8 @@ textarea:-ms-input-placeholder {
   border-radius: 0.25rem;
   text-align: center;
   font-size: 16px;
-  color: #fff;
-  background-color: #00c6a7;
+  color: var(--color-green);
+  background-color: var(--color-light-green);
 }
 
 .form-title {
@@ -217,12 +170,9 @@ textarea:-ms-input-placeholder {
   padding-bottom: 26px;
 }
 
-.form-title i {
-  font-size: 60px;
-}
-
 .input-wrapper {
   width: 100%;
+  height: 45px;
   position: relative;
   border-bottom: 2px solid #adadad;
   margin-bottom: 37px;
@@ -302,15 +252,6 @@ textarea:-ms-input-placeholder {
   transition: all 0.4s;
 }
 
-#email-error {
-  width: 100%;
-  text-align: center;
-  position: absolute;
-  bottom: -25px;
-  font-size: 14px;
-  color: red;
-}
-
 .input-field:focus+.input-focus::after {
   top: -20px;
 }
@@ -325,6 +266,15 @@ textarea:-ms-input-placeholder {
 
 .has-value.input-field+.input-focus::before {
   width: 100%;
+}
+
+#email-error {
+  width: 100%;
+  text-align: center;
+  position: absolute;
+  bottom: -25px;
+  font-size: 14px;
+  color: red;
 }
 
 .password-icon-wrapper {
@@ -347,63 +297,8 @@ textarea:-ms-input-placeholder {
   transition: all 0.4s;
 }
 
-.button-container {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  padding-top: 13px;
-}
-
-.button-wrapper {
-  width: 100%;
-  display: block;
-  position: relative;
-  z-index: 1;
-  border-radius: 25px;
-  overflow: hidden;
-  margin: 0 auto;
-}
-
-.button-background {
-  position: absolute;
-  z-index: -1;
-  width: 100%;
-  height: 100%;
-  background-image: linear-gradient(to left, #74ebd5, #9face6);
-}
-
-.form-submit {
-  font-family: Poppins-Medium;
-  font-size: 15px;
-  color: #fff;
-  line-height: 1.2;
-  text-transform: uppercase;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0 20px;
-  width: 100%;
-  height: 50px;
-  outline: none;
-  border: none;
-  background: transparent;
-}
-
-.form-submit:hover {
-  background-image: linear-gradient(to left, #5ae8ce, #8d9ce3);
-  cursor: pointer;
-}
-
-.validate-input {
-  position: relative;
+.form-button-container {
+  padding: 0;
 }
 
 .bottom-container {
@@ -414,60 +309,62 @@ textarea:-ms-input-placeholder {
   padding-top: 14px;
 }
 
-@media screen and (max-width: 768px) {
-  .form-wrapper {
-    margin-top: 32px;
-  }
-
-  .wrap-login {
-    padding: 77px 15px 33px 15px;
-  }
-}
-
 @media (max-width: 325px) {
-  .form-wrapper {
-    padding: 32px 15px;
-  }
-
   .bottom-container {
     padding-top: 32px;
   }
 }
 
-.loading-spinner {
-  display: none;
+.forgot-password {
+  font-size: 14px;
+  line-height: 1.7;
+  color: #666666;
+  margin: 0px;
+}
+
+.password-position {
+  margin-bottom: 5px;
+}
+
+.password-helper-text {
+  font-size: 12px;
+}
+
+.field-icon {
   position: absolute;
-  top: 2px;
-  left: 95px;
+  top: 0;
+  right: 10px;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  color: #555;
 }
 
-.loading-spinner div {
-  box-sizing: border-box;
-  display: block;
-  position: absolute;
-  width: 30px;
-  height: 30px;
-  margin: 8px;
-  border: 3px solid #fff;
-  border-radius: 50%;
-  animation: animation-360-loading-spinner 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-  border-color: #fff transparent transparent transparent;
+.label-agree-term {
+  font-size: 12px;
+  font-weight: 600;
+  color: #555;
 }
 
-.loading-spinner div:nth-child(1) {
-  animation-delay: -0.45s;
+.term-service {
+  color: #555;
+  text-decoration: underline;
 }
 
-.loading-spinner div:nth-child(2) {
-  animation-delay: -0.3s;
+.login {
+  width: 100%;
+  display: flex;
+  color: #555;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: center;
 }
 
-.loading-spinner div:nth-child(3) {
-  animation-delay: -0.15s;
+.helper-text {
+  font-weight: 700;
+  color: #222;
 }
 
-@media (min-width: 600px) {
-  .loading-spinner {
-    left: 45%;
-  }
+.helper-text:hover {
+  text-decoration: underline;
 }

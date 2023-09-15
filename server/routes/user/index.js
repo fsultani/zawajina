@@ -68,8 +68,8 @@ router.get('/:userId', async (req, res) => {
     const hijab = user.hijab ? camelCaseToTitleCase(user.hijab).split(' ')[1] : null;
     const hasChildren = camelCaseToTitleCase(user.hasChildren).split(' ')[2];
     const wantsChildren = camelCaseToTitleCase(user.wantsChildren).split(' ')[2];
-    const canRelocate = camelCaseToTitleCase(user.canRelocate).split(' ')[2];
-    const smokes = camelCaseToTitleCase(user.smokes).split(' ')[2];
+    const canRelocate = camelCaseToTitleCase(user.canRelocate).split(' ').slice(2).map((word, index) => index > 0 ? word.toLowerCase() : word).join(', ');
+    const smokes = camelCaseToTitleCase(user.smokes).split(' ')[1];
 
     user = {
       ...user,

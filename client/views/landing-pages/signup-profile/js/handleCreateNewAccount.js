@@ -71,59 +71,59 @@ const handleCreateNewAccount = async () => {
   });
 
   if (!birthMonth || birthMonth === 'Select Month') {
-    addErrorClass('.dob-month');
+    addErrorClass('#dob-month');
     formFields['birthMonth'] = false;
   } else {
-    removeErrorClass('.dob-month');
+    removeErrorClass('#dob-month');
     formFields['birthMonth'] = true;
   }
 
   if (!birthDay || birthDay === 'Select Day') {
-    addErrorClass('.dob-day');
+    addErrorClass('#dob-day');
     formFields['birthDay'] = false;
   } else {
-    removeErrorClass('.dob-day');
+    removeErrorClass('#dob-day');
     formFields['birthDay'] = true;
   }
 
   if (!birthYear || birthYear === 'Select Year') {
-    addErrorClass('.dob-year');
+    addErrorClass('#dob-year');
     formFields['birthYear'] = false;
   } else {
-    removeErrorClass('.dob-year');
+    removeErrorClass('#dob-year');
     formFields['birthYear'] = true;
   }
 
   if (!gender) {
-    addErrorClass('.gender-error');
+    addErrorClass('#gender');
     formFields['gender'] = false;
   } else {
-    removeErrorClass('.gender-error');
+    removeErrorClass('#gender');
     formFields['gender'] = true;
   }
 
   if (!city) {
     closeAllLists('#locationInput');
     document.querySelector('.user-location').style.cssText = 'padding-bottom: 4px';
-    document.querySelector('#city-error').innerHTML = 'Please select your city from the dropdown';
-    document.querySelector('#city-error').style.display = 'block';
+    document.querySelector('#city').innerHTML = 'Please select your city from the dropdown';
+    document.querySelector('#city').style.display = 'block';
     formFields['city'] = false;
   } else {
     document.querySelector('.user-location').style.cssText = 'padding-bottom: 16px';
-    document.querySelector('#city-error').style.display = 'none';
+    document.querySelector('#city').style.display = 'none';
     formFields['city'] = true;
   }
 
   if (!userCountryContent || userCountryContent.textContent === '') {
     closeAllLists('#countryRaisedInInput');
     document.querySelector('.country-user-raised-in').style.cssText = 'padding-bottom: 4px';
-    document.querySelector('#country-raised-in-error').innerHTML =
+    document.querySelector('#country-raised-in').innerHTML =
       'Please select the country you were raised in from the dropdown';
-    document.querySelector('#country-raised-in-error').style.display = 'block';
+    document.querySelector('#country-raised-in').style.display = 'block';
     formFields['userCountryContent'] = false;
   } else {
     document.querySelector('.country-user-raised-in').style.cssText = 'padding-bottom: 16px';
-    document.querySelector('#country-raised-in-error').style.display = 'none';
+    document.querySelector('#country-raised-in').style.display = 'none';
     countryRaisedIn = userCountryContent.textContent;
     formFields['userCountryContent'] = true;
   }
@@ -131,130 +131,130 @@ const handleCreateNewAccount = async () => {
   if (ethnicity.length === 0) {
     closeAllLists('#ethnicityInput');
     document.querySelector('.user-ethnicity').style.cssText = 'padding-bottom: 4px';
-    document.querySelector('#ethnicity-error').innerHTML =
+    document.querySelector('#ethnicity').innerHTML =
       'Please select your ethnicity from the dropdown';
-    document.querySelector('#ethnicity-error').style.display = 'block';
+    document.querySelector('#ethnicity').style.display = 'block';
     formFields['ethnicity'] = false;
   } else {
     document.querySelector('.user-ethnicity').style.cssText = 'padding-bottom: 16px';
-    document.querySelector('#ethnicity-error').style.display = 'none';
+    document.querySelector('#ethnicity').style.display = 'none';
     formFields['ethnicity'] = true;
   }
 
   if (languages.length === 0) {
     closeAllLists('#languageInput');
     document.querySelector('.user-languages').style.cssText = 'padding-bottom: 4px';
-    document.querySelector('#languages-error').innerHTML =
+    document.querySelector('#languages').innerHTML =
       'Please select your language(s) from the dropdown';
-    document.querySelector('#languages-error').style.display = 'block';
+    document.querySelector('#languages').style.display = 'block';
     formFields['languages'] = false;
   } else {
     document.querySelector('.user-languages').style.cssText = 'padding-bottom: 16px';
-    document.querySelector('#languages-error').style.display = 'none';
+    document.querySelector('#languages').style.display = 'none';
     formFields['languages'] = true;
   }
 
   if (!religiousConviction || religiousConviction === 'Select Conviction') {
-    addErrorClass('.religious-conviction');
+    addErrorClass('#religious-conviction');
     formFields['religiousConviction'] = false;
   } else {
-    removeErrorClass('.religious-conviction');
+    removeErrorClass('#religious-conviction');
     formFields['religiousConviction'] = true;
   }
 
   if (!religiousValues || religiousValues === 'Select Values') {
-    addErrorClass('.religious-values');
+    addErrorClass('#religious-values');
     formFields['religiousValues'] = false;
   } else {
-    removeErrorClass('.religious-values');
+    removeErrorClass('#religious-values');
     formFields['religiousValues'] = true;
   }
 
   if (!maritalStatus || maritalStatus === 'Select Marital Status') {
-    addErrorClass('.marital-status');
+    addErrorClass('#marital-status');
     formFields['maritalStatus'] = false;
   } else {
-    removeErrorClass('.marital-status');
+    removeErrorClass('#marital-status');
     formFields['maritalStatus'] = true;
   }
 
   if (!education || education === 'Select Education Level') {
-    addErrorClass('.education');
+    addErrorClass('#education');
     formFields['education'] = false;
   } else {
-    removeErrorClass('.education');
+    removeErrorClass('#education');
     formFields['education'] = true;
   }
 
   if (!profession || profession === 'Select Profession') {
-    addErrorClass('.profession');
+    addErrorClass('#profession');
     formFields['profession'] = false;
   } else {
-    removeErrorClass('.profession');
+    removeErrorClass('#profession');
     formFields['profession'] = true;
   }
 
   if (gender === 'female' && !hijab) {
-    addErrorClass('.hijab');
+    addErrorClass('#hijab');
     formFields['gender'] = false;
   } else {
-    removeErrorClass('.hijab');
+    removeErrorClass('#hijab');
     formFields['gender'] = true;
   }
 
   if (!hasChildren || hasChildren === 'Select One') {
-    addErrorClass('.has-children');
+    addErrorClass('#has-children');
     formFields['hasChildren'] = false;
   } else {
-    removeErrorClass('.has-children');
+    removeErrorClass('#has-children');
     formFields['hasChildren'] = true;
   }
 
   if (!wantsChildren || wantsChildren === 'Select One') {
-    addErrorClass('.wants-children');
+    addErrorClass('#wants-children');
     formFields['wantsChildren'] = false;
   } else {
-    removeErrorClass('.wants-children');
+    removeErrorClass('#wants-children');
     formFields['wantsChildren'] = true;
   }
 
   if (!height || height === 'Select Height') {
-    addErrorClass('.user-height');
+    addErrorClass('#user-height');
     formFields['height'] = false;
   } else {
-    removeErrorClass('.user-height');
+    removeErrorClass('#user-height');
     formFields['height'] = true;
   }
 
   if (!canRelocate || canRelocate === 'Select One') {
-    addErrorClass('.can-relocate');
+    addErrorClass('#can-relocate');
     formFields['canRelocate'] = false;
   } else {
-    removeErrorClass('.can-relocate');
+    removeErrorClass('#can-relocate');
     formFields['canRelocate'] = true;
   }
 
   if (!diet || diet === 'Select Diet') {
-    addErrorClass('.diet');
+    addErrorClass('#diet');
     formFields['diet'] = false;
   } else {
-    removeErrorClass('.diet');
+    removeErrorClass('#diet');
     formFields['diet'] = true;
   }
 
   if (!smokes || smokes === 'Select One') {
-    addErrorClass('.smokes');
+    addErrorClass('#smokes');
     formFields['smokes'] = false;
   } else {
-    removeErrorClass('.smokes');
+    removeErrorClass('#smokes');
     formFields['smokes'] = true;
   }
 
   if (!prayerLevel || prayerLevel === 'Select One') {
-    addErrorClass('.prayer-level');
+    addErrorClass('#prayer-level');
     formFields['prayerLevel'] = false;
   } else {
-    removeErrorClass('.prayer-level');
+    removeErrorClass('#prayer-level');
     formFields['prayerLevel'] = true;
   }
 
@@ -404,7 +404,7 @@ const handleCreateNewAccount = async () => {
           addErrorClass(`.${elementError}`);
 
           document.querySelector('.form-errors').style.display = 'inline-block';
-          addErrorClass('.signup-button');
+          addErrorClass('#signup-button-error');
         } else {
           document.querySelector('#application-error').style.display = 'flex';
         }
@@ -416,7 +416,6 @@ const handleCreateNewAccount = async () => {
       });
   } else {
     document.querySelector('.form-errors').style.display = 'inline-block';
-    addErrorClass('.signup-button');
     window.scroll({
       top: 0,
       behavior: 'smooth',

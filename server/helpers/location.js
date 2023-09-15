@@ -1,4 +1,5 @@
 const axios = require('axios');
+const { checkIPAddress } = require('../middleware/checkAuthentication');
 
 const { getAllCities, getAllUnitedStates } = require('../data/world-cities').default;
 const { returnServerError } = require('../utils');
@@ -7,7 +8,7 @@ const lowerCaseString = string => string.split(' ').join('').toLowerCase();
 
 const location = async (req, res) => {
   try {
-    const userIPAddress = req.headers.useripaddress;
+    const { userIPAddress } = await checkIPAddress(req);
     const allCities = getAllCities();
     const unitedStates = getAllUnitedStates();
     const allLocations = allCities;

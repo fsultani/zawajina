@@ -5,7 +5,6 @@ module.exports.loginPage = res => {
 
   const stylesArray = [
     '/static/assets/styles/material-design-iconic-font.min.css',
-    '/static/assets/styles/bootstrap.min.css',
     '/static/client/views/landing-pages/_layouts/global-styles.css',
     '/static/client/views/landing-pages/_partials/styles/landing-page-nav.css',
     '/static/client/views/landing-pages/_partials/styles/footer.css',

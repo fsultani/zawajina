@@ -4,6 +4,7 @@ const { validationResult } = require('express-validator/check');
 const { usersCollection, insertLogs } = require('../../db.js');
 const { emailVerification } = require('../../email-templates/email-verification.js');
 const { sendEmail } = require('../../helpers/email');
+const { checkIPAddress } = require('../../middleware/checkAuthentication.js');
 const {
   inputHasSocialMediaAccount,
   inputHasSocialMediaTag,
@@ -13,9 +14,9 @@ const {
   verifyDate,
 } = require('../../utils.js');
 
-const personalInfo = (req, res) => {
+const personalInfo = async (req, res) => {
   const { nameValue, email } = req.body;
-  const userIPAddress = req.headers.useripaddress;
+  const { userIPAddress } = await checkIPAddress(req);
   let { password } = req.body;
 
   const getErrors = validationResult(req);
@@ -93,9 +94,11 @@ const personalInfo = (req, res) => {
         const insertUser = await usersCollection().insertOne(newUser);
         const userId = insertUser.insertedId;
 
-        if (process.env.NODE_ENV !== 'development') {
-          await sendEmail({ emailAddress: email, subject, emailBody })
-        }
+        // if (process.env.NODE_ENV !== 'development') {
+        //   await sendEmail({ emailAddress: email, subject, emailBody })
+        // }
+
+        await sendEmail({ emailAddress: email, subject, emailBody })
 
         newUser._id = userId;
         await insertLogs(newUser, userIPAddress, endpoint);

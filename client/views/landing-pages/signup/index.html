@@ -1,44 +1,51 @@
-<section class='signup-container'>
-  <div class='signup-wrapper'>
-    <div class='signup-content'>
-      <div id='email-exists-error'></div>
-      <form name='signupForm' onsubmit='return false' novalidate>
-        <h2 class='form-title'>Create account</h2>
+<div class='flex flex-wrap justify-content-center align-items-flex-start page-container background-green'>
+  <div class='box-shadow-1 page-wrapper'>
+    <form name='signupForm' onsubmit='handleSignupStepOne(event)' novalidate>
+      <h1 class='form-title'>Create account</h1>
 
-        <div class='input-wrapper' id='name-wrapper'>
-          <input type='text' class='form-input username' required data-username='username' />
-          <span class='input-focus animate-border-bottom' id='name' data-placeholder='Name'></span>
-          <div id='name-error'></div>
-        </div>
-        <div class='input-wrapper' id='email-wrapper'>
-          <input type='email' class='form-input userEmail' required data-userEmail='userEmail' />
-          <span class='input-focus animate-border-bottom' id='email' data-placeholder='Email'></span>
-          <div id='email-error'></div>
-        </div>
-        <div class='input-wrapper password-position' id='password-wrapper'>
-          <input class='form-input userPassword' type='password' data-userPassword='userPassword' />
-          <span class='input-focus animate-border-bottom' id='password' data-placeholder='Password'></span>
-          <span toggle='#password' class='field-icon' onclick='togglePassword()'>
-            <i class='fa fa-eye' id='passwordEye'></i>
-          </span>
-        </div>
-        <div class='password-helper-text'>
-          Password must be at least 8 characters long
-        </div>
-        <div class='form-group submit-button'>
-          <div id='submit-button-loading-spinner-wrapper'>
-            <button type='submit' onclick='handleSignupStepOne()' class='form-submit signup-button' id='signupButton'>
+      <div class='input-wrapper position-relative' id='name-wrapper'>
+        <input class='input-field username' data-username='username' required type='text' />
+        <span class='input-focus' id='name' data-placeholder='Name'></span>
+        <div id='name-error'></div>
+      </div>
+
+      <div class='input-wrapper position-relative' id='email-wrapper'>
+        <input class='input-field userEmail' data-userEmail='userEmail' required type='email' />
+        <span class='input-focus' id='email' data-placeholder='Email'></span>
+        <div id='email-error'></div>
+      </div>
+
+      <div class='input-wrapper position-relative password-position' id='password-wrapper'>
+        <input class='input-field userPassword' data-userPassword='userPassword' required type='password' />
+        <span class='input-focus animate-border-bottom' id='password' data-placeholder='Password'></span>
+        <span toggle='#password' class='field-icon' onclick='togglePassword()'>
+          <i class='fa fa-eye' id='passwordEye'></i>
+        </span>
+      </div>
+
+      <div class='password-helper-text'>
+        Password must be at least 8 characters long
+      </div>
+
+      <div class='flex justify-content-center flex-wrap form-button-container'>
+        <div class='full-width'>
+          <div id='form-button-loading-spinner-wrapper'>
+            <button class='flex justify-content-center align-items-center form-submit' type='submit'>
               Create Account
             </button>
           </div>
         </div>
-      </form>
+      </div>
+
       <div class='form-group'>
         <label for='agree-term' class='label-agree-term'>
-          By signing up, you agree to all statements in
+          By signing up, you agree to all statements in the
           <a href='/terms' class='term-service'>Terms of Service</a></label>
       </div>
-      <p class='login'>Already have an account? <a href='#' class='login-link'>Login here</a></p>
-    </div>
+
+      <div class='bottom-container'>
+        <p class='login'>Already have an account?&nbsp;&nbsp;<a href='/login' class='helper-text'>Login here</a></p>
+      </div>
+    </form>
   </div>
-</section>
+</div>

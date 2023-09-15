@@ -1,28 +1,28 @@
-window.onload = () => {
-  const myMatchDisplayToast = localStorage.getItem('my_match_display_toast');
+// window.onload = () => {
+//   const myMatchDisplayToast = localStorage.getItem('my_match_display_toast');
 
-  if (myMatchDisplayToast) {
-    const toastData = JSON.parse(myMatchDisplayToast);
-    localStorage.removeItem('my_match_display_toast');
+//   if (myMatchDisplayToast) {
+//     const toastData = JSON.parse(myMatchDisplayToast);
+//     localStorage.removeItem('my_match_display_toast');
 
-    setTimeout(() => {
-      const toastElement = getQuerySelector('.toast');
-      const toastMessage = getQuerySelector('.toast-message');
+//     setTimeout(() => {
+//       const toastElement = getQuerySelector('.toast');
+//       const toastMessage = getQuerySelector('.toast-message');
 
-      toastElement.classList.add('show-toast');
-      toastElement.classList.add('toast-success');
+//       toastElement.classList.add('show-toast');
+//       toastElement.classList.add('toast-success');
 
-      if (toastData.type === 'success') {
-        toastElement.classList.add('toast-success');
-      } else (
-        toastElement.classList.add('toast-error')
-      )
+//       if (toastData.type === 'success') {
+//         toastElement.classList.add('toast-success');
+//       } else (
+//         toastElement.classList.add('toast-error')
+//       )
 
-      toastMessage.innerHTML = toastData.message;
+//       toastMessage.innerHTML = toastData.message;
 
-      setTimeout(() => {
-        toastElement.classList.remove('show-toast');
-      }, 3000)
-    })
-  }
-}
+//       setTimeout(() => {
+//         toastElement.classList.remove('show-toast');
+//       }, 3000)
+//     })
+//   }
+// }

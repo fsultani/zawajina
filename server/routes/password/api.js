@@ -23,37 +23,35 @@ router.post('/request-email', async (req, res) => {
     const { originalUrl } = req;
     const { email } = req.body;
     const userIPAddress = req.headers.useripaddress;
-  
+
     const locationData = await geoLocationData(userIPAddress);
-  
+
     const authUser = await usersCollection().findOne(
       { email, },
     );
-  
-    if (!authUser) return res.sendStatus(401);
-  
-    const password = authUser.password;
-    const endpoint = originalUrl;
-    const userId = authUser._id;
-  
-    await insertLogs({
-      password,
-    },
-      userIPAddress,
-      endpoint,
-      userId
-    );
-  
+
     if (authUser) {
+      const password = authUser.password;
+      const endpoint = originalUrl;
+      const userId = authUser._id;
+  
+      await insertLogs({
+        password,
+      },
+        userIPAddress,
+        endpoint,
+        userId
+      );
+
       const token = jwt.sign({ my_match_user_email: authUser.email }, JWT_SECRET, {
         expiresIn: '10 minutes',
       });
-  
-      const url = `${process.env.HOST_URL}/password/reset?token=${token}`;
-  
+
+      const passwordResetUrl = `${process.env.HOST_URL}/password/reset?token=${token}`;
+
       const now = new Date();
       const localTime = now.toLocaleString();
-  
+
       const subject = 'Reset your password';
       const emailBody = `
         <div style="${emailBodyContainerStyles}">
@@ -63,11 +61,11 @@ router.post('/request-email', async (req, res) => {
             log in to your account and change your password immediately.
           </p>
           ${ctaButton({
-        ctaButtonUrl: url,
+        ctaButtonUrl: passwordResetUrl,
         ctaButtonText: 'Reset Password'
       })}
           ${emailSignature}
-  
+
           <div style="padding-top: 16px; margin-top: 16px; border-top: solid 1px #eee;">
             <p style="${paragraphStyles({
         customStyles: `font-weight: bold;`,
@@ -114,12 +112,18 @@ router.post('/request-email', async (req, res) => {
         await sendEmail({ emailAddress: authUser.email, subject, emailBody })
       }
 
-      res.status(201).send({ url: '/login' });
+      let responseObject = { redirectUrl: '/login' }
+
+      if (process.env.NODE_ENV === 'development') {
+        responseObject = { ...responseObject, token, passwordResetUrl }
+      }
+
+      res.status(201).send({ responseObject });
     } else {
       res.sendStatus(201);
     }
   } catch (error) {
-    console.log(`error - server/routes/password/api.js:118\n`, error);
+    console.log(`error - server/routes/password/api.js:125\n`, error);
   }
 });
 

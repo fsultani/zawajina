@@ -8,27 +8,30 @@ module.exports.signupProfilePage = res => {
     '/static/client/views/landing-pages/_layouts/global-styles.css',
     '/static/client/views/landing-pages/_partials/styles/landing-page-nav.css',
     '/static/client/views/landing-pages/_partials/styles/footer.css',
-    'https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css',
   ];
 
-  const scriptsArray = [
-    '/static/assets/apis/axios.min.js',
-    '/static/assets/apis/js.cookie.min.js',
-    'https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js',
-  ];
+  const scriptsArray = [];
 
-  /* Move the init.js file to the beginning of the array, after the axios and js.cookie imports, since init.js uses axios */
   const styles = getAllFiles({ directoryPath, fileType: 'css', filesArray: stylesArray });
   const scripts = getAllFiles({ directoryPath, fileType: 'js', filesArray: scriptsArray });
 
-  // const scriptsArray = getAllFiles({ directoryPath: scriptsDirectoryPath, fileType: 'js', filesArray: scripts });
+  /* Move the init.js file to the beginning of the array, after the axios and js.cookie imports, since init.js uses axios */ 
   const initFileIndex = scripts.findIndex(file => {
     const isInitFile = file.split('/').indexOf('init.js') > -1;
     if (isInitFile) return isInitFile;
   });
 
-  const element = scripts.splice(initFileIndex, 1)[0];
-  scripts.splice(2, 0, element);
+  const initFile = scripts.splice(initFileIndex, 1)[0];
+  scripts.splice(2, 0, initFile);
+
+  /* Move the main.js file to the end of the array to make the api calls last */
+  const mainFileIndex = scripts.findIndex(file => {
+    const isMainFile = file.split('/').indexOf('main.js') > -1;
+    if (isMainFile) return isMainFile;
+  });
+
+  const mainFile = scripts.splice(mainFileIndex, 1)[0];
+  scripts.splice(scripts.length, 0, mainFile);
 
   return res.render('landing-pages/_layouts/index', {
     locals: {

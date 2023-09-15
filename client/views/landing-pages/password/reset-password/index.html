@@ -1,35 +1,38 @@
-<section class='form-container'>
-  <div class='form-wrapper'>
-    <div class='form-content'>
-      <div id='form-submission-error'></div>
-      <form name='resetPasswordForm' onsubmit='return false' novalidate>
-        <h2 class='form-title'>Reset Password</h2>
+<div class='flex flex-wrap justify-content-center align-items-flex-start page-container background-green'>
+  <div class='box-shadow-1 page-wrapper'>
+    <div id='form-submission-error'></div>
+    <form name='resetPasswordForm' onsubmit='handleResetPassword(event)' novalidate>
+      <h1 class='form-title'>Reset Password</h1>
 
-        <div class='input-wrapper password-one-margin'>
-          <input class='form-input' type='password' id='user-password-one' />
-          <span class='input-focus animate-border-bottom' data-placeholder='New Password'></span>
-          <span class='field-icon' onclick='togglePassword(1)'>
-            <i class='fa fa-eye-slash password-one-eye'></i>
-          </span>
-        </div>
-        <div class='input-wrapper password-two-margin'>
-          <input class='form-input' type='password' id='user-password-two' />
-          <span class='input-focus animate-border-bottom' data-placeholder='Confirm New Password'></span>
-          <span class='field-icon' onclick='togglePassword([2])'>
-            <i class='fa fa-eye-slash password-two-eye'></i>
-          </span>
-        </div>
-        <div class='password-helper-text'>
-          Password must be at least 8 characters long
-        </div>
-        <div class='form-group submit-button'>
-          <div id='submit-button-loading-spinner-wrapper'>
-            <button type='submit' onclick='handleResetPassword()' class='form-submit' id='submitButton'>
+      <div class='input-wrapper position-relative password-one-margin'>
+        <input class='input-field userPassword' data-userPassword='userPassword' id='user-password-one' required type='password' />
+        <span class='input-focus animate-border-bottom' id='password' data-placeholder='New Password'></span>
+        <span toggle='#password' class='field-icon' onclick='togglePassword(1)'>
+          <i class='fa fa-eye-slash password-one-eye'></i>
+        </span>
+      </div>
+
+      <div class='input-wrapper position-relative password-two-margin'>
+        <input class='input-field userPassword' data-userPassword='userPassword' id='user-password-two' required type='password' />
+        <span class='input-focus animate-border-bottom' id='password' data-placeholder='Confirm New Password'></span>
+        <span toggle='#password' class='field-icon' onclick='togglePassword(2)'>
+          <i class='fa fa-eye-slash password-two-eye'></i>
+        </span>
+      </div>
+
+      <div class='password-helper-text'>
+        Password must be at least 8 characters long
+      </div>
+
+      <div class='flex justify-content-center flex-wrap form-button-container'>
+        <div class='full-width'>
+          <div id='form-button-loading-spinner-wrapper'>
+            <button class='flex justify-content-center align-items-center form-submit' type='submit'>
               Reset Password
             </button>
           </div>
         </div>
-      </form>
-    </div>
+      </div> 
+    </form>
   </div>
-</section>
+</div>

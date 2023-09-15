@@ -113,7 +113,7 @@ const client = new MongoClient(uri, {
     await page.waitForTimeout(waitForTimeoutValue);
 
     await page.waitForNavigation();
-    await page.waitForResponse(response => response.url() === 'http://localhost:3000/api/register/check-email-verification' && response.status() === 200);
+    await page.waitForResponse(response => response.url());
 
     const user = await usersCollection.findOne({ email: userEmail });
     const emailVerificationToken = user.emailVerificationToken.toString();
@@ -126,14 +126,15 @@ const client = new MongoClient(uri, {
     await page.waitForTimeout(waitForTimeoutValue);
 
     await page.waitForNavigation();
-    await page.waitForResponse(response => response.url() === 'http://localhost:3000/api/register/hobbies' && response.status() === 200);
+    await page.waitForResponse(response => response.url());
 
-    await page.waitForSelector('.dob-month');
-    await page.select('.dob-month', '10');
     await page.waitForTimeout(waitForTimeoutValue);
-    await page.select('.dob-day', '14');
+    await page.waitForSelector('#dob-month');
+    await page.select('#dob-month > .select-wrapper', '10');
     await page.waitForTimeout(waitForTimeoutValue);
-    await page.select('.dob-year', '1983');
+    await page.select('#dob-day > .select-wrapper', '14');
+    await page.waitForTimeout(waitForTimeoutValue);
+    await page.select('#dob-year > .select-wrapper', '1983');
 
     await (await page.waitForSelector('label[for=male]')).click();
     await page.waitForTimeout(waitForTimeoutValue);

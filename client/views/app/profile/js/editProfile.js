@@ -97,8 +97,10 @@ const handleProfileEdit = async (section) => {
     let smokes;
     let hasChildren;
     let wantsChildren;
+    let prayerLevel;
     let hijab = null;
     let hobbies = [];
+
     userDetails.forEach(item => {
       if (item.dataset.religiousConviction) religiousConviction = item.dataset.religiousConviction;
       if (item.dataset.religiousValues) religiousValues = item.dataset.religiousValues;
@@ -111,6 +113,7 @@ const handleProfileEdit = async (section) => {
       if (item.dataset.smokes) smokes = item.dataset.smokes;
       if (item.dataset.hasChildren) hasChildren = item.dataset.hasChildren;
       if (item.dataset.wantsChildren) wantsChildren = item.dataset.wantsChildren;
+      if (item.dataset.prayerLevel) prayerLevel = item.dataset.prayerLevel;
       if (item.dataset.hijab) hijab = item.dataset.hijab;
       if (item.dataset.hobbies) hobbies = item.dataset.hobbies;
     });
@@ -223,6 +226,16 @@ const handleProfileEdit = async (section) => {
         </div>
 
         <div class='flex-space-between'>
+          <div class='form-half-row'>
+            <label>Prayer Level</label>
+            <select data-prayerLevel='${prayerLevel}' class='form-flex wants-children-error'
+              id='prayer-level' onchange='handlePrayerLevel(event)'>
+              <option value='Rarely'>Rarely</option>
+              <option value='Sometimes'>Sometimes</option>
+              <option value='Always'>Always</option>
+            </select>
+          </div>
+
           <div class='form-half-row'>
             <div class='${hijab === null ? `hide-hijab-container` : `show-hijab-container`}'>
               <label>Hijab</label>

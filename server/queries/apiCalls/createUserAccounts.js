@@ -109,6 +109,11 @@ if (thirdArgument === '--numberOfPhotos') {
   numberOfPhotos = Number(processArgv[2].split('=')[1]);
 }
 
+if (numberOfPhotos > 3) {
+  console.log('numberOfPhotos must be less than 4');
+  process.exit(1);
+}
+
 const calculateDob = () => {
   const now = new Date();
 
@@ -173,11 +178,11 @@ const createAccount = async (newEmail = false) => {
 
     const allLocations = worldCities.default.getAllCities();
     const location = allLocations.filter(location => {
-      return location.country === 'United States';
+      // return location.country === 'United States';
       // return location.country === 'Saudi Arabia';
       // return location.country === 'United Arab Emirates';
       // return location.country === 'Saudi Arabia' || location.country === 'United Arab Emirates';
-      // return location.country === 'United States' || location.country === 'Saudi Arabia' || location.country === 'United Arab Emirates';
+      return location.country === 'United States' || location.country === 'Saudi Arabia' || location.country === 'United Arab Emirates';
     });
     const selectLocation = location[Math.floor(Math.random() * location.length)];
 
@@ -242,7 +247,7 @@ const createAccount = async (newEmail = false) => {
         "hijab": ${gender === 'female' ? `"hijab${yesNoOptions[Math.floor(Math.random() * 2)]}" ` : null},
         "wantsChildren": "wantsChildren${yesNoMaybeOptions[Math.floor(Math.random() * 2)]}",
         "height": ${height},
-        "canRelocate": "canRelocate${yesNoMaybeOptions[Math.floor(Math.random() * 3)]}",
+        "canRelocate": "canRelocate${yesNoOptions[Math.floor(Math.random() * 2)]}",
         "diet": "${diet}",
         "smokes": "smokes${yesNoOptions[Math.floor(Math.random() * 2)]}",
         "prayerLevel": "${prayerLevel}",
@@ -254,8 +259,17 @@ const createAccount = async (newEmail = false) => {
         "userIPAddress": "98.148.238.157"
       }`);
 
+    const photos = [
+      '/Users/farid/Downloads/temp/IMG_0041.jpg',
+      '/Users/farid/Downloads/temp/IMG_0047.jpg',
+      '/Users/farid/Downloads/temp/IMG_0048.jpg',
+      '/Users/farid/Downloads/temp/IMG_0051.jpg',
+      '/Users/farid/Downloads/temp/IMG_0053.jpg',
+      '/Users/farid/Downloads/temp/IMG_0063.jpg',
+    ];
+
     for (let index = 0; index < numberOfPhotos; index++) {
-      signupFormData.append(`image-${index}`, fs.createReadStream('/Users/farid/Downloads/temp/IMG_0041_800x800.jpg'));
+      signupFormData.append(`image-${index}`, fs.createReadStream(photos[index]));
     }
 
     signupFormData.append('userId', userId);
@@ -304,20 +318,20 @@ const createAccount = async (newEmail = false) => {
 
       const selectRandomLocation = getRandomLocation[Math.floor(Math.random() * getRandomLocation.length)];
 
-      const city = selectRandomLocation.city;
-      let state = selectRandomLocation.state;
+      const city = selectRandomLocation.country === 'United States' ? 'null' : selectRandomLocation.city;
+      const state = selectRandomLocation.country === 'United States' ? unitedStates.find(item => item.abbreviation === selectRandomLocation.state).name : 'null';
       const country = selectRandomLocation.country;
 
       return {
-        city: country === 'United States' ? 'null' : city,
-        state: country === 'United States' ? 'null' : city,
-        // state: country === 'United States' ? unitedStates.find(item => item.abbreviation === state).name : 'null',
+        city,
+        state,
         country,
       }
     });
 
     const searchOptions = {
-      "locations": searchOptionsLocations,
+      // "locations": searchOptionsLocations,
+      "locations": [],
       "languages": [],
       "profession": [],
       "hobbies": [],
@@ -328,7 +342,6 @@ const createAccount = async (newEmail = false) => {
       "hasChildren": "hasChildrenDoesNotMatter",
       "wantsChildren": "wantsChildrenDoesNotMatter",
       "hijab": "hijabDoesNotMatter",
-      "canRelocate": "canRelocateDoesNotMatter",
       "diet": [],
       "smokes": "smokesDoesNotMatter",
       "ethnicity": [],
@@ -351,9 +364,9 @@ const createAccount = async (newEmail = false) => {
       }
     })
   } catch (error) {
-    const errorMessage = error.response?.data.message ?? error.message;
-    console.log(`errorMessage - server/queries/apiCalls/create-user-accounts.js:314\n`, errorMessage);
-    if (errorMessage === 'Account already exists' || errorMessage === 'Invalid dob-month') {
+    const errorResponse = error.response?.data ?? error.message;
+    console.log(`errorResponse - server/queries/apiCalls/createUserAccounts.js:351\n`, errorResponse);
+    if (errorResponse.message === 'Account already exists' || errorResponse.message === 'Invalid dob-month') {
       await createAccount(true);
     } else {
       process.exit(1);

@@ -17,6 +17,54 @@ const getQuerySelectorById = selector => {
 const addErrorClass = (element, useBottomBorder = false) => document.querySelector(`${element}`).classList.add(useBottomBorder ? 'form-error-border-bottom' : 'form-error');
 const removeErrorClass = element => document.querySelector(`${element}`).classList.remove('form-error');
 
+const formMessage = (messageType, message) => {
+  const formMessageExists = getQuerySelectorById('form-error') || getQuerySelectorById('form-success');
+
+  if (formMessageExists) formMessageExists.remove();
+
+  const formElement = document.createElement('div');
+
+  if (messageType === 'error') {
+    formElement.setAttribute('id', 'form-error');
+    Object.assign(formElement.style, {
+      display: "block",
+      position: "relative",
+      padding: "0.75rem 1.25rem",
+      marginBottom: "1rem",
+      border: "1px solid transparent",
+      borderRadius: "0.25rem",
+      textAlign: "center",
+      fontSize: "16px",
+      color: "#721c24",
+      backgroundColor: "#f8d7da",
+      borderColor: "#f5c6cb"
+    })
+  
+    formElement.innerHTML = message || 'There was an error. Please try again later.';
+  } else {
+    formElement.setAttribute('id', 'form-success');
+    Object.assign(formElement.style, {
+      display: "block",
+      position: "relative",
+      padding: "0.75rem 1.25rem",
+      marginBottom: "1rem",
+      border: "1px solid transparent",
+      borderRadius: "0.25rem",
+      textAlign: "center",
+      fontSize: "16px",
+      color: "var(--color-green)",
+      backgroundColor: "var(--color-light-green)"
+    })
+
+    formElement.innerHTML = message;
+  }
+
+  formElement.style.display = 'block';
+
+  const pageWrapperElement = getQuerySelector('.page-wrapper')
+  pageWrapperElement.prepend(formElement);
+}
+
 const lowerCaseString = string => string.split(' ').join('').toLowerCase();
 
 const invalidCharactersRegExp = /[<>]/;
@@ -188,7 +236,7 @@ const showModal = ({ modalHeader, modalBody, modalButton, customStyles = [], can
     justifyContent: "center",
     alignItems: "center",
     borderRadius: "12px",
-    backgroundColor: "#008cff",
+    backgroundColor: "#006C35",
     border: "transparent",
     boxSizing: "border-box",
     outline: "none",
@@ -253,31 +301,40 @@ const closeModal = () => {
   document.querySelectorAll('form').forEach(form => form.reset());
 }
 
-window.onload = () => {
-  const myMatchDisplayToast = localStorage.getItem('my_match_display_toast');
+(async () => {
+  try {
+    const myMatchDisplayToast = localStorage.getItem('my_match_display_toast');
 
-  if (myMatchDisplayToast) {
-    const toastData = JSON.parse(myMatchDisplayToast);
-
-    setTimeout(() => {
-      const toastElement = getQuerySelector('.toast');
-      const toastMessage = getQuerySelector('.toast-message');
-
-      toastElement.classList.add('show-toast');
-      toastElement.classList.add('toast-success');
-
-      if (toastData.type === 'success') {
-        toastElement.classList.add('toast-success');
-      } else (
-        toastElement.classList.add('toast-error')
-      )
-
-      toastMessage.innerHTML = toastData.message;
+    if (myMatchDisplayToast) {
+      const toastData = JSON.parse(myMatchDisplayToast);
 
       setTimeout(() => {
-        toastElement.classList.remove('show-toast');
-        localStorage.removeItem('my_match_display_toast');
-      }, 3000)
-    })
+        const toastElement = getQuerySelector('.toast');
+        const toastMessage = getQuerySelector('.toast-message');
+
+        toastElement.classList.add('show-toast');
+        toastElement.classList.add('toast-success');
+
+        if (toastData.type === 'success') {
+          toastElement.classList.add('toast-success');
+        } else (
+          toastElement.classList.add('toast-error')
+        )
+
+        toastMessage.innerHTML = toastData.message;
+
+        setTimeout(() => {
+          toastElement.classList.remove('show-toast');
+          localStorage.removeItem('my_match_display_toast');
+        }, 3000)
+      })
+    }
+  } catch (error) {
+    const errorStatus = error.response?.status;
+    const errorMessage = error.response?.data ?? error.message ?? 'Error';
+
+    if (errorStatus === 403) {
+      document.body.innerHTML = errorMessage;
+    }
   }
-}
+})();

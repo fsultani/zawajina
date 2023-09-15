@@ -2,9 +2,54 @@ const { ObjectId } = require('mongodb');
 const jwt = require('jsonwebtoken');
 const JWT_SECRET = Buffer.from('fe1a1915a379f3be5394b64d14794932', 'hex');
 
-const { insertLogs, messagesCollection, usersCollection } = require('../db');
+const { insertLogs, messagesCollection, usersCollection, geoLocationData } = require('../db');
 const { loginPage } = require('../views');
 const { returnServerError } = require('../utils');
+
+module.exports.checkIPAddress = async req => {
+  let { useripaddress: userIPAddress } = req.headers;
+  let { my_match_token } = req.cookies;
+  const whitelistedCountries = ['AF', 'AL', 'AZ', 'BH', 'BD', 'BA', 'BN', 'EG', 'HK', 'IN', 'ID', 'IQ', 'JO', 'KZ', 'KE', 'KW', 'KG', 'LB', 'LR', 'LY', 'MY', 'ME', 'MA', 'OM', 'PK', 'PS', 'PH', 'QA', 'RU', 'SA', 'SG', 'LK', 'SE', 'SY', 'TW', 'TJ', 'TH', 'TT', 'TR', 'TM', 'AE', 'US', 'UZ', 'YE'];
+
+  try {
+    if (!userIPAddress || userIPAddress === 'undefined') {
+      return {
+        userIPAddress,
+        statusCode: 200,
+        data: 'No user IP Address available',
+      }
+    }
+
+    if (!my_match_token) {
+      my_match_token = jwt.sign({ userIPAddress }, JWT_SECRET, {
+        expiresIn: '1 day',
+        // expiresIn: '5000',
+      });
+    }
+
+    userIPAddress = await jwt.verify(my_match_token, JWT_SECRET).userIPAddress;
+    const locationData = await geoLocationData(userIPAddress, {});
+    if (!whitelistedCountries.includes(locationData.countryCode)) {
+      return {
+        userIPAddress,
+        statusCode: 403,
+        data: 'Your country is currently not allowed.',
+      }
+    }
+
+    return {
+      userIPAddress,
+      statusCode: req.cookies.my_match_token ? 200 : 201,
+      data: req.cookies.my_match_token ? '' : my_match_token,
+    }
+  } catch (error) {
+    return {
+      userIPAddress,
+      statusCode: 401,
+      data: { isJWTError: true },
+    }
+  }
+}
 
 module.exports.checkAuthentication = async (req, res, next) => {
   try {
@@ -14,6 +59,7 @@ module.exports.checkAuthentication = async (req, res, next) => {
 
     if (!my_match_authToken) return res.redirect('/login');
 
+    // const { statusCode, data } = await exports.checkIPAddress(req, res, next);
     jwt.verify(my_match_authToken, JWT_SECRET, async (err, authUser) => {
       if (err || !authUser) {
         const userIPAddress = null;
@@ -74,9 +120,9 @@ module.exports.checkAuthentication = async (req, res, next) => {
         ]
 
         const permittedCalls = pathname => {
-          const isPermittedPath = permittedPaths.includes(pathname);
-          const isPermittedApi = permittedApis.includes(pathname);
-          const isProfileApi = pathname.startsWith('/api/user/profile-details/');
+          const isPermittedPath = permittedPaths?.includes(pathname);
+          const isPermittedApi = permittedApis?.includes(pathname);
+          const isProfileApi = pathname?.startsWith('/api/user/profile-details/');
           return isPermittedPath || isPermittedApi || isProfileApi;
         }
 

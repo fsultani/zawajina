@@ -2,6 +2,7 @@ const express = require('express');
 const jwt = require('jsonwebtoken');
 const JWT_SECRET = Buffer.from('fe1a1915a379f3be5394b64d14794932', 'hex');
 
+const { checkIPAddress } = require('../../middleware/checkAuthentication.js');
 const { usersCollection, insertLogs, geoLocationData } = require('../../db.js');
 const { comparePassword } = require('../../models/user');
 const { verifyDate, returnServerError } = require('../../utils.js');
@@ -13,7 +14,7 @@ router.post('/', async (req, res) => {
   try {
     let { email, password } = req.body;
     email = email.toLowerCase().trim();
-    const userIPAddress = req.headers.useripaddress;
+    const { userIPAddress } = await checkIPAddress(req);
 
     const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
     const isValidEmail = emailRegex.test(email);

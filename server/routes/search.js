@@ -15,13 +15,11 @@ router.get('/', (req, res) => {
   const stylesArray = [
     '/static/assets/styles/fontawesome-free-5.15.4-web/css/all.css',
     '/static/client/views/app/_partials/app-nav.css',
-    'https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css',
   ];
 
   const scriptsArray = [
     '/static/assets/apis/axios.min.js',
     '/static/assets/apis/js.cookie.min.js',
-    'https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js',
   ];
 
   const styles = getAllFiles({ directoryPath, fileType: 'css', filesArray: stylesArray });
@@ -47,7 +45,12 @@ router.get('/api/user-data', (req, res) => {
 
   const locations = authUser.searchOptions.data.$or?.map(location => {
     const city = location.city.$exists ? 'null' : location.city;
-    const state = location.state.$exists ? 'null' : unitedStates.find(item => item.abbreviation === location.state).name;
+
+    let state = location.state.$exists ? 'null' : location.state;
+    if (location.city.$exists && location.state.length === 2) {
+      state = unitedStates.find(item => item.abbreviation === location.state).name;
+    }
+
     const country = location.country;
 
     return {
@@ -73,7 +76,6 @@ router.get('/api/user-data', (req, res) => {
     'hasChildren',
     'wantsChildren',
     'hijab',
-    'canRelocate',
     'smokes',
     'age',
     'height', 
@@ -120,7 +122,6 @@ router.put('/api', async (req, res) => {
       hasChildren,
       wantsChildren,
       hijab,
-      canRelocate,
       diet,
       smokes,
       ethnicity,
@@ -150,7 +151,6 @@ router.put('/api', async (req, res) => {
       hasChildren,
       wantsChildren,
       hijab,
-      canRelocate,
       smokes,
       ethnicity: { $in: ethnicity },
       diet: { $in: diet },
@@ -169,7 +169,12 @@ router.put('/api', async (req, res) => {
     if (locations.length > 0) {
       locationsList = locations.map(location => {
         const city = location.city === 'null' ? { $exists: true } : location.city;
-        const state = location.state === 'null' ? { $exists: true } : unitedStates.find(item => item.name === location.state).abbreviation;
+
+        let state = location.state === 'null' ? { $exists: true } : location.state;
+        if (city.$exists && location.state.length > 2) {
+          state = location.state === 'null' ? { $exists: true } : unitedStates.find(item => item.name === location.state).abbreviation;
+        }
+
         const country = location.country;
 
         return {

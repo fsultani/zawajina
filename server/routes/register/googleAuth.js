@@ -5,6 +5,7 @@ const client = new OAuth2Client(CLIENT_ID);
 const bcrypt = require('bcryptjs');
 const { validationResult } = require('express-validator/check');
 
+const { checkIPAddress } = require('../../middleware/checkAuthentication.js');
 const { usersCollection, insertLogs } = require('../../db.js');
 const { emailVerification } = require('../../email-templates/email-verification.js');
 const { sendEmail } = require('../../helpers/email');
@@ -19,7 +20,7 @@ const {
 
 const googleAuth = async (req, res) => {
   const { encodedIDToken } = req.body;
-  const userIPAddress = req.headers.useripaddress;
+  const { userIPAddress } = await checkIPAddress(req);
 
   const ticket = await client.verifyIdToken({
     idToken: encodedIDToken,

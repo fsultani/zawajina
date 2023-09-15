@@ -99,12 +99,10 @@ const renderProfessions = selectedProfessions => {
   const professions = [...selectedProfessions, ...filteredProfessionsList];
 
   professions.map(item => professionOptionsHTML.push(`
-    <div class='form-check'>
-      <label class='form-check-label' for='${item}'>
-        <input class='form-check-input profession-input' onclick='handleProfessionsClick("${item}")' type='checkbox' id='${item}'>
-        ${item}
-      </label>
-    </div>
+    <label class='label' for='${item}'>
+      <span>${item}</span>
+      <input class='profession-input' onclick='handleProfessionsClick("${item}")' type='checkbox' id='${item}'>
+    </label>
   `));
 
   const professionsOptions = document.getElementById('professions-list');

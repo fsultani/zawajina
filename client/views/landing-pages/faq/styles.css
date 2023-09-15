@@ -1,0 +1,80 @@
+h1 {
+  text-align: center;
+  margin: 40px 0;
+  color: var(--color-dark-green);
+}
+
+ul {
+  list-style-type: disc;
+  padding-left: 20px;
+  margin-top: 16px;
+  margin-bottom: 0;
+}
+
+.legal-section {
+  padding-top: 20px;
+}
+
+.accordion {
+  color: black;
+  background-color: white;
+}
+
+.accordion .container {
+  position: relative;
+  padding: 10px 10px;
+  border-top: var(--border-color-dark);
+}
+
+.accordion .container:last-child {
+  border-bottom: var(--border-color-dark);
+}
+
+.accordion .label {
+  position: relative;
+  padding: 10px 0;
+  font-size: 20px;
+  color: black;
+  cursor: pointer;
+}
+
+.accordion .container.active .label {
+  color: var(--color-dark-green);
+}
+
+.accordion .label::before {
+  content: '+';
+  color: black;
+  position: absolute;
+  top: 50%;
+  right: -5px;
+  font-size: 30px;
+  transform: translateY(-50%);
+  color: var(--color-dark-green);
+}
+
+.accordion .content {
+  position: relative;
+  background: white;
+  max-height: 0;
+  font-size: 20px;
+  text-align: justify;
+  width: 780px;
+  overflow: hidden;
+  transition: 0.5s;
+}
+
+.accordion hr {
+  width: 100;
+  margin-left: 0;
+  border: 1px solid grey;
+}
+
+.accordion .container.active .content {
+  max-height: 500px;
+}
+
+.accordion .container.active .label::before {
+  content: '-';
+  font-size: 30px;
+}

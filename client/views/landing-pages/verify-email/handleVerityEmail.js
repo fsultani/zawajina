@@ -1,32 +1,25 @@
 const verificationToken = getQuerySelector('#verification-token');
 
-let tokenIsValid = false;
-
 const hanelTokenVerification = token => {
-  let errorMessage = '';
-
   if (!token.length) {
-    errorMessage = 'Enter a verification code';
+    formMessage('error', 'Enter a verification code');
+    return false;
   } else if (token.length !== 5) {
-    errorMessage = 'Verification code must be 5 digits'; 
+    formMessage('error', 'Verification code must be 5 digits');
+    return false;
   }
 
-  if (errorMessage.length) {
-    getQuerySelector('#verification-code-error').innerHTML = errorMessage;
-    getQuerySelector('#verification-code-error').style.display = 'block';
-  } else {
-    getQuerySelector('#verification-code-error').style.display = 'none';
-    tokenIsValid = true;
-  }
+  return true;
 };
 
 const handleSubmitToken = async event => {
   event.preventDefault();
-  hanelTokenVerification(verificationToken.value);
+
+  const tokenIsValid = hanelTokenVerification(verificationToken.value);
 
   if (tokenIsValid) {
     const token = Number(verificationToken.value);
-    isSubmitting('submit-button-loading-spinner-wrapper', true);
+    isSubmitting('form-button-loading-spinner-wrapper', true);
 
     Axios({
       method: 'put',
@@ -40,11 +33,10 @@ const handleSubmitToken = async event => {
         window.location.pathname = url;
       })
       .catch((error) => {
-        isSubmitting('submit-button-loading-spinner-wrapper', false);
+        isSubmitting('form-button-loading-spinner-wrapper', false);
 
         const errorMessage = error.response.data.message;
-        getQuerySelector('#verification-code-error').innerHTML = errorMessage;
-        getQuerySelector('#verification-code-error').style.display = 'block';
+        formMessage('error', errorMessage);
       });
   }
 };

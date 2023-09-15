@@ -189,7 +189,7 @@ select {
   }
 }
 
-.form-check-label {
+.section-label {
   margin-bottom: 5px;
 }
 
@@ -267,6 +267,31 @@ select {
   padding: 5px;
 }
 
+.boxed-list > .label,
+.section-label {
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding: 5px 0 5px 5px;
+}
+
+.section-label {
+  padding: 10px 0 5px 5px;
+}
+
+.boxed-list > .label > span {
+  flex-grow: 1;
+}
+
+.boxed-list > .label > input,
+.section-label > input {
+  width: auto;
+}
+
+.section-label > input {
+  margin: 0 10px 0 0;
+}
+
 .form-submit-search-button {
   width: 100%;
   height: 57px;
@@ -282,15 +307,11 @@ select {
   color: #fff;
   border: none;
   cursor: pointer;
-  background-image: -moz-linear-gradient(to left, #74ebd5, #9face6);
-  background-image: -ms-linear-gradient(to left, #74ebd5, #9face6);
-  background-image: -o-linear-gradient(to left, #74ebd5, #9face6);
-  background-image: -webkit-linear-gradient(to left, #74ebd5, #9face6);
-  background-image: linear-gradient(to left, #74ebd5, #9face6);
+  background-color: var(--color-green);
 }
 
 .form-submit-search-button:hover {
-  background-image: linear-gradient(to left, #5ae8ce, #8d9ce3);
+  background-color: var(--color-dark-green);
 }
 
 .reset-form-button-wrapper {
@@ -609,7 +630,7 @@ input[type="range"]:active::-webkit-slider-thumb {
   display: none;
   color: #ffffff;
   margin-top: 4px;
-  padding: 1px 8px;
+  padding: 3px 8px;
   margin-right: 4px;
   border-radius: 5px;
   background: linear-gradient(57deg, #009e85 0%, #006353 100%);

@@ -8,7 +8,7 @@ const {
   calculateImperialHeight,
   getLastActive,
 } = require('./utils');
-const { escapeHtml, redirectToLogin, returnServerError } = require('../../utils');
+const { escapeHtml, redirectToLogin, returnServerError, camelCaseToTitleCase } = require('../../utils');
 
 const router = express.Router();
 
@@ -386,6 +386,7 @@ router.put('/profile-details/user-details', async (req, res) => {
       userLanguages,
       hasChildren,
       wantsChildren,
+      prayerLevel,
       hijab,
       canRelocate,
       diet,
@@ -451,6 +452,13 @@ router.put('/profile-details/user-details', async (req, res) => {
       }
     }
 
+    if (prayerLevel !== currentUserDocument.prayerLevel) {
+      updatedUserInfo = {
+        ...updatedUserInfo,
+        prayerLevel,
+      }
+    }
+
     if (hijab !== currentUserDocument.hijab) {
       updatedUserInfo = {
         ...updatedUserInfo,
@@ -504,6 +512,21 @@ router.put('/profile-details/user-details', async (req, res) => {
         authUser = {
           ...authUser,
           height: userHeight,
+        };
+
+        const hijab = authUser.hijab ? camelCaseToTitleCase(authUser.hijab).split(' ')[1] : null;
+        const hasChildren = camelCaseToTitleCase(authUser.hasChildren).split(' ')[2];
+        const wantsChildren = camelCaseToTitleCase(authUser.wantsChildren).split(' ')[2];
+        const canRelocate = camelCaseToTitleCase(authUser.canRelocate).split(' ').slice(2).map((word, index) => index > 0 ? word.toLowerCase() : word).join(', ');
+        const smokes = camelCaseToTitleCase(authUser.smokes).split(' ')[1];
+
+        authUser = {
+          ...authUser,
+          hasChildren,
+          wantsChildren,
+          canRelocate,
+          smokes,
+          hijab,
         };
 
         Object.entries(updatedUserInfo).map(async ([key, value]) => {

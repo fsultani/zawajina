@@ -1,7 +1,7 @@
 const togglePassword = (number) => {
   if (number === 1) {
-    const passwordOneType = document.querySelector('.user-password-one');
-    const eyeOne = document.querySelector('.password-one-eye');
+    const passwordOneType = getQuerySelectorById('user-password-one');
+    const eyeOne = getQuerySelector('.password-one-eye');
   
     if (passwordOneType.type === 'password') {
       passwordOneType.type = 'text';
@@ -13,8 +13,8 @@ const togglePassword = (number) => {
       eyeOne.classList.remove('fa-eye');
     }
   } else {
-    const passwordTwoType = document.querySelector('.user-password-two');
-    const eyeTwo = document.querySelector('.password-two-eye');
+    const passwordTwoType = getQuerySelectorById('user-password-two');
+    const eyeTwo = getQuerySelector('.password-two-eye');
 
     if (passwordTwoType.type === 'password') {
       passwordTwoType.type = 'text';

@@ -7,6 +7,7 @@ let diet;
 let smokes;
 let hasChildren;
 let wantsChildren;
+let prayerLevel;
 let hijab;
 
 const userDetailsHelper = () => {
@@ -55,6 +56,10 @@ const userDetailsHelper = () => {
     wantsChildrenOptions.value = authUser.wantsChildren;
     wantsChildren = authUser.wantsChildren;
 
+    const prayerLevelOptions = document.querySelector('#prayer-level');
+    prayerLevelOptions.value = authUser.prayerLevel
+    prayerLevel = authUser.prayerLevel;
+
     if (authUser.hijab) {
       const hijabOptions = document.querySelector('#hijab');
       hijabOptions.value = authUser.hijab;
@@ -74,4 +79,5 @@ const handleDiet = event => diet = event.target.value;
 const handleSmokes = event => smokes = event.target.value;
 const handleHasChildren = event => hasChildren = event.target.value;
 const handleWantsChildren = event => wantsChildren = event.target.value;
+const handlePrayerLevel = event => prayerLevel = event.target.value;
 const handleHijab = event => hijab = event.target.value;

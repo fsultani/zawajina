@@ -62,18 +62,16 @@ let messagesCollection;
           }
         });
       }
-
-      await usersCollection.deleteOne({ _id: userId });
-      await messagesCollection.deleteMany();
-      await logsCollection.deleteOne({ _id: userId });
-
-      const index = allUsers.indexOf(userData);
-
-      console.log(`${index + 1} of ${allUsers.length} accounts deleted`);
     }
 
-    const queryFarid = { name: { $regex: /farid/i } };
+    const allUserIDs = allUsers.map(user => user._id);
+    usersCollection.deleteMany({ _id: { $in: allUserIDs} });
+    messagesCollection.deleteMany();
+    logsCollection.deleteMany({ _id: { $in: allUserIDs} });
 
+    console.log(`${allUserIDs.length} accounts deleted`);
+
+    const queryFarid = { name: { $regex: /farid/i } };
     await usersCollection.findOneAndUpdate(queryFarid, {
       $set: {
         blockedUsers: [],
@@ -83,14 +81,12 @@ let messagesCollection;
     });
 
     const userFarid = await usersCollection.findOne(queryFarid);
-    const remainingLogsQuery = { _id: { $ne: userFarid._id }};
+    const remainingLogsQuery = { _id: { $ne: userFarid._id } };
     const remainingLogs = await logsCollection.find(remainingLogsQuery).toArray();
 
     if (remainingLogs.length > 0) {
-      for (const userData of remainingLogs) {
-        const userId = userData._id;
-        await logsCollection.deleteOne({ _id: userId });
-      }
+      const allUserIDs = remainingLogs.map(user => user._id);
+      logsCollection.deleteMany({ _id: { $in: allUserIDs } });
 
       console.log(`${remainingLogs.length} remaining logs deleted`);
     };

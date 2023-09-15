@@ -1,7 +1,8 @@
 const displayFullPageLoadingSpinner = isLoading => {
   const fullPageLoadingSpinner = getQuerySelector('.full-page-loading-spinner');
 
-  getQuerySelector('.signup-content').style.cursor = isLoading ? 'not-allowed' : 'auto';
+  const signupContent = getQuerySelector('.signup-content');
+  if (signupContent) signupContent.style.cursor = isLoading ? 'not-allowed' : 'auto';
 
   document.querySelectorAll('form *').forEach(item => {
     item.style.cssText += `

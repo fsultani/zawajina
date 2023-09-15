@@ -48,7 +48,7 @@ const handleLogin = async event => {
   handlePasswordValidation(password);
 
   if (handleEmailValidationValue && handlePasswordValidationValue) {
-    isSubmitting('login-button-loading-spinner-wrapper', true);
+    isSubmitting('form-button-loading-spinner-wrapper', true);
 
     Axios({
       method: 'post',
@@ -64,7 +64,7 @@ const handleLogin = async event => {
         window.location.pathname = url;
       })
       .catch(() => {
-        isSubmitting('login-button-loading-spinner-wrapper', false);
+        isSubmitting('form-button-loading-spinner-wrapper', false);
 
         // For any login errors, only display 'Invalid password' for security purposes
         getQuerySelector('#password-wrapper').style.cssText = `border-bottom: 2px solid red;`

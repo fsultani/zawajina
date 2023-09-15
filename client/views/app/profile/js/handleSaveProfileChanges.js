@@ -135,6 +135,7 @@ const handleSaveProfileChanges = async profileSection => {
       smokes,
       hasChildren,
       wantsChildren,
+      prayerLevel,
       hijab,
       userLanguages,
       userHobbies,
@@ -192,6 +193,10 @@ const handleSaveProfileChanges = async profileSection => {
                 <div class="details-wrapper">
                   <span class="details-key">Languages:</span>
                   <span class="details-value">${authUser.languages.length > 0 ? authUser.languages.map(language => language).join('&nbsp;<span>&#9679;</span>&nbsp;') : 'No Answer'}</span>
+                </div>
+                <div class='details-wrapper'>
+                  <span class='details-key'>Prayer Level:</span>
+                  <span class='details-value'>${authUser.prayerLevel || 'No Answer'}</span>
                 </div>
                 ${authUser.gender === 'female' ? `
                   <div class="details-wrapper">

@@ -11,54 +11,123 @@ router.get('/', async (req, res) => {
     const originalUrl = req.originalUrl.split('?')[0];
     const page = parseInt(req.query.page) || 1;
     const skipRecords = page > 1 ? (page - 1) * 20 : 0;
-    const searchOptions = authUser.searchOptions?.data ?? {};
+    const authUserSearchOptions = authUser.searchOptions?.data ?? {};
 
     /* This code block handles all use cases where "Doesn't matter" is selected. */
-    for (const [key, value] of Object.entries(searchOptions)) {
+    for (const [key, value] of Object.entries(authUserSearchOptions)) {
       if (
         (typeof value === 'string' && value.includes('DoesNotMatter')) ||
         (typeof value === 'object' && value.$in?.length === 0)
       ) {
-        searchOptions[key] = { $exists: true }
+        authUserSearchOptions[key] = { $exists: true }
       }
     }
 
-    searchOptions.photos = searchOptions.photos ? { $ne: [] } : { $exists: true };
+    authUserSearchOptions.photos = authUserSearchOptions.photos ? { $ne: [] } : { $exists: true };
+    delete authUserSearchOptions.canRelocate;
 
     const search = {
       $and: [
         {
-          ...searchOptions,
+          ...authUserSearchOptions,
         },
         {
           $or: [
             {
-              'searchOptions.data.$or': {
-                $exists: true,
-                $in: [
-                  {
-                    city: authUser.city,
-                    state: { $exists: true },
-                    country: authUser.country,
-                  },
-                  {
-                    city: { $exists: true },
-                    state: authUser.state,
-                    country: authUser.country,
-                  },
-                  {
-                    city: { $exists: true },
-                    state: { $exists: true },
-                    country: authUser.country,
-                  },
-                ],
-              },
+              $and: [
+                {
+                  $expr: {
+                    $eq: ['$canRelocate', 'canRelocateYes'],
+                  }
+                },
+                {
+                  $or: [
+                    {
+                      'searchOptions.data.$or': {
+                        $exists: true,
+                        $in: [
+                          {
+                            city: authUser.city,
+                            state: authUser.state,
+                            country: authUser.country,
+                          },
+                          {
+                            city: { $exists: true },
+                            state: authUser.state,
+                            country: authUser.country,
+                          },
+                          {
+                            city: authUser.city,
+                            state: { $exists: true },
+                            country: authUser.country,
+                          },
+                          {
+                            city: { $exists: true },
+                            state: { $exists: true },
+                            country: authUser.country,
+                          },
+                        ],
+                      },
+                    },
+                    {
+                      'searchOptions.data.$or': {
+                        $exists: false,
+                      },
+                    },
+                  ]
+                },
+              ],
             },
             {
-              'searchOptions.data.$or': {
-                $exists: false,
-              },
-            },
+              $and: [
+                {
+                  $expr: {
+                    $eq: ['$canRelocate', 'canRelocateNo'],
+                  }
+                },
+                {
+                  $expr: {
+                    $eq: [authUser.canRelocate, 'canRelocateYes'],
+                  }
+                },
+                {
+                  $or: [
+                    {
+                      'searchOptions.data.$or': {
+                        $exists: true,
+                        $in: [
+                          {
+                            city: authUser.city,
+                            state: authUser.state,
+                            country: authUser.country,
+                          },
+                          {
+                            city: { $exists: true },
+                            state: authUser.state,
+                            country: authUser.country,
+                          },
+                          {
+                            city: authUser.city,
+                            state: { $exists: true },
+                            country: authUser.country,
+                          },
+                          {
+                            city: { $exists: true },
+                            state: { $exists: true },
+                            country: authUser.country,
+                          },
+                        ],
+                      },
+                    },
+                    {
+                      'searchOptions.data.$or': {
+                        $exists: false,
+                      },
+                    },
+                  ]
+                },
+              ],
+            }
           ]
         },
         {
@@ -231,34 +300,6 @@ router.get('/', async (req, res) => {
                       {
                         $eq: [
                           '$searchOptions.data.hijab', authUser.hijab,
-                        ],
-                      },
-                      1,
-                      0
-                    ],
-                  }
-                ],
-              },
-              1,
-            ]
-          }
-        },
-        {
-          $expr: {
-            $eq: [
-              {
-                $cond: [
-                  {
-                    $eq: [
-                      '$searchOptions.data.canRelocate', 'canRelocateDoesNotMatter'
-                    ],
-                  },
-                  1,
-                  {
-                    $cond: [
-                      {
-                        $eq: [
-                          '$searchOptions.data.canRelocate', authUser.canRelocate,
                         ],
                       },
                       1,

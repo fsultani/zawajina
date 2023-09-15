@@ -8,6 +8,7 @@ module.exports.termsPage = res => res.render('landing-pages/_layouts/index', {
       '/static/client/views/landing-pages/_partials/styles/footer.css',
       '/static/client/views/landing-pages/terms/styles.css',
     ],
+		scripts: [],
   },
   partials: {
     nav: 'landing-pages/_partials/landing-page-nav',
