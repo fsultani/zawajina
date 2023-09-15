@@ -1,6 +1,6 @@
 module.exports.faqPage = res => res.render('landing-pages/_layouts/index', {
   locals: {
-    title: 'FAQ - My Match',
+    title: 'FAQ - Zawajina',
     styles: [
       '/static/assets/styles/fonts_googleapis.css',
       '/static/client/views/landing-pages/_layouts/global-styles.css',

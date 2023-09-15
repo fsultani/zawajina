@@ -50,7 +50,7 @@ const transporter = nodemailer.createTransport({
 const sendEmail = async ({ emailAddress, subject, emailBody }) => {
   const mailOptions = {
     /* To prevent emails from going to spam */
-    from: `"My Match Admin" <${process.env.NODEMAILER_AUTH_USERNAME}>`,
+    from: `"Zawajina Admin" <${process.env.NODEMAILER_AUTH_USERNAME}>`,
     to: emailAddress,
     subject,
     html: emailBody,

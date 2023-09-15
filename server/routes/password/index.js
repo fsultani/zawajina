@@ -23,7 +23,7 @@ router.get('/request', (_req, res) => {
 
   res.render('landing-pages/_layouts/index', {
     locals: {
-      title: 'Login - My Match',
+      title: 'Login - Zawajina',
       styles,
       scripts,
     },
@@ -55,7 +55,7 @@ router.get('/reset', (_req, res) => {
 
   res.render('landing-pages/_layouts/index', {
     locals: {
-      title: 'Login - My Match',
+      title: 'Login - Zawajina',
       styles,
       scripts,
     },

@@ -110,7 +110,7 @@ router.get('/:userId', async (req, res) => {
 
 		res.render('app/_layouts/index', {
 			locals: {
-				title: 'My Match',
+				title: 'Zawajina',
 				styles,
 				scripts,
 				authUser,

@@ -1,6 +1,6 @@
 module.exports.privacyPolicyPage = res => res.render('landing-pages/_layouts/index', {
   locals: {
-    title: 'Privacy Policy - My Match',
+    title: 'Privacy Policy - Zawajina',
     styles: [
       '/static/assets/styles/fonts_googleapis.css',
       '/static/client/views/landing-pages/_layouts/global-styles.css',

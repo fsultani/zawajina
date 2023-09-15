@@ -35,7 +35,7 @@ module.exports.signupProfilePage = res => {
 
   return res.render('landing-pages/_layouts/index', {
     locals: {
-      title: 'Sign Up - My Match',
+      title: 'Sign Up - Zawajina',
       styles,
       scripts,
     },

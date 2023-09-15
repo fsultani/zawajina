@@ -1,6 +1,6 @@
 module.exports.aboutPage = res => res.render('landing-pages/_layouts/index', {
   locals: {
-    title: 'My Match',
+    title: 'Zawajina',
     styles: [
       '/static/assets/styles/fonts_googleapis.css',
       '/static/client/views/landing-pages/_layouts/global-styles.css',

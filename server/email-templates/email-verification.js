@@ -11,7 +11,7 @@ const emailVerification = ({ name }) => {
 
   const url = `${process.env.HOST_URL}/verify-email`;
 
-  const subject = 'Thanks for signing up on My Match!';
+  const subject = 'Thanks for signing up on Zawajina!';
   const emailBody = `
     <div style="${emailBodyContainerStyles}">
       ${emailHeader({ recipientName: name })}

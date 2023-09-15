@@ -471,7 +471,7 @@ router.get('/', async (req, res) => {
     if (currentPage <= numberOfPages) {
       return res.render('app/_layouts/index', {
         locals: {
-          title: 'My Match',
+          title: 'Zawajina',
           styles: [
             '/static/client/views/app/home/styles.css',
             '/static/client/views/app/_partials/app-nav.css',

@@ -63,7 +63,7 @@ const ctaButton = ({ ctaButtonUrl, ctaButtonText, customStyles = '' }) => (`
 
 const emailSignature = `
   <p style="padding: 0; margin: 0;">Jazāk Allāhu Khayr,</p>
-  <p style="padding: 0; margin: 0;">Your My Match team</p>
+  <p style="padding: 0; margin: 0;">Your Zawajina team</p>
 `;
 
 module.exports = {

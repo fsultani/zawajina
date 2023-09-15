@@ -29,7 +29,7 @@ router.get('/account', async (req, res) => {
 
     res.render('app/_layouts/index', {
       locals: {
-        title: 'My Match',
+        title: 'Zawajina',
         styles,
         scripts,
         authUser,
@@ -105,7 +105,7 @@ router.get('/blocked', async (req, res) => {
     if (currentPage <= numberOfPages) {
       res.render('app/_layouts/index', {
         locals: {
-          title: 'My Match',
+          title: 'Zawajina',
           styles,
           scripts,
           authUser,
@@ -188,7 +188,7 @@ router.get('/password', async (req, res) => {
     if (currentPage <= numberOfPages) {
       res.render('app/_layouts/index', {
         locals: {
-          title: 'My Match',
+          title: 'Zawajina',
           styles,
           scripts,
           authUser,
@@ -208,7 +208,7 @@ router.get('/password', async (req, res) => {
     } else if (numberOfPages === 0) {
       res.render('app/_layouts/index', {
         locals: {
-          title: 'My Match',
+          title: 'Zawajina',
           styles,
           scripts,
           authUser,

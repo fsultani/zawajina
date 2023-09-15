@@ -63,7 +63,7 @@ router.get('/', async (req, res) => {
     if (currentPage <= numberOfPages) {
       res.render('app/_layouts/index', {
         locals: {
-          title: 'My Match',
+          title: 'Zawajina',
           styles,
           scripts,
           authUser,
@@ -84,7 +84,7 @@ router.get('/', async (req, res) => {
     } else if (numberOfPages === 0) {
       res.render('app/_layouts/index', {
         locals: {
-          title: 'My Match',
+          title: 'Zawajina',
           styles,
           scripts,
           authUser,

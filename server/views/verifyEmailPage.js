@@ -1,6 +1,6 @@
 module.exports.verifyEmailPage = res => res.render('landing-pages/_layouts/index', {
   locals: {
-    title: 'Sign Up - My Match',
+    title: 'Sign Up - Zawajina',
     styles: [
       'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css',
       '/static/client/views/landing-pages/_layouts/global-styles.css',

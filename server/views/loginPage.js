@@ -20,7 +20,7 @@ module.exports.loginPage = res => {
 
   return res.render('landing-pages/_layouts/index', {
     locals: {
-      title: 'Login - My Match',
+      title: 'Login - Zawajina',
       styles,
       scripts,
     },
