@@ -36,7 +36,7 @@ h5 {
   justify-content: space-between;
   align-items: center;
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 30px;
 }
 
 .open-nav {
@@ -283,7 +283,9 @@ h5 {
     border-top: 5px solid rgba(255, 255, 255, 0.7);
     transition: all 0.1s linear;
     z-index: -1;
-    position: relative;
+    position: absolute;
+    top: 50%;
+    right: -5px;
   }
 
   .up-arrow {
