@@ -176,13 +176,13 @@ window.onload = async () => {
   displayFullPageLoadingSpinner(true);
 
   if (typeof globalThis === 'object') {
-    const { allCountries } = await getAllCountries(false);
-    const { allEthnicities } = await getAllEthnicities(false);
-    const { allLanguages } = await getAllLanguages(false);
+    const { allCountries } = await getAllCountries();
+    const { allEthnicities } = await getAllEthnicities();
+    const { allLanguages } = await getAllLanguages();
     const {
       allCities,
       unitedStates,
-    } = await locationData(false);
+    } = await locationData();
 
     const { searchOptions } = await Axios({
       method: 'get',

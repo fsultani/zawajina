@@ -406,7 +406,7 @@ const handleCreateNewAccount = async () => {
           document.querySelector('.form-errors').style.display = 'inline-block';
           addErrorClass('#signup-button-error');
         } else {
-          document.querySelector('#application-error').style.display = 'flex';
+          toast('error', 'There was an error');
         }
 
         window.scroll({

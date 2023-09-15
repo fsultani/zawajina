@@ -6,7 +6,6 @@ const locationData = async () => {
 
     return data;
   } catch (error) {
-    document.querySelector('#application-error').style.display = 'flex';
     return error.response;
   }
 };
