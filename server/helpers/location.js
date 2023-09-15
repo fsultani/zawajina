@@ -38,6 +38,7 @@ const location = async (req, res) => {
     const userCountry = userLocationData.country;
 
     allLocations.sort((a, b) => {
+      console.log(`a.city - server/helpers/location.js:40\n`, a.city);
       if (a.state && lowerCaseString(a.city) === lowerCaseString(userCity) && lowerCaseString(a.state) === lowerCaseString(userState)) return -1;
 
       if (b.city?.startsWith(userCity) > a.city?.startsWith(userCity)) return 1;
