@@ -38,8 +38,12 @@ const location = async (req, res) => {
     const userCountry = userLocationData.country;
 
     allLocations.sort((a, b) => {
-      console.log(`lowerCaseString(a.city) - server/helpers/location.js:40\n`, lowerCaseString(a.city));
-      if (a.state && lowerCaseString(a.city) === lowerCaseString(userCity) && lowerCaseString(a.state) === lowerCaseString(userState)) return -1;
+      if (
+        a.state &&
+        lowerCaseString(a.city) === lowerCaseString(userCity) &&
+        lowerCaseString(a.state) === lowerCaseString(userState)
+      )
+      return -1;
 
       if (b.city?.startsWith(userCity) > a.city?.startsWith(userCity)) return 1;
       if (b.city?.startsWith(userCity) < a.city?.startsWith(userCity)) return -1;
@@ -47,15 +51,10 @@ const location = async (req, res) => {
       if (b.country?.startsWith(userCountry) > a.country?.startsWith(userCountry)) return 1;
       if (b.country?.startsWith(userCountry) < a.country?.startsWith(userCountry)) return -1;
 
-      if (a.state === b.state) {
-        return 0;
-      } else if (a.state === null) {
-        return 1;
-      } else if (b.state === null) {
-        return -1;
-      } else {
-        return b.state?.startsWith(userState) - a.state?.startsWith(userState);
-      }
+      if (a.state === b.state) return 0;
+      if (a.state === null) return 1;
+      if (b.state === null) return -1;
+      return b.state?.startsWith(userState) - a.state?.startsWith(userState);
     });
 
     res.status(200).send({
