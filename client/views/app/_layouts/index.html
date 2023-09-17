@@ -5,12 +5,13 @@
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-B9MK9WFT2Q"></script>
   <script>
-    if (window.location.origin.startsWith('http://localhost')) return;
-    window.dataLayer = window.dataLayer || [];
-    function gtag() { dataLayer.push(arguments); }
-    gtag('js', new Date());
+    if (!window.location.origin.startsWith('http://localhost')) {
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag('js', new Date());
 
-    gtag('config', 'G-B9MK9WFT2Q');
+      gtag('config', 'G-B9MK9WFT2Q');
+    }
   </script>
 
   <meta charset='UTF-8' />
