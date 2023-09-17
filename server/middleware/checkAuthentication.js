@@ -12,39 +12,35 @@ module.exports.checkIPAddress = async req => {
   const whitelistedCountries = ['AF', 'AL', 'AZ', 'BH', 'BD', 'BA', 'BN', 'EG', 'HK', 'IN', 'ID', 'IQ', 'JO', 'KZ', 'KE', 'KW', 'KG', 'LB', 'LR', 'LY', 'MY', 'ME', 'MA', 'OM', 'PK', 'PS', 'PH', 'QA', 'RU', 'SA', 'SG', 'LK', 'SE', 'SY', 'TW', 'TJ', 'TH', 'TT', 'TR', 'TM', 'AE', 'US', 'UZ', 'YE'];
 
   try {
-    if (req.originalUrl === '/api/check-ip') {
-      console.log(`req.originalUrl - server/middleware/checkAuthentication.js:15\n`, req.originalUrl);
-      if (!userIPAddress || userIPAddress === 'undefined') {
-        return {
-          userIPAddress,
-          statusCode: 200,
-          data: 'No user IP Address available',
-        }
-      }
-  
-      if (!my_match_token) {
-        my_match_token = jwt.sign({ userIPAddress }, JWT_SECRET, {
-          expiresIn: '1 day',
-          // expiresIn: '5000',
-        });
-      }
-  
-      userIPAddress = await jwt.verify(my_match_token, JWT_SECRET).userIPAddress;
-      console.log(`userIPAddress - server/middleware/checkAuthentication.js:32\n`, userIPAddress);
-      const locationData = await geoLocationData(userIPAddress, {});
-      if (!whitelistedCountries.includes(locationData.countryCode)) {
-        return {
-          userIPAddress,
-          statusCode: 403,
-          data: 'Your country is currently not allowed.',
-        }
-      }
-  
+    if (!userIPAddress || userIPAddress === 'undefined') {
       return {
         userIPAddress,
-        statusCode: req.cookies.my_match_token ? 200 : 201,
-        data: req.cookies.my_match_token ? '' : my_match_token,
+        statusCode: 200,
+        data: 'No user IP Address available',
       }
+    }
+
+    if (!my_match_token) {
+      my_match_token = jwt.sign({ userIPAddress }, JWT_SECRET, {
+        expiresIn: '1 day',
+        // expiresIn: '5000',
+      });
+    }
+
+    userIPAddress = await jwt.verify(my_match_token, JWT_SECRET).userIPAddress;
+    const locationData = await geoLocationData(userIPAddress, {});
+    if (!whitelistedCountries.includes(locationData.countryCode)) {
+      return {
+        userIPAddress,
+        statusCode: 403,
+        data: 'Your country is currently not allowed.',
+      }
+    }
+
+    return {
+      userIPAddress,
+      statusCode: req.cookies.my_match_token ? 200 : 201,
+      data: req.cookies.my_match_token ? '' : my_match_token,
     }
   } catch (error) {
     return {
