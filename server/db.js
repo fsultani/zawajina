@@ -76,7 +76,7 @@ const insertLogs = async (req, updates) => {
     const endpoint = req.originalUrl;
 
     const authUser = req.authUser;
-    const userId = req.authUser._id
+    const userId = req.authUser?._id
     const now = new Date();
 
     const locationData = await geoLocationData(userIPAddress, authUser.lastActive);
