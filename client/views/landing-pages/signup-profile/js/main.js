@@ -119,8 +119,6 @@
         userLocationData,
       } = await locationData();
 
-      console.log(`allLocations - client/views/landing-pages/signup-profile/js/main.js:120\n`, allLocations);
-
       const { allCountries } = await getAllCountries();
       const { allEthnicities } = await getAllEthnicities();
       const { allLanguages } = await getAllLanguages();

@@ -8,7 +8,8 @@ const { returnServerError } = require('../utils');
 
 module.exports.checkIPAddress = async req => {
   let userIPAddress = req.headers?.useripaddress;
-  let { my_match_ipToken } = req.cookies;
+  let my_match_ipToken = req.cookies?.my_match_ipToken;
+  console.log(`my_match_ipToken - server/middleware/checkAuthentication.js:11\n`, my_match_ipToken);
   const whitelistedCountries = ['AF', 'AL', 'AZ', 'BH', 'BD', 'BA', 'BN', 'EG', 'HK', 'IN', 'ID', 'IQ', 'JO', 'KZ', 'KE', 'KW', 'KG', 'LB', 'LR', 'LY', 'MY', 'ME', 'MA', 'OM', 'PK', 'PS', 'PH', 'QA', 'RU', 'SA', 'SG', 'LK', 'SE', 'SY', 'TW', 'TJ', 'TH', 'TT', 'TR', 'TM', 'AE', 'US', 'UZ', 'YE'];
 
   try {
@@ -20,7 +21,7 @@ module.exports.checkIPAddress = async req => {
           response: 'No user IP Address available',
         }
       }
-  
+
       my_match_ipToken = jwt.sign({ userIPAddress }, JWT_SECRET, {
         expiresIn: '1 day',
         // expiresIn: '10000',
