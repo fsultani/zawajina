@@ -1,4 +1,4 @@
-window.onload = async () => {
+(async () => {
   const referrer = document.referrer;
   if (referrer) {
     const isConversation = referrer.split('/').slice(-2, -1)[0] === 'messages';
@@ -49,6 +49,4 @@ window.onload = async () => {
       </div>
 	 `;
   }
-
-  await Axios({ apiUrl: '/api/check-ip' })
-};
+})();

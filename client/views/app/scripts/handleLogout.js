@@ -45,6 +45,7 @@ const handleLogout = () => {
   })
     .then(({ data }) => {
       Cookies.remove('my_match_authToken');
+      Cookies.remove('my_match_ipToken');
       window.location.pathname = data?.url;
     })
 }

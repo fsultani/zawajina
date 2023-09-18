@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const JWT_SECRET = Buffer.from('fe1a1915a379f3be5394b64d14794932', 'hex');
 
+const { checkIPAddress } = require('../../middleware/checkAuthentication');
 const { usersCollection, insertLogs, geoLocationData } = require('../../db.js');
 
 const { sendEmail } = require('../../helpers/email.js');
@@ -22,8 +23,7 @@ router.post('/request-email', async (req, res) => {
   try {
     const { originalUrl } = req;
     const { email } = req.body;
-    const userIPAddress = req.headers.useripaddress;
-
+    const { userIPAddress } = await checkIPAddress(req);
     const locationData = await geoLocationData(userIPAddress);
 
     const authUser = await usersCollection().findOne(

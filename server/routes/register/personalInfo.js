@@ -94,11 +94,9 @@ const personalInfo = async (req, res) => {
         const insertUser = await usersCollection().insertOne(newUser);
         const userId = insertUser.insertedId;
 
-        // if (process.env.NODE_ENV !== 'development') {
-        //   await sendEmail({ emailAddress: email, subject, emailBody })
-        // }
-
-        await sendEmail({ emailAddress: email, subject, emailBody })
+        if (process.env.NODE_ENV !== 'development') {
+          await sendEmail({ emailAddress: email, subject, emailBody })
+        }
 
         newUser._id = userId;
         await insertLogs(newUser, userIPAddress, endpoint);

@@ -191,7 +191,7 @@ const sentenceCaseToCamelCase = string => string.replace(/(?:^\w|[A-Z]|\b\w)/g, 
 const showModal = ({ modalHeader, modalBody, modalButton, customStyles = [], canCloseModal = true, submitFormCallback }) => {
   const modalHTML = getQuerySelector('.modal');
   Object.assign(modalHTML.style, {
-    display: 'block',
+    display: 'flex',
   });
 
   const modalContentHTML = getQuerySelector('.modal-content');
@@ -302,39 +302,32 @@ const closeModal = () => {
 }
 
 (async () => {
-  try {
-    const myMatchDisplayToast = localStorage.getItem('my_match_display_toast');
+  const myMatchDisplayToast = localStorage.getItem('my_match_display_toast');
 
-    if (myMatchDisplayToast) {
-      const toastData = JSON.parse(myMatchDisplayToast);
+  if (myMatchDisplayToast) {
+    const toastData = JSON.parse(myMatchDisplayToast);
+
+    setTimeout(() => {
+      const toastElement = getQuerySelector('.toast');
+      const toastMessage = getQuerySelector('.toast-message');
+
+      toastElement.classList.add('show-toast');
+      toastElement.classList.add('toast-success');
+
+      if (toastData.type === 'success') {
+        toastElement.classList.add('toast-success');
+      } else (
+        toastElement.classList.add('toast-error')
+      )
+
+      toastMessage.innerHTML = toastData.message;
 
       setTimeout(() => {
-        const toastElement = getQuerySelector('.toast');
-        const toastMessage = getQuerySelector('.toast-message');
-
-        toastElement.classList.add('show-toast');
-        toastElement.classList.add('toast-success');
-
-        if (toastData.type === 'success') {
-          toastElement.classList.add('toast-success');
-        } else (
-          toastElement.classList.add('toast-error')
-        )
-
-        toastMessage.innerHTML = toastData.message;
-
-        setTimeout(() => {
-          toastElement.classList.remove('show-toast');
-          localStorage.removeItem('my_match_display_toast');
-        }, 3000)
-      })
-    }
-  } catch (error) {
-    const errorStatus = error.response?.status;
-    const errorMessage = error.response?.data ?? error.message ?? 'Error';
-
-    if (errorStatus === 403) {
-      document.body.innerHTML = errorMessage;
-    }
+        toastElement.classList.remove('show-toast');
+        localStorage.removeItem('my_match_display_toast');
+      }, 3000)
+    })
   }
+
+  CheckIPAddress();
 })();

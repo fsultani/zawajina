@@ -529,13 +529,12 @@ router.put('/profile-details/user-details', async (req, res) => {
           hijab,
         };
 
-        Object.entries(updatedUserInfo).map(async ([key, value]) => {
-          await insertLogs({
-            [key]: value,
-          },
-            userIPAddress,
-            endpoint,
-            userId
+        Object.entries(updatedUserInfo).filter(item => item[1]).map(async ([key, value]) => {
+          await insertLogs(
+            req,
+            {
+              [key]: value,
+            },
           );
         });
 

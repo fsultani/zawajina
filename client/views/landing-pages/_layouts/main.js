@@ -32,10 +32,10 @@ document.addEventListener('click', event => {
 });
 
 (async () => {
-  try {
-    const mainContent = getQuerySelector('.main-content');
-    const pathnames = ['/', '/privacy-policy', '/terms'];
+  const mainContent = getQuerySelector('.main-content');
+  const pathnames = ['/', '/privacy-policy', '/terms'];
 
+  if (mainContent) {
     if (pathnames.includes(window.location.pathname)) {
       Object.assign(mainContent.style, {
         display: 'flex',
@@ -47,13 +47,6 @@ document.addEventListener('click', event => {
         height: '100vh',
         justifyContent: 'space-between',
       })
-    }
-
-    // Do not call the API from the login page since that page removes all cookies
-    if (window.location.pathname !== '/login') await Axios({ apiUrl: '/' })
-  } catch (error) {
-    if (error.response.status === 403) {
-      document.body.innerHTML = error.response.data ?? 'Error';
     }
   }
 })();

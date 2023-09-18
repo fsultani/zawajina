@@ -231,6 +231,7 @@ const profileDetails = async (req, res) => {
     };
 
     const userObject = {
+      _account,
       fullDob,
       age,
       gender,
@@ -257,11 +258,11 @@ const profileDetails = async (req, res) => {
       hobbies,
       aboutMe,
       aboutMyMatch,
-      blockedUsers,
+      blockedUsers: [],
       likedByUsers: [],
-      usersLiked: [],
-      _account,
+      reportedBy: [],
       strikes: [],
+      usersLiked: [],
     }
 
     const searchOptions = {

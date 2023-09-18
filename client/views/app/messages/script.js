@@ -77,7 +77,6 @@ const handleDeleteConversation = async (event, conversationId) => {
     modalHeader,
     modalBody,
     modalButton,
-    canCloseModal: true,
     submitFormCallback: async () => {
       try {
         const { data } = await Axios({

@@ -7,46 +7,46 @@ const { loginPage } = require('../views');
 const { returnServerError } = require('../utils');
 
 module.exports.checkIPAddress = async req => {
-  let { useripaddress: userIPAddress } = req.headers;
-  let { my_match_token } = req.cookies;
+  let userIPAddress = req.headers?.useripaddress;
+  let { my_match_ipToken } = req.cookies;
   const whitelistedCountries = ['AF', 'AL', 'AZ', 'BH', 'BD', 'BA', 'BN', 'EG', 'HK', 'IN', 'ID', 'IQ', 'JO', 'KZ', 'KE', 'KW', 'KG', 'LB', 'LR', 'LY', 'MY', 'ME', 'MA', 'OM', 'PK', 'PS', 'PH', 'QA', 'RU', 'SA', 'SG', 'LK', 'SE', 'SY', 'TW', 'TJ', 'TH', 'TT', 'TR', 'TM', 'AE', 'US', 'UZ', 'YE'];
 
   try {
-    if (!userIPAddress || userIPAddress === 'undefined') {
-      return {
-        userIPAddress,
-        statusCode: 200,
-        data: 'No user IP Address available',
+    if (!my_match_ipToken) {
+      if (!userIPAddress || userIPAddress === 'undefined') {
+        return {
+          userIPAddress,
+          statusCode: 200,
+          response: 'No user IP Address available',
+        }
       }
-    }
-
-    if (!my_match_token) {
-      my_match_token = jwt.sign({ userIPAddress }, JWT_SECRET, {
+  
+      my_match_ipToken = jwt.sign({ userIPAddress }, JWT_SECRET, {
         expiresIn: '1 day',
-        // expiresIn: '5000',
+        // expiresIn: '10000',
       });
     }
 
-    userIPAddress = await jwt.verify(my_match_token, JWT_SECRET).userIPAddress;
-    const locationData = await geoLocationData(userIPAddress, {});
+    userIPAddress = await jwt.verify(my_match_ipToken, JWT_SECRET).userIPAddress;
+    const locationData = await geoLocationData(userIPAddress, req.authUser?.lastActive);
     if (!whitelistedCountries.includes(locationData.countryCode)) {
       return {
         userIPAddress,
         statusCode: 403,
-        data: 'Your country is currently not allowed.',
+        response: 'Your country is currently not allowed.',
       }
     }
 
     return {
       userIPAddress,
-      statusCode: req.cookies.my_match_token ? 200 : 201,
-      data: req.cookies.my_match_token ? '' : my_match_token,
+      statusCode: req.cookies.my_match_ipToken ? 200 : 201,
+      response: my_match_ipToken,
     }
   } catch (error) {
     return {
       userIPAddress,
-      statusCode: 401,
-      data: { isJWTError: true },
+      statusCode: 200,
+      response: { isJWTError: true },
     }
   }
 }
@@ -59,16 +59,15 @@ module.exports.checkAuthentication = async (req, res, next) => {
 
     if (!my_match_authToken) return res.redirect('/login');
 
-    // const { statusCode, data } = await exports.checkIPAddress(req, res, next);
     jwt.verify(my_match_authToken, JWT_SECRET, async (err, authUser) => {
       if (err || !authUser) {
-        const userIPAddress = null;
-        const endpoint = '/api/expired-session/logout'
+        req.originalUrl = '/api/expired-session/logout'
         const jwtDecoded = jwt.decode(my_match_authToken);
-
         const userId = jwtDecoded?.my_match_userId;
+        const userDocument = await usersCollection().findOne({ _id: ObjectId(userId) });
+        req.authUser = userDocument;
 
-        await insertLogs({}, userIPAddress, endpoint, userId);
+        await insertLogs(req, {});
 
         if (isApiCall) {
           if (process.env.NODE_ENV === 'development') {
@@ -96,6 +95,8 @@ module.exports.checkAuthentication = async (req, res, next) => {
         req.allConversationsCount = allConversationsCount;
         req.userIPAddress = req.headers.useripaddress;
         req.endpoint = originalUrl;
+
+        exports.checkIPAddress(req, res, next);
 
         const adminAccountStatus = userDocument._account.admin.accountStatus;
         const userAccountStatus = userDocument._account.user.accountStatus;

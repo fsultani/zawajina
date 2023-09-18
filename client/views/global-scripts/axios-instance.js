@@ -15,7 +15,7 @@ const CheckIPAddress = async () => {
   checkIPAddress = true;
 
   try {
-    let userIPAddress = Cookies.get('my_match_token');
+    let userIPAddress = Cookies.get('my_match_ipToken');
     if (!userIPAddress) userIPAddress = await getUserIPAddress();
 
     const response = await axios.get('/api/check-ip', {
@@ -24,11 +24,23 @@ const CheckIPAddress = async () => {
       }
     })
 
-    const responseData = response.data.data;
-    if (responseData) Cookies.set('my_match_token', responseData);
-  } catch (error) {
-    if (error.response?.data.isJWTError) {
-      Cookies.remove('my_match_token');
+    const responseData = response?.data.response;
+    if (responseData.isJWTError) {
+      Cookies.remove('my_match_ipToken');
+      CheckIPAddress();
+    } else if (responseData) {
+      Cookies.set('my_match_ipToken', responseData);
+      return responseData;
+    }
+  } catch (error) { 
+    if (error.response.status === 403 && error.response.data.response === 'Your country is currently not allowed.') {
+      const errorMessage = error.response.data.response ?? 'Error';
+      Cookies.remove('my_match_authToken');
+      Cookies.remove('my_match_ipToken');
+
+      document.body.innerHTML = errorMessage;
+    } else {
+      Cookies.remove('my_match_ipToken');
       CheckIPAddress();
     }
   }
@@ -41,15 +53,25 @@ const Axios = async ({
   params,
 }) => {
   try {
-    const axiosInstance = axios.create();
+    let axiosInstance = axios.create();
+    let userIPAddress = Cookies.get('my_match_ipToken');
+
+    if (!userIPAddress || !checkIPAddress) {
+      await CheckIPAddress();
+      userIPAddress = Cookies.get('my_match_ipToken');
+    }
+
+    axiosInstance = axios.create({
+      headers: {
+        userIPAddress,
+      }
+    })
 
     axiosInstance.interceptors.response.use(response => {
       const redirectUrl = response.data?.redirectUrl;
       if (redirectUrl) return window.location.pathname = redirectUrl;
       return response;
     })
-
-    if (!checkIPAddress) CheckIPAddress();
 
     if (method === 'get') {
       const response = await axiosInstance.get(apiUrl);

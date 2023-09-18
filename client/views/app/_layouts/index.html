@@ -22,14 +22,24 @@
   <link rel='stylesheet' type='text/css' href='/static/client/views/app/_layouts/app-global-styles.css' />
   ${styles.map(style => `<link rel='stylesheet' type='text/css' href='${style}' />`).join('')}
 
+  <!-- Axios CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js"
+    integrity="sha512-uMtXmF28A2Ab/JJO2t/vYhlaa/3ahUOgj1Zf27M5rOo8/+fcTUVH0/E0ll68njmjrLqOBjXM3V9NiPFL5ywWPQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <!-- js-cookie CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.0.4/js.cookie.min.js"
+    integrity="sha512-Nonc2AqL1+VEN+97F3n4YxucBOAL5BgqNwEVc2uUjdKOWAmzwj5ChdJQvN2KldAxkCxE4OenuJ/RL18bWxGGzA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
   <!-- Navbar script -->
   <script defer type='text/javascript' src='/static/client/views/app/scripts/dropdownMenu.js'></script>
   <script defer type='text/javascript' src='/static/client/views/app/scripts/navbar.js'></script>
   <script defer type='text/javascript' src='/static/client/views/app/scripts/handleLogout.js'></script>
 
   <!-- Order matters -->
-  <script defer type='text/javascript' src='/static/client/views/global-scripts/utils.js'></script>
   <script defer type='text/javascript' src='/static/client/views/global-scripts/axios-instance.js'></script>
+  <script defer type='text/javascript' src='/static/client/views/global-scripts/utils.js'></script>
   <script defer type='text/javascript' src='/static/client/views/global-scripts/api-requests.js'></script>
 
   <!-- Order doesn't matter -->

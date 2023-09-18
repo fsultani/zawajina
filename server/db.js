@@ -21,10 +21,15 @@ const connectToServer = callback => {
   }
 };
 
-const geoLocationData = async userIPAddress => {
+const geoLocationData = async (userIPAddress, lastActive = {}) => {
+  let locationData;
+  if (!userIPAddress) return locationData = { locationError: 'No location data available' };
+
+  const existingIP = lastActive?.userIPAddress;
+
   let userIPData = {};
 
-  if (process.env.NODE_ENV !== 'development') {
+  if (process.env.NODE_ENV === 'development') {
     userIPData = {
       data: {
         status: 'success',
@@ -43,11 +48,17 @@ const geoLocationData = async userIPAddress => {
         query: '98.148.238.157'
       }
     };
+  } else if (existingIP && existingIP === userIPAddress) {
+    userIPData = {
+      data: {
+        ...lastActive,
+      }
+    }
   } else {
     userIPData = await axios.get(`http://ip-api.com/json/${userIPAddress}`);
   }
 
-  let locationData = userIPData.data.status === 'success' ? userIPData.data : { locationError: 'No location data available' };
+  locationData = userIPData.data.status === 'success' ? userIPData.data : { locationError: 'No location data available' };
   locationData = {
     ...locationData,
     userIPAddress: locationData.query,
@@ -58,10 +69,17 @@ const geoLocationData = async userIPAddress => {
   return locationData;
 }
 
-const insertLogs = async (updates, userIPAddress, endpoint, userId = null) => {
+const insertLogs = async (req, updates) => {
   try {
-    const locationData = await geoLocationData(userIPAddress, updates);
+    const { checkIPAddress } = require('./middleware/checkAuthentication');
+    const { userIPAddress } = await checkIPAddress(req);
+    const endpoint = req.originalUrl;
+
+    const authUser = req.authUser;
+    const userId = req.authUser._id
     const now = new Date();
+
+    const locationData = await geoLocationData(userIPAddress, authUser.lastActive);
 
     const newEntry = {
       _id: updates._id,
@@ -162,6 +180,7 @@ const insertLogs = async (updates, userIPAddress, endpoint, userId = null) => {
       await logsCollection().insertOne(newEntry);
     }
   } catch (error) {
+    console.log(`error - server/db.js:183\n`, error);
     return error;
   }
 }

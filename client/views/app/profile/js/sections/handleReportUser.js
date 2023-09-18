@@ -1,6 +1,72 @@
 const modal = getQuerySelector('.modal');
 
-const handleReportUser = () => {
+const handleReportUser = userId => {
+  const modalHeader = 'Details';
+  const modalBody = `
+    <section class='report-user-section'>
+      <p class='report-user-section-subheader'>What's wrong with User?</p>
+      <div class='radio-wrapper'>
+        <input type='radio' name='report-user' class='radio-button' id='inappropriate-profile'
+          value='Inappropriate profile'>
+        <label for='inappropriate-profile' class='radio-label'>Inappropriate profile</label><br>
+      </div>
+      <div class='radio-wrapper'>
+        <input type='radio' name='report-user' class='radio-button' id='abusive-or-threatening'
+          value='Abusive or threatening'>
+        <label for='abusive-or-threatening' class='radio-label'>Abusive or threatening</label><br>
+      </div>
+      <div class='radio-wrapper'>
+        <input type='radio' name='report-user' class='radio-button' id='fake-profile-or-scammer'
+          value='Fake profile or scammer'>
+        <label for='fake-profile-or-scammer' class='radio-label'>Fake profile or scammer</label><br>
+      </div>
+    </section>
+
+    <section class='additional-information-section'>
+      <textarea class='additional-information' id='additional-information' name='additional-information'
+        placeholder='Additional Information'></textarea>
+    </section>
+  `;
+
+  const modalButton = 'Submit';
+
+  showModal({
+    modalHeader,
+    modalBody,
+    modalButton,
+    submitFormCallback: () => {
+      let selectedOption;
+      document.getElementsByName('report-user').forEach(element => {
+        if (element.checked) {
+          selectedOption = element;
+        }
+      })
+
+      const additionalInformation = getQuerySelector('#additional-information').value;
+
+      Axios({
+        method: 'put',
+        apiUrl: '/api/user/report', // server/routes/user/api.js
+        params: {
+          userId,
+          reason: selectedOption.value,
+          additionalInformation,
+        },
+      })
+        .then(({ data }) => {
+          const { message } = data;
+          toast('success', message);
+          closeModal();
+        })
+        .catch(() => {
+          toast('error', 'There was an error');
+          closeModal();
+        });
+    },
+  });
+};
+
+const handleReportUser_ = () => {
   Object.assign(modal.style, {
     display: 'block',
     position: 'absolute',

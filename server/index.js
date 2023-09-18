@@ -103,35 +103,35 @@ app.engine('html', es6Renderer);
 app.set('views', path.join(__dirname, '../client/views'));
 app.set('view engine', 'html');
 
-const updateIPAddress = async (req, res) => {
-  const { my_match_userId, my_match_authToken } = req.cookies;
-  const { pathname, useripaddress: userIPAddress } = req.headers;
-  const userId = my_match_authToken ?? my_match_userId;
+// const updateIPAddress = async (req, res) => {
+//   const { my_match_userId, my_match_authToken } = req.cookies;
+//   const { pathname, useripaddress: userIPAddress } = req.headers;
+//   const userId = my_match_authToken ?? my_match_userId;
 
-  const endpoint = pathname;
-  await insertLogs({}, userIPAddress, endpoint, userId);
-  res.sendStatus(200);
-}
+//   const endpoint = pathname;
+//   await insertLogs({}, userIPAddress, endpoint, userId);
+//   res.sendStatus(200);
+// }
 
 // const checkIPAddress = async (req, res) => {
 //   let { useripaddress: userIPAddress } = req.headers;
-//   let { my_match_token } = req.cookies;
+//   let { my_match_ipToken } = req.cookies;
 //   const whitelistedCountries = ['US'];
 
 //   try {
 //     if (userIPAddress === 'undefined') return res.status(200).send('No user IP Address available');
 
-//     if (!my_match_token) {
-//       my_match_token = jwt.sign({ userIPAddress }, JWT_SECRET, {
+//     if (!my_match_ipToken) {
+//       my_match_ipToken = jwt.sign({ userIPAddress }, JWT_SECRET, {
 //         expiresIn: '1 hour',
 //       });
 //     }
 
-//     userIPAddress = await jwt.verify(my_match_token, JWT_SECRET).userIPAddress;
+//     userIPAddress = await jwt.verify(my_match_ipToken, JWT_SECRET).userIPAddress;
 //     const locationData = await geoLocationData(userIPAddress, {});
 //     if (!whitelistedCountries.includes(locationData.countryCode)) return res.status(403).send('Your country is currently not allowed.');
 
-//     return req.cookies.my_match_token ? res.sendStatus(200) : res.status(201).send({ my_match_token });
+//     return req.cookies.my_match_ipToken ? res.sendStatus(200) : res.status(201).send({ my_match_ipToken });
 //   } catch (error) {    
 //     return res.status(403).send({ isJWTError: true }); 
 //   }
@@ -139,7 +139,7 @@ const updateIPAddress = async (req, res) => {
 
 // const checkIPAddress = async (req, res) => {
 //   let { useripaddress: userIPAddress } = req.headers;
-//   let { my_match_token } = req.cookies;
+//   let { my_match_ipToken } = req.cookies;
 //   const whitelistedCountries = ['US'];
 
 //   try {
@@ -151,13 +151,13 @@ const updateIPAddress = async (req, res) => {
 //       }
 //     }
 
-//     if (!my_match_token) {
-//       my_match_token = jwt.sign({ userIPAddress }, JWT_SECRET, {
+//     if (!my_match_ipToken) {
+//       my_match_ipToken = jwt.sign({ userIPAddress }, JWT_SECRET, {
 //         expiresIn: '1 hour',
 //       });
 //     }
 
-//     userIPAddress = await jwt.verify(my_match_token, JWT_SECRET).userIPAddress;
+//     userIPAddress = await jwt.verify(my_match_ipToken, JWT_SECRET).userIPAddress;
 //     const locationData = await geoLocationData(userIPAddress, {});
 //     if (!whitelistedCountries.includes(locationData.countryCode)) {
 //       return {
@@ -169,8 +169,8 @@ const updateIPAddress = async (req, res) => {
 
 //     return {
 //       userIPAddress,
-//       statusCode: req.cookies.my_match_token ? 200 : 201,
-//       data: req.cookies.my_match_token ? '' : my_match_token,
+//       statusCode: req.cookies.my_match_ipToken ? 200 : 201,
+//       data: req.cookies.my_match_ipToken ? '' : my_match_ipToken,
 //     }
 //   } catch (error) {
 //     return {
@@ -202,8 +202,8 @@ app.use((req, _res, next) => {
 });
 
 app.use('/api/check-ip', (req, res, next) => {
-  checkIPAddress(req, res, next).then(({ statusCode, data }) => {
-    res.status(statusCode).send({ data }); 
+  checkIPAddress(req, res, next).then(({ statusCode, response }) => {
+    res.status(statusCode).send({ response }); 
   })
 });
 

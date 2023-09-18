@@ -104,7 +104,7 @@ select {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 60px 0;
+  padding: 20px 0;
 }
 
 @media (min-width: 768px) {

@@ -1,6 +1,7 @@
 const express = require('express');
 const { ObjectId } = require('mongodb');
 
+const { checkIPAddress } = require('../../../middleware/checkAuthentication');
 const { usersCollection, insertLogs, geoLocationData } = require('../../../db');
 const { redirectToLogin } = require('../../../utils');
 
@@ -91,11 +92,13 @@ router.put('/', async (req, res) => {
 
 router.put('/status', async (req, res) => {
   try {
-    const { authUser, userIPAddress, endpoint } = req;
+    const { authUser, endpoint } = req;
     const authUserId = ObjectId(authUser._id);
     const accountStatus = req.body.accountStatus;
 
-    const locationData = await geoLocationData(userIPAddress);
+    const { userIPAddress } = await checkIPAddress(req);
+    const locationData = await geoLocationData(userIPAddress, authUser?.lastActive);
+
     const now = new Date();
 
     const _account = {

@@ -21,7 +21,6 @@ router.get('/account', async (req, res) => {
       '/static/assets/apis/axios.min.js',
       '/static/assets/apis/js.cookie.min.js',
       '/static/client/views/app/settings/script.js',
-      '/static/client/views/app/settings/account/handleUpdateAccount.js',
     ];
 
     const styles = getAllFiles({ directoryPath, fileType: 'css', filesArray: stylesArray });

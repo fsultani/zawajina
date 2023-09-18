@@ -1,18 +1,12 @@
 const express = require('express');
 
 const { usersCollection } = require('../db.js');
-const { checkIPAddress } = require('../middleware/checkAuthentication.js');
 const { redirectToLogin } = require('../utils.js');
 
 const router = express.Router();
 
 router.get('/', async (req, res) => {
   try {
-    console.log(`req.socket.remoteAddress - server/routes/users.js:10\n`, req.socket.remoteAddress);
-    console.log(`req.ip - server/routes/users.js:11\n`, req.ip);
-    const checkIPAddressResponse = await checkIPAddress(req);
-    console.log(`checkIPAddressResponse - server/routes/users.js:11\n`, checkIPAddressResponse);
-
     const { authUser, allConversationsCount } = req;
     const originalUrl = req.originalUrl.split('?')[0];
     const page = parseInt(req.query.page) || 1;
