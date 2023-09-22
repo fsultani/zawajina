@@ -21,7 +21,11 @@ const connectToServer = callback => {
   }
 };
 
-const geoLocationData = async (userIPAddress, lastActive = {}) => {
+const logsCollection = () => db.collection('logs');
+const messagesCollection = () => db.collection('messages');
+const usersCollection = () => db.collection('users');
+
+const geoLocationData = async (userIPAddress, lastActive) => {
   let locationData;
   if (!userIPAddress) return locationData = { locationError: 'No location data available' };
 
@@ -76,125 +80,67 @@ const insertLogs = async (req, updates) => {
     const endpoint = req.originalUrl;
 
     const authUser = req.authUser;
-    const userId = req.authUser?._id
+    const lastActive = authUser?.lastActive ?? {};
+    const authUserId = req.authUser?._id
     const now = new Date();
 
-    const locationData = await geoLocationData(userIPAddress, authUser.lastActive);
+    const locationData = await geoLocationData(userIPAddress, lastActive);
 
-    const newEntry = {
-      _id: updates._id,
+    await usersCollection().findOneAndUpdate(
+      { _id: ObjectId(authUserId) },
+      {
+        $set: {
+          lastActive: {
+            endpoint,
+            local: now.toLocaleString(),
+            utc: now,
+            ...locationData,
+          }
+        },
+      },
+      {
+        returnDocument: 'after',
+        returnNewDocument: true,
+      }
+    )
+
+    const logs = {
+      '$each': [{
+        endpoint,
+        email: authUser.email,
+        updates: Object.keys(updates).length > 0 ? { ...updates } : null,
+        updatedAt: {
+          local: now.toLocaleString(),
+          utc: now,
+          ...locationData,
+        },
+      }],
+      '$position': 0,
     };
 
-    delete updates._id;
-
-    const updatedFields = [{
-      ...updates,
-      endpoint,
-      updatedAt: {
-        local: now.toLocaleString(),
-        utc: now,
-        ...locationData,
+    await logsCollection().findOneAndUpdate(
+      { _id: ObjectId(authUserId) },
+      {
+        $push: {
+          logs,
+        }
+      },
+      {
+        upsert: true,
       }
-    }];
-
-    let logsUpdate = {
-      ...updatedFields,
-    }
-
-    if (userId) {
-      const userResponse = await usersCollection().findOneAndUpdate(
-        { _id: ObjectId(userId) },
-        {
-          $set: {
-            geolocationCoordinates: [locationData.lon, locationData.lat],
-            lastActive: {
-              endpoint,
-              local: now.toLocaleString(),
-              utc: now,
-              ...locationData,
-            }
-          },
-        },
-        {
-          returnDocument: 'after',
-          returnNewDocument: true,
-        }
-      )
-
-      const user = userResponse.value;
-      const endpointValue = endpoint.split('?')[0];
-      const sessionHistory = [{
-        email: user.email,
-        endpoint: endpointValue,
-        local: now.toLocaleString(),
-        utc: now,
-        ...locationData,
-      }];
-
-      if (endpointValue === '/api/auth-session/login') {
-        logsUpdate = {
-          sessionHistory: {
-            '$each': [...sessionHistory],
-            '$position': 0,
-          },
-        }
-      } else if (endpointValue === '/api/register/profile-details' || endpointValue === '/api/password/reset') {
-        logsUpdate = {
-          sessionHistory: {
-            '$each': [...sessionHistory],
-            '$position': 0,
-          },
-          updatedFields: {
-            '$each': updatedFields,
-            '$position': 0,
-          }
-        }
-      } else if (endpointValue === '/api/auth-session/logout' || endpointValue === '/api/expired-session/logout') {
-        sessionHistory[0].endpoint = endpointValue;
-
-        logsUpdate = {
-          sessionHistory: {
-            '$each': [...sessionHistory],
-            '$position': 0,
-          },
-        }
-      } else {
-        logsUpdate = {
-          updatedFields: {
-            '$each': updatedFields,
-            '$position': 0,
-          }
-        }
-      }
-
-      await logsCollection().findOneAndUpdate(
-        { _id: user._id },
-        {
-          $push: {
-            ...logsUpdate,
-          }
-        },
-      );
-    } else {
-      newEntry.updatedFields = [...updatedFields];
-      await logsCollection().insertOne(newEntry);
-    }
+    );
   } catch (error) {
     console.log(`error - server/db.js:183\n`, error);
     return error;
   }
 }
 
-const logsCollection = () => db.collection('logs');
-const messagesCollection = () => db.collection('messages');
-const usersCollection = () => db.collection('users');
-
 module.exports = {
-  connectToServer,
   db,
-  geoLocationData,
-  insertLogs,
+  connectToServer,
   logsCollection,
   messagesCollection,
   usersCollection,
+  geoLocationData,
+  insertLogs,
 };

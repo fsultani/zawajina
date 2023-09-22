@@ -21,7 +21,6 @@ const router = express.Router();
 
 router.post('/request-email', async (req, res) => {
   try {
-    const { originalUrl } = req;
     const { email } = req.body;
     const { userIPAddress } = await checkIPAddress(req);
     const locationData = await geoLocationData(userIPAddress);
@@ -32,16 +31,8 @@ router.post('/request-email', async (req, res) => {
 
     if (authUser) {
       const password = authUser.password;
-      const endpoint = originalUrl;
-      const userId = authUser._id;
-  
-      await insertLogs({
-        password,
-      },
-        userIPAddress,
-        endpoint,
-        userId
-      );
+      req.authUser = authUser;
+      insertLogs(req, { password });
 
       const token = jwt.sign({ my_match_user_email: authUser.email }, JWT_SECRET, {
         expiresIn: '10 minutes',
@@ -72,53 +63,51 @@ router.post('/request-email', async (req, res) => {
       })}">
               Where this request came from:
             </p>
-  
+ 
             <p style="${paragraphFooterStyles({})}">
               Date and time:
               <span style="${spanStyles({})}">
                 ${localTime}
               </span>
             </p>
-  
+ 
             <p style="${paragraphFooterStyles({})}">
               Country:
               <span style="${spanStyles({})}">
                 ${locationData.country}
               </span>
             </p>
-  
+ 
             <p style="${paragraphFooterStyles({})}">
               ${locationData.region ? `Region: <span style="${spanStyles({})}">${locationData.region}</span>` : ''}
             </p>
-  
+ 
             <p style="${paragraphFooterStyles({})}">
               City:
               <span style="${spanStyles({})}">
                 ${locationData.city}
               </span>
             </p>
-  
+ 
             <p style="${paragraphFooterStyles({})}">
               IP address:
               <span style="${spanStyles({})}">
-                ${locationData.query}
+                ${locationData.userIPAddress}
               </span>
             </p>
           </div>
         </div>
       `;
-  
-      if (process.env.NODE_ENV !== 'development') {
-        await sendEmail({ emailAddress: authUser.email, subject, emailBody })
-      }
 
-      let responseObject = { redirectUrl: '/login' }
+      await sendEmail({ emailAddress: authUser.email, subject, emailBody })
+
+      let response = { redirectUrl: '/login' }
 
       if (process.env.NODE_ENV === 'development') {
-        responseObject = { ...responseObject, token, passwordResetUrl }
+        response = { ...response, token, passwordResetUrl }
       }
 
-      res.status(201).send({ responseObject });
+      res.status(201).send({ response });
     } else {
       res.sendStatus(201);
     }
@@ -129,7 +118,6 @@ router.post('/request-email', async (req, res) => {
 
 router.post('/reset', async (req, res) => {
   try {
-    const userIPAddress = req.headers.useripaddress;
     const {
       newPassword,
       passwordResetToken,
@@ -148,16 +136,8 @@ router.post('/reset', async (req, res) => {
       }
     );
 
-    const endpoint = req.originalUrl;
-    const userId = value._id;
-
-    await insertLogs({
-      password: bcryptHash,
-    },
-      userIPAddress,
-      endpoint,
-      userId
-    );
+    req.authUser = value;
+    insertLogs(req, { password: bcryptHash });
 
     const token = jwt.sign({ my_match_userId: value._id }, JWT_SECRET, {
       expiresIn: '1 day',

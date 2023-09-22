@@ -3,8 +3,9 @@ const jwt = require('jsonwebtoken');
 const JWT_SECRET = Buffer.from('fe1a1915a379f3be5394b64d14794932', 'hex');
 
 const { checkIPAddress } = require('../../middleware/checkAuthentication.js');
-const { usersCollection, insertLogs, geoLocationData } = require('../../db.js');
+const { usersCollection, insertLogs } = require('../../db.js');
 const { uploadToCloudinary } = require('../../helpers/cloudinary.js');
+
 const {
   inputHasSocialMediaAccount,
   inputHasPhoneNumber,
@@ -37,7 +38,6 @@ const allHobbiesData = hobbiesData.default.getAllHobbies();
 const profileDetails = async (req, res) => {
   try {
     const { userId } = req.body;
-    const { userIPAddress } = await checkIPAddress(req);
     let {
       birthMonth,
       birthDay,
@@ -160,7 +160,6 @@ const profileDetails = async (req, res) => {
     const canRelocateOptions = [
       'canRelocateYes',
       'canRelocateNo',
-      'canRelocateMaybe',
     ]
     const validCanRelocate = canRelocateOptions.indexOf(canRelocate) > -1;
     if (!validCanRelocate) return badRequest(res, 'Invalid can-relocate');
@@ -205,24 +204,17 @@ const profileDetails = async (req, res) => {
     aboutMyMatch = escapeHtml(aboutMyMatch).trim();
 
     let photos = [];
-    
+
     if (req.files && Object.values(req.files).length > 0) {
       const response = await uploadToCloudinary({ req, userId });
       response.sort((a, b) => a.index - b.index);
       photos = [...response];
     }
 
-    const locationData = await geoLocationData(userIPAddress);
-
     const blockedUsers = [];
 
     const _account = {
-      user: {
-        accountStatus: 'active',
-        local: now.toLocaleString(),
-        utc: now,
-        ...locationData,
-      },
+      userAccountStatus: 'active',
       admin: {
         accountStatus: 'approved',
         notes: '',
@@ -271,7 +263,7 @@ const profileDetails = async (req, res) => {
           $nin: blockedUsers,
         },
         gender: gender === 'male' ? 'female' : 'male',
-        '_account.user.accountStatus': 'active',
+        '_account.userAccountStatus': 'active',
         '_account.admin.accountStatus': 'approved',
         languages: { $in: [] },
         profession: { $in: [] },
@@ -310,14 +302,10 @@ const profileDetails = async (req, res) => {
       },
       { new: true },
       async (_, user) => {
-        const endpoint = req.originalUrl;
-        await insertLogs({
+        req.authUser = user.value;
+        insertLogs(req, {
           ...userObject,
-        },
-          userIPAddress,
-          endpoint,
-          userId
-        );
+        });
 
         const token = jwt.sign({ my_match_userId: user.value._id }, JWT_SECRET, {
           expiresIn: '1 day',

@@ -4,7 +4,7 @@ const { validationResult } = require('express-validator/check');
 const { usersCollection, insertLogs } = require('../../db.js');
 const { emailVerification } = require('../../email-templates/email-verification.js');
 const { sendEmail } = require('../../helpers/email');
-const { checkIPAddress } = require('../../middleware/checkAuthentication.js');
+
 const {
   inputHasSocialMediaAccount,
   inputHasSocialMediaTag,
@@ -16,7 +16,6 @@ const {
 
 const personalInfo = async (req, res) => {
   const { nameValue, email } = req.body;
-  const { userIPAddress } = await checkIPAddress(req);
   let { password } = req.body;
 
   const getErrors = validationResult(req);
@@ -65,11 +64,9 @@ const personalInfo = async (req, res) => {
 
   if (invalidInput(name)) return res.status(400).send({ querySelector: 'name', message });
 
-  usersCollection().findOne({ email }, async (err, userExists) => {
+  usersCollection().findOne({ email }, async (err, authUser) => {
     try {
-      let endpoint = req.originalUrl;
-
-      if (!err && !userExists) {
+      if (!err && !authUser) {
         /* User does not exist; create a new account */
         const bcryptGenSalt = await bcrypt.genSalt(10);
         const bcryptHash = await bcrypt.hash(password, bcryptGenSalt);
@@ -77,7 +74,7 @@ const personalInfo = async (req, res) => {
 
         const { emailVerificationToken, subject, emailBody } = emailVerification({ name });
 
-        const newUserData = {
+        let newUserData = {
           name,
           email,
           password,
@@ -92,17 +89,22 @@ const personalInfo = async (req, res) => {
         };
 
         const insertUser = await usersCollection().insertOne(newUser);
-        const userId = insertUser.insertedId;
+        const authUserId = insertUser.insertedId;
+        newUserData = {
+          ...newUserData,
+          _id: authUserId,
+        }
+
+        req.authUser = newUserData;
 
         if (process.env.NODE_ENV !== 'development') {
           await sendEmail({ emailAddress: email, subject, emailBody })
         }
 
-        newUser._id = userId;
-        await insertLogs(newUser, userIPAddress, endpoint);
+        insertLogs(req, newUser);
 
         let payload = {
-          userId,
+          authUserId,
           url: '/verify-email',
         }
 
@@ -119,29 +121,30 @@ const personalInfo = async (req, res) => {
         });
       }
 
-      const userStartedRegistration = verifyDate(userExists.startedRegistrationAt);
-      const userCompletedRegistration = verifyDate(userExists.completedRegistrationAt);
+      const userStartedRegistration = verifyDate(authUser.startedRegistrationAt);
+      const userCompletedRegistration = verifyDate(authUser.completedRegistrationAt);
 
       if (userStartedRegistration && !userCompletedRegistration) {
         /* User completed step 1; allow the user to proceed to step 2 */
-        endpoint += ' - startedRegistrationAt && !completedRegistrationAt';
+        req.originalUrl += ' - startedRegistrationAt && !completedRegistrationAt';
 
-        const userId = userExists._id;
-        const emailVerifiedDate = Date.parse(userExists.emailVerified)
+        req.authUser = authUser;
+        const authUserId = authUser._id;
+        const emailVerifiedDate = Date.parse(authUser.emailVerified)
         const emailVerified = !isNaN(emailVerifiedDate)
 
-        const isNewPassword = !await bcrypt.compare(password, userExists.password)
-        const isNewName = userExists.name !== name
+        const isNewPassword = !await bcrypt.compare(password, authUser.password)
+        const isNewName = authUser.name !== name
 
         if (isNewName && isNewPassword) {
-          const changedValue = `${userExists.name} => ${name}`;
+          const changedValue = `${authUser.name} => ${name}`;
 
           const bcryptGenSalt = await bcrypt.genSalt(10);
           const bcryptHash = await bcrypt.hash(password, bcryptGenSalt);
           password = bcryptHash;
 
           await usersCollection().findOneAndUpdate(
-            { _id: userId },
+            { _id: authUserId },
             {
               $set: {
                 name,
@@ -150,19 +153,15 @@ const personalInfo = async (req, res) => {
             },
           );
 
-          await insertLogs({
+          insertLogs(req, {
             name: changedValue,
             password,
-          },
-            userIPAddress,
-            endpoint,
-            userId
-          );
+          });
         }
 
         if (isNewName && !isNewPassword) {
           await usersCollection().findOneAndUpdate(
-            { _id: userId },
+            { _id: authUserId },
             {
               $set: {
                 name,
@@ -170,14 +169,10 @@ const personalInfo = async (req, res) => {
             },
           );
 
-          const changedValue = `${userExists.name} => ${name}`;
-          await insertLogs({
+          const changedValue = `${authUser.name} => ${name}`;
+          insertLogs(req, {
             name: changedValue,
-          },
-            userIPAddress,
-            endpoint,
-            userId
-          );
+          });
         }
 
         if (!isNewName && isNewPassword) {
@@ -186,7 +181,7 @@ const personalInfo = async (req, res) => {
           password = bcryptHash;
 
           await usersCollection().findOneAndUpdate(
-            { _id: userId },
+            { _id: authUserId },
             {
               $set: {
                 password,
@@ -194,23 +189,15 @@ const personalInfo = async (req, res) => {
             },
           );
 
-          await insertLogs({
+          insertLogs(req, {
             password,
-          },
-            userIPAddress,
-            endpoint,
-            userId
-          );
+          });
         }
 
         if (!isNewName && !isNewPassword) {
-          await usersCollection().findOne({ _id: userId });
+          await usersCollection().findOne({ _id: authUserId });
 
-          await insertLogs({},
-            userIPAddress,
-            endpoint,
-            userId
-          );
+          insertLogs(req, {});
         }
 
         let url = '/verify-email';
@@ -219,7 +206,7 @@ const personalInfo = async (req, res) => {
         }
 
         return res.status(201).send({
-          userId,
+          authUserId,
           url,
         });
       }

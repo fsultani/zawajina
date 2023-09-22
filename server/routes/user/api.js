@@ -74,7 +74,7 @@ router.put(
 
       const userId = authUser._id;
 
-			let userPhotos = [];
+      let userPhotos = [];
       let authUserPhotos = [...authUser.photos]
       let newUploadedPhotos = [];
       let deletedPhotos = [];
@@ -138,7 +138,7 @@ router.put(
                   public_id: `${existingPhotoByIndex.public_id} => ${newPhoto.public_id}`,
                   secure_url: `${existingPhotoByIndex.secure_url} => ${newPhoto.secure_url}`,
                 }
-  
+
                 logsUpdate = {
                   ...logsUpdate,
                   photos,
@@ -147,11 +147,11 @@ router.put(
             }
           } else if (photo.image === 'undefined') {
             /* A photo does not exist; check if it was deleted */
-						const existingPhotoByIndex = authUserPhotos.find(authUserPhoto => authUserPhoto.index === photo.index)
-						if (existingPhotoByIndex) {
-							/* Delete an existing photo without replacing it */
-							publicIds.push(existingPhotoByIndex.public_id)
-							deletedPhotos.push(existingPhotoByIndex)
+            const existingPhotoByIndex = authUserPhotos.find(authUserPhoto => authUserPhoto.index === photo.index)
+            if (existingPhotoByIndex) {
+              /* Delete an existing photo without replacing it */
+              publicIds.push(existingPhotoByIndex.public_id)
+              deletedPhotos.push(existingPhotoByIndex)
 
               const photos = {
                 index: `${existingPhotoByIndex.index} => null`,
@@ -163,13 +163,13 @@ router.put(
                 ...logsUpdate,
                 photos,
               }
-						}
-					} else {
+            }
+          } else {
             /* A photo exists and is not new */
-						const existingPhotoByUrl = authUserPhotos.find(authUserPhoto => authUserPhoto.secure_url === photo.image)
-						if (existingPhotoByUrl) {
-							/* Check if the default photo was changed */
-							if (existingPhotoByUrl.secure_url === photo.image && existingPhotoByUrl.index !== photo.index && photo.index === 0) {
+            const existingPhotoByUrl = authUserPhotos.find(authUserPhoto => authUserPhoto.secure_url === photo.image)
+            if (existingPhotoByUrl) {
+              /* Check if the default photo was changed */
+              if (existingPhotoByUrl.secure_url === photo.image && existingPhotoByUrl.index !== photo.index && photo.index === 0) {
 
                 const photos = {
                   index: `${existingPhotoByUrl.index} => ${0}`,
@@ -182,13 +182,13 @@ router.put(
                   photos,
                 }
 
-								existingPhotoByUrl.index = 0;
-							} else {
+                existingPhotoByUrl.index = 0;
+              } else {
                 existingPhotoByUrl.index = photo.index;
               }
-							userPhotos.push(existingPhotoByUrl)
-						}
-					}
+              userPhotos.push(existingPhotoByUrl)
+            }
+          }
         })
 
         if (publicIds.length > 0) {
@@ -225,19 +225,15 @@ router.put(
           returnNewDocument: true,
         },
           async () => {
-            await insertLogs({
+            insertLogs(req, {
               ...logsUpdate,
-            },
-              userIPAddress,
-              endpoint,
-              userId
-            );
-  
+            });
+
             return res.sendStatus(200);
           }
         );
       } else {
-        return res.sendStatus(500); 
+        return res.sendStatus(500);
       }
     } catch (error) {
       returnServerError(res, error);
@@ -246,116 +242,104 @@ router.put(
 );
 
 router.put('/profile-details/location', async (req, res) => {
-	try {
-		const {
-			authUser,
-			userIPAddress,
-			endpoint,
-		} = req;
+  try {
+    const {
+      authUser,
+      userIPAddress,
+      endpoint,
+    } = req;
 
-		const userId = authUser._id;
+    const userId = authUser._id;
 
-		const updatedUserCity = req.body.city;
+    const updatedUserCity = req.body.city;
     const updatedUserState = req.body.state === 'null' ? null : req.body.state;
-		const updatedUserCountry = req.body.country;
+    const updatedUserCountry = req.body.country;
 
-		if (authUser.country !== updatedUserCountry) {
-			usersCollection().findOneAndUpdate({
-				_id: userId,
-			}, {
-				$set: {
-					city: updatedUserCity,
-					state: updatedUserState,
-					country: updatedUserCountry,
-				},
-			}, {
-				returnDocument: 'after',
-				returnNewDocument: true,
-			},
-				async (_, user) => {
-					await insertLogs({
-						city: user.value.city,
-						state: user.value.state,
-						country: user.value.country,
-					},
-						userIPAddress,
-						endpoint,
-						userId
-					);
+    if (authUser.country !== updatedUserCountry) {
+      usersCollection().findOneAndUpdate({
+        _id: userId,
+      }, {
+        $set: {
+          city: updatedUserCity,
+          state: updatedUserState,
+          country: updatedUserCountry,
+        },
+      }, {
+        returnDocument: 'after',
+        returnNewDocument: true,
+      },
+        async (_, user) => {
+          insertLogs(req, {
+            city: user.value.city,
+            state: user.value.state,
+            country: user.value.country,
+          });
 
-					return res.status(200).json({
-						response: {
-							city: user.value.city,
-							state: user.value.state,
-							country: user.value.country,
-						}
-					});
-				}
-			);
-		} else if (authUser.state !== updatedUserState) {
-			usersCollection().findOneAndUpdate({
-				_id: userId,
-			}, {
-				$set: {
-					city: updatedUserCity,
-					state: updatedUserState,
-				},
-			}, {
-				returnDocument: 'after',
-				returnNewDocument: true,
-			},
-				async (_, user) => {
-					await insertLogs({
-						city: user.value.city,
-						state: user.value.state,
-					},
-						userIPAddress,
-						endpoint,
-						userId
-					);
+          return res.status(200).json({
+            response: {
+              city: user.value.city,
+              state: user.value.state,
+              country: user.value.country,
+            }
+          });
+        }
+      );
+    } else if (authUser.state !== updatedUserState) {
+      usersCollection().findOneAndUpdate({
+        _id: userId,
+      }, {
+        $set: {
+          city: updatedUserCity,
+          state: updatedUserState,
+        },
+      }, {
+        returnDocument: 'after',
+        returnNewDocument: true,
+      },
+        async (_, user) => {
+          insertLogs(req, {
+            city: user.value.city,
+            state: user.value.state,
+          });
 
-					return res.status(200).json({
-						response: {
-							city: user.value.city,
-							state: user.value.state,
-							country: user.value.country,
-						}
-					});
-				}
-			);
-		} else if (authUser.city !== updatedUserCity) {
-			usersCollection().findOneAndUpdate({
-				_id: userId,
-			}, {
-				$set: {
-					city: updatedUserCity,
-				},
-			}, {
-				returnDocument: 'after',
-				returnNewDocument: true,
-			},
-				async (_, user) => {
-					await insertLogs({
-						city: user.value.city,
-					},
-						userIPAddress,
-						endpoint,
-						userId
-					);
+          return res.status(200).json({
+            response: {
+              city: user.value.city,
+              state: user.value.state,
+              country: user.value.country,
+            }
+          });
+        }
+      );
+    } else if (authUser.city !== updatedUserCity) {
+      usersCollection().findOneAndUpdate({
+        _id: userId,
+      }, {
+        $set: {
+          city: updatedUserCity,
+        },
+      }, {
+        returnDocument: 'after',
+        returnNewDocument: true,
+      },
+        async (_, user) => {
+          insertLogs(req, {
+            city: user.value.city,
+          });
 
-					return res.json({
-						response: {
-							city: user.value.city,
-							state: user.value.state,
-							country: user.value.country,
-						}
-					});
-				}
-			);
-		}
-	} catch (error) {
+          return res.json({
+            response: {
+              city: user.value.city,
+              state: user.value.state,
+              country: user.value.country,
+            }
+          });
+        }
+      );
+    }
+  } catch (error) {
     returnServerError(res, error);
-	}
+  }
 });
 
 router.put('/profile-details/user-details', async (req, res) => {
@@ -530,7 +514,7 @@ router.put('/profile-details/user-details', async (req, res) => {
         };
 
         Object.entries(updatedUserInfo).filter(item => item[1]).map(async ([key, value]) => {
-          await insertLogs(
+          insertLogs(
             req,
             {
               [key]: value,
@@ -577,15 +561,11 @@ router.put('/profile-details/about-me', async (req, res) => {
       returnNewDocument: true,
     },
       async (_, user) => {
-        await insertLogs({
+        insertLogs(req, {
           aboutMe,
-          "_account.admin.accountStatus": accountStatus,
-          "_account.admin.userFacingMessage": userFacingMessage,
-        },
-          userIPAddress,
-          endpoint,
-          userId
-        );
+          '_account.admin.accountStatus': accountStatus,
+          '_account.admin.userFacingMessage': userFacingMessage,
+        });
 
         const userValue = user.value;
 
@@ -622,23 +602,19 @@ router.put('/profile-details/about-my-match', async (req, res) => {
     usersCollection().findOneAndUpdate({ _id: userId }, {
       $set: {
         aboutMyMatch,
-        "_account.admin.accountStatus": accountStatus,
-        "_account.admin.userFacingMessage": userFacingMessage,
+        '_account.admin.accountStatus': accountStatus,
+        '_account.admin.userFacingMessage': userFacingMessage,
       },
     }, {
       returnDocument: 'after',
       returnNewDocument: true,
     },
       async (_, user) => {
-        await insertLogs({
+        insertLogs(req, {
           aboutMyMatch,
-          "_account.admin.accountStatus": accountStatus,
-          "_account.admin.userFacingMessage": userFacingMessage,
-        },
-          userIPAddress,
-          endpoint,
-          userId
-        );
+          '_account.admin.accountStatus': accountStatus,
+          '_account.admin.userFacingMessage': userFacingMessage,
+        });
 
         const userValue = user.value;
 

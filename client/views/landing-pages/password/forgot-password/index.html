@@ -1,6 +1,6 @@
 <div class='flex flex-wrap justify-content-center align-items-flex-start page-container background-green'>
   <div class='box-shadow-1 page-wrapper'>
-    <form name='resetPassword' onsubmit='handleForgotPasswordEmail(event)' novalidate>
+    <form name='resetPassword' novalidate>
       <h1 class='form-title'>Forgot Password</h1>
 
       <div class='input-wrapper position-relative' id='email-wrapper'>
@@ -12,7 +12,9 @@
       <div class='flex justify-content-center flex-wrap form-button-container'>
         <div class='full-width'>
           <div id='form-button-loading-spinner-wrapper'>
-            <button class='flex justify-content-center align-items-center form-submit' type='submit'>
+            <!-- Form submission takes place on the button element since the button serves two purposes. -->
+            <button class='flex justify-content-center align-items-center form-submit' type='button'
+              onclick='handleForgotPasswordEmail()'>
               Request Password Reset
             </button>
           </div>

@@ -78,8 +78,8 @@ router.get('/api/user-data', (req, res) => {
     'hijab',
     'smokes',
     'age',
-    'height', 
-    'photos', 
+    'height',
+    'photos',
   ];
 
   const searchOptionsList = searchOptionsIn.map(option => ({
@@ -139,7 +139,7 @@ router.put('/api', async (req, res) => {
         $nin: blockedUsers,
       },
       gender: authUser.gender === 'male' ? 'female' : 'male',
-      '_account.user.accountStatus': 'active',
+      '_account.userAccountStatus': 'active',
       '_account.admin.accountStatus': 'approved',
       languages: { $in: languages },
       profession: { $in: profession },
@@ -201,7 +201,7 @@ router.put('/api', async (req, res) => {
     }
 
     if (sortResults === 'nearestToYou') {
-      const coordinates = authUser.geolocationCoordinates;
+      const coordinates = [authUser.lastActive.lon, authUser.lastActive.lat];
 
       searchOptions = {
         ...searchOptions,

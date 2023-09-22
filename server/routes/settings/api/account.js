@@ -1,17 +1,16 @@
 const express = require('express');
 const { ObjectId } = require('mongodb');
 
-const { checkIPAddress } = require('../../../middleware/checkAuthentication');
-const { usersCollection, insertLogs, geoLocationData } = require('../../../db');
+const { usersCollection, insertLogs } = require('../../../db');
 const { redirectToLogin } = require('../../../utils');
 
 const router = express.Router();
 
 router.put('/', async (req, res) => {
   try {
-    const { authUser, userIPAddress, endpoint } = req;
+    const { authUser } = req;
     const { name, email } = req.body;
-    const userId = authUser._id;
+    const authUserId = authUser._id;
 
     let response;
     let shouldUpdate = false;
@@ -54,7 +53,7 @@ router.put('/', async (req, res) => {
 
     if (shouldUpdate) {
       response = await usersCollection().findOneAndUpdate(
-        { _id: userId },
+        { _id: authUserId },
         {
           $set: {
             ...update,
@@ -66,13 +65,9 @@ router.put('/', async (req, res) => {
         }
       )
 
-      await insertLogs({
+      insertLogs(req, {
         ...logsUpdate,
-      },
-        userIPAddress,
-        endpoint,
-        userId
-      );
+      });
     } else {
       response = {
         value: {
@@ -92,23 +87,13 @@ router.put('/', async (req, res) => {
 
 router.put('/status', async (req, res) => {
   try {
-    const { authUser, endpoint } = req;
+    const { authUser } = req;
     const authUserId = ObjectId(authUser._id);
-    const accountStatus = req.body.accountStatus;
-
-    const { userIPAddress } = await checkIPAddress(req);
-    const locationData = await geoLocationData(userIPAddress, authUser?.lastActive);
-
-    const now = new Date();
+    const userAccountStatus = req.body.accountStatus;
 
     const _account = {
       ...authUser._account,
-      user: {
-        accountStatus,
-        local: now.toLocaleString(),
-        utc: now,
-        ...locationData,
-      },
+      userAccountStatus,
     };
 
     await usersCollection().findOneAndUpdate(
@@ -120,13 +105,10 @@ router.put('/status', async (req, res) => {
       },
     )
 
-    await insertLogs({
-      _account: _account.status,
-    },
-      userIPAddress,
-      endpoint,
-      authUserId
-    );
+    const changedValue = `${authUser._account.userAccountStatus} => ${userAccountStatus}`;
+    insertLogs(req, {
+      _account: changedValue,
+    });
 
     return res.sendStatus(201);
   } catch (error) {

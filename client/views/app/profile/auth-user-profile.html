@@ -33,8 +33,8 @@
         <div class='image-previews-container'>
           ${authUser.photos.filter(photo => photo).map((photo, index) => `
           <div class='image-preview-wrapper' onclick="goToImage('${index}')">
-            ${photo.approvalStatus === 'Pending Approval' ? `<i
-              class="fa fa-clock photo-approval-status-thumbnail" aria-hidden="true" style="color: #ffffff"></i>`
+            ${photo.approvalStatus === 'Pending Approval' ? `<i class="fa fa-clock photo-approval-status-thumbnail"
+              aria-hidden="true" style="color: #ffffff"></i>`
             : '' }
             ${photo.approvalStatus === 'Denied' ? `<i class="fa fa-ban photo-approval-status-thumbnail"
               aria-hidden="true" style="color: red"></i>` : '' }
@@ -94,32 +94,40 @@
           </div>
           <div class='details-wrapper'>
             <span class='details-key'>Conviction:</span>
-            <span class='details-value' data-religious-Conviction='${authUser.religiousConviction}'>${authUser.religiousConviction || 'No Answer'}</span>
-          </div> 
+            <span class='details-value'
+              data-religious-Conviction='${authUser.religiousConviction}'>${authUser.religiousConviction || 'No
+              Answer'}</span>
+          </div>
           <div class='details-wrapper'>
             <span class='details-key'>Values:</span>
-            <span class='details-value' data-religious-Values='${authUser.religiousValues}'>${authUser.religiousValues || 'No Answer'}</span>
+            <span class='details-value' data-religious-Values='${authUser.religiousValues}'>${authUser.religiousValues
+              || 'No Answer'}</span>
           </div>
           <div class='details-wrapper'>
             <span class='details-key'>Marital Status:</span>
-            <span class='details-value' data-marital-Status='${authUser.maritalStatus}'>${authUser.maritalStatus || 'No Answer'}</span>
+            <span class='details-value' data-marital-Status='${authUser.maritalStatus}'>${authUser.maritalStatus || 'No
+              Answer'}</span>
           </div>
           <div class='details-wrapper'>
             <span class='details-key'>Education:</span>
-            <span class='details-value' data-education='${authUser.education}'>${authUser.education || 'No Answer'}</span>
+            <span class='details-value' data-education='${authUser.education}'>${authUser.education || 'No
+              Answer'}</span>
           </div>
           <div class='details-wrapper'>
             <span class='details-key'>Profession:</span>
-            <span class='details-value' data-profession='${authUser.profession}'>${authUser.profession || 'No Answer'}</span>
+            <span class='details-value' data-profession='${authUser.profession}'>${authUser.profession || 'No
+              Answer'}</span>
           </div>
           <div class='details-wrapper'>
             <span class='details-key'>Languages:</span>
-            <span class='details-value' data-languages='${authUser.languages}'>${authUser.languages.length > 0 ? authUser.languages.map(language =>
+            <span class='details-value' data-languages='${authUser.languages}'>${authUser.languages.length > 0 ?
+              authUser.languages.map(language =>
               language).join('&nbsp;<span>&#9679;</span>&nbsp;') : 'No Answer'}</span>
           </div>
           <div class='details-wrapper'>
             <span class='details-key'>Prayer Level:</span>
-            <span class='details-value' data-prayer-Level='${authUser.prayerLevel}'>${authUser.prayerLevel || 'No Answer'}</span>
+            <span class='details-value' data-prayer-Level='${authUser.prayerLevel}'>${authUser.prayerLevel || 'No
+              Answer'}</span>
           </div>
           ${authUser.gender === 'female' ? `
           <div class='details-wrapper'>
@@ -239,7 +247,8 @@
         </div>
 
         <div id='edit-photos-modal-submit-button-loading-spinner-wrapper'>
-          <button type='submit' onclick='handleSaveProfileChanges(profileSection)' class='modal-button edit-photos-form-submit'>
+          <button type='submit' onclick='handleSaveProfileChanges(profileSection)'
+            class='modal-button edit-photos-form-submit'>
             Save
           </button>
         </div>

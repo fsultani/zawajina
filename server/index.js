@@ -103,86 +103,8 @@ app.engine('html', es6Renderer);
 app.set('views', path.join(__dirname, '../client/views'));
 app.set('view engine', 'html');
 
-// const updateIPAddress = async (req, res) => {
-//   const { my_match_userId, my_match_authToken } = req.cookies;
-//   const { pathname, useripaddress: userIPAddress } = req.headers;
-//   const userId = my_match_authToken ?? my_match_userId;
-
-//   const endpoint = pathname;
-//   await insertLogs({}, userIPAddress, endpoint, userId);
-//   res.sendStatus(200);
-// }
-
-// const checkIPAddress = async (req, res) => {
-//   let { useripaddress: userIPAddress } = req.headers;
-//   let { my_match_ipToken } = req.cookies;
-//   const whitelistedCountries = ['US'];
-
-//   try {
-//     if (userIPAddress === 'undefined') return res.status(200).send('No user IP Address available');
-
-//     if (!my_match_ipToken) {
-//       my_match_ipToken = jwt.sign({ userIPAddress }, JWT_SECRET, {
-//         expiresIn: '1 hour',
-//       });
-//     }
-
-//     userIPAddress = await jwt.verify(my_match_ipToken, JWT_SECRET).userIPAddress;
-//     const locationData = await geoLocationData(userIPAddress, {});
-//     if (!whitelistedCountries.includes(locationData.countryCode)) return res.status(403).send('Your country is currently not allowed.');
-
-//     return req.cookies.my_match_ipToken ? res.sendStatus(200) : res.status(201).send({ my_match_ipToken });
-//   } catch (error) {    
-//     return res.status(403).send({ isJWTError: true }); 
-//   }
-// }
-
-// const checkIPAddress = async (req, res) => {
-//   let { useripaddress: userIPAddress } = req.headers;
-//   let { my_match_ipToken } = req.cookies;
-//   const whitelistedCountries = ['US'];
-
-//   try {
-//     if (userIPAddress === 'undefined') {
-//       return {
-//         userIPAddress,
-//         statusCode: 200,
-//         data: 'No user IP Address available',
-//       }
-//     }
-
-//     if (!my_match_ipToken) {
-//       my_match_ipToken = jwt.sign({ userIPAddress }, JWT_SECRET, {
-//         expiresIn: '1 hour',
-//       });
-//     }
-
-//     userIPAddress = await jwt.verify(my_match_ipToken, JWT_SECRET).userIPAddress;
-//     const locationData = await geoLocationData(userIPAddress, {});
-//     if (!whitelistedCountries.includes(locationData.countryCode)) {
-//       return {
-//         userIPAddress,
-//         statusCode: 403,
-//         data: 'Your country is currently not allowed.',
-//       }
-//     }
-
-//     return {
-//       userIPAddress,
-//       statusCode: req.cookies.my_match_ipToken ? 200 : 201,
-//       data: req.cookies.my_match_ipToken ? '' : my_match_ipToken,
-//     }
-//   } catch (error) {
-//     return {
-//       userIPAddress,
-//       statusCode: 403,
-//       data: { isJWTError: true },
-//     }
-//   }
-// }
-
 app.use((req, _res, next) => {
-  // console.clear();
+  console.clear();
   const listOfRoutesForDbAccess = [
     ...publicRoutes.map(route => Object.keys(route)[0]),
     ...privateRoutes.map(route => Object.keys(route)[0]),
@@ -203,7 +125,7 @@ app.use((req, _res, next) => {
 
 app.use('/api/check-ip', (req, res, next) => {
   checkIPAddress(req, res, next).then(({ statusCode, response }) => {
-    res.status(statusCode).send({ response }); 
+    res.status(statusCode).send({ response });
   })
 });
 
@@ -212,7 +134,7 @@ publicRoutes.map(route => {
   const url = Object.keys(route)[0];
   const method = Object.values(route)[0];
 
-  app.use(url, method); 
+  app.use(url, method);
 })
 
 /* Private APIs */
@@ -220,7 +142,7 @@ privateRoutes.map(route => {
   const url = Object.keys(route)[0];
   const method = Object.values(route)[0];
 
-  app.use(url, checkAuthentication, method); 
+  app.use(url, checkAuthentication, method);
 })
 
 const publicViews = (res, my_match_userId) => {

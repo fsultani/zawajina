@@ -8,9 +8,9 @@ const router = express.Router();
 
 router.put('/', async (req, res) => {
   try {
-    const { authUser, userIPAddress, endpoint } = req;
+    const { authUser } = req;
     const { newUserPassword } = req.body;
-    const userId = authUser._id;
+    const authUserId = authUser._id;
 
     let update = {}
     let logsUpdate = {}
@@ -30,7 +30,7 @@ router.put('/', async (req, res) => {
       }
 
       await usersCollection().findOneAndUpdate(
-        { _id: userId },
+        { _id: authUserId },
         {
           $set: {
             ...update,
@@ -42,13 +42,9 @@ router.put('/', async (req, res) => {
         }
       )
 
-      await insertLogs({
+      await insertLogs(req, {
         ...logsUpdate,
-      },
-        userIPAddress,
-        endpoint,
-        userId
-      );
+      });
     }
 
     return res.sendStatus(200);

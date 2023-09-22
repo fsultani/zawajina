@@ -178,7 +178,6 @@ const handleProfileEdit = async (section) => {
               onchange='handleCanRelocate(event)'>
               <option value='canRelocateYes'>Yes</option>
               <option value='canRelocateNo'>No</option>
-              <option value='canRelocateMaybe'>Maybe</option>
             </select>
           </div>
         </div>

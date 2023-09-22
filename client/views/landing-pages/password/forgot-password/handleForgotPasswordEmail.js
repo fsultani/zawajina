@@ -17,8 +17,7 @@ const handleEmailValidation = email => {
 
 };
 
-const handleForgotPasswordEmail = async event => {
-  event.preventDefault();
+const handleForgotPasswordEmail = async () => {
   const email = userEmail.value;
 
   handleEmailValidation(email);
@@ -42,14 +41,14 @@ const handleForgotPasswordEmail = async event => {
         formMessage('success', emailSentMessage);
 
         const formButton = getQuerySelector('.form-submit');
-        const url = data?.url;
+        const url = data.response?.redirectUrl;
 
         formButton.innerHTML = 'Back';
         formButton.onclick = () => window.location.pathname = url;
       })
       .catch(() => {
         isSubmitting('form-button-loading-spinner-wrapper', false);
-  
+
         formMessage('error', 'Unknown error');
       });
   }

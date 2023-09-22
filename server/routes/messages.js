@@ -301,7 +301,7 @@ router.get('/api/conversation/user/:userId', async (req, res) => {
     const authUserId = ObjectId(authUser._id);
     const otherUserId = ObjectId(req.params.userId);
 
-    /* Conversation was accessed by clicking on the message button from the user's profile */
+    /* Conversation was accessed by clicking on the message button from the user's profile. */
     const conversationsCollection = await messagesCollection().findOne({
       $or: [
         {
@@ -403,7 +403,7 @@ router.get('/api/conversation/:conversationId', async (req, res) => {
 
     const blockedByOtherUserArray = blockedByOtherUser[0]?.blockedUsers ?? [];
 
-    /* Conversation was accessed by clicking on the message button from the user's profile */
+    /* Conversation was accessed by clicking on the message button from the user's profile. */
     const conversationsCollection = await messagesCollection().aggregate([
       {
         $match: {
@@ -479,7 +479,7 @@ router.get('/api/conversation/:conversationId', async (req, res) => {
 
 /* ************************************************** */
 /*
-  Send a new message to a user,
+  Send a new message to a user.
 */
 router.post('/api/new-message', async (req, res) => {
   try {
@@ -503,7 +503,7 @@ router.post('/api/new-message', async (req, res) => {
       }
     })
 
-    /* otherUser has blocked authUser */
+    /* otherUser has blocked authUser. */
     if (blockedByOtherUser) return res.status(405).send({ message: `${otherUser.name} has blocked you` })
 
     const conversationsCollection = await messagesCollection().findOne({ _id: conversationId });
@@ -635,14 +635,14 @@ router.post('/api/new-message', async (req, res) => {
       .limit(50)
       .toArray();
 
-    const otherUserName = otherUser.name;
+    const recipientName = otherUser.name;
     const conversationIdString = req.body.conversationId;
     const url = `${process.env.HOST_URL}/messages/${conversationIdString}`;
 
     const subject = `You have a new message from ${authUser.name}`;
     const emailBody = `
       <div style="${emailBodyContainerStyles}">
-        ${emailHeader({ otherUserName })}
+        ${emailHeader({ recipientName })}
         <p style="${paragraphStyles({})}">${authUser.name} just sent you a message.</p>
 
         ${ctaButton({ ctaButtonUrl: url, ctaButtonText: 'Go To Messages' })}
@@ -652,9 +652,9 @@ router.post('/api/new-message', async (req, res) => {
       </div>
     `;
 
-    if (process.env.NODE_ENV !== 'development') {
-      await sendEmail({ emailAddress: otherUser.email, subject, emailBody });
-    }
+    await sendEmail({ emailAddress: otherUser.email, subject, emailBody });
+    // if (process.env.NODE_ENV !== 'development') {
+    // }
 
     res.status(200).send({
       allConversationsSidebar,
@@ -702,7 +702,7 @@ router.put('/api/conversation/delete/:conversationId', async (req, res) => {
 
 /* ************************************************** */
 /*
-  Delete a conversation from the db if a user starts a new conversation, but never sends a messages.
+  Delete a conversation from the db if a user starts a new conversation, but never sends a message.
 */
 router.delete('/api/conversation/delete/:conversationId', async (req, res) => {
   try {

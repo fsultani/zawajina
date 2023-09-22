@@ -106,8 +106,8 @@ const handleSignupStepOne = async event => {
       }
     })
       .then(({ data }) => {
-        const { userId, url } = data;
-        Cookies.set('my_match_userId', userId, { sameSite: 'strict' });
+        const { authUserId, url } = data;
+        Cookies.set('my_match_userId', authUserId, { sameSite: 'strict' });
         window.location.pathname = url;
       })
       .catch(error => {

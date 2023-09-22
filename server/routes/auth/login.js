@@ -2,8 +2,7 @@ const express = require('express');
 const jwt = require('jsonwebtoken');
 const JWT_SECRET = Buffer.from('fe1a1915a379f3be5394b64d14794932', 'hex');
 
-const { checkIPAddress } = require('../../middleware/checkAuthentication.js');
-const { usersCollection, insertLogs, geoLocationData } = require('../../db.js');
+const { usersCollection, insertLogs } = require('../../db.js');
 const { comparePassword } = require('../../models/user');
 const { verifyDate, returnServerError } = require('../../utils.js');
 const { emailVerification } = require('../../email-templates/email-verification.js');
@@ -14,7 +13,6 @@ router.post('/', async (req, res) => {
   try {
     let { email, password } = req.body;
     email = email.toLowerCase().trim();
-    const { userIPAddress } = await checkIPAddress(req);
 
     const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
     const isValidEmail = emailRegex.test(email);
@@ -34,15 +32,13 @@ router.post('/', async (req, res) => {
     const userCompletedRegistration = verifyDate(authUser.completedRegistrationAt)
     const emailWasVerified = verifyDate(authUser.emailVerified);
 
-    const endpoint = req.originalUrl;
-
     let responseStatus;
     let responsePayload = {};
-    let logs = {};
+    let updates = {};
 
     if (userStartedRegistration && userCompletedRegistration && emailWasVerified) {
       /* User completed everything and can log in */
-      if (authUser._account.user.accountStatus === 'deleted') return res.sendStatus(404);
+      if (authUser._account.userAccountStatus === 'deleted') return res.sendStatus(404);
 
       const token = jwt.sign({ my_match_userId: authUser._id }, JWT_SECRET, {
         expiresIn: '1 day',
@@ -62,20 +58,17 @@ router.post('/', async (req, res) => {
           ...responsePayload,
           url: '/profile',
         };
+
+        updates = {
+          ...authUser._account,
+        }
       }
 
-      if (authUser._account.user.accountStatus === 'inactive') {
-        const locationData = await geoLocationData(userIPAddress);
-        const now = new Date();
-
+      if (authUser._account.userAccountStatus === 'inactive') {
+        const userAccountStatus = 'active';
         const _account = {
           ...authUser._account,
-          user: {
-            accountStatus: 'active',
-            local: now.toLocaleString(),
-            utc: now,
-            ...locationData,
-          },
+          userAccountStatus,
         };
 
         await usersCollection().findOneAndUpdate(
@@ -87,52 +80,62 @@ router.post('/', async (req, res) => {
           },
         )
 
-        logs = {
-          _account: _account.status,
+        const changedValue = `${authUser._account.userAccountStatus} => ${userAccountStatus}`;
+        updates = {
+          _account: changedValue,
         }
       }
-    } else {
-      if (userStartedRegistration && !userCompletedRegistration) {
-        responsePayload = {
-          cookie: {
-            type: 'my_match_userId',
-            value: authUserId,
-          },
-        };
-
-        if (emailWasVerified) {
-          responsePayload = {
-            ...responsePayload,
-            url: '/signup/profile',
-          };
-        } else {
-          const { emailVerificationToken, subject, emailBody } = emailVerification({ name: authUser.name });
-
-          await usersCollection().findOneAndUpdate(
-            { _id: authUserId },
-            {
-              $set: {
-                emailVerificationToken,
-                emailVerificationTokenDateSent: new Date(),
-              },
-            },
-          );
-
-          if (process.env.NODE_ENV !== 'development') {
-            await sendEmail({ emailAddress: email, subject, emailBody })
-          }
-
-          responsePayload = {
-            ...responsePayload,
-            url: '/verify-email',
-          };
-        }
-      }
-
-      responseStatus = 200;
     }
 
-    await insertLogs({ ...logs }, userIPAddress, endpoint, authUserId);
+    if (userStartedRegistration && !userCompletedRegistration) {
+      responseStatus = 200;
+
+      responsePayload = {
+        cookie: {
+          type: 'my_match_userId',
+          value: authUserId,
+        },
+      };
+
+      if (emailWasVerified) {
+        responsePayload = {
+          ...responsePayload,
+          url: '/signup/profile',
+        };
+      } else {
+        const { emailVerificationToken, subject, emailBody } = emailVerification({ name: authUser.name });
+
+        await usersCollection().findOneAndUpdate(
+          { _id: authUserId },
+          {
+            $set: {
+              emailVerificationToken,
+              emailVerificationTokenDateSent: new Date(),
+            },
+          },
+        );
+
+        if (process.env.NODE_ENV !== 'development') {
+          await sendEmail({ emailAddress: email, subject, emailBody })
+        }
+
+        responsePayload = {
+          ...responsePayload,
+          url: '/verify-email',
+        };
+      }
+
+      updates = {
+        userStartedRegistration,
+        userCompletedRegistration,
+        emailWasVerified,
+      }
+    }
+
+    req.authUser = authUser;
+    insertLogs(req, {
+      ...updates,
+    });
 
     return res.status(responseStatus).send(responsePayload);
   } catch (error) {

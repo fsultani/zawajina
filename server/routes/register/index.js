@@ -4,7 +4,6 @@ const { ObjectId } = require('mongodb');
 
 const router = express.Router();
 
-const googleAuth = require('./googleAuth');
 const personalInfo = require('./personalInfo');
 const checkEmailVerification = require('./checkEmailVerification');
 const { resendEmail } = require('./resendEmail');
@@ -20,8 +19,6 @@ const hobbies = require('../../helpers/hobbies');
 const upload = require('../../helpers/multer');
 
 const { usersCollection } = require('../../db.js');
-
-router.post('/google-auth', (req, res) => googleAuth(req, res));
 
 router.post(
   '/personal-info',

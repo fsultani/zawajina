@@ -2,7 +2,7 @@ const { ObjectId } = require('mongodb');
 const jwt = require('jsonwebtoken');
 const JWT_SECRET = Buffer.from('fe1a1915a379f3be5394b64d14794932', 'hex');
 
-const { insertLogs, messagesCollection, usersCollection, geoLocationData } = require('../db');
+const { messagesCollection, usersCollection, geoLocationData, insertLogs } = require('../db');
 const { loginPage } = require('../views');
 const { returnServerError } = require('../utils');
 
@@ -67,17 +67,10 @@ module.exports.checkAuthentication = async (req, res, next) => {
         const userDocument = await usersCollection().findOne({ _id: ObjectId(userId) });
         req.authUser = userDocument;
 
-        await insertLogs(req, {});
+        insertLogs(req, {});
 
-        if (isApiCall) {
-          if (process.env.NODE_ENV === 'development') {
-            return res.status(401).send({ error: 'Expired authToken' });
-          }
-
-          return res.sendStatus(401);
-        } else {
-          loginPage(res);
-        }
+        if (isApiCall) return res.sendStatus(401);
+        loginPage(res);
       } else {
         const userDocument = await usersCollection().findOne({ _id: ObjectId(authUser.my_match_userId) });
         if (!userDocument) return res.redirect('/login');
@@ -99,7 +92,7 @@ module.exports.checkAuthentication = async (req, res, next) => {
         exports.checkIPAddress(req, res, next);
 
         const adminAccountStatus = userDocument._account.admin.accountStatus;
-        const userAccountStatus = userDocument._account.user.accountStatus;
+        const userAccountStatus = userDocument._account.userAccountStatus;
 
         if (adminAccountStatus === 'approved' && userAccountStatus === 'active') return next();
         if (adminAccountStatus === 'banned' && originalUrl !== '/profile') {
