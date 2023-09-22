@@ -141,7 +141,6 @@ const insertLogs = async (req, updates) => {
 }
 
 module.exports = {
-  db,
   connectToServer,
   logsCollection,
   messagesCollection,
