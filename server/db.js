@@ -87,26 +87,27 @@ const insertLogs = async (req, updates) => {
     const locationData = await geoLocationData(userIPAddress, lastActive);
 
     await usersCollection().findOneAndUpdate(
-      { _id: ObjectId(authUserId) },
-      {
-        $set: {
-          lastActive: {
-            /* 
-              This is necessary because of the way the "$near" query works in MongoDB.  The "lon" and "lat" values must be in one array.
-            */
-            geolocationCoordinates: [locationData.lon, locationData.lat],
-            endpoint,
-            local: now.toLocaleString(),
-            utc: now,
-            ...locationData,
-          }
-        },
-      },
-      {
-        returnDocument: 'after',
-        returnNewDocument: true,
+  { _id: ObjectId(authUserId) },
+  {
+    $set: {
+      /* 
+        This is necessary because of the way the "$near" query works in MongoDB.
+        The "lon" and "lat" values must be in one array, and be directly on the document (not nested).
+      */
+      geolocationCoordinates: [locationData.lon, locationData.lat],
+      lastActive: {
+        endpoint,
+        local: now.toLocaleString(),
+        utc: now,
+        ...locationData,
       }
-    )
+    },
+  },
+  {
+    returnDocument: 'after',
+    returnNewDocument: true,
+  }
+)
 
     const logs = {
       '$each': [{

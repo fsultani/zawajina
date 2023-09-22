@@ -203,7 +203,7 @@ router.put('/api', async (req, res) => {
     }
 
     if (sortResults === 'nearestToYou') {
-      const coordinates = authUser.lastActive.geolocationCoordinates;
+      const coordinates = authUser.geolocationCoordinates;
 
       searchOptions = {
         ...searchOptions,
