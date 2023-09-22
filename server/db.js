@@ -91,6 +91,10 @@ const insertLogs = async (req, updates) => {
       {
         $set: {
           lastActive: {
+            /* 
+              This is necessary because of the way the "$near" query works in MongoDB.  The "lon" and "lat" values must be in one array.
+            */
+            geolocationCoordinates: [locationData.lon, locationData.lat],
             endpoint,
             local: now.toLocaleString(),
             utc: now,
