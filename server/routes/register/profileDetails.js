@@ -2,7 +2,6 @@ const { ObjectId } = require('mongodb');
 const jwt = require('jsonwebtoken');
 const JWT_SECRET = Buffer.from('fe1a1915a379f3be5394b64d14794932', 'hex');
 
-const { checkIPAddress } = require('../../middleware/checkAuthentication.js');
 const { usersCollection, insertLogs } = require('../../db.js');
 const { uploadToCloudinary } = require('../../helpers/cloudinary.js');
 

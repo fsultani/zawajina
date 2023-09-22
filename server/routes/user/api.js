@@ -66,11 +66,7 @@ router.put(
   ]),
   async (req, res) => {
     try {
-      const {
-        authUser,
-        userIPAddress,
-        endpoint,
-      } = req;
+      const { authUser } = req;
 
       const userId = authUser._id;
 
@@ -243,11 +239,7 @@ router.put(
 
 router.put('/profile-details/location', async (req, res) => {
   try {
-    const {
-      authUser,
-      userIPAddress,
-      endpoint,
-    } = req;
+    const { authUser } = req;
 
     const userId = authUser._id;
 
@@ -344,11 +336,7 @@ router.put('/profile-details/location', async (req, res) => {
 
 router.put('/profile-details/user-details', async (req, res) => {
   try {
-    const {
-      authUser,
-      userIPAddress,
-      endpoint,
-    } = req;
+    const { authUser } = req;
 
     const userId = authUser._id;
     const currentUserDocument = authUser;
@@ -534,11 +522,7 @@ router.put('/profile-details/user-details', async (req, res) => {
 
 router.put('/profile-details/about-me', async (req, res) => {
   try {
-    const {
-      authUser,
-      userIPAddress,
-      endpoint,
-    } = req;
+    const { authUser } = req;
 
     const userId = authUser._id;
     const aboutMe = escapeHtml(req.body.aboutMe).trim();
@@ -583,11 +567,7 @@ router.put('/profile-details/about-me', async (req, res) => {
 
 router.put('/profile-details/about-my-match', async (req, res) => {
   try {
-    const {
-      authUser,
-      userIPAddress,
-      endpoint,
-    } = req;
+    const { authUser } = req;
 
     const userId = authUser._id;
     const aboutMyMatch = escapeHtml(req.body.aboutMyMatch).trim();

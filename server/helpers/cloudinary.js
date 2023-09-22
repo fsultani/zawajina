@@ -1,6 +1,5 @@
 const { compress } = require('compress-images/promise');
 const fs = require('fs');
-
 const { returnServerError } = require('../utils');
 
 require('../config/cloudinary');

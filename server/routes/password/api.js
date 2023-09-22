@@ -5,8 +5,8 @@ const JWT_SECRET = Buffer.from('fe1a1915a379f3be5394b64d14794932', 'hex');
 
 const { checkIPAddress } = require('../../middleware/checkAuthentication');
 const { usersCollection, insertLogs, geoLocationData } = require('../../db.js');
-
 const { sendEmail } = require('../../helpers/email.js');
+
 const {
   emailBodyContainerStyles,
   emailHeader,

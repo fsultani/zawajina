@@ -5,7 +5,7 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const osascript = require('node-osascript');
 
-const { connectToServer, insertLogs } = require('./db.js');
+const { connectToServer } = require('./db.js');
 const { checkAuthentication, checkIPAddress } = require('./middleware/checkAuthentication');
 const {
   register,

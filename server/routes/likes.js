@@ -1,5 +1,4 @@
 const express = require('express');
-
 const { getAllFiles, redirectToLogin } = require('../utils');
 const { usersCollection } = require('../db.js');
 

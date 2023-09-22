@@ -5,7 +5,6 @@ node server/queries/puppeteer/createUserAccountsWithPuppeteer.js --gender=female
 require('dotenv').config();
 const { MongoClient } = require('mongodb');
 const puppeteer = require('puppeteer');
-const cloudinary = require('cloudinary');
 
 const femaleNames = require('../../data/female-names');
 const maleNames = require('../../data/male-names');

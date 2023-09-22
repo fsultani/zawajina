@@ -26,20 +26,7 @@ const numberOfUsers = 1;
     try {
       for (let i = 0; i < numberOfUsers; i++) {
         console.log(`i: ${i + 1}/${numberOfUsers}`);
-        const coinToss = Math.round(Math.random());
         let nameChoice;
-        // Create a random mix of male and female users
-        // if (coinToss === 0) {
-        //   nameChoice = {
-        //     name: names.male[Math.floor(Math.random() * names.male.length)],
-        //     gender: 'male'
-        //   };
-        // } else {
-        //   nameChoice = {
-        //     name: names[Math.floor(Math.random() * names.length)],
-        //     gender: 'female'
-        //   }
-        // }
 
         // Create only female users
         nameChoice = {

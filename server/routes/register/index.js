@@ -2,8 +2,6 @@ const express = require('express');
 const { check, validationResult } = require('express-validator');
 const { ObjectId } = require('mongodb');
 
-const router = express.Router();
-
 const personalInfo = require('./personalInfo');
 const checkEmailVerification = require('./checkEmailVerification');
 const { resendEmail } = require('./resendEmail');
@@ -17,8 +15,9 @@ const languages = require('../../helpers/languages');
 const hobbies = require('../../helpers/hobbies');
 
 const upload = require('../../helpers/multer');
-
 const { usersCollection } = require('../../db.js');
+
+const router = express.Router();
 
 router.post(
   '/personal-info',
