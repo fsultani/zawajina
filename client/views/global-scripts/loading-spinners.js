@@ -101,7 +101,7 @@ const displaySmallLoadingSpinner = (isLoading, parentElement, childElement) => {
 }
 
 let buttonText;
-const isSubmitting = (buttonId, value) => {
+const isSubmitting = (buttonId, value, color = '#fff') => {
   const loader = document.getElementById(buttonId);
   Object.assign(loader.style, {
     display: 'flex',
@@ -124,11 +124,11 @@ const isSubmitting = (buttonId, value) => {
       width: '30px',
       height: '30px',
       margin: '8px',
-      border: '3px solid #fff',
+      border: `3px solid ${color}`,
       borderRadius: '50%',
       animation:
         'animation-360-loading-spinner 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite',
-      borderColor: '#fff transparent transparent transparent',
+      borderColor: `${color} transparent transparent transparent`,
       opacity: '1',
       zIndex: '999',
       animationDelay: index === 0 ? '-0.45s' : index === 1 ? '-0.3s' : index === 2 ? '-0.15s' : '',

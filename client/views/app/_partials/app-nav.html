@@ -5,19 +5,6 @@
 
       <div class='navbar--header-links-mobile-container'>
         <!-- Mobile view -->
-        <ul class='navbar--header-links-mobile'>
-          <li class='navbar-item'>
-            <a href='/likes'>Likes</a>
-          </li>
-          <li class='navbar-item'>
-            <a href='/messages' class='allConversationsCount'>${allConversationsCount > 0 ? `Messages
-              (${allConversationsCount})` : `Messages`}</a>
-          </li>
-          <li class='navbar-item'>
-            <a href='/search'>Search</a>
-          </li>
-        </ul>
-
         <button class='open-nav' onclick='openNav()'>
           <hr class='menu-line' />
           <hr class='menu-line' />
@@ -26,54 +13,67 @@
 
         <div id='open-side-menu-mobile' class='side-menu-mobile'>
           <div class='close-menu-button' onclick='closeNav()'>&times;</div>
-          <div class='auth-user-name-wrapper'>
-            <p class='auth-user-name'>${authUser.name}</p>
-          </div>
+          <p class='auth-user-name'>${authUser.name}</p>
+
+          <hr>
+
+          <a href='/likes'>Likes</a>
+          <a href='/messages' class='allConversationsCount'>${allConversationsCount > 0 ? `Messages
+            (${allConversationsCount})` : `Messages`}</a>
+          <a href='/search'>Search</a>
+
+          <hr>
+
           <a href='/users'>Home</a>
           <a href='/profile'>Profile</a>
           <a href='/settings/account'>Settings</a>
-          <a id='logout' class='dropdown-item' style='cursor: pointer;' onclick='handleLogout()'>
-            Logout
-          </a>
+
+          <hr>
+
+          <div id='mobile-logout-button-loading-spinner-wrapper'>
+            <a class='dropdown-item' style='cursor: pointer;' onclick='handleLogout()'>
+              Logout
+            </a>
+          </div>
         </div>
-
-        <!-- Desktop view -->
-        <ul class='navbar--header-links'>
-          <li class='navbar-item'>
-            <a href='/likes'>Likes</a>
-          </li>
-          <li class='navbar-item messages'>
-            <a href='/messages' class='allConversationsCount'>${allConversationsCount > 0 ? `Messages
-              (${allConversationsCount})` : `Messages`}</a>
-          </li>
-          <li class='navbar-item'>
-            <a href='/search'>Search</a>
-          </li>
-          <li>
-            <div class='dropdown-menu-container'>
-              <div onclick='openDropdownMenu()' class='dropdown-button' role='button'>
-                <img
-                  src='${authUser?.photos?.length > 0 ? authUser.photos[0].secure_url : authUser.gender === `male` ? `/static/assets/icons/male_profile.jpeg` : `/static/assets/icons/female_app_nav.png`}'
-                  class='user-avatar-menu' />
-                <span id='menu-arrow' class='down-arrow'></span>
-              </div>
-
-              <div class='dropdown-menu-content'>
-                <div class='auth-user-name-wrapper'>
-                  <p class='auth-user-name'>${authUser.name}</p>
-                </div>
-                <a href='/users'>Home</a>
-                <a href='/profile'>Profile</a>
-                <a href='/settings/account'>Settings</a>
-                <div class='logout-button-loading-spinner-wrapper'></div>
-                <a id='logout' class='dropdown-item' style='cursor: pointer;' onclick='handleLogout()'>
-                  Logout
-                </a>
-              </div>
-            </div>
-          </li>
-        </ul>
       </div>
+
+      <!-- Desktop view -->
+      <ul class='navbar--header-links'>
+        <li class='navbar-item'>
+          <a href='/likes'>Likes</a>
+        </li>
+        <li class='navbar-item messages'>
+          <a href='/messages' class='allConversationsCount'>${allConversationsCount > 0 ? `Messages
+            (${allConversationsCount})` : `Messages`}</a>
+        </li>
+        <li class='navbar-item'>
+          <a href='/search'>Search</a>
+        </li>
+        <li>
+          <div class='dropdown-menu-container'>
+            <div onclick='openDropdownMenu()' class='dropdown-button' role='button'>
+              <img
+                src='${authUser?.photos?.length > 0 ? authUser.photos[0].secure_url : authUser.gender === `male` ? `/static/assets/icons/male_profile.jpeg` : `/static/assets/icons/female_app_nav.png`}'
+                class='user-avatar-menu' />
+              <span id='menu-arrow' class='down-arrow'></span>
+            </div>
+
+            <div class='dropdown-menu-content'>
+              <div class='auth-user-name-wrapper'>
+                <p class='auth-user-name'>${authUser.name}</p>
+              </div>
+              <a href='/users'>Home</a>
+              <a href='/profile'>Profile</a>
+              <a href='/settings/account'>Settings</a>
+              <div id='logout-button-loading-spinner-wrapper'></div>
+              <a class='dropdown-item' style='cursor: pointer;' onclick='handleLogout()'>
+                Logout
+              </a>
+            </div>
+          </div>
+        </li>
+      </ul>
     </div>
   </div>
 </div>

@@ -47,34 +47,10 @@ h5 {
 
 .home-link {
   display: flex;
-	text-decoration: none;
-	color: rgba(255, 255, 255, 0.9);
-	font-weight: 700;
-	font-size: 19px;
-}
-
-.mask {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 0;
-  background-color: rgba(0, 0, 0, 0.45);
-  opacity: 0;
-  filter: alpha(opacity=45);
-  -webkit-transition: opacity 0.3s linear, height 0s ease 0.3s;
-  transition: opacity 0.3s linear, height 0s ease 0.3s;
-  pointer-events: none;
-}
-
-.mask-open {
-  height: 100vh;
-  opacity: 1;
-  -webkit-transition: none;
-  transition: none;
-  -webkit-animation: antdDrawerFadeIn 0.3s cubic-bezier(0.7, 0.3, 0.1, 1);
-  animation: antdDrawerFadeIn 0.3s cubic-bezier(0.7, 0.3, 0.1, 1);
-  pointer-events: auto;
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 700;
+  font-size: 19px;
 }
 
 .menu-line {
@@ -92,7 +68,7 @@ h5 {
   z-index: 1;
   top: 0;
   right: 0;
-  background-color: #ffffff;
+  background-color: #e5e5e5;
   overflow-x: hidden;
   transition: 0.2s;
   padding-top: 60px;
@@ -100,17 +76,12 @@ h5 {
 
 .side-menu-mobile a,
 .auth-user-name {
-  padding: 8px 8px 8px 32px;
+  padding: 10px;
   text-decoration: none;
   font-size: 18px;
   color: rgba(0, 0, 0, 0.8);
   display: block;
   transition: 0.3s;
-}
-
-.side-menu-mobile a:not(:last-child),
-.auth-user-name {
-  border-bottom: var(--border-color-light);
 }
 
 .auth-user-name {
@@ -140,7 +111,7 @@ h5 {
 }
 
 .navbar--header-links-mobile {
-  display: flex;
+  display: none;
   justify-content: center;
   align-items: center;
   height: 100%;
@@ -176,7 +147,7 @@ h5 {
   color: #fff;
 }
 
-@media (min-width: 481px) {
+@media (min-width: 700px) {
   .navbar--site-header {
     display: flex;
   }
@@ -206,7 +177,7 @@ h5 {
   }
 
   .navbar--header-links-mobile {
-    display: none;
+    display: flex;
   }
 
   .navbar--header-links li {
@@ -338,10 +309,6 @@ h5 {
     top: -12px;
     right: 40px;
     left: auto;
-  }
-
-  .auth-user-name-wrapper {
-    border-bottom: var(--border-color-dark);
   }
 
   .dropdown-menu-content a,
