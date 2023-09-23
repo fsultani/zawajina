@@ -117,8 +117,10 @@ const returnServerError = (res, error) => {
   return res.sendStatus(500);
 }
 
-const badRequest = (res, message) => {
-  console.log({ message });
+const badRequest = (req, res, message) => {
+  const userId = req.body?.userId;
+  console.log(`Errors`);
+  console.table({ userId, message })
   return res.status(400).send({ message })
 }
 

@@ -332,7 +332,8 @@ const handleCreateNewAccount = async () => {
     formFields['aboutMyMatchValue'] = true;
   }
 
-  if (Object.values(formFields).every(entry => entry)) {
+  // if (Object.values(formFields).every(entry => entry)) {
+  if (true) {
     loadingSpinner.style.display = 'flex';
     createNewAccountButton.innerHTML = '';
     createNewAccountButton.disabled = true;

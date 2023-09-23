@@ -22,7 +22,7 @@ module.exports.checkIPAddress = async req => {
       }
 
       my_match_ipToken = jwt.sign({ userIPAddress }, JWT_SECRET, {
-        expiresIn: '1 day',
+        expiresIn: '1 hour',
         // expiresIn: '10000',
       });
     }

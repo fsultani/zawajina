@@ -71,7 +71,7 @@ const profileDetails = async (req, res) => {
     const fullDob = `${birthMonth}/${birthDay}/${birthYear}`;
     const isValidDob = Date.parse(fullDob);
     const isFutureDate = (now - isValidDob) < 0;
-    if (!isValidDob || isFutureDate) return badRequest(res, 'Invalid dob-month');
+    if (!isValidDob || isFutureDate) return badRequest(req, res, 'Invalid dob-month');
 
     const fullDobDateObject = new Date(fullDob);
 
@@ -86,21 +86,21 @@ const profileDetails = async (req, res) => {
 
     /* Calculate the age of the user */
     const age = Math.abs(year - 1970);
-    if (age < 18) return badRequest(res, 'Invalid dob-year');
+    if (age < 18) return badRequest(req, res, 'Invalid dob-year');
 
-    if (!(gender === 'male' || gender === 'female')) return badRequest(res, 'Invalid gender');
+    if (!(gender === 'male' || gender === 'female')) return badRequest(req, res, 'Invalid gender');
 
     const validLocation = allLocationsData.findIndex(location => location.city === city && location.state === state && location.country === country) > -1;
-    if (!validLocation) return badRequest(res, 'Invalid user-location');
+    if (!validLocation) return badRequest(req, res, 'Invalid user-location');
 
     const validEthnicity = ethnicity.every(element => allEthnicitiesData.indexOf(element) > -1);
-    if (!validEthnicity) return badRequest(res, 'Invalid ethnicity');
+    if (!validEthnicity) return badRequest(req, res, 'Invalid ethnicity');
 
     const validCountryRaisedIn = allCountriesData.findIndex(countryObject => countryObject.country === countryRaisedIn) > -1;
-    if (!validCountryRaisedIn) return badRequest(res, 'Invalid country-user-raised-in');
+    if (!validCountryRaisedIn) return badRequest(req, res, 'Invalid country-user-raised-in');
 
     const validLanguages = languages.every(element => allLanguagesData.indexOf(element) > -1);
-    if (!validLanguages) return badRequest(res, 'Invalid language');
+    if (!validLanguages) return badRequest(req, res, 'Invalid language');
 
     const religiousConvictionOptions = [
       'Sunni',
@@ -109,7 +109,7 @@ const profileDetails = async (req, res) => {
       'Other',
     ]
     const validReligiousConviction = religiousConvictionOptions.indexOf(religiousConviction) > -1;
-    if (!validReligiousConviction) return badRequest(res, 'Invalid religious-conviction');
+    if (!validReligiousConviction) return badRequest(req, res, 'Invalid religious-conviction');
 
     const religiousValuesOptions = [
       'Conservative',
@@ -117,7 +117,7 @@ const profileDetails = async (req, res) => {
       'Liberal',
     ]
     const validReligiousValues = religiousValuesOptions.indexOf(religiousValues) > -1;
-    if (!validReligiousValues) return badRequest(res, 'Invalid religious-values');
+    if (!validReligiousValues) return badRequest(req, res, 'Invalid religious-values');
 
     const maritalStatusOptions = [
       'Never Married',
@@ -125,7 +125,7 @@ const profileDetails = async (req, res) => {
       'Widowed',
     ]
     const validMaritalStatus = maritalStatusOptions.indexOf(maritalStatus) > -1;
-    if (!validMaritalStatus) return badRequest(res, 'Invalid marital-status');
+    if (!validMaritalStatus) return badRequest(req, res, 'Invalid marital-status');
 
     const educationOptions = [
       'High School',
@@ -135,15 +135,15 @@ const profileDetails = async (req, res) => {
       'Doctoral degree',
     ]
     const validEducation = educationOptions.indexOf(education) > -1;
-    if (!validEducation) return badRequest(res, 'Invalid education');
+    if (!validEducation) return badRequest(req, res, 'Invalid education');
 
     const validProfession = professionsData.indexOf(profession) > -1;
-    if (!validProfession) return badRequest(res, 'Invalid dob-month');
+    if (!validProfession) return badRequest(req, res, 'Invalid dob-month');
 
-    if (gender === 'female' && !(hijab === 'hijabYes' || hijab === 'hijabNo')) return badRequest(res, 'Invalid hijab');
-    if (gender !== 'female' && hijab) return badRequest(res, 'Invalid hijab');
+    if (gender === 'female' && !(hijab === 'hijabYes' || hijab === 'hijabNo')) return badRequest(req, res, 'Invalid hijab');
+    if (gender !== 'female' && hijab) return badRequest(req, res, 'Invalid hijab');
 
-    if (!(hasChildren === 'hasChildrenYes' || hasChildren === 'hasChildrenNo')) return badRequest(res, 'Invalid has-children');
+    if (!(hasChildren === 'hasChildrenYes' || hasChildren === 'hasChildrenNo')) return badRequest(req, res, 'Invalid has-children');
 
     const wantsChildrenOptions = [
       'wantsChildrenYes',
@@ -151,17 +151,17 @@ const profileDetails = async (req, res) => {
       'wantsChildrenMaybe',
     ]
     const validWantsChildren = wantsChildrenOptions.indexOf(wantsChildren) > -1;
-    if (!validWantsChildren) return badRequest(res, 'Invalid wants-children');
+    if (!validWantsChildren) return badRequest(req, res, 'Invalid wants-children');
 
     const validHeight = heightsData.indexOf(height) > -1;
-    if (!validHeight) return badRequest(res, 'Invalid height');
+    if (!validHeight) return badRequest(req, res, 'Invalid height');
 
     const canRelocateOptions = [
       'canRelocateYes',
       'canRelocateNo',
     ]
     const validCanRelocate = canRelocateOptions.indexOf(canRelocate) > -1;
-    if (!validCanRelocate) return badRequest(res, 'Invalid can-relocate');
+    if (!validCanRelocate) return badRequest(req, res, 'Invalid can-relocate');
 
     const dietOptions = [
       'Halal only',
@@ -171,9 +171,9 @@ const profileDetails = async (req, res) => {
       'Vegetarian',
     ]
     const validDiet = dietOptions.indexOf(diet) > -1;
-    if (!validDiet) return badRequest(res, 'Invalid diet');
+    if (!validDiet) return badRequest(req, res, 'Invalid diet');
 
-    if (!(smokes === 'smokesYes' || smokes === 'smokesNo')) return badRequest(res, 'Invalid smokes');
+    if (!(smokes === 'smokesYes' || smokes === 'smokesNo')) return badRequest(req, res, 'Invalid smokes');
 
     const prayerLevelOptions = [
       'Rarely',
@@ -181,10 +181,10 @@ const profileDetails = async (req, res) => {
       'Always',
     ]
     const validPrayerLevel = prayerLevelOptions.indexOf(prayerLevel) > -1;
-    if (!validPrayerLevel) return badRequest(res, 'Invalid prayerLevel');
+    if (!validPrayerLevel) return badRequest(req, res, 'Invalid prayerLevel');
 
     const validHobbies = hobbies.every(element => allHobbiesData.indexOf(element) > -1);
-    if (!validHobbies) return badRequest(res, 'Invalid hobbies');
+    if (!validHobbies) return badRequest(req, res, 'Invalid hobbies');
 
     const invalidInput = string => (
       !string ||
@@ -196,10 +196,10 @@ const profileDetails = async (req, res) => {
       preventWebLinks(string)
     )
 
-    if (invalidInput(aboutMe)) return badRequest(res, 'Invalid about-me');
+    if (invalidInput(aboutMe)) return badRequest(req, res, 'Invalid about-me');
     aboutMe = escapeHtml(aboutMe).trim();
 
-    if (invalidInput(aboutMyMatch)) return badRequest(res, 'Invalid about-my-match');
+    if (invalidInput(aboutMyMatch)) return badRequest(req, res, 'Invalid about-my-match');
     aboutMyMatch = escapeHtml(aboutMyMatch).trim();
 
     let photos = [];

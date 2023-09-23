@@ -1,4 +1,4 @@
-const { logsCollection } = require("../../db");
+const { usersCollection } = require("../../db");
 
 const calculateImperialHeight = height => {
   const totalHeight = (height / 30.48).toString().split('.')
@@ -12,26 +12,19 @@ const calculateImperialHeight = height => {
 };
 
 const getLastActive = async userId => {
-  const sessionHistoryAggregate = await logsCollection().aggregate([
+  const [lastActiveResponse] = await usersCollection().find(
     {
-      $match: {
-        _id: userId
-      }
+      _id: userId
     },
-    {
-      $addFields: {
-        mostRecentEntry: {
-          $first: "$sessionHistory"
-        }
-      }
-    }
-  ]).toArray();
+  )
+    .project({ lastActive: 1 })
+    .toArray();
 
-  const mostRecentEntry = sessionHistoryAggregate[0]?.mostRecentEntry;
+  const lastActiveEntry = lastActiveResponse.lastActive;
 
   let lastActive = 'Last Active: '
 
-  const lastLogin = new Date(mostRecentEntry?.utc);
+  const lastLogin = new Date(lastActiveEntry?.utc);
   const today = new Date();
   const minutesSinceLastLogin = Math.floor((today.getTime() - lastLogin.getTime()) / 1000 / 60);
 
@@ -39,7 +32,7 @@ const getLastActive = async userId => {
     List of endpoints that represent an "Online" user
   */
   const onlineEndpoints = ['/api/auth-session/login', '/api/register/profile-details', '/api/password/reset']
-  const firstPositionEndpoint = mostRecentEntry?.endpoint;
+  const firstPositionEndpoint = lastActiveEntry?.endpoint;
 
   if (onlineEndpoints.includes(firstPositionEndpoint)) {
     lastActive = 'Online';
