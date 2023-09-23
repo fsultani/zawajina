@@ -104,7 +104,7 @@ app.set('views', path.join(__dirname, '../client/views'));
 app.set('view engine', 'html');
 
 app.use((req, _res, next) => {
-  console.clear();
+  // console.clear();
   const listOfRoutesForDbAccess = [
     ...publicRoutes.map(route => Object.keys(route)[0]),
     ...privateRoutes.map(route => Object.keys(route)[0]),
