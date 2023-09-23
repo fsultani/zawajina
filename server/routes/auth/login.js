@@ -6,6 +6,7 @@ const { usersCollection, insertLogs } = require('../../db.js');
 const { comparePassword } = require('../../models/user');
 const { verifyDate, returnServerError } = require('../../utils.js');
 const { emailVerification } = require('../../email-templates/email-verification.js');
+const { sendEmail } = require('../../helpers/email');
 
 const router = express.Router();
 
@@ -115,9 +116,7 @@ router.post('/', async (req, res) => {
           },
         );
 
-        if (process.env.NODE_ENV !== 'development') {
-          await sendEmail({ emailAddress: email, subject, emailBody })
-        }
+        await sendEmail({ emailAddress: email, subject, emailBody })
 
         responsePayload = {
           ...responsePayload,
