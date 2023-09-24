@@ -13,7 +13,9 @@
 
           <section class='form-row'>
             <div class='dob-container'>
-              <label for='birth_date'>Birth date</label>
+              <div class='label-wrapper'>
+                <label for='birth_date'>Birth date</label>
+              </div>
               <div class='dob-wrapper'>
                 <div class='select' id='dob-month'>
                   <select class='select-wrapper' onchange='handleBirthMonth(event)'>
@@ -44,7 +46,9 @@
 
           <section class='form-row select-container'>
             <div class='gender-container form-radio'>
-              <label for='gender'>Gender</label>
+              <div class='label-wrapper'>
+                <label for='gender'>Gender</label>
+              </div>
               <div class='flex radio-buttons-wrapper' id='gender'>
                 <input type='radio' name='gender' id='male' onchange='handleGender("male")' />
                 <label for='male'>Male</label>
@@ -54,7 +58,9 @@
             </div>
 
             <div class='hijab-container'>
-              <label>Hijab</label>
+              <div class='label-wrapper'>
+                <label>Hijab</label>
+              </div>
               <div class='select' id='hijab'>
                 <select class='hijab' onchange='handleHijab(event)'>
                   <option>Select One</option>
@@ -67,7 +73,9 @@
 
           <section class='form-row'>
             <div class='form-row user-location'>
-              <label for='locationInput'>What city do you live in?</label>
+              <div class='label-wrapper'>
+                <label for='locationInput'>What city do you live in?</label>
+              </div>
               <div class='autocomplete'>
                 <div class='user-location-selection'></div>
                 <input id='locationInput' class='location' type='text' />
@@ -77,7 +85,9 @@
             <div id='city'></div>
 
             <div class='form-row country-user-raised-in'>
-              <label for='countryRaisedInInput'>Where were you raised?</label>
+              <div class='label-wrapper'>
+                <label for='countryRaisedInInput'>Where were you raised?</label>
+              </div>
               <div class='autocomplete'>
                 <div class='country-user-raised-in-selection'></div>
                 <input id='countryRaisedInInput' class='country-raised-in' type='text' />
@@ -87,7 +97,9 @@
             <div id='country-raised-in'></div>
 
             <div class='form-row user-ethnicity'>
-              <label for='ethnicityInput'>What is your ethnicity?</label>
+              <div class='label-wrapper'>
+                <label for='ethnicityInput'>What is your ethnicity?</label>
+              </div>
               <div class='autocomplete'>
                 <div class='user-ethnicity-selection'></div>
                 <input id='ethnicityInput' class='ethnicity' type='text' />
@@ -97,7 +109,9 @@
             <div id='ethnicity'></div>
 
             <div class='user-languages'>
-              <label for='languageInput'>What language(s) do you speak?</label>
+              <div class='label-wrapper'>
+                <label for='languageInput'>What language(s) do you speak?</label>
+              </div>
               <div class='autocomplete'>
                 <div class='user-languages-selection'></div>
                 <input id='languageInput' class='languages' type='text' />
@@ -109,7 +123,9 @@
 
           <section class='form-row select-container'>
             <div>
-              <label>Conviction</label>
+              <div class='label-wrapper'>
+                <label>Conviction</label>
+              </div>
               <div class='select' id='religious-conviction'>
                 <select class='religious-conviction' onchange='handleConviction(event)'>
                   <option>Select Conviction</option>
@@ -120,7 +136,9 @@
               </div>
             </div>
             <div>
-              <label>Values</label>
+              <div class='label-wrapper'>
+                <label>Values</label>
+              </div>
               <div class='select' id='religious-values'>
                 <select class='religious-values' onchange='handleReligiousValues(event)'>
                   <option>Select Values</option>
@@ -131,7 +149,9 @@
               </div>
             </div>
             <div>
-              <label>Marital Status</label>
+              <div class='label-wrapper'>
+                <label>Marital Status</label>
+              </div>
               <div class='select' id='marital-status'>
                 <select class='marital-status' onchange='handleMaritalStatus(event)'>
                   <option>Select Marital Status</option>
@@ -142,7 +162,9 @@
               </div>
             </div>
             <div>
-              <label>Education</label>
+              <div class='label-wrapper'>
+                <label>Education</label>
+              </div>
               <div class='select' id='education'>
                 <select class='education' onchange='handleEducation(event)'>
                   <option selected>Education Level</option>
@@ -155,19 +177,25 @@
               </div>
             </div>
             <div>
-              <label>Profession</label>
+              <div class='label-wrapper'>
+                <label>Profession</label>
+              </div>
               <div class='select' id='profession'>
                 <select class='profession' onchange='handleProfession(event)'></select>
               </div>
             </div>
             <div>
-              <label>Height</label>
+              <div class='label-wrapper'>
+                <label>Height</label>
+              </div>
               <div class='select' id='user-height'>
                 <select class='user-height' onchange='handleHeight(event)'></select>
               </div>
             </div>
             <div>
-              <label>Can you relocate?</label>
+              <div class='label-wrapper'>
+                <label>Can you relocate?</label>
+              </div>
               <div class='select' id='can-relocate'>
                 <select class='can-relocate' onchange='handleCanRelocate(event)'>
                   <option>Select One</option>
@@ -177,7 +205,9 @@
               </div>
             </div>
             <div>
-              <label>Diet</label>
+              <div class='label-wrapper'>
+                <label>Diet</label>
+              </div>
               <div class='select' id='diet'>
                 <select class='diet' onchange='handleDiet(event)'>
                   <option>Select Diet</option>
@@ -190,7 +220,9 @@
               </div>
             </div>
             <div>
-              <label>Do you have children?</label>
+              <div class='label-wrapper'>
+                <label>Do you have children?</label>
+              </div>
               <div class='select' id='has-children'>
                 <select class='has-children' onchange='handleHasChildren(event)'>
                   <option>Select One</option>
@@ -200,7 +232,9 @@
               </div>
             </div>
             <div>
-              <label>Do you want children?</label>
+              <div class='label-wrapper'>
+                <label>Do you want children?</label>
+              </div>
               <div class='select' id='wants-children'>
                 <select class='wants-children' onchange='handleWantsChildren(event)'>
                   <option>Select One</option>
@@ -211,7 +245,9 @@
               </div>
             </div>
             <div>
-              <label>Do you smoke?</label>
+              <div class='label-wrapper'>
+                <label>Do you smoke?</label>
+              </div>
               <div class='select' id='smokes'>
                 <select class='smokes' onchange='handleSmokes(event)'>
                   <option>Select One</option>
@@ -221,7 +257,9 @@
               </div>
             </div>
             <div>
-              <label>Prayer level</label>
+              <div class='label-wrapper'>
+                <label>Prayer level</label>
+              </div>
               <div class='select' id='prayer-level'>
                 <select class='prayer-level' onchange='handlePrayerLevel(event)'>
                   <option>Select One</option>
@@ -236,7 +274,9 @@
           <section class='form-row'>
             <div class='user-hobbies'>
               <div class='display-flex space-between'>
-                <label for='hobbiesInput'>Interests (up to 5)<span id='hobbies-error-message'></span></label>
+                <div class='label-wrapper'>
+                  <label for='hobbiesInput'>Interests (up to 5)<span id='hobbies-error-message'></span></label>
+                </div>
               </div>
 
               <input id='hobbiesInput' class='input-text-field hobbies' type='text' placeholder='Search' />
@@ -245,14 +285,18 @@
           </section>
 
           <section class='form-row'>
-            <label for='about-me'>About Me</label>
+            <div class='label-wrapper'>
+              <label for='about-me'>About Me</label>
+            </div>
             <div id='about-me-error-text'></div>
             <textarea class='about-me' id='about-me' name='about-me' placeholder='Describe yourself.'></textarea>
             <p class='character-count' id='about-me-character-count'>0/100</p>
           </section>
 
           <section class='form-row'>
-            <label for='about-my-match'>About Zawajina</label>
+            <div class='label-wrapper'>
+              <label for='about-my-match'>About Zawajina</label>
+            </div>
             <div id='about-my-match-error-text'></div>
             <textarea class='about-my-match' id='about-my-match' name='about-my-match'
               placeholder='Describe your ideal match.'></textarea>

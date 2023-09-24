@@ -292,6 +292,16 @@ list-type-ulli {
   font-family: Poppins-Regular;
 }
 
+.label-wrapper {
+  padding-bottom: 5px;
+}
+
+#dob-month,
+#dob-day,
+#dob-year {
+  margin-bottom: 1em;
+}
+
 input[type='radio'] + label {
   height: 38px;
 }
@@ -344,7 +354,7 @@ input[type='radio']+label:hover {
 .form-subtitle {
   line-height: 1.5;
   text-align: center;
-  padding-bottom: 8px;
+  padding-bottom: 14px;
 }
 
 .form-errors {
@@ -446,7 +456,7 @@ input[type='radio']+label:hover {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   column-gap: 10px;
-  grid-row-gap: 25px;
+  grid-row-gap: 20px;
   margin-bottom: 7px;
 }
 
