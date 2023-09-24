@@ -328,7 +328,7 @@ const handleProfileEdit = async (section) => {
 
   if (section === 'about-my-match') {
     profileSection = 'about-my-match';
-    const modalHeader = 'About Zawajina';
+    const modalHeader = 'About My Match';
 
     const modalBody = `
       <section id='about-my-match' class='modal-section'>
