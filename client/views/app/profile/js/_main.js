@@ -12,7 +12,7 @@
 
   const pathname = window.location.pathname
   if (pathname === '/profile') {
-    const contactWrapper = document.querySelector('.contact-wrapper')
+    const contactWrapper = getQuerySelector('.contact-wrapper')
     const children = contactWrapper.querySelectorAll(':scope > button');
 
     children.forEach(element => {
