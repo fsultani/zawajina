@@ -42,7 +42,7 @@ const handleReportUser = userId => {
         }
       })
 
-      const additionalInformation = getQuerySelector('#additional-information').value;
+      const additionalInformation = getQuerySelectorById('additional-information').value;
 
       Axios({
         method: 'put',

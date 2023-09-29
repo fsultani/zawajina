@@ -4,7 +4,7 @@ const handleLikeUser = userId => {
       userId,
     })
     .then(({ data }) => {
-      const likeButton = document.querySelector('.like-button');
+      const likeButton = getQuerySelector('.like-button');
       const userIsLiked = data.userIsLiked;
 
       likeButton.style.cssText = `
