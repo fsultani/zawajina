@@ -118,7 +118,7 @@ const client = new MongoClient(uri, {
     const user = await usersCollection.findOne({ email: userEmail });
     const emailVerificationToken = user.emailVerificationToken.toString();
 
-    await page.focus('#verification-token');
+    await page.focus('.verification');
     await page.keyboard.type(emailVerificationToken, { delay: keyboardTypeDelay });
     await page.waitForTimeout(waitForTimeoutValue);
 

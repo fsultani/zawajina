@@ -23,8 +23,6 @@ const handleNameValidation = name => {
     preventWebLinks(name)
   ) {
     handleNameValidationValue = false;
-    getQuerySelectorById('name').classList.remove('animate-border-bottom');
-    getQuerySelectorById('name-wrapper').style.cssText = `border-bottom: 2px solid red;`
 
     let errorMessage = '';
     if (name.length === 0) {
@@ -41,12 +39,10 @@ const handleNameValidation = name => {
       errorMessage = 'Web links are not allowed';
     }
 
-    getQuerySelectorById('name-error').innerHTML = errorMessage;
+    inputElementError('.username', true, errorMessage);
   } else {
     handleNameValidationValue = true;
-    getQuerySelectorById('name-wrapper').classList.remove('form-error-border-bottom');
-    getQuerySelectorById('name').classList.add('animate-border-bottom');
-    getQuerySelectorById('name-error').innerHTML = '';
+    inputElementError('.username', false, '');
   }
 };
 
@@ -55,30 +51,20 @@ const handleEmailValidation = email => {
 
   if (!emailRegex.test(email)) {
     handleEmailValidationValue = false;
-    getQuerySelectorById('email').classList.remove('animate-border-bottom');
-    getQuerySelectorById('email-wrapper').style.cssText = `border-bottom: 2px solid red;`
-    getQuerySelectorById('email-error').innerHTML = 'Invalid email';
+    inputElementError('.userEmail', true, 'Invalid email');
   } else if (emailRegex.test(email)) {
-    if (getQuerySelectorById('email-wrapper').classList.contains('form-error-border-bottom')) {
-      getQuerySelectorById('email-wrapper').classList.remove('form-error-border-bottom');
-      getQuerySelectorById('email').classList.add('animate-border-bottom');
-      getQuerySelectorById('email-error').innerHTML = '';
-    }
     handleEmailValidationValue = true;
+    inputElementError('.userEmail', false, '');
   }
 };
 
 const handlePasswordValidation = password => {
   if (password.length < 8) {
-    getQuerySelectorById('password').classList.remove('animate-border-bottom');
-    getQuerySelectorById('password-wrapper').style.cssText = `border-bottom: 2px solid red;`
     handlePasswordValidationValue = false;
+    inputElementError('.userPassword', true, '');
   } else if (password.length >= 8) {
-    if (getQuerySelectorById('password-wrapper').classList.contains('form-error-border-bottom')) {
-      getQuerySelectorById('password-wrapper').classList.remove('form-error-border-bottom');
-      getQuerySelectorById('password').classList.add('animate-border-bottom');
-    }
     handlePasswordValidationValue = true;
+    inputElementError('.userPassword', false, '');
   }
 };
 
@@ -96,6 +82,8 @@ const handleSignupStepOne = async event => {
   if (handleNameValidationValue && handleEmailValidationValue && handlePasswordValidationValue) {
     isSubmitting('form-button-loading-spinner-wrapper', true);
 
+    const fingerprint = await getCurrentBrowserFingerPrint();
+
     Axios({
       method: 'post',
       apiUrl: '/api/register/personal-info', // server/routes/register/personalInfo.js
@@ -103,6 +91,7 @@ const handleSignupStepOne = async event => {
         nameValue,
         email,
         password,
+        fingerprint,
       }
     })
       .then(({ data }) => {

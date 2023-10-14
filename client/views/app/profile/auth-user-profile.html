@@ -1,4 +1,4 @@
-<div class='profile-page-container' data-user-id='${authUser._id}'>
+<div class='profile-page-container'>
   <div class='profile-page-wrapper'>
     <div class='profile-photos-container position-relative' data-user-photos='${authUser.photos.length}'
       data-photos='${JSON.stringify(authUser.photos)}'>
@@ -86,78 +86,84 @@
           <div class='details-wrapper'>
             <span class='details-key'>Ethnicity:</span>
             <span class='details-value'>${authUser.ethnicity.length > 0 ? authUser.ethnicity.map(ethnicity =>
-              ethnicity).join('&nbsp;<span>&#9679;</span>&nbsp;') : 'No Answer'}</span>
+              ethnicity).join('&nbsp;<span>&#9679;</span>&nbsp;') : `No Answer`}</span>
           </div>
           <div class='details-wrapper'>
             <span class='details-key'>Raised in:</span>
-            <span class='details-value'>${authUser.countryRaisedIn || 'No Answer'}</span>
+            <span class='details-value'>${authUser.countryRaisedIn || `No Answer`}</span>
           </div>
           <div class='details-wrapper'>
             <span class='details-key'>Conviction:</span>
             <span class='details-value'
-              data-religious-Conviction='${authUser.religiousConviction}'>${authUser.religiousConviction || 'No Answer'}</span>
+              data-religious-Conviction='${authUser.religiousConviction}'>${authUser.religiousConviction || `No
+              Answer`}</span>
           </div>
           <div class='details-wrapper'>
             <span class='details-key'>Values:</span>
-            <span class='details-value' data-religious-Values='${authUser.religiousValues}'>${authUser.religiousValues || 'No Answer'}</span>
+            <span class='details-value' data-religious-Values='${authUser.religiousValues}'>${authUser.religiousValues
+              || `No Answer`}</span>
           </div>
           <div class='details-wrapper'>
             <span class='details-key'>Marital Status:</span>
-            <span class='details-value' data-marital-Status='${authUser.maritalStatus}'>${authUser.maritalStatus || 'No Answer'}</span>
+            <span class='details-value' data-marital-Status='${authUser.maritalStatus}'>${authUser.maritalStatus || `No
+              Answer`}</span>
           </div>
           <div class='details-wrapper'>
             <span class='details-key'>Education:</span>
-            <span class='details-value' data-education='${authUser.education}'>${authUser.education || 'No Answer'}</span>
+            <span class='details-value' data-education='${authUser.education}'>${authUser.education || `No
+              Answer`}</span>
           </div>
           <div class='details-wrapper'>
             <span class='details-key'>Profession:</span>
-            <span class='details-value' data-profession='${authUser.profession}'>${authUser.profession || 'No Answer'}</span>
+            <span class='details-value' data-profession='${authUser.profession}'>${authUser.profession || `No
+              Answer`}</span>
           </div>
           <div class='details-wrapper'>
             <span class='details-key'>Languages:</span>
             <span class='details-value' data-languages='${authUser.languages}'>${authUser.languages.length > 0 ?
               authUser.languages.map(language =>
-              language).join('&nbsp;<span>&#9679;</span>&nbsp;') : 'No Answer'}</span>
+              language).join('&nbsp;<span>&#9679;</span>&nbsp;') : `No Answer`}</span>
           </div>
           <div class='details-wrapper'>
             <span class='details-key'>Prayer Level:</span>
-            <span class='details-value' data-prayer-Level='${authUser.prayerLevel}'>${authUser.prayerLevel || 'No Answer'}</span>
+            <span class='details-value' data-prayer-Level='${authUser.prayerLevel}'>${authUser.prayerLevel || `No
+              Answer`}</span>
           </div>
           ${authUser.gender === 'female' ? `
           <div class='details-wrapper'>
             <span class='details-key'>Hijab:</span>
-            <span class='details-value' data-hijab='${authUser.hijab}'>${authUser.hijab || 'No Answer'}</span>
+            <span class='details-value' data-hijab='${authUser.hijab}'>${authUser.hijab || `No Answer`}</span>
           </div>
           ` : ''
           }
           <div class='details-wrapper'>
             <span class='details-key'>Has children:</span>
-            <span class='details-value'>${authUser.hasChildren || 'No Answer'}</span>
+            <span class='details-value'>${authUser.hasChildren || `No Answer`}</span>
           </div>
           <div class='details-wrapper'>
             <span class='details-key'>Wants children:</span>
-            <span class='details-value'>${authUser.wantsChildren || 'No Answer'}</span>
+            <span class='details-value'>${authUser.wantsChildren || `No Answer`}</span>
           </div>
           <div class='details-wrapper'>
             <span class='details-key'>Height:</span>
-            <span class='details-value'>${authUser.height || 'No Answer'}</span>
+            <span class='details-value'>${authUser.height || `No Answer`}</span>
           </div>
           <div class='details-wrapper'>
             <span class='details-key'>Can relocate:</span>
-            <span class='details-value'>${authUser.canRelocate || 'No Answer'}</span>
+            <span class='details-value'>${authUser.canRelocate || `No Answer`}</span>
           </div>
           <div class='details-wrapper'>
             <span class='details-key'>Diet:</span>
-            <span class='details-value'>${authUser.diet || 'No Answer'}</span>
+            <span class='details-value'>${authUser.diet || `No Answer`}</span>
           </div>
           <div class='details-wrapper'>
             <span class='details-key'>Smokes:</span>
-            <span class='details-value'>${authUser.smokes || 'No Answer'}</span>
+            <span class='details-value'>${authUser.smokes || `No Answer`}</span>
           </div>
           <div class='details-wrapper'>
             <span class='details-key'>Interests:</span>
             <span class='details-value'>${authUser.hobbies.length > 0 ? authUser.hobbies.map(hobby =>
-              hobby).join('&nbsp;<span>&#9679;</span>&nbsp;') : 'No Answer'}</span>
+              hobby).join('&nbsp;<span>&#9679;</span>&nbsp;') : `No Answer`}</span>
           </div>
         </div>
 
@@ -170,7 +176,7 @@
     <div class='about-me position-relative'>
       <div data-name='edit-button' data-section='about-me'>
         <h5>About me</h5>
-        <p id='about-me-value'>${authUser.aboutMe || 'No Answer'}</p>
+        <p id='about-me-value'>${authUser.aboutMe || `No Answer`}</p>
 
         <div class='edit-button-container'>
           <button onclick='handleProfileEdit("about-me")' class='edit-button'>Edit</button>
@@ -181,7 +187,7 @@
     <div class='about-my-match position-relative'>
       <div data-name='edit-button' data-section='about-my-match'>
         <h5>About my match</h5>
-        <p id='about-my-match-value'>${authUser.aboutMyMatch || 'No Answer'}</p>
+        <p id='about-my-match-value'>${authUser.aboutMyMatch || `No Answer`}</p>
 
         <div class='edit-button-container'>
           <button onclick='handleProfileEdit("about-my-match")' class='edit-button'>Edit</button>

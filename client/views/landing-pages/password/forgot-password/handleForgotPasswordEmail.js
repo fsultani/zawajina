@@ -1,4 +1,4 @@
-const userEmail = getQuerySelector('#userEmail');
+const userEmail = getQuerySelector('.userEmail');
 
 let handleEmailValidationValue = false;
 
@@ -6,18 +6,16 @@ const handleEmailValidation = email => {
   const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
   if (!emailRegex.test(email)) {
-    getQuerySelector('#email-wrapper').style.cssText = `border-bottom: 2px solid red;`
-    getQuerySelector('#email-error').innerHTML = 'Invalid email';
     handleEmailValidationValue = false;
-  } else {
-    getQuerySelector('#email-wrapper').style.cssText = `border-bottom: 2px solid #adadad;`
-    getQuerySelector('#email-error').innerHTML = '';
+    inputElementError('.userEmail', true, 'Invalid email');
+  } else if (emailRegex.test(email)) {
     handleEmailValidationValue = true;
+    inputElementError('.userEmail', false, '');
   }
-
 };
 
-const handleForgotPasswordEmail = async () => {
+const handleForgotPasswordEmail = async (event) => {
+  event.preventDefault();
   const email = userEmail.value;
 
   handleEmailValidation(email);
@@ -41,10 +39,11 @@ const handleForgotPasswordEmail = async () => {
         formMessage('success', emailSentMessage);
 
         const formButton = getQuerySelector('.form-submit');
-        const url = data.response?.redirectUrl;
+        const redirectUrl = data.response?.redirectUrl;
 
         formButton.innerHTML = 'Back';
-        formButton.onclick = () => window.location.pathname = url;
+        formButton.type = 'button';
+        formButton.onclick = () => window.location.pathname = redirectUrl;
       })
       .catch(() => {
         isSubmitting('form-button-loading-spinner-wrapper', false);

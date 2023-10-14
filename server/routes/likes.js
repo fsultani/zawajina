@@ -51,10 +51,7 @@ router.get('/', async (req, res) => {
       '/static/client/views/app/_partials/app-nav.css',
     ];
 
-    const scriptsArray = [
-      '/static/assets/apis/axios.min.js',
-      '/static/assets/apis/js.cookie.min.js',
-    ];
+    const scriptsArray = [];
 
     const styles = getAllFiles({ directoryPath, fileType: 'css', filesArray: stylesArray });
     const scripts = getAllFiles({ directoryPath, fileType: 'js', filesArray: scriptsArray });

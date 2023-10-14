@@ -3,18 +3,17 @@
     <form name='resetPassword' novalidate>
       <h1 class='form-title'>Forgot Password</h1>
 
-      <div class='input-wrapper position-relative' id='email-wrapper'>
-        <input class='input-field' id='userEmail' required type='email' />
-        <span class='input-focus' id='email-span' data-placeholder='Email'></span>
-        <div id='email-error'></div>
+      <div class='form-input-wrapper userEmail-wrapper'>
+        <input type='email' class='userEmail' required>
+        <span class='userEmail-label'>Email</span>
+        <div class='userEmail-error'></div>
       </div>
 
       <div class='flex justify-content-center flex-wrap form-button-container'>
         <div class='full-width'>
           <div id='form-button-loading-spinner-wrapper'>
-            <!-- Form submission takes place on the button element since the button serves two purposes. -->
-            <button class='flex justify-content-center align-items-center form-submit' type='button'
-              onclick='handleForgotPasswordEmail()'>
+            <button class='flex justify-content-center align-items-center form-submit' type='submit'
+              onclick='handleForgotPasswordEmail(event)'>
               Request Password Reset
             </button>
           </div>

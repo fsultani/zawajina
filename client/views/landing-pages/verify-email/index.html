@@ -7,9 +7,9 @@
         Enter the 5 digit verification code sent to your email address:
       </p>
 
-      <div class='input-wrapper validate-input'>
-        <input type='number' class='input-field' id='verification-token' />
-        <span class='input-focus'></span>
+      <div class='form-input-wrapper verification-wrapper'>
+        <input type='number' class='verification' required />
+        <div class='verification-error'></div>
       </div>
 
       <div class='flex justify-content-center flex-wrap form-button-container'>
@@ -20,10 +20,6 @@
             </button>
           </div>
         </div>
-      </div>
-
-      <div class='bottom-container'>
-        <a href='/resend-email' class='helper-text'>Didn't get a code?</a>
       </div>
     </form>
   </div>

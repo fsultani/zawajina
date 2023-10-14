@@ -78,7 +78,7 @@
   margin: 8px;
   border: 8px solid #fff;
   border-radius: 50%;
-  animation: animation-360-loading-spinner 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  animation: animation-loading-spinner 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
   border-color: #00c6a7 transparent transparent transparent;
 }
 
@@ -118,7 +118,7 @@
   margin: 8px;
   border: 3px solid #fff;
   border-radius: 50%;
-  animation: animation-360-loading-spinner 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  animation: animation-loading-spinner 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
   border-color: #fff transparent transparent transparent;
 }
 

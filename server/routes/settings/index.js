@@ -18,8 +18,6 @@ router.get('/account', async (req, res) => {
     ];
 
     const scriptsArray = [
-      '/static/assets/apis/axios.min.js',
-      '/static/assets/apis/js.cookie.min.js',
       '/static/client/views/app/settings/script.js',
     ];
 
@@ -93,8 +91,6 @@ router.get('/blocked', async (req, res) => {
     ];
 
     const scriptsArray = [
-      '/static/assets/apis/axios.min.js',
-      '/static/assets/apis/js.cookie.min.js',
       '/static/client/views/app/settings/script.js',
     ];
 
@@ -176,8 +172,6 @@ router.get('/password', async (req, res) => {
     ];
 
     const scriptsArray = [
-      '/static/assets/apis/axios.min.js',
-      '/static/assets/apis/js.cookie.min.js',
       '/static/client/views/app/settings/script.js',
     ];
 

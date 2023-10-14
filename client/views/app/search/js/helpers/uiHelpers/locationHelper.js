@@ -181,8 +181,8 @@ const locationKeyDirection = (event, callback) => {
 
 const removeLocationSelection = () => {
   document.querySelectorAll('.user-location-remove').forEach(element => {
-    element.addEventListener('click', el => {
-      const elementId = el.currentTarget.id.split('-')[2];
+    element.addEventListener('click', event => {
+      const elementId = event.currentTarget.id.split('-')[2];
       userLocationsResult.splice(elementId, 1);
       renderLocations(userLocationsResult);
     });
@@ -209,7 +209,7 @@ locationInput.addEventListener('keydown', event => {
 });
 
 locationResults.addEventListener('click', event => {
-  const inputTag = event.target.dataset;
+  const inputTag = event.target.closest('div').dataset;
   if (inputTag?.city) {
     const city = inputTag.city;
     const state = inputTag.state;

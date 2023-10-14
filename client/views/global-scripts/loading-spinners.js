@@ -39,7 +39,7 @@ const displayFullPageLoadingSpinner = isLoading => {
       border: '8px solid #fff',
       borderRadius: '50%',
       animation:
-        'animation-360-loading-spinner 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite',
+        'animation-loading-spinner 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite',
       borderColor: '#00c6a7 transparent transparent transparent',
       opacity: '1',
       zIndex: '999',
@@ -88,7 +88,7 @@ const displaySmallLoadingSpinner = (isLoading, parentElement, childElement) => {
       border: '8px solid #fff',
       borderRadius: '50%',
       animation:
-        'animation-360-loading-spinner 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite',
+        'animation-loading-spinner 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite',
       borderColor: '#00c6a7 transparent transparent transparent',
       opacity: '1',
       zIndex: '999',
@@ -127,7 +127,7 @@ const isSubmitting = (buttonId, value, color = '#fff') => {
       border: `3px solid ${color}`,
       borderRadius: '50%',
       animation:
-        'animation-360-loading-spinner 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite',
+        'animation-loading-spinner 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite',
       borderColor: `${color} transparent transparent transparent`,
       opacity: '1',
       zIndex: '999',

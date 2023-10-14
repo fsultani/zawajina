@@ -15,7 +15,7 @@ const {
 } = require('../../utils.js');
 
 const personalInfo = async (req, res) => {
-  const { nameValue, email } = req.body;
+  const { nameValue, email, fingerprint } = req.body;
   let { password } = req.body;
 
   const getErrors = validationResult(req);
@@ -64,7 +64,18 @@ const personalInfo = async (req, res) => {
 
   if (invalidInput(name)) return res.status(400).send({ querySelector: 'name', message });
 
-  usersCollection().findOne({ email }, async (err, authUser) => {
+  usersCollection().findOne({
+    $or: [
+      {
+        email,
+      },
+      {
+        fingerprints: {
+          $in: process.env.NODE_ENV === 'development' ? [] : [fingerprint],
+        }
+      },
+    ]
+  }, async (err, authUser) => {
     try {
       if (!err && !authUser) {
         /* User does not exist; create a new account */
@@ -86,6 +97,7 @@ const personalInfo = async (req, res) => {
           emailVerificationTokenDateSent: new Date(),
           startedRegistrationAt: new Date(),
           completedRegistrationAt: false,
+          fingerprints: [fingerprint],
         };
 
         const insertUser = await usersCollection().insertOne(newUser);

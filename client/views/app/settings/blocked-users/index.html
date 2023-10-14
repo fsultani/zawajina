@@ -6,7 +6,7 @@
     <div class='form-wrapper' id='blocked-users'>
       <div class='users-container'>
         ${allUsers.map(user => `
-        <a href='/user/${user._id}'>
+        <div>
           <div class='testimonial-wrapper'>
             <div class='testimonial-image'>
               <img
@@ -25,7 +25,11 @@
                   </p>
             </div>
           </div>
-        </a>
+
+          <button class='unblock-button' type="button" onclick="handleUnblockUser('${user._id}', '${user.name}')">
+            Unblock
+          </button>
+        </div>
         `).join('')}
       </div>
     </div>
@@ -38,9 +42,11 @@
 
       ${numberOfPages === 3 && currentPage === numberOfPages ? `<a href='${originalUrl}'>${previousPage - 1}</a>` : ''}
 
-      ${numberOfPages > 3 && currentPage === numberOfPages ? `<a href='${originalUrl}?page=${previousPage - 1}'>${previousPage - 1}</a>` : ''}
+      ${numberOfPages > 3 && currentPage === numberOfPages ? `<a
+        href='${originalUrl}?page=${previousPage - 1}'>${previousPage - 1}</a>` : ''}
 
-      ${previousPage ? previousPage === 1 ? `<a href='${originalUrl}'>${previousPage}</a>` : `<a href='${originalUrl}?page=${previousPage}'>${previousPage}</a>` : '' }
+      ${previousPage ? previousPage === 1 ? `<a href='${originalUrl}'>${previousPage}</a>` : `<a
+        href='${originalUrl}?page=${previousPage}'>${previousPage}</a>` : '' }
 
       ${numberOfPages > 1 ? `<a href='#' style='pointer-events: none;' class='active'>${currentPage}</a>` : ''}
       ${nextPage ? `<a href='${originalUrl}?page=${nextPage}'>${nextPage}</a>` : ''} ${numberOfPages > 2 &&

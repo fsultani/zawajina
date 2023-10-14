@@ -164,7 +164,7 @@ languageInput.addEventListener('keydown', event => {
 });
 
 languageResults.addEventListener('click', event => {
-  const value = event.target.id;
+  const value = event.target.closest('div').id;
   const languageSelection = value;
   languageInput.value = '';
 

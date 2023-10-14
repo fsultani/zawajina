@@ -45,9 +45,7 @@ const checkEmailVerification = (req, res) => {
         async (_, user) => {
           const emailAddress = user.value.email;
 
-          if (process.env.NODE_ENV !== 'development') {
-            await sendEmail({ emailAddress, subject, emailBody })
-          }
+          await sendEmail({ emailAddress, subject, emailBody })
 
           return res.sendStatus(201);
         }

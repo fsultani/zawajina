@@ -1,8 +1,8 @@
-const togglePassword = (number) => {
+const togglePassword = number => {
   if (number === 1) {
     const passwordOneType = getQuerySelectorById('user-password-one');
     const eyeOne = getQuerySelector('.password-one-eye');
-  
+
     if (passwordOneType.type === 'password') {
       passwordOneType.type = 'text';
       eyeOne.classList.add('fa-eye');

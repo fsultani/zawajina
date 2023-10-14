@@ -37,7 +37,7 @@ const handleLogout = () => {
         border: '3px solid #00c6a7',
         borderRadius: '50%',
         animation:
-          'animation-360-loading-spinner 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite',
+          'animation-loading-spinner 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite',
         borderColor: '#00c6a7 transparent transparent transparent',
         opacity: '1',
         zIndex: '999',

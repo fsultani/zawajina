@@ -9,8 +9,6 @@ module.exports.verifyEmailPage = res => res.render('landing-pages/_layouts/index
       '/static/client/views/landing-pages/verify-email/styles.css',
     ],
     scripts: [
-      '/static/assets/apis/axios.min.js',
-      '/static/assets/apis/js.cookie.min.js',
       '/static/client/views/landing-pages/verify-email/init.js',
       '/static/client/views/landing-pages/verify-email/handleVerityEmail.js',
     ],

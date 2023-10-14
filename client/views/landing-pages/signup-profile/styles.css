@@ -302,7 +302,7 @@ list-type-ulli {
   margin-bottom: 1em;
 }
 
-input[type='radio'] + label {
+input[type='radio']+label {
   height: 38px;
 }
 
@@ -398,7 +398,7 @@ input[type='radio']+label:hover {
 
 .user-selection-wrapper {
   display: none;
-	position: relative;
+  position: relative;
   padding: 3px 5px;
   margin-right: 4px;
   border-radius: 5px;
@@ -420,12 +420,12 @@ input[type='radio']+label:hover {
 .user-selection-remove-wrapper {
   width: 13px;
   height: 100%;
-	position: absolute;
-	top: 0px;
-	right: 5px;
-  display: flex; 
-  justify-content: center; 
-  align-items: center; 
+  position: absolute;
+  top: 0px;
+  right: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   color: var(--color-black-3);
   border-radius: 50%;
 }
@@ -559,14 +559,14 @@ input[type='radio']+label:hover {
   border-radius: 0px 5px 5px 0px;
 }
 
-.radio-buttons-wrapper input:checked + label {
+.radio-buttons-wrapper input:checked+label {
   background-color: var(--color-green);
   color: #fff;
   border-color: transparent;
   z-index: 1;
 }
 
-.radio-buttons-wrapper input:focus + label {
+.radio-buttons-wrapper input:focus+label {
   outline: none;
 }
 
@@ -576,7 +576,7 @@ input[type='radio']+label:hover {
   border-color: #6dabe4;
 }
 
-.form-flex input + label:first-of-type {
+.form-flex input+label:first-of-type {
   border-radius: 5px 0 0 5px;
   -moz-border-radius: 5px 0 0 5px;
   -webkit-border-radius: 5px 0 0 5px;
@@ -584,7 +584,7 @@ input[type='radio']+label:hover {
   -ms-border-radius: 5px 0 0 5px;
 }
 
-.form-flex input + label:last-of-type {
+.form-flex input+label:last-of-type {
   border-radius: 0 5px 5px 0;
   -moz-border-radius: 0 5px 5px 0;
   -webkit-border-radius: 0 5px 5px 0;
@@ -603,23 +603,23 @@ input[type='radio']+label:hover {
   overflow-y: scroll;
 }
 
-.boxed-list > .label {
+.boxed-list>.label {
   display: flex;
   align-items: center;
   margin: 0;
   padding: 0px 10px;
 }
 
-.boxed-list > .label:hover {
+.boxed-list>.label:hover {
   background-color: var(--color-light-gray);
   cursor: pointer;
 }
 
-.boxed-list > .label > span {
+.boxed-list>.label>span {
   flex-grow: 1;
 }
 
-.boxed-list > .label > input {
+.boxed-list>.label>input {
   width: auto;
 }
 
@@ -856,11 +856,11 @@ textarea {
   margin: 8px;
   border: 3px solid #fff;
   border-radius: 50%;
-  animation: animation-360-loading-spinner 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  animation: animation-loading-spinner 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
   border-color: #fff transparent transparent transparent;
 }
 
-@keyframes animation-360-loading-spinner {
+@keyframes animation-loading-spinner {
   0% {
     transform: rotate(0deg);
   }

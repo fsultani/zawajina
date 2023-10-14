@@ -1,11 +1,11 @@
-const verificationToken = getQuerySelector('#verification-token');
+const verificationToken = getQuerySelector('.verification');
 
 const hanelTokenVerification = token => {
   if (!token.length) {
-    formMessage('error', 'Enter a verification code');
+    inputElementError('.verification', true, 'Enter a verification code');
     return false;
   } else if (token.length !== 5) {
-    formMessage('error', 'Verification code must be 5 digits');
+    inputElementError('.verification', true, 'Verification code must be 5 digits');
     return false;
   }
 
@@ -15,7 +15,7 @@ const hanelTokenVerification = token => {
 const handleSubmitToken = async event => {
   event.preventDefault();
 
-  const tokenIsValid = hanelTokenVerification(verificationToken.value);
+  const tokenIsValid = hanelTokenVerification(verificationToken?.value);
 
   if (tokenIsValid) {
     const token = Number(verificationToken.value);
@@ -34,6 +34,7 @@ const handleSubmitToken = async event => {
       })
       .catch((error) => {
         isSubmitting('form-button-loading-spinner-wrapper', false);
+        inputElementError('.verification', false, '');
 
         const errorMessage = error.response.data.message;
         formMessage('error', errorMessage);

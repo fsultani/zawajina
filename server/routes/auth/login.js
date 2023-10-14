@@ -12,7 +12,7 @@ const router = express.Router();
 
 router.post('/', async (req, res) => {
   try {
-    let { email, password } = req.body;
+    let { email, password, fingerprint } = req.body;
     email = email.toLowerCase().trim();
 
     const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
@@ -37,13 +37,33 @@ router.post('/', async (req, res) => {
     let responsePayload = {};
     let updates = {};
 
+    /* User deleted their account, so return error. */
+    if (authUser._account?.userAccountStatus === 'deleted') {
+      responseStatus = 200;
+      responsePayload = {
+        userAccountStatus: authUser._account.userAccountStatus,
+      }
+
+      return res.status(responseStatus).send(responsePayload);
+    }
+
     if (userStartedRegistration && userCompletedRegistration && emailWasVerified) {
       /* User completed everything and can log in */
-      if (authUser._account.userAccountStatus === 'deleted') return res.sendStatus(404);
-
       const token = jwt.sign({ my_match_userId: authUser._id }, JWT_SECRET, {
         expiresIn: '1 day',
       });
+
+      const isNewFingerprint = !authUser.fingerprints?.includes(fingerprint);
+      if (isNewFingerprint) {
+        await usersCollection().findOneAndUpdate(
+          { _id: authUserId },
+          {
+            $push: {
+              fingerprints: fingerprint,
+            }
+          },
+        )
+      }
 
       responseStatus = 201;
       responsePayload = {

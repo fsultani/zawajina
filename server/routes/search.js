@@ -19,10 +19,7 @@ router.get('/', (req, res) => {
     '/static/client/views/app/_partials/app-nav.css',
   ];
 
-  const scriptsArray = [
-    '/static/assets/apis/axios.min.js',
-    '/static/assets/apis/js.cookie.min.js',
-  ];
+  const scriptsArray = [];
 
   const styles = getAllFiles({ directoryPath, fileType: 'css', filesArray: stylesArray });
   const scripts = getAllFiles({ directoryPath, fileType: 'js', filesArray: scriptsArray });
@@ -134,12 +131,7 @@ router.put('/api', async (req, res) => {
       showPhotosOnly,
     } = req.body;
 
-    const blockedUsers = authUser.blockedUsers;
-
     let searchOptions = {
-      _id: {
-        $nin: blockedUsers,
-      },
       gender: authUser.gender === 'male' ? 'female' : 'male',
       '_account.userAccountStatus': 'active',
       '_account.admin.accountStatus': 'approved',

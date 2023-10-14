@@ -3,28 +3,27 @@
     <form name='signupForm' onsubmit='handleSignupStepOne(event)' novalidate>
       <h1 class='form-title'>Create account</h1>
 
-      <div class='input-wrapper position-relative' id='name-wrapper'>
-        <input class='input-field username' data-username='username' required type='text' />
-        <span class='input-focus' id='name' data-placeholder='Name'></span>
-        <div id='name-error'></div>
+      <div class='form-input-wrapper username-wrapper'>
+        <input type='text' class='username' required>
+        <span class='username-label'>Name</span>
+        <div class='username-error'></div>
       </div>
 
-      <div class='input-wrapper position-relative' id='email-wrapper'>
-        <input class='input-field userEmail' data-userEmail='userEmail' required type='email' />
-        <span class='input-focus' id='email' data-placeholder='Email'></span>
-        <div id='email-error'></div>
+      <div class='form-input-wrapper userEmail-wrapper'>
+        <input type='email' class='userEmail' required>
+        <span class='userEmail-label'>Email</span>
+        <div class='userEmail-error'></div>
       </div>
 
-      <div class='input-wrapper position-relative password-position' id='password-wrapper'>
-        <input class='input-field userPassword' data-userPassword='userPassword' required type='password' />
-        <span class='input-focus animate-border-bottom' id='password' data-placeholder='Password'></span>
-        <span toggle='#password' class='field-icon' onclick='togglePassword()'>
+      <div class='form-input-wrapper userPassword-wrapper'>
+        <input type='password' class='userPassword' required>
+        <span class='userPassword-label'>Password</span>
+        <div toggle='#password' class='field-icon' onclick='togglePassword()'>
           <i class='fa fa-eye' id='passwordEye'></i>
-        </span>
-      </div>
-
-      <div class='password-helper-text'>
-        Password must be at least 8 characters long
+        </div>
+        <div class='userPassword-helper-text'>
+          Password must be at least 8 characters long
+        </div>
       </div>
 
       <div class='flex justify-content-center flex-wrap form-button-container'>
@@ -40,11 +39,13 @@
       <div class='form-group'>
         <label for='agree-term' class='label-agree-term'>
           By signing up, you agree to all statements in the
-          <a href='/terms' class='term-service'>Terms of Service</a></label>
+          <a href='/terms' class='terms-of-service'>Terms of Service</a></label>
       </div>
 
-      <div class='bottom-container'>
-        <p class='login'>Already have an account?&nbsp;&nbsp;<a href='/login' class='helper-text'>Login here</a></p>
+      <div class='form-bottom-container'>
+        <p class='login-from-signup'>
+          Already have an account?&nbsp;&nbsp;<a href='/login' class='login-helper-text'>Login here</a>
+        </p>
       </div>
     </form>
   </div>

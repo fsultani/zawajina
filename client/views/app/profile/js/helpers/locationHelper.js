@@ -195,7 +195,7 @@ const locationHelper = async () => {
   });
 
   locationResults.addEventListener('click', event => {
-    const inputTag = event.target.dataset;
+    const inputTag = event.target.closest('div').dataset;
     if (inputTag?.city) {
       const city = inputTag.city;
       const state = inputTag.state;
@@ -207,10 +207,8 @@ const locationHelper = async () => {
     }
   });
 
-  const profilePageContainer = getQuerySelector('.profile-page-container');
-  const userId = profilePageContainer.getAttribute('data-user-id');
   Axios({
-    apiUrl: `/api/user/profile-details/auth-user/${userId}` // server/routes/user/api.js
+    apiUrl: '/api/user/profile-details/auth-user' // server/routes/user/api.js
   })
     .then(({ authUser }) => {
       displaySmallLoadingSpinner(false, '.modal-content', '.close-modal');

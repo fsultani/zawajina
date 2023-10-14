@@ -1,4 +1,4 @@
-<div class='profile-page-container' data-user-id='${authUser._id}'>
+<div class='profile-page-container'>
   <div class='profile-page-wrapper'>
     <div class='profile-photos-container position-relative' data-user-photos='${user.photos.length}'>
       <div class='${user.photos.length > 0 ? `photos-slider-wrapper` : `no-photos-slider-wrapper`}'>
@@ -9,11 +9,9 @@
               <img src='${photo.secure_url}' />
             </div>
             `).join('') : `
-              <img
-                src='${user.gender === `male` ?
+            <img src='${user.gender === `male` ?
                 `/static/assets/icons/male_profile.jpeg` :
-                `/static/assets/icons/female_profile.jpeg`}'
-              />
+                `/static/assets/icons/female_profile.jpeg`}' />
             `}
           </div>
           <div class='dots-wrapper'>
@@ -55,24 +53,19 @@
           <div class='block-report-user-dropdown-content'>
             <div class='arrow'></div>
             <div class='inner-content'>
-              <div id='block-user' data-user-is-blocked='${userIsBlocked}' onclick="handleBlockUser('${user._id}')"></div>
+              <div id='block-user' onclick="handleBlockUser('${user._id}', '${user.name}')">
+                Block
+              </div>
               <div onclick="handleReportUser('${user._id}', '${user.name}')">Report</div>
             </div>
           </div>
         </div>
       </div>
       <div class='contact-wrapper'>
-        <button
-          onclick="handleGoToConversation('${user._id}')"
-          class='message-button'
-        >
+        <button onclick="handleGoToConversation('${user._id}')" class='message-button'>
           <i class='far fa-envelope fa-2x'></i>
         </button>
-        <button
-          onclick="handleLikeUser('${user._id}')"
-          class='like-button'
-          data-user-is-liked='${user.userIsLiked}'
-        >
+        <button onclick="handleLikeUser('${user._id}')" class='like-button' data-user-is-liked='${user.userIsLiked}'>
           <i class='like-icon far fa-star fa-2x'></i>
         </button>
       </div>
@@ -84,74 +77,77 @@
         <div class='details-container'>
           <div class='details-wrapper'>
             <span class='details-key'>Ethnicity:</span>
-            <span class='details-value'>${user.ethnicity.length > 0 ? user.ethnicity.map(ethnicity => ethnicity).join(' | ') : 'No Answer'}</span>
+            <span class='details-value'>${user.ethnicity.length > 0 ? user.ethnicity.map(ethnicity => ethnicity).join(`
+              | `) : `No Answer`}</span>
           </div>
           <div class='details-wrapper'>
             <span class='details-key'>Raised in:</span>
-            <span class='details-value'>${user.countryRaisedIn || 'No Answer'}</span>
+            <span class='details-value'>${user.countryRaisedIn || `No Answer`}</span>
           </div>
           <div class='details-wrapper'>
             <span class='details-key'>Conviction:</span>
-            <span class='details-value'>${user.religiousConviction || 'No Answer'}</span>
+            <span class='details-value'>${user.religiousConviction || `No Answer`}</span>
           </div>
           <div class='details-wrapper'>
             <span class='details-key'>Values:</span>
-            <span class='details-value'>${user.religiousValues || 'No Answer'}</span>
+            <span class='details-value'>${user.religiousValues || `No Answer`}</span>
           </div>
           <div class='details-wrapper'>
             <span class='details-key'>Marital Status:</span>
-            <span class='details-value'>${user.maritalStatus || 'No Answer'}</span>
+            <span class='details-value'>${user.maritalStatus || `No Answer`}</span>
           </div>
           <div class='details-wrapper'>
             <span class='details-key'>Education:</span>
-            <span class='details-value'>${user.education || 'No Answer'}</span>
+            <span class='details-value'>${user.education || `No Answer`}</span>
           </div>
           <div class='details-wrapper'>
             <span class='details-key'>Profession:</span>
-            <span class='details-value'>${user.profession || 'No Answer'}</span>
+            <span class='details-value'>${user.profession || `No Answer`}</span>
           </div>
           <div class='details-wrapper'>
             <span class='details-key'>Languages:</span>
-            <span class='details-value'>${user.languages.length > 0 ? user.languages.map(language => language).join('&nbsp;<span>&#9679;</span>&nbsp;') : 'No Answer'}</span>
+            <span class='details-value'>${user.languages.length > 0 ? user.languages.map(language =>
+              language).join(`&nbsp;<span>&#9679;</span>&nbsp;`) : `No Answer`}</span>
           </div>
           <div class='details-wrapper'>
             <span class='details-key'>Prayer Level:</span>
-            <span class='details-value'>${user.prayerLevel || 'No Answer'}</span>
+            <span class='details-value'>${user.prayerLevel || `No Answer`}</span>
           </div>
           ${user.gender === 'female' ? `
-            <div class='details-wrapper'>
-              <span class='details-key'>Hijab:</span>
-              <span class='details-value'>${user.hijab || 'No Answer'}</span>
-            </div>
-            ` : ''
+          <div class='details-wrapper'>
+            <span class='details-key'>Hijab:</span>
+            <span class='details-value'>${user.hijab || `No Answer`}</span>
+          </div>
+          ` : ''
           }
           <div class='details-wrapper'>
             <span class='details-key'>Has children:</span>
-            <span class='details-value'>${user.hasChildren || 'No Answer'}</span>
+            <span class='details-value'>${user.hasChildren || `No Answer`}</span>
           </div>
           <div class='details-wrapper'>
             <span class='details-key'>Wants children:</span>
-            <span class='details-value'>${user.wantsChildren || 'No Answer'}</span>
+            <span class='details-value'>${user.wantsChildren || `No Answer`}</span>
           </div>
           <div class='details-wrapper'>
             <span class='details-key'>Height:</span>
-            <span class='details-value'>${user.height || 'No Answer'}</span>
+            <span class='details-value'>${user.height || `No Answer`}</span>
           </div>
           <div class='details-wrapper'>
             <span class='details-key'>Can relocate:</span>
-            <span class='details-value'>${user.canRelocate || 'No Answer'}</span>
+            <span class='details-value'>${user.canRelocate || `No Answer`}</span>
           </div>
           <div class='details-wrapper'>
             <span class='details-key'>Diet:</span>
-            <span class='details-value'>${user.diet || 'No Answer'}</span>
+            <span class='details-value'>${user.diet || `No Answer`}</span>
           </div>
           <div class='details-wrapper'>
             <span class='details-key'>Smokes:</span>
-            <span class='details-value'>${user.smokes || 'No Answer'}</span>
-          </div> 
+            <span class='details-value'>${user.smokes || `No Answer`}</span>
+          </div>
           <div class='details-wrapper'>
             <span class='details-key'>Interests:</span>
-            <span class='details-value'>${user.hobbies.length > 0 ? user.hobbies.map(hobby => hobby).join('&nbsp;<span>&#9679;</span>&nbsp;') : 'No Answer'}</span>
+            <span class='details-value'>${user.hobbies.length > 0 ? user.hobbies.map(hobby =>
+              hobby).join(`&nbsp;<span>&#9679;</span>&nbsp;`) : `No Answer`}</span>
           </div>
         </div>
       </div>
@@ -160,14 +156,14 @@
     <div class='about-me position-relative'>
       <div>
         <h5>About me</h5>
-        <p>${user.aboutMe || 'No Answer'}</p>
+        <p>${user.aboutMe || `No Answer`}</p>
       </div>
     </div>
 
     <div class='about-my-match position-relative'>
       <div>
         <h5>About my match</h5>
-        <p>${user.aboutMyMatch || 'No Answer'}</p>
+        <p>${user.aboutMyMatch || `No Answer`}</p>
       </div>
     </div>
   </div>

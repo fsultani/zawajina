@@ -1,16 +1,16 @@
-const handleLikeUser = userId => {
+const handleLikeUser = memberId => {
   axios
     .put('/api/user/like', {
-      userId,
+      memberId,
     })
     .then(({ data }) => {
-      const likeButton = getQuerySelector('.like-button');
+      const likeButton = document.querySelector('.like-button');
       const userIsLiked = data.userIsLiked;
 
       likeButton.style.cssText = `
-        background-color: ${userIsLiked ? '#ffffff' : '#008cff'};
-        color: ${userIsLiked ? '#008cff' : '#ffffff'};
-        border: ${userIsLiked ? 'solid 1px #008cff' : 'transparent'};
+        background-color: ${userIsLiked ? '#ffffff' : 'var(--color-green);'};
+        color: ${userIsLiked ? 'var(--color-green);' : '#ffffff'};
+        border: ${userIsLiked ? 'solid 1px var(--color-green);' : 'transparent'};
       `;
 
       if (userIsLiked) {

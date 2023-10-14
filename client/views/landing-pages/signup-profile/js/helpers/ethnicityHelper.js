@@ -102,15 +102,14 @@
         .querySelector(`#remove-ethnicity-${data.length - 1}`)
         .getBoundingClientRect();
 
-      document.querySelector('.ethnicity').style.cssText = `padding-left: ${
-        locationElement.x - selectionElement.x + 30
-      }px`;
+      document.querySelector('.ethnicity').style.cssText = `padding-left: ${locationElement.x - selectionElement.x + 30
+        }px`;
       ethnicityInput.focus();
 
-      removeEthnicitySelection();
+      removeSelection();
     } else {
       document.querySelector('#ethnicityInput').disabled = true;
-      removeEthnicitySelection();
+      removeSelection();
     }
 
     closeAllLists('#ethnicityInput');
@@ -137,10 +136,10 @@
     }
   };
 
-  const removeEthnicitySelection = () => {
+  const removeSelection = () => {
     document.querySelectorAll('.user-ethnicity-remove').forEach(element => {
-      element.addEventListener('click', el => {
-        const elementId = el.currentTarget.id.split('-')[2];
+      element.addEventListener('click', event => {
+        const elementId = event.currentTarget.id.split('-')[2];
         userEthnicityResults.splice(elementId, 1);
         renderEthnicity(userEthnicityResults);
       });
@@ -163,7 +162,7 @@
   });
 
   ethnicityResults.addEventListener('click', event => {
-    const value = event.target.id;
+    const value = event.target.closest('div').id;
     const ethnicitySelection = value;
     ethnicityInput.value = '';
 

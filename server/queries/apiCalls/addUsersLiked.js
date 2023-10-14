@@ -45,33 +45,35 @@ const addUsersLiked = async (userFaridDocumentId, userId) => {
 }
 
 (async () => {
-  await client.connect();
-  const database = client.db('development');
-  await database.command({ ping: 1 });
-  console.log('Connected successfully to server');
+  if (process.env.NODE_ENV === 'development') {
+    await client.connect();
+    const database = client.db('development');
+    await database.command({ ping: 1 });
+    console.log('Connected successfully to server');
 
-  usersCollection = database.collection('users');
-  const allUsersQuery = { name: { $ne: 'Farid' } };
-  let allUsers = await usersCollection.find(allUsersQuery).project({ _id: 1 }).toArray();
+    usersCollection = database.collection('users');
+    const allUsersQuery = { name: { $ne: 'Farid' } };
+    let allUsers = await usersCollection.find(allUsersQuery).project({ _id: 1 }).toArray();
 
-  if (limit > 0) {
-    allUsers = await usersCollection.find(allUsersQuery).project({ _id: 1 }).limit(limit).toArray();
+    if (limit > 0) {
+      allUsers = await usersCollection.find(allUsersQuery).project({ _id: 1 }).limit(limit).toArray();
+    }
+
+    const numberOfUsers = allUsers.length;
+
+    const userFarid = { name: { $eq: 'Farid' } };
+    const userFaridDocument = await usersCollection.findOne(userFarid);
+    const userFaridDocumentId = userFaridDocument._id;
+
+    for (const user of allUsers) {
+      const userId = user._id;
+      await addUsersLiked(userFaridDocumentId, userId);
+
+      const index = allUsers.indexOf(user);
+      console.log(`${index + 1}/${numberOfUsers} users liked`);
+    }
+
+    await client.close();
+    console.log(`Close client`);
   }
-
-  const numberOfUsers = allUsers.length;
-
-  const userFarid = { name: { $eq: 'Farid' } };
-  const userFaridDocument = await usersCollection.findOne(userFarid);
-  const userFaridDocumentId = userFaridDocument._id;
-
-  for (const user of allUsers) {
-    const userId = user._id;
-    await addUsersLiked(userFaridDocumentId, userId);
-
-    const index = allUsers.indexOf(user);
-    console.log(`${index + 1}/${numberOfUsers} users liked`);
-  }
-
-  await client.close();
-  console.log(`Close client`);
 })();

@@ -75,7 +75,7 @@
     countryRaisedInInput.disabled = true;
     closeAllLists('#countryRaisedInInput');
 
-    removeCountrySelection();
+    removeSelection();
   };
 
   const getKeyDirection = (event, callback) => {
@@ -99,8 +99,8 @@
     }
   };
 
-  const removeCountrySelection = () => {
-    document.querySelector('.country-remove').addEventListener('click', element => {
+  const removeSelection = () => {
+    document.querySelector('.country-remove').addEventListener('click', () => {
       document.querySelector('.user-country-content').textContent = '';
       document.querySelector('.display-country').style.display = 'none';
       countryRaisedInInput.placeholder = raisedInputPlaceholder;
@@ -121,7 +121,7 @@
   });
 
   raisedResults.addEventListener('click', event => {
-    const value = event.target.id;
+    const value = event.target.closest('div').id;
     const countrySelection = value;
     countryRaisedInInput.value = '';
     renderCountry(countrySelection);

@@ -4,24 +4,26 @@ const { ObjectId } = require('mongodb');
 const { usersCollection, insertLogs } = require('../../db.js');
 const { uploadToCloudinary, deleteFromCloudinary } = require('../../helpers/cloudinary');
 const upload = require('../../helpers/multer');
+const { calculateImperialHeight, getLastActive } = require('./utils');
 const {
-  calculateImperialHeight,
-  getLastActive,
-} = require('./utils');
-const { escapeHtml, redirectToLogin, returnServerError, camelCaseToTitleCase } = require('../../utils');
+  escapeHtml,
+  redirectToLogin,
+  returnServerError,
+  camelCaseToTitleCase,
+} = require('../../utils');
 
 const router = express.Router();
 
-router.get('/profile-details/auth-user/:userId', async (req, res) => {
+router.get('/profile-details/auth-user', async (req, res) => {
   try {
     let { authUser } = req;
-    const { userId } = req.params;
+    const authUserId = ObjectId(authUser._id);
 
-    if (!authUser || !userId) return res.redirect('/users');
+    if (!authUser) return res.redirect('/users');
 
     const imperialHeight = calculateImperialHeight(authUser.height);
     const userHeight = `${imperialHeight.heightInFeet}'${imperialHeight.heightInInches}" (${authUser.height} cm)`;
-    const lastActive = await getLastActive(userId);
+    const lastActive = await getLastActive(authUserId);
 
     authUser = {
       ...authUser,
@@ -240,8 +242,7 @@ router.put(
 router.put('/profile-details/location', async (req, res) => {
   try {
     const { authUser } = req;
-
-    const userId = authUser._id;
+    const authUserId = ObjectId(authUser._id);
 
     const updatedUserCity = req.body.city;
     const updatedUserState = req.body.state === 'null' ? null : req.body.state;
@@ -249,7 +250,7 @@ router.put('/profile-details/location', async (req, res) => {
 
     if (authUser.country !== updatedUserCountry) {
       usersCollection().findOneAndUpdate({
-        _id: userId,
+        _id: authUserId,
       }, {
         $set: {
           city: updatedUserCity,
@@ -278,7 +279,7 @@ router.put('/profile-details/location', async (req, res) => {
       );
     } else if (authUser.state !== updatedUserState) {
       usersCollection().findOneAndUpdate({
-        _id: userId,
+        _id: authUserId,
       }, {
         $set: {
           city: updatedUserCity,
@@ -305,7 +306,7 @@ router.put('/profile-details/location', async (req, res) => {
       );
     } else if (authUser.city !== updatedUserCity) {
       usersCollection().findOneAndUpdate({
-        _id: userId,
+        _id: authUserId,
       }, {
         $set: {
           city: updatedUserCity,
@@ -337,9 +338,7 @@ router.put('/profile-details/location', async (req, res) => {
 router.put('/profile-details/user-details', async (req, res) => {
   try {
     const { authUser } = req;
-
-    const userId = authUser._id;
-    const currentUserDocument = authUser;
+    const authUserId = ObjectId(authUser._id);
     let updatedUserInfo = {}
 
     function arrayEquals(a, b) {
@@ -366,35 +365,35 @@ router.put('/profile-details/user-details', async (req, res) => {
       userHobbies,
     } = req.body;
 
-    if (religiousConviction !== currentUserDocument.religiousConviction) {
+    if (religiousConviction !== authUser.religiousConviction) {
       updatedUserInfo = {
         ...updatedUserInfo,
         religiousConviction,
       }
     }
 
-    if (religiousValues !== currentUserDocument.religiousValues) {
+    if (religiousValues !== authUser.religiousValues) {
       updatedUserInfo = {
         ...updatedUserInfo,
         religiousValues,
       }
     }
 
-    if (maritalStatus !== currentUserDocument.maritalStatus) {
+    if (maritalStatus !== authUser.maritalStatus) {
       updatedUserInfo = {
         ...updatedUserInfo,
         maritalStatus,
       }
     }
 
-    if (education !== currentUserDocument.education) {
+    if (education !== authUser.education) {
       updatedUserInfo = {
         ...updatedUserInfo,
         education,
       }
     }
 
-    if (profession !== currentUserDocument.profession) {
+    if (profession !== authUser.profession) {
       updatedUserInfo = {
         ...updatedUserInfo,
         profession,
@@ -402,7 +401,7 @@ router.put('/profile-details/user-details', async (req, res) => {
     }
 
     if (userLanguages?.length > 0) {
-      if (userLanguages.length !== currentUserDocument.languages.length || !arrayEquals(userLanguages, currentUserDocument.languages)) {
+      if (userLanguages.length !== authUser.languages.length || !arrayEquals(userLanguages, authUser.languages)) {
         updatedUserInfo = {
           ...updatedUserInfo,
           languages: [...userLanguages]
@@ -410,57 +409,57 @@ router.put('/profile-details/user-details', async (req, res) => {
       }
     }
 
-    if (hasChildren !== currentUserDocument.hasChildren) {
+    if (hasChildren !== authUser.hasChildren) {
       updatedUserInfo = {
         ...updatedUserInfo,
         hasChildren,
       }
     }
 
-    if (wantsChildren !== currentUserDocument.wantsChildren) {
+    if (wantsChildren !== authUser.wantsChildren) {
       updatedUserInfo = {
         ...updatedUserInfo,
         wantsChildren,
       }
     }
 
-    if (prayerLevel !== currentUserDocument.prayerLevel) {
+    if (prayerLevel !== authUser.prayerLevel) {
       updatedUserInfo = {
         ...updatedUserInfo,
         prayerLevel,
       }
     }
 
-    if (hijab !== currentUserDocument.hijab) {
+    if (hijab !== authUser.hijab) {
       updatedUserInfo = {
         ...updatedUserInfo,
         hijab,
       }
     }
 
-    if (canRelocate !== currentUserDocument.canRelocate) {
+    if (canRelocate !== authUser.canRelocate) {
       updatedUserInfo = {
         ...updatedUserInfo,
         canRelocate,
       }
     }
 
-    if (diet !== currentUserDocument.diet) {
+    if (diet !== authUser.diet) {
       updatedUserInfo = {
         ...updatedUserInfo,
         diet,
       }
     }
 
-    if (smokes !== currentUserDocument.smokes) {
+    if (smokes !== authUser.smokes) {
       updatedUserInfo = {
         ...updatedUserInfo,
         smokes,
       }
     }
 
-    if (userHobbies?.length > 0 !== currentUserDocument.hobbies) {
-      if (userHobbies.length !== currentUserDocument.hobbies.length || !arrayEquals(userHobbies, currentUserDocument.hobbies)) {
+    if (userHobbies?.length > 0 !== authUser.hobbies) {
+      if (userHobbies.length !== authUser.hobbies.length || !arrayEquals(userHobbies, authUser.hobbies)) {
         updatedUserInfo = {
           ...updatedUserInfo,
           hobbies: [...userHobbies],
@@ -468,7 +467,7 @@ router.put('/profile-details/user-details', async (req, res) => {
       }
     }
 
-    usersCollection().findOneAndUpdate({ _id: userId }, {
+    usersCollection().findOneAndUpdate({ _id: authUserId }, {
       $set: {
         ...updatedUserInfo,
       },
@@ -523,8 +522,7 @@ router.put('/profile-details/user-details', async (req, res) => {
 router.put('/profile-details/about-me', async (req, res) => {
   try {
     const { authUser } = req;
-
-    const userId = authUser._id;
+    const authUserId = ObjectId(authUser._id);
     const aboutMe = escapeHtml(req.body.aboutMe).trim();
     let accountStatus = authUser._account.admin.accountStatus;
     let userFacingMessage = authUser._account.admin.userFacingMessage;
@@ -534,7 +532,7 @@ router.put('/profile-details/about-me', async (req, res) => {
       userFacingMessage = 'Account under review.  You may still update your account information and password.';
     }
 
-    usersCollection().findOneAndUpdate({ _id: userId }, {
+    usersCollection().findOneAndUpdate({ _id: authUserId, }, {
       $set: {
         aboutMe,
         "_account.admin.accountStatus": accountStatus,
@@ -568,8 +566,7 @@ router.put('/profile-details/about-me', async (req, res) => {
 router.put('/profile-details/about-my-match', async (req, res) => {
   try {
     const { authUser } = req;
-
-    const userId = authUser._id;
+    const authUserId = ObjectId(authUser._id);
     const aboutMyMatch = escapeHtml(req.body.aboutMyMatch).trim();
     let accountStatus = authUser._account.admin.accountStatus;
     let userFacingMessage = authUser._account.admin.userFacingMessage;
@@ -579,7 +576,7 @@ router.put('/profile-details/about-my-match', async (req, res) => {
       userFacingMessage = 'Account under review.  You may still update your account information and password.';
     }
 
-    usersCollection().findOneAndUpdate({ _id: userId }, {
+    usersCollection().findOneAndUpdate({ _id: authUserId, }, {
       $set: {
         aboutMyMatch,
         '_account.admin.accountStatus': accountStatus,
@@ -612,35 +609,35 @@ router.put('/profile-details/about-my-match', async (req, res) => {
 
 router.put('/like', async (req, res) => {
   try {
-    const { authUser } = req;
-    const { userId } = req.body;
+    const authUserId = ObjectId(req.authUser._id);
+    const memberId = ObjectId(req.body.memberId);
 
     let userIsLiked = !!await usersCollection().findOne({
-      _id: ObjectId(authUser._id),
+      _id: authUserId,
       usersLiked: {
-        $in: [ObjectId(userId)]
+        $in: [memberId]
       }
     });
 
     if (!userIsLiked) {
       await usersCollection().findOneAndUpdate({
-        _id: ObjectId(authUser._id)
+        _id: authUserId
       }, {
         $push: {
-          usersLiked: ObjectId(userId),
+          usersLiked: memberId,
         },
       });
 
       await usersCollection().findOneAndUpdate({
-        _id: ObjectId(userId)
+        _id: memberId
       }, {
         $push: {
-          likedByUsers: ObjectId(authUser._id),
+          likedByUsers: ObjectId(authUserId),
         },
       });
 
       const userLiked = await usersCollection().findOne({
-        _id: ObjectId(userId)
+        _id: memberId
       });
 
       return res.status(200).json({
@@ -649,18 +646,18 @@ router.put('/like', async (req, res) => {
       });
     } else {
       await usersCollection().findOneAndUpdate({
-        _id: ObjectId(userId)
+        _id: memberId
       }, {
         $pull: {
-          likedByUsers: ObjectId(authUser._id),
+          likedByUsers: ObjectId(authUserId),
         },
       });
 
       await usersCollection().findOneAndUpdate({
-        _id: ObjectId(authUser._id)
+        _id: authUserId
       }, {
         $pull: {
-          usersLiked: ObjectId(userId),
+          usersLiked: memberId,
         },
       });
 
@@ -676,45 +673,36 @@ router.put('/like', async (req, res) => {
 router.put('/block', async (req, res) => {
   try {
     const authUserId = ObjectId(req.authUser._id);
-    const userId = ObjectId(req.body.userId);
-
-    const user = await usersCollection().findOne({ _id: userId });
-    const userName = user.name;
-
-    const userIsBlocked = !!await usersCollection().findOne({
-      _id: authUserId,
-      blockedUsers: {
-        $in: [userId]
-      }
-    });
-
-    if (userIsBlocked) {
-      await usersCollection().findOneAndUpdate({
-        _id: authUserId,
-      }, {
-        $pull: {
-          blockedUsers: userId,
-        },
-      });
-
-      return res.status(201).send({
-        message: `${userName} has been unblocked`,
-        userIsBlocked: false,
-      });
-    }
+    const memberId = ObjectId(req.body.memberId);
 
     await usersCollection().findOneAndUpdate({
       _id: authUserId,
     }, {
       $push: {
-        blockedUsers: userId,
+        blockedUsers: memberId,
       },
     });
 
-    return res.status(201).send({
-      message: `${userName} has been blocked`,
-      userIsBlocked: true,
+    return res.sendStatus(201);
+  } catch {
+    return res.sendStatus(400);
+  }
+})
+
+router.put('/unblock', async (req, res) => {
+  try {
+    const authUserId = ObjectId(req.authUser._id);
+    const memberId = ObjectId(req.body.memberId);
+
+    await usersCollection().findOneAndUpdate({
+      _id: authUserId,
+    }, {
+      $pull: {
+        blockedUsers: memberId,
+      },
     });
+
+    return res.sendStatus(201);
   } catch {
     return res.sendStatus(400);
   }
@@ -724,15 +712,15 @@ router.put('/report', async (req, res) => {
   try {
     const authUser = req.authUser;
     const authUserId = ObjectId(authUser._id);
-    const userId = ObjectId(req.body.userId);
+    const memberId = ObjectId(req.body.memberId);
 
     const { reason, additionalInformation } = req.body;
 
-    const user = await usersCollection().findOne({ _id: userId });
+    const user = await usersCollection().findOne({ _id: memberId });
     const userName = user.name;
 
     const userWasReported = await usersCollection().find({
-      _id: userId,
+      _id: memberId,
       'reportedBy._id': {
         $exists: true,
         $eq: authUserId,
@@ -762,7 +750,7 @@ router.put('/report', async (req, res) => {
     }
 
     await usersCollection().findOneAndUpdate({
-      _id: userId,
+      _id: memberId,
     }, {
       $push: {
         reportedBy,

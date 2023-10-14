@@ -29,10 +29,7 @@ router.get('/:conversationId?', async (req, res) => {
       '/static/client/views/app/_partials/app-nav.css',
     ];
 
-    const scriptsArray = [
-      '/static/assets/apis/axios.min.js',
-      '/static/assets/apis/js.cookie.min.js',
-    ];
+    const scriptsArray = [];
 
     const styles = getAllFiles({ directoryPath, fileType: 'css', filesArray: stylesArray });
     const scripts = getAllFiles({ directoryPath, fileType: 'js', filesArray: scriptsArray });
@@ -653,8 +650,6 @@ router.post('/api/new-message', async (req, res) => {
     `;
 
     await sendEmail({ emailAddress: otherUser.email, subject, emailBody });
-    // if (process.env.NODE_ENV !== 'development') {
-    // }
 
     res.status(200).send({
       allConversationsSidebar,

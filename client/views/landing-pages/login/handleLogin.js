@@ -1,5 +1,5 @@
-const userEmail = getQuerySelector('#userEmail');
-const userPassword = getQuerySelector('#userPassword');
+const userEmail = getQuerySelector('.userEmail');
+const userPassword = getQuerySelector('.userPassword');
 
 let handleEmailValidationValue = false;
 let handlePasswordValidationValue = false;
@@ -9,35 +9,23 @@ const handleEmailValidation = email => {
 
   if (!emailRegex.test(email)) {
     handleEmailValidationValue = false;
-    getQuerySelector('#email-wrapper').style.cssText = `border-bottom: 2px solid red;`
-    getQuerySelector('#email-span').classList.remove('input-focus')
-    getQuerySelector('#email-error').innerHTML = 'Invalid email';
-    return;
+    inputElementError('.userEmail', true, 'Invalid email');
+  } else if (emailRegex.test(email)) {
+    handleEmailValidationValue = true;
+    inputElementError('.userEmail', false, '');
   }
-
-  getQuerySelector('#email-wrapper').style.cssText = `border-bottom: 2px solid #adadad;`
-  getQuerySelector('#email-span').classList.add('input-focus')
-  getQuerySelector('#email-error').innerHTML = '';
-
-  handleEmailValidationValue = true;
 };
 
 const handlePasswordValidation = password => {
   if (!password.length) {
-    getQuerySelector('#password-wrapper').style.cssText = `border-bottom: 2px solid red;`
-    getQuerySelector('#password-span').classList.remove('input-focus');
-    getQuerySelector('#password-error').innerHTML = 'Password cannot be blank';
     handlePasswordValidationValue = false;
+    inputElementError('.userPassword', true, '');
     return;
   }
 
-  getQuerySelector('#password-wrapper').style.cssText = `border-bottom: 2px solid #adadad;`
-  getQuerySelector('#password-span').classList.add('input-focus');
-  getQuerySelector('#password-error').innerHTML = '';
-
+  inputElementError('.userPassword', false, '');
   handlePasswordValidationValue = true;
 };
-
 
 const handleLogin = async event => {
   event.preventDefault();
@@ -50,15 +38,23 @@ const handleLogin = async event => {
   if (handleEmailValidationValue && handlePasswordValidationValue) {
     isSubmitting('form-button-loading-spinner-wrapper', true);
 
+    const fingerprint = await getCurrentBrowserFingerPrint();
+
     Axios({
       method: 'post',
       apiUrl: '/api/auth-session/login', // server/routes/auth/login.js
       params: {
         email,
-        password
+        password,
+        fingerprint,
       }
     })
       .then(res => {
+        if (res.data?.userAccountStatus === 'deleted') {
+          isSubmitting('form-button-loading-spinner-wrapper', false);
+          return inputElementError('.userPassword', false, 'Account was deleted.  Contact us to reopen it.');
+        }
+
         const { cookie, url } = res.data;
         Cookies.set(cookie.type, cookie.value, { sameSite: 'strict' });
         window.location.pathname = url;
@@ -67,11 +63,7 @@ const handleLogin = async event => {
         isSubmitting('form-button-loading-spinner-wrapper', false);
 
         // For any login errors, only display 'Invalid password' for security purposes
-        getQuerySelector('#password-wrapper').style.cssText = `border-bottom: 2px solid red;`
-        getQuerySelector('#password-wrapper').style.cssText = `border-bottom: 2px solid red;`
-        getQuerySelector('#password-span').classList.remove('input-focus');
-
-        getQuerySelector('#password-error').innerHTML = 'Invalid Password';
+        inputElementError('.userPassword', true, 'Invalid Password');
       });
   }
 };

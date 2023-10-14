@@ -1,12 +1,12 @@
 <div class='flex flex-wrap justify-content-center align-items-flex-start page-container background-green'>
   <div class='box-shadow-1 page-wrapper'>
-    <form name='forgotPassword' onsubmit='handleResendVerificationCode(event)' novalidate>
+    <form name='resendEmail' onsubmit='handleResendVerificationCode(event)' novalidate>
       <h1 class='form-title'>Enter email address</h1>
 
-      <div class='input-wrapper position-relative' id='email-wrapper'>
-        <input class='input-field' id='userEmail' required type='email' />
-        <span class='input-focus' id='email-span' data-placeholder='Email'></span>
-        <div id='email-error'></div>
+      <div class='form-input-wrapper userEmail-wrapper'>
+        <input type='email' class='userEmail' required>
+        <span class='userEmail-label'>Email</span>
+        <div class='userEmail-error'></div>
       </div>
 
       <div class='flex justify-content-center flex-wrap form-button-container'>

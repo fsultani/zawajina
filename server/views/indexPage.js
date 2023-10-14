@@ -9,8 +9,6 @@ module.exports.indexPage = res => res.render('landing-pages/_layouts/index', {
       '/static/client/views/landing-pages/home/styles.css',
     ],
     scripts: [
-      'https://unpkg.com/scrollreveal',
-      '/static/assets/apis/axios.min.js',
       '/static/client/views/landing-pages/home/animations.js',
     ],
   },

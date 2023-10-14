@@ -103,7 +103,7 @@ const renderSidebarConversationButton = conversation => (
         <p class='sidebar-message-preview ${conversation.lastMessageWasRead ? `read-message` : `unread-message`}'>${conversation.lastMessagePreview}</p>
       </div>
 
-      <div class='sidebar-message-counter ${conversation.unreadMessagesCount > 0 ? 'counter-styles' : ''}'>
+      <div class='sidebar-message-counter ${conversation.unreadMessagesCount > 0 ? 'counter-styles' : ''}' style='padding: 0 ${conversation.unreadMessagesCount > 9 ? 7 : 0}px'>
         <p>${conversation.unreadMessagesCount > 0 ? conversation.unreadMessagesCount : ''}</p>
       </div>
 
@@ -227,40 +227,40 @@ const handleSendMessage = event => {
       otherUserId,
     }
   })
-  .then(({ data }) => {
-    document.querySelector('[name=messageText]').focus();
+    .then(({ data }) => {
+      document.querySelector('[name=messageText]').focus();
 
-    const allContainers = document.querySelectorAll('.message-time')
-    const lastElement = allContainers[allContainers.length - 1]
+      const allContainers = document.querySelectorAll('.message-time')
+      const lastElement = allContainers[allContainers.length - 1]
 
-    lastElement.innerHTML = `
+      lastElement.innerHTML = `
       ${data.messageDate ?? ''}&nbsp;-&nbsp;
       <span class='delivery-status-delivered'></span>
       <span class='delivery-status-delivered'></span>
     `;
 
-    const allConversationsSidebar = data.allConversationsSidebar.map(conversation => renderSidebarConversationButton(conversation));
+      const allConversationsSidebar = data.allConversationsSidebar.map(conversation => renderSidebarConversationButton(conversation)).join('');
 
-    if (conversationId !== data.conversationId) {
-      conversationId = data.conversationId;
-      const pathname = `/messages/${conversationId}`;
-      window.location.pathname = pathname;
-      window.history.pushState({ conversationId }, '', pathname);
-    }
+      if (conversationId !== data.conversationId) {
+        conversationId = data.conversationId;
+        const pathname = `/messages/${conversationId}`;
+        window.location.pathname = pathname;
+        window.history.pushState({ conversationId }, '', pathname);
+      }
 
-    if (!isMobileDevice) {
-      document.querySelector('.sidebar-conversations-wrapper').innerHTML = allConversationsSidebar;
-      sidebarMessageContainerBorderBottom();
+      if (!isMobileDevice) {
+        document.querySelector('.sidebar-conversations-wrapper').innerHTML = allConversationsSidebar;
+        sidebarMessageContainerBorderBottom();
 
-      document.querySelector('.sidebar-conversations-wrapper').scroll({
-        top: 0,
-        behavior: 'smooth',
-      });
+        document.querySelector('.sidebar-conversations-wrapper').scroll({
+          top: 0,
+          behavior: 'smooth',
+        });
 
-      highlightActiveConversation(conversationId);
-    }
-  })
-  .catch(error => toast('error', error.response?.data.message ?? 'There was an error'))
+        highlightActiveConversation(conversationId);
+      }
+    })
+    .catch(error => toast('error', error.response?.data.message ?? 'There was an error'))
 };
 
 const handleSidebarConversationsContainerScroll = () => {
@@ -280,7 +280,7 @@ const handleSidebarConversationsContainerScroll = () => {
         apiUrl: `/messages/api/conversations?page=${pageValue}` // server/routes/messages.js
       })
         .then(data => {
-          const allConversationsSidebar = data.allConversationsSidebar.map(conversation => renderSidebarConversationButton(conversation));
+          const allConversationsSidebar = data.allConversationsSidebar.map(conversation => renderSidebarConversationButton(conversation)).join('');
 
           document.querySelector('.sidebar-conversations-wrapper').innerHTML += allConversationsSidebar;
           sidebarMessageContainerBorderBottom();
@@ -482,7 +482,7 @@ const renderSidebar = () => {
 
     if (isMobileDevice) {
       if (data.allConversationsSidebar.length > 0) {
-        const allConversationsSidebar = data.allConversationsSidebar.map(conversation => renderSidebarConversationButton(conversation));
+        const allConversationsSidebar = data.allConversationsSidebar.map(conversation => renderSidebarConversationButton(conversation)).join('');
 
         document.querySelector('.sidebar-conversations-container').innerHTML = `
           <div class='search-box-container'>
@@ -517,7 +517,7 @@ const renderSidebar = () => {
         getQuerySelector('.conversation-wrapper').style.height = '100%';
       }
     } else {
-      const allConversationsSidebar = data.allConversationsSidebar.map(conversation => renderSidebarConversationButton(conversation));
+      const allConversationsSidebar = data.allConversationsSidebar.map(conversation => renderSidebarConversationButton(conversation)).join('');
 
       document.querySelector('.sidebar-conversations-wrapper').innerHTML = allConversationsSidebar;
 

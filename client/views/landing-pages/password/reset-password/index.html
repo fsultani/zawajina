@@ -4,24 +4,23 @@
     <form name='resetPasswordForm' onsubmit='handleResetPassword(event)' novalidate>
       <h1 class='form-title'>Reset Password</h1>
 
-      <div class='input-wrapper position-relative password-one-margin'>
-        <input class='input-field userPassword' data-userPassword='userPassword' id='user-password-one' required type='password' />
-        <span class='input-focus animate-border-bottom' id='password' data-placeholder='New Password'></span>
-        <span toggle='#password' class='field-icon' onclick='togglePassword(1)'>
-          <i class='fa fa-eye-slash password-one-eye'></i>
-        </span>
+      <div class='form-input-wrapper userPassword-wrapper'>
+        <input type='password' class='userPassword' id='user-password-one' required>
+        <span class='userPassword-label'>New Password</span>
+        <div toggle='#password' class='field-icon' onclick='togglePassword(1)'>
+          <i class='fa fa-eye-slash password-one-eye' id='passwordEye'></i>
+        </div>
       </div>
 
-      <div class='input-wrapper position-relative password-two-margin'>
-        <input class='input-field userPassword' data-userPassword='userPassword' id='user-password-two' required type='password' />
-        <span class='input-focus animate-border-bottom' id='password' data-placeholder='Confirm New Password'></span>
-        <span toggle='#password' class='field-icon' onclick='togglePassword(2)'>
-          <i class='fa fa-eye-slash password-two-eye'></i>
-        </span>
-      </div>
-
-      <div class='password-helper-text'>
-        Password must be at least 8 characters long
+      <div class='form-input-wrapper userPassword-wrapper'>
+        <input type='password' class='userPassword' id='user-password-two' required>
+        <span class='userPassword-label'>Confirm New Password</span>
+        <div toggle='#password' class='field-icon' onclick='togglePassword(2)'>
+          <i class='fa fa-eye-slash password-two-eye' id='passwordEye'></i>
+        </div>
+        <div class='userPassword-helper-text'>
+          Password must be at least 8 characters long
+        </div>
       </div>
 
       <div class='flex justify-content-center flex-wrap form-button-container'>
@@ -32,7 +31,7 @@
             </button>
           </div>
         </div>
-      </div> 
+      </div>
     </form>
   </div>
 </div>

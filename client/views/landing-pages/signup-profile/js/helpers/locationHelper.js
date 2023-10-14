@@ -139,7 +139,7 @@
     locationInput.setAttribute('data-state', state);
     locationInput.setAttribute('data-country', country);
 
-    removeLocationSelection();
+    removeSelection();
   };
 
   const getKeyDirection = (event, callback) => {
@@ -163,7 +163,7 @@
     }
   };
 
-  const removeLocationSelection = () => {
+  const removeSelection = () => {
     document.querySelector('.user-location-remove').addEventListener('click', () => {
       locationInput.removeAttribute('data-city');
       locationInput.removeAttribute('data-state');
@@ -191,7 +191,7 @@
   });
 
   locationResults.addEventListener('click', event => {
-    const inputTag = event.target.dataset;
+    const inputTag = event.target.closest('div').dataset;
     if (inputTag?.city) {
       const city = inputTag.city;
       const state = inputTag.state;

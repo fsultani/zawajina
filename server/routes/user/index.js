@@ -8,18 +8,30 @@ const { calculateImperialHeight, getLastActive } = require('./utils.js');
 const { getAllFiles, redirectToLogin, camelCaseToTitleCase } = require('../../utils');
 
 router.get('/:userId', async (req, res) => {
-	try {
-		const { authUser, allConversationsCount } = req;
+  try {
+    const { authUser, allConversationsCount } = req;
 
-		const userId = ObjectId(req.params.userId);
+    const userId = ObjectId(req.params.userId);
     const authUserId = ObjectId(authUser._id);
-		let user;
+    let user;
 
-		if (userId !== 'undefined') {
+    if (userId !== 'undefined') {
+      const userIsBlocked = !!await usersCollection().findOne({
+        _id: authUserId,
+        blockedUsers: {
+          $in: [userId]
+        }
+      });
+
+      if (userIsBlocked) return res.redirect('/users');
+
       const userDocumentResponse = await usersCollection().aggregate([
         {
           $match: {
-            _id: userId
+            _id: userId,
+            blockedUsers: {
+              $nin: [authUserId],
+            },
           }
         },
         {
@@ -51,19 +63,19 @@ router.get('/:userId', async (req, res) => {
       ]).toArray();
 
       user = userDocumentResponse[0];
-		}
+    }
 
-		if (!user) return res.redirect('/users');
+    if (!user) return res.redirect('/users');
 
-		const imperialHeight = calculateImperialHeight(user.height);
-		const userHeight = `${imperialHeight.heightInFeet}'${imperialHeight.heightInInches}" (${user.height} cm)`;
+    const imperialHeight = calculateImperialHeight(user.height);
+    const userHeight = `${imperialHeight.heightInFeet}'${imperialHeight.heightInInches}" (${user.height} cm)`;
 
-		const userIsLiked = !!await usersCollection().findOne({
-			_id: ObjectId(authUser._id),
-			usersLiked: {
-				$in: [userId]
-			}
-		});
+    const userIsLiked = !!await usersCollection().findOne({
+      _id: ObjectId(authUser._id),
+      usersLiked: {
+        $in: [userId]
+      }
+    });
 
     const hijab = user.hijab ? camelCaseToTitleCase(user.hijab).split(' ')[1] : null;
     const hasChildren = camelCaseToTitleCase(user.hasChildren).split(' ')[2];
@@ -84,49 +96,38 @@ router.get('/:userId', async (req, res) => {
 
     const lastActive = await getLastActive(userId);
 
-    const userIsBlocked = !!await usersCollection().findOne({
-      _id: authUserId,
-      blockedUsers: {
-        $in: [userId]
-      }
-    });
-
     const directoryPath = ['client/views/app/profile'];
 
     const stylesArray = [
-			'/static/assets/styles/fontawesome-free-5.15.4-web/css/all.css',
-			'/static/client/views/app/_partials/app-nav.css',
-		];
+      '/static/assets/styles/fontawesome-free-5.15.4-web/css/all.css',
+      '/static/client/views/app/_partials/app-nav.css',
+    ];
 
-    const scriptsArray = [
-			'/static/assets/apis/axios.min.js',
-			'/static/assets/apis/js.cookie.min.js',
-		];
+    const scriptsArray = [];
 
     const allStyles = getAllFiles({ directoryPath, fileType: 'css', filesArray: stylesArray });
     const scripts = getAllFiles({ directoryPath, fileType: 'js', filesArray: scriptsArray });
 
     const styles = allStyles.filter(item => !item.split('/').includes('modal'))
 
-		res.render('app/_layouts/index', {
-			locals: {
-				title: 'Zawajina',
-				styles,
-				scripts,
-				authUser,
-				allConversationsCount,
-				lastActive,
-				user,
-        userIsBlocked,
-			},
-			partials: {
-				nav: 'app/_partials/app-nav',
-				body: 'app/profile/index',
-			},
-		});
-	} catch (error) {
+    res.render('app/_layouts/index', {
+      locals: {
+        title: 'Zawajina',
+        styles,
+        scripts,
+        authUser,
+        allConversationsCount,
+        lastActive,
+        user,
+      },
+      partials: {
+        nav: 'app/_partials/app-nav',
+        body: 'app/profile/index',
+      },
+    });
+  } catch (error) {
     redirectToLogin(error, res);
-	}
+  }
 });
 
 module.exports = router;

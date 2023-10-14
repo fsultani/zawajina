@@ -143,9 +143,9 @@ router.post('/reset', async (req, res) => {
       expiresIn: '1 day',
     });
 
-    res.status(201).json({ token, url: '/users?' });
+    res.status(201).json({ token, url: '/users' });
   } catch (error) {
-    console.log(`error - server/routes/password/api.js:157\n`, error);
+    console.log(`error - server/routes/password/api.js:147\n`, error);
 
     if (error.name === 'TokenExpiredError') return res.status(401).send({
       errorMessage: `

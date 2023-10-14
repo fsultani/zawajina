@@ -142,8 +142,8 @@
 
   const removeEthnicitySelection = () => {
     document.querySelectorAll('.user-ethnicity-remove').forEach(element => {
-      element.addEventListener('click', el => {
-        const elementId = el.currentTarget.id.split('-')[2];
+      element.addEventListener('click', event => {
+        const elementId = event.currentTarget.id.split('-')[2];
         userEthnicityResults.splice(elementId, 1);
         renderEthnicity(userEthnicityResults);
       });
@@ -168,7 +168,7 @@
   });
 
   ethnicityResults.addEventListener('click', event => {
-    const value = event.target.id;
+    const value = event.target.closest('div').id;
     const ethnicity = value;
     ethnicityInput.value = '';
 

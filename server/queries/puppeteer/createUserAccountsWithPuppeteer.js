@@ -136,7 +136,7 @@ const createAccount = async (newEmail = false) => {
 
     //   Promise.all(usersCursor.map(async (user, index) => {
     //     const userId = user._id.toString();
- 
+
     //     await cloudinary.v2.api.resources({ max_results: 10 }, async (resourcesError, resourcesResults) => {
     //       if (resourcesError) return resourcesError;
     //       if (resourcesResults.resources.length > 0) {
@@ -149,7 +149,7 @@ const createAccount = async (newEmail = false) => {
     //         });
     //       }
     //     });
- 
+
     //     await cloudinary.v2.api.root_folders(async (root_foldersError, root_foldersResults) => {
     //       if (root_foldersError) return root_foldersError;
     //       if (root_foldersResults.folders.length > 0) {
@@ -162,9 +162,9 @@ const createAccount = async (newEmail = false) => {
     //         });
     //       }
     //     });
- 
+
     //     await usersCollection.deleteOne({ _id: user._id });
- 
+
     //     const logsCursor = await logsCollection.findOne({ _id: user._id });
 
     //     if (logsCursor) {
@@ -173,13 +173,13 @@ const createAccount = async (newEmail = false) => {
     //     }
     //   }));
     // }
- 
+
     const allPages = await browser.pages();
     const page = allPages[0];
- 
+
     const keyboardTypeDelay = 25;
     const waitForTimeoutValue = 100;
- 
+
     await page.setViewport({ width: 1280, height: 1400 });
 
     /*
@@ -187,13 +187,13 @@ const createAccount = async (newEmail = false) => {
       const mobilePhone = puppeteer.devices['iPhone X']
       await page.emulate(mobilePhone)
      */
- 
+
     await page.goto('http://localhost:3000/signup');
- 
+
     const userName = gender === 'female' ?
       femaleNames[Math.floor(Math.random() * femaleNames.length)] :
       maleNames[Math.floor(Math.random() * maleNames.length)];
- 
+
     const name = userName.toLowerCase();
 
     const nameChoice = {
@@ -206,42 +206,42 @@ const createAccount = async (newEmail = false) => {
       const randomNumber = Math.floor(Math.random() * 90000) + 10000;
       nameChoice.email = `${name + randomNumber}@me.com`;
     }
- 
+
     const yesNoOptions = ['Yes', 'No'];
     const yesNoDoesNotMatterOptions = ['Yes', 'No', 'Maybe'];
- 
+
     await page.focus('.username');
     await page.keyboard.type(nameChoice.name, { delay: keyboardTypeDelay });
- 
+
     await page.focus('.userEmail');
     await page.keyboard.type(nameChoice.email, { delay: keyboardTypeDelay });
- 
+
     await page.focus('.userPassword');
     await page.keyboard.type('asdfasdf', { delay: keyboardTypeDelay });
- 
+
     await page.click('button[type="submit"]');
     await page.waitForTimeout(waitForTimeoutValue);
- 
+
     await page.waitForNavigation();
     await page.waitForResponse(response => response.url());
- 
+
     const user = await usersCollection.findOne({ email: nameChoice.email });
     const emailVerificationToken = user.emailVerificationToken.toString();
- 
-    await page.focus('#verification-token');
+
+    await page.focus('.verification');
     await page.keyboard.type(emailVerificationToken, { delay: keyboardTypeDelay });
     await page.waitForTimeout(waitForTimeoutValue);
- 
+
     await page.click('button[type="submit"]');
     await page.waitForTimeout(waitForTimeoutValue);
- 
+
     await page.waitForNavigation();
     await page.waitForResponse(response => response.url());
 
     const birthMonth = birthMonths[Math.floor(Math.random() * birthMonths.length)];
     const birthDay = Math.floor(Math.random() * 31).toString();
     const birthYear = (1999 - Math.floor(Math.random() * 30)).toString();
- 
+
     await page.waitForTimeout(waitForTimeoutValue);
     await page.waitForSelector('#dob-month');
     await page.select('#dob-month > .select-wrapper', birthMonth);
@@ -249,17 +249,17 @@ const createAccount = async (newEmail = false) => {
     await page.select('#dob-day > .select-wrapper', birthDay);
     await page.waitForTimeout(waitForTimeoutValue);
     await page.select('#dob-year > .select-wrapper', birthYear);
- 
+
     await page.waitForTimeout(waitForTimeoutValue);
     await (await page.waitForSelector(`label[for=${gender}]`)).click();
     await page.waitForTimeout(waitForTimeoutValue);
- 
+
     if (gender === 'female') {
       await page.waitForSelector('.hijab');
       await page.select('.hijab', `hijab${yesNoOptions[Math.floor(Math.random() * 2)]}`);
       await page.waitForTimeout(waitForTimeoutValue);
     }
- 
+
     const allLocations = worldCities.default.getAllCities();
     const location = allLocations.filter(location => {
       return location.country === 'United States';
@@ -268,9 +268,9 @@ const createAccount = async (newEmail = false) => {
       // return location.country === 'Saudi Arabia' || location.country === 'United Arab Emirates';
       // return location.country === 'United States' || location.country === 'Saudi Arabia' || location.country === 'United Arab Emirates';
     });
- 
+
     const selectLocation = location[Math.floor(Math.random() * location.length)];
- 
+
     await page.focus('#locationInput');
     await page.keyboard.type(selectLocation.city, { delay: keyboardTypeDelay });
     await page.waitForSelector('.autocomplete-items');
@@ -279,7 +279,7 @@ const createAccount = async (newEmail = false) => {
     await page.waitForTimeout(waitForTimeoutValue);
     await page.keyboard.press('Enter');
     await page.waitForTimeout(waitForTimeoutValue);
- 
+
     await page.focus('#countryRaisedInInput');
     await page.keyboard.type('states', { delay: keyboardTypeDelay });
     await page.waitForSelector('.autocomplete-items');
@@ -288,11 +288,11 @@ const createAccount = async (newEmail = false) => {
     await page.waitForTimeout(waitForTimeoutValue);
     await page.keyboard.press('Enter');
     await page.waitForTimeout(waitForTimeoutValue);
- 
+
     const allEthnicities = ethnicities.default.getAllEthnicities();
     const randomEthnicity = Math.floor(Math.random() * allEthnicities.length);
     const ethnicity = allEthnicities[randomEthnicity];
- 
+
     await page.focus('#ethnicityInput');
     await page.keyboard.type(ethnicity, { delay: keyboardTypeDelay });
     await page.waitForSelector('.autocomplete-items');
@@ -301,10 +301,10 @@ const createAccount = async (newEmail = false) => {
     await page.waitForTimeout(waitForTimeoutValue);
     await page.keyboard.press('Enter');
     await page.waitForTimeout(waitForTimeoutValue);
- 
+
     const allLanguages = languagesList.default.getAllLanguages();
     const languages = allLanguages[Math.floor(Math.random() * allLanguages.length)];
- 
+
     await page.focus('#languageInput');
     await page.keyboard.type(languages, { delay: keyboardTypeDelay });
     await page.waitForSelector('.autocomplete-items');
@@ -313,77 +313,77 @@ const createAccount = async (newEmail = false) => {
     await page.waitForTimeout(waitForTimeoutValue);
     await page.keyboard.press('Enter');
     await page.waitForTimeout(waitForTimeoutValue);
- 
+
     const allReligiousConvictions = ['Sunni', 'Shia', 'Just Muslim'];
     const religiousConviction = allReligiousConvictions[Math.floor(Math.random() * allReligiousConvictions.length)];
- 
+
     await page.waitForSelector('.religious-conviction');
     await page.select('.religious-conviction', religiousConviction);
     await page.waitForTimeout(waitForTimeoutValue);
- 
+
     const allReligiousValues = ['Conservative', 'Moderate', 'Liberal'];
     const religiousValues = allReligiousValues[Math.floor(Math.random() * allReligiousValues.length)];
- 
+
     await page.waitForSelector('.religious-values');
     await page.select('.religious-values', religiousValues);
     await page.waitForTimeout(waitForTimeoutValue);
- 
+
     const allMaritalStatuses = ['Never Married', 'Divorced', 'Widowed'];
     const maritalStatus = allMaritalStatuses[Math.floor(Math.random() * allMaritalStatuses.length)];
- 
+
     await page.waitForSelector('.marital-status');
     await page.select('.marital-status', maritalStatus);
     await page.waitForTimeout(waitForTimeoutValue);
- 
+
     const allEducationLevels = ['High School', `Bachelor's degree`, `Master's degree`, 'Doctoral degree']
     const education = allEducationLevels[Math.floor(Math.random() * allEducationLevels.length)];
- 
+
     await page.waitForSelector('.education');
     await page.select('.education', education);
     await page.waitForTimeout(waitForTimeoutValue);
- 
+
     const profession = professionsList[Math.floor(Math.random() * professionsList.length)];
- 
+
     await page.waitForSelector('.profession');
     await page.select('.profession', profession);
     await page.waitForTimeout(waitForTimeoutValue);
- 
+
     const height = heights[Math.floor(Math.random() * heights.length)];
- 
+
     await page.waitForSelector('.user-height');
     await page.select('.user-height', height.toString());
     await page.waitForTimeout(waitForTimeoutValue);
- 
+
     await page.waitForSelector('.can-relocate');
     await page.select('.can-relocate', `canRelocate${yesNoOptions[Math.floor(Math.random() * 2)]}`);
     await page.waitForTimeout(waitForTimeoutValue);
- 
+
     const allDiets = ['Halal only', 'Halal when possible', 'Eat anything', 'Eat anything except pork', 'Vegetarian'];
     const diet = allDiets[Math.floor(Math.random() * allDiets.length)];
- 
+
     await page.waitForSelector('.diet');
     await page.select('.diet', diet);
     await page.waitForTimeout(waitForTimeoutValue);
- 
+
     await page.waitForSelector('.has-children');
     await page.select('.has-children', `hasChildren${yesNoOptions[Math.floor(Math.random() * 2)]}`);
     await page.waitForTimeout(waitForTimeoutValue);
- 
+
     await page.waitForSelector('.wants-children');
     await page.select('.wants-children', `wantsChildren${yesNoDoesNotMatterOptions[Math.floor(Math.random() * 2)]}`);
     await page.waitForTimeout(waitForTimeoutValue);
- 
+
     await page.waitForSelector('.smokes');
     await page.select('.smokes', `smokes${yesNoOptions[Math.floor(Math.random() * 2)]}`);
     await page.waitForTimeout(waitForTimeoutValue);
- 
+
     const prayerLevels = ['Rarely', 'Sometimes', 'Always'];
     const prayerLevel = prayerLevels[Math.floor(Math.random() * prayerLevels.length)];
- 
+
     await page.waitForSelector('.prayer-level');
     await page.select('.prayer-level', prayerLevel);
     await page.waitForTimeout(waitForTimeoutValue);
- 
+
     await page.evaluate(() => {
       window.scrollBy(0, 1000);
     });
@@ -401,7 +401,7 @@ const createAccount = async (newEmail = false) => {
     await page.evaluate(() => document.querySelector(`.about-me`).value = `Lorem ipsum dolor sit amet & consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
     
   Vivamus at augue eget arcu dictum varius. Mauris pellentesque pulvinar pellentesque habitant morbi tristique senectus. Aliquet sagittis id consectetur purus. Urna nec tincidunt praesent semper. Tortor pretium viverra suspendisse potenti nullam ac tortor. Tellus id interdum velit laoreet. Nullam vehicula ipsum a arcu cursus vitae congue mauris rhoncus. Integer vitae justo eget magna fermentum iaculis. Mauris a diam maecenas sed enim ut. Commodo elit at imperdiet dui accumsan sit amet. Nulla facilisi cras fermentum odio eu feugiat. Vel orci porta non pulvinar neque. Eget aliquet nibh praesent tristique magna sit amet purus. Non sodales neque sodales ut etiam sit amet nisl purus Subḥān Allāh.`);
-  
+
     await page.focus('.about-my-match');
     await page.evaluate(() => document.querySelector(`.about-my-match`).value = `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Vivamus at augue eget arcu dictum varius. Mauris pellentesque pulvinar pellentesque habitant morbi tristique senectus. Aliquet sagittis id consectetur purus. Urna nec tincidunt praesent "semper".
     
@@ -435,11 +435,11 @@ const createAccount = async (newEmail = false) => {
     }
 
     await page.waitForNavigation();
- 
+
     if (page.url() !== `http://localhost:3000/search`) {
       throw new Error(`The URL was not http://localhost:3000/search`);
     }
- 
+
     await page.evaluate(() => document.querySelector(`a[href='/search']`).click());
 
     await page.waitForNavigation();
@@ -452,11 +452,9 @@ const createAccount = async (newEmail = false) => {
     }
   } catch (error) {
     const errorMessage = error.response?.data ?? error.message;
-    console.log(`errorMessage - server/queries/puppeteer/create-user-accounts-with-puppeteer.js:488\n`, errorMessage);
+    console.log(`errorMessage - server/queries/puppeteer/createUserAccountsWithPuppeteer.js:454\n`, errorMessage);
     if (error.response?.data?.message === 'Account already exists' || error.response?.data?.message === 'Invalid dob-month') {
       await createAccount(true);
-    } else {
-      process.exit(1);
     }
   }
 }
@@ -464,11 +462,11 @@ const createAccount = async (newEmail = false) => {
 (async () => {
   try {
     await client.connect();
- 
+
     if (!database) database = client.db('development');
     await database.command({ ping: 1 });
     console.log('Connected successfully to server');
- 
+
     for (let index = 0; index < numberOfUsers; index++) {
       await createAccount();
       console.log(`${index + 1}/${numberOfUsers} accounts created`);

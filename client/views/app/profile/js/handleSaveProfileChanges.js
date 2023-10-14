@@ -26,7 +26,7 @@ const editPhotosModalIsSubmitting = (buttonId, value) => {
       border: '3px solid #fff',
       borderRadius: '50%',
       animation:
-        'animation-360-loading-spinner 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite',
+        'animation-loading-spinner 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite',
       borderColor: '#fff transparent transparent transparent',
       opacity: '1',
       zIndex: '999',
@@ -48,19 +48,19 @@ const editPhotosModalIsSubmitting = (buttonId, value) => {
 }
 
 const handleSaveProfileChanges = async profileSection => {
-	if (profileSection === 'photos') {
+  if (profileSection === 'photos') {
     const images = document.forms.namedItem('editPhotosForm');
-		const userData = new FormData(images);
+    const userData = new FormData(images);
 
-		let photos = [];
-		Array(3).fill().map((_, index) => {
-			const imagePreview = document.querySelector(`.image-preview-${index}`);
-			photos.push({
-				image: imagePreview?.src ?? 'undefined',
-				index
-			});
-		});
-		userData.append('photos', JSON.stringify(photos));
+    let photos = [];
+    Array(3).fill().map((_, index) => {
+      const imagePreview = document.querySelector(`.image-preview-${index}`);
+      photos.push({
+        image: imagePreview?.src ?? 'undefined',
+        index
+      });
+    });
+    userData.append('photos', JSON.stringify(photos));
 
     editPhotosModalIsSubmitting('edit-photos-modal-submit-button-loading-spinner-wrapper', true);
     Axios({
@@ -81,26 +81,26 @@ const handleSaveProfileChanges = async profileSection => {
         toast('error', 'There was an error');
         closeModal();
       });
-	} else if (profileSection === 'location') {
-		const locationData = document.querySelector('#locationInput').dataset;
-		const city = locationData.city;
+  } else if (profileSection === 'location') {
+    const locationData = document.querySelector('#locationInput').dataset;
+    const city = locationData.city;
 
-		if (!city) {
-			closeAllLists('#locationInput');
-			document.querySelector('#city-error').innerHTML = 'Please select your city from the dropdown';
-			document.querySelector('#city-error').style.display = 'block';
-		} else {
-			document.querySelector('#city-error').style.display = 'none';
+    if (!city) {
+      closeAllLists('#locationInput');
+      document.querySelector('#city-error').innerHTML = 'Please select your city from the dropdown';
+      document.querySelector('#city-error').style.display = 'block';
+    } else {
+      document.querySelector('#city-error').style.display = 'none';
 
       isSubmitting('modal-button-loading-spinner-wrapper', true);
-			Axios({
-				method: 'put',
+      Axios({
+        method: 'put',
         apiUrl: '/api/user/profile-details/location', // server/routes/user/api.js
-				params: locationData,
-			})
-				.then(({ data }) => {
+        params: locationData,
+      })
+        .then(({ data }) => {
           isSubmitting('modal-button-loading-spinner-wrapper', false);
-					const authUser = data.response;
+          const authUser = data.response;
 
           const html = `
             Lives in
@@ -111,19 +111,19 @@ const handleSaveProfileChanges = async profileSection => {
 
           getQuerySelector('.user-location').innerHTML = html;
           closeModal();
-					toast('success', 'Account updated successfully!');
-				})
-				.catch(() => {
+          toast('success', 'Account updated successfully!');
+        })
+        .catch(() => {
           isSubmitting('modal-button-loading-spinner-wrapper', false);
-					window.scroll({
-						top: 0,
-						behavior: 'smooth',
-					});
+          window.scroll({
+            top: 0,
+            behavior: 'smooth',
+          });
 
-					toast('error', 'There was an error');
-				});
-		}
-	} else if (profileSection === 'user-details') {
+          toast('error', 'There was an error');
+        });
+    }
+  } else if (profileSection === 'user-details') {
     const userDetails = {
       religiousConviction,
       religiousValues,
@@ -204,7 +204,7 @@ const handleSaveProfileChanges = async profileSection => {
                     <span class="details-value">${authUser.hijab || 'No Answer'}</span>
                   </div>
                   ` : ''
-              }
+            }
                 <div class="details-wrapper">
                   <span class="details-key">Has children:</span>
                   <span class="details-value">${authUser.hasChildren || 'No Answer'}</span>
@@ -259,7 +259,7 @@ const handleSaveProfileChanges = async profileSection => {
               justifyContent: "center",
               alignItems: "center",
               borderRadius: "5px",
-              backgroundColor: "#008cff",
+              backgroundColor: "var(--color-green);",
               border: "transparent",
               boxSizing: "border-box",
               outline: "none",

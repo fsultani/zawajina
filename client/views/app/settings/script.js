@@ -29,3 +29,28 @@ window.onload = () => {
       break;
   }
 }
+
+const handleUnblockUser = (memberId, memberName) => {
+  const modalHeader = `Unblock ${memberName}`;
+  const modalBody = `<h3>Confirm you want to unblock ${memberName}.</h3>`
+  const modalButton = 'Unblock';
+
+  showModal({
+    modalHeader,
+    modalBody,
+    modalButton,
+    submitFormCallback: async () => {
+      Axios({
+        method: 'put',
+        apiUrl: '/api/user/unblock', // server/routes/user/api.js
+        params: { memberId },
+      })
+        .then(() => {
+          window.location.reload();
+        })
+        .catch(() => {
+          toast('error', 'There was an error');
+        });
+    }
+  });
+};

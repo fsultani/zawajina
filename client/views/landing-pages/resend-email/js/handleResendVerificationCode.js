@@ -1,4 +1,4 @@
-const userEmail = getQuerySelector('#userEmail');
+const userEmail = getQuerySelector('.userEmail');
 
 let handleEmailValidationValue = false;
 
@@ -6,13 +6,11 @@ const handleEmailValidation = email => {
   const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
   if (!emailRegex.test(email)) {
-    getQuerySelector('#email-wrapper').style.cssText = `border-bottom: 2px solid red;`
-    getQuerySelector('#email-error').innerHTML = 'Invalid email';
     handleEmailValidationValue = false;
-  } else {
-    getQuerySelector('#email-wrapper').style.cssText = `border-bottom: 2px solid #adadad;`
-    getQuerySelector('#email-error').innerHTML = '';
+    inputElementError('.userEmail', true, 'Invalid email');
+  } else if (emailRegex.test(email)) {
     handleEmailValidationValue = true;
+    inputElementError('.userEmail', false, '');
   }
 };
 

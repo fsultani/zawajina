@@ -17,6 +17,45 @@ const getQuerySelectorById = selector => {
 const addErrorClass = (element, useBottomBorder = false) => document.querySelector(`${element}`).classList.add(useBottomBorder ? 'form-error-border-bottom' : 'form-error');
 const removeErrorClass = element => document.querySelector(`${element}`).classList.remove('form-error');
 
+const inputElementError = (selector, isError, errorMessage = '') => {
+  const inputHasValue = getQuerySelector(selector).value.trim().length > 0;
+
+  if (getQuerySelector(`${selector}-wrapper`)) {
+    getQuerySelector(`${selector}-wrapper`).style.cssText = `
+        margin-bottom: ${isError ? '41' : '20'}px;
+      `;
+  }
+
+  if (getQuerySelector(`${selector}`)) {
+    getQuerySelector(`${selector}`).style.cssText = `
+        border: solid 1px ${isError ? 'red' : inputHasValue ? '#006C35' : '#adadad'};
+      `;
+  }
+
+  if (getQuerySelector(`${selector}-label`)) {
+    getQuerySelector(`${selector}-label`).style.color = isError ? 'red' : '#006C35';
+  }
+
+  if (getQuerySelector(`${selector}-error`)) {
+    getQuerySelector(`${selector}-error`).style.cssText = `
+      font-size: 13px;
+      color: red;
+      margin-top: 3px;
+      text-align: center;
+      position: absolute;
+      width: 100%;
+    `;
+
+    getQuerySelector(`${selector}-error`).innerHTML = errorMessage;
+  }
+
+  if (getQuerySelector(`${selector}-helper-text`)) {
+    getQuerySelector(`${selector}-helper-text`).style.cssText = `
+      color: ${isError ? 'red' : 'initial'}
+    `;
+  }
+}
+
 const formMessage = (messageType, message) => {
   const formMessageExists = getQuerySelectorById('form-error') || getQuerySelectorById('form-success');
 
@@ -39,7 +78,7 @@ const formMessage = (messageType, message) => {
       backgroundColor: "#f8d7da",
       borderColor: "#f5c6cb"
     })
-  
+
     formElement.innerHTML = message || 'There was an error. Please try again later.';
   } else {
     formElement.setAttribute('id', 'form-success');
@@ -248,11 +287,21 @@ const showModal = ({ modalHeader, modalBody, modalButton, customStyles = [], can
   });
   modalButtonHTML.innerHTML = modalButton;
 
-  customStyles.map(item => {
-    const element = getQuerySelector(item.element);
-    Object.assign(element.style, {
-      ...item.style,
-    })
+  customStyles.map(customStyle => {
+    const elements = document.querySelectorAll(customStyle.element);
+
+    if (elements.length > 1) {
+      elements.forEach((item, index) => {
+        Object.assign(item.style, {
+          ...customStyle.styles,
+        });
+      });
+    } else {
+      const element = getQuerySelector(customStyle.element);
+      Object.assign(element.style, {
+        ...customStyle.styles,
+      })
+    }
   })
 
   if (canCloseModal) {

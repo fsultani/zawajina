@@ -102,9 +102,8 @@ const languageHelper = async (langaugesValue) => {
         .querySelector(`#remove-language-${data.length - 1}`)
         .getBoundingClientRect();
 
-      document.querySelector('.languages').style.cssText = `padding-left: ${
-        locationElement.x - selectionElement.x + 30
-      }px`;
+      document.querySelector('.languages').style.cssText = `padding-left: ${locationElement.x - selectionElement.x + 30
+        }px`;
       languageInput.focus();
 
       removeLanguageSelection();
@@ -139,8 +138,8 @@ const languageHelper = async (langaugesValue) => {
 
   const removeLanguageSelection = () => {
     document.querySelectorAll('.user-language-remove').forEach(element => {
-      element.addEventListener('click', el => {
-        const elementId = el.currentTarget.id.split('-')[2];
+      element.addEventListener('click', event => {
+        const elementId = event.currentTarget.id.split('-')[2];
         userLanguages.splice(elementId, 1);
         renderLanguages(userLanguages);
       });
@@ -167,7 +166,7 @@ const languageHelper = async (langaugesValue) => {
   });
 
   languageResults.addEventListener('click', event => {
-    const value = event.target.id;
+    const value = event.target.closest('div').id;
     const languageSelection = value;
     languageInput.value = '';
 

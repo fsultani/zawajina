@@ -258,9 +258,6 @@ const profileDetails = async (req, res) => {
 
     const searchOptions = {
       data: {
-        _id: {
-          $nin: blockedUsers,
-        },
         gender: gender === 'male' ? 'female' : 'male',
         '_account.userAccountStatus': 'active',
         '_account.admin.accountStatus': 'approved',

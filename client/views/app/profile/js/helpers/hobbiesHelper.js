@@ -150,8 +150,8 @@ const hobbiesHelper = async (hobbiesValue) => {
 
   const removeHobbySelection = () => {
     document.querySelectorAll('.user-hobby-remove').forEach(element => {
-      element.addEventListener('click', el => {
-        const elementId = el.currentTarget.id.split('-')[2];
+      element.addEventListener('click', event => {
+        const elementId = event.target.closest('div').id.split('-')[2];
         userHobbies.splice(elementId, 1);
         renderHobby(userHobbies);
       });
@@ -183,7 +183,7 @@ const hobbiesHelper = async (hobbiesValue) => {
   });
 
   hobbiesResults.addEventListener('click', event => {
-    const value = event.target.id;
+    const value = event.target.closest('div').id;
     const hobbySelection = value;
     hobbiesInput.value = '';
 

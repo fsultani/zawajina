@@ -108,48 +108,50 @@ const unblockAllUsers = async (userFaridDocumentId, userId) => {
 }
 
 (async () => {
-  await client.connect();
-  const database = client.db('development');
-  await database.command({ ping: 1 });
-  console.log('Connected successfully to server');
+  if (process.env.NODE_ENV === 'development') {
+    await client.connect();
+    const database = client.db('development');
+    await database.command({ ping: 1 });
+    console.log('Connected successfully to server');
 
-  usersCollection = database.collection('users');
-  const allUsersQuery = { name: { $ne: 'Farid' } };
-  const allUsers = await usersCollection.find(allUsersQuery).project({ _id: 1 }).toArray();
+    usersCollection = database.collection('users');
+    const allUsersQuery = { name: { $ne: 'Farid' } };
+    const allUsers = await usersCollection.find(allUsersQuery).project({ _id: 1 }).toArray();
 
-  const userFarid = { name: { $eq: 'Farid' } };
-  const userFaridDocument = await usersCollection.findOne(userFarid);
-  const userFaridDocumentId = userFaridDocument._id;
+    const userFarid = { name: { $eq: 'Farid' } };
+    const userFaridDocument = await usersCollection.findOne(userFarid);
+    const userFaridDocumentId = userFaridDocument._id;
 
-  if (unblockAll === 'true') {
-    for (const user of allUsers) {
-      const userId = user._id;
-      await unblockAllUsers(userFaridDocumentId, userId);
+    if (unblockAll === 'true') {
+      for (const user of allUsers) {
+        const userId = user._id;
+        await unblockAllUsers(userFaridDocumentId, userId);
 
-      const index = allUsers.indexOf(user);
-      console.log(`${index + 1}/${limit} users processed`);
+        const index = allUsers.indexOf(user);
+        console.log(`${index + 1}/${limit} users processed`);
+      }
+    } else {
+      if (limit > 0) {
+        allUsers = await usersCollection.find(allUsersQuery).project({ _id: 1 }).limit(limit).toArray();
+      }
+
+      limit = allUsers.length;
+
+      for (const user of allUsers) {
+        const userId = user._id;
+        await addBlockedUsers(userFaridDocumentId, userId);
+
+        const index = allUsers.indexOf(user);
+        console.log(`${index + 1}/${limit} users processed`);
+      }
     }
-  } else {
-    if (limit > 0) {
-      allUsers = await usersCollection.find(allUsersQuery).project({ _id: 1 }).limit(limit).toArray();
-    }
-  
-    limit = allUsers.length;
-  
-    for (const user of allUsers) {
-      const userId = user._id;
-      await addBlockedUsers(userFaridDocumentId, userId);
-  
-      const index = allUsers.indexOf(user);
-      console.log(`${index + 1}/${limit} users processed`);
-    }
+
+    console.log(`\n**********`);
+
+    console.log(`${numberOfUsersBlocked} users blocked`);
+    console.log(`${numberOfUsersUnblocked} users unblocked`);
+
+    await client.close();
+    console.log(`Close client`);
   }
-
-  console.log(`\n**********`);
-
-  console.log(`${numberOfUsersBlocked} users blocked`);
-  console.log(`${numberOfUsersUnblocked} users unblocked`);
-
-  await client.close();
-  console.log(`Close client`);
 })();

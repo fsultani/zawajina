@@ -3,17 +3,17 @@
     <form name='loginForm' onsubmit='handleLogin(event)' novalidate>
       <h1 class='form-title'>Login</h1>
 
-      <div class='input-wrapper position-relative' id='email-wrapper'>
-        <input class='input-field' id='userEmail' required type='email' />
-        <span class='input-focus' id='email-span' data-placeholder='Email'></span>
-        <div id='email-error'></div>
+      <div class='form-input-wrapper userEmail-wrapper'>
+        <input type='email' class='userEmail' required>
+        <span class='userEmail-label'>Email</span>
+        <div class='userEmail-error'></div>
       </div>
 
-      <div class='input-wrapper position-relative password-position' id='password-wrapper'>
-        <input class='input-field userPassword' id='userPassword' required type='password' />
-        <span class='input-focus animate-border-bottom' id='password-span' data-placeholder='Password'></span>
-        <div id='password-error'></div>
-      </div> 
+      <div class='form-input-wrapper userPassword-wrapper'>
+        <input type='password' class='userPassword' required>
+        <span class='userPassword-label'>Password</span>
+        <div class='userPassword-error'></div>
+      </div>
 
       <div class='flex justify-content-center flex-wrap form-button-container'>
         <div class='full-width'>
@@ -25,7 +25,7 @@
         </div>
       </div>
 
-      <div class='bottom-container'>
+      <div class='form-bottom-container'>
         <a href='/password/request' class='forgot-password'>
           Forgot your password?
         </a>

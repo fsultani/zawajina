@@ -1,3 +1,4 @@
+const { ObjectId } = require("mongodb");
 const { usersCollection } = require("../../db");
 
 const calculateImperialHeight = height => {
@@ -14,7 +15,7 @@ const calculateImperialHeight = height => {
 const getLastActive = async userId => {
   const [lastActiveResponse] = await usersCollection().find(
     {
-      _id: userId
+      _id: ObjectId(userId)
     },
   )
     .project({ lastActive: 1 })

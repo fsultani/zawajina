@@ -13,10 +13,7 @@ router.get('/request', (_req, res) => {
     '/static/client/views/landing-pages/_partials/styles/footer.css',
   ];
 
-  const scriptsArray = [
-    '/static/assets/apis/axios.min.js',
-    '/static/assets/apis/js.cookie.min.js',
-  ];
+  const scriptsArray = [];
 
   const styles = getAllFiles({ directoryPath, fileType: 'css', filesArray: stylesArray });
   const scripts = getAllFiles({ directoryPath, fileType: 'js', filesArray: scriptsArray });
@@ -45,10 +42,7 @@ router.get('/reset', (_req, res) => {
     '/static/client/views/landing-pages/_partials/styles/footer.css',
   ];
 
-  const scriptsArray = [
-    '/static/assets/apis/axios.min.js',
-    '/static/assets/apis/js.cookie.min.js',
-  ];
+  const scriptsArray = [];
 
   const styles = getAllFiles({ directoryPath, fileType: 'css', filesArray: stylesArray });
   const scripts = getAllFiles({ directoryPath, fileType: 'js', filesArray: scriptsArray });

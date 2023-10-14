@@ -168,11 +168,11 @@ const createAccount = async (newEmail = false) => {
     await axios.put(`http://localhost:3000/api/register/verify-email`, {
       token: signupStepOneResponse.data.emailVerificationToken,
     },
-    {
-      headers: {
-        Cookie: `my_match_userId=${userId}`
-      }
-    })
+      {
+        headers: {
+          Cookie: `my_match_userId=${userId}`
+        }
+      })
 
     const { birthMonth, birthDay, birthYear } = calculateDob();
 
@@ -375,11 +375,13 @@ const createAccount = async (newEmail = false) => {
 }
 
 (async () => {
-  for (let index = 0; index < numberOfUsers; index++) {
-    await createAccount();
-    console.log(`${index + 1}/${numberOfUsers} accounts created`);
-  }
+  if (process.env.NODE_ENV === 'development') {
+    for (let index = 0; index < numberOfUsers; index++) {
+      await createAccount();
+      console.log(`${index + 1}/${numberOfUsers} accounts created`);
+    }
 
-  await client.close();
-  console.log(`Close client`);
+    await client.close();
+    console.log(`Close client`);
+  }
 })();

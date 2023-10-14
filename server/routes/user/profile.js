@@ -7,8 +7,8 @@ const { getAllFiles, redirectToLogin, camelCaseToTitleCase } = require('../../ut
 const router = express.Router();
 
 router.get('/', async (req, res) => {
-	try {
-		let { authUser, allConversationsCount } = req;
+  try {
+    let { authUser, allConversationsCount } = req;
     const userId = authUser._id;
 
     const validPhotos = await Promise.all(authUser.photos.map(async photo => {
@@ -59,40 +59,37 @@ router.get('/', async (req, res) => {
       hijab,
     };
 
-		const lastActive = await getLastActive(userId);
+    const lastActive = await getLastActive(userId);
 
     const directoryPath = ['client/views/app/profile'];
 
     const stylesArray = [
-			'/static/assets/styles/fontawesome-free-5.15.4-web/css/all.css',
-			'/static/client/views/app/_partials/app-nav.css',
-		];
+      '/static/assets/styles/fontawesome-free-5.15.4-web/css/all.css',
+      '/static/client/views/app/_partials/app-nav.css',
+    ];
 
-    const scriptsArray = [
-			'/static/assets/apis/axios.min.js',
-			'/static/assets/apis/js.cookie.min.js',
-		];
+    const scriptsArray = [];
 
     const styles = getAllFiles({ directoryPath, fileType: 'css', filesArray: stylesArray });
     const scripts = getAllFiles({ directoryPath, fileType: 'js', filesArray: scriptsArray });
 
-		res.render('app/_layouts/index', {
-			locals: {
-				title: 'Zawajina',
-				styles,
-				scripts,
-				authUser,
-				allConversationsCount,
-				lastActive,
-			},
-			partials: {
-				nav: 'app/_partials/app-nav',
+    res.render('app/_layouts/index', {
+      locals: {
+        title: 'Zawajina',
+        styles,
+        scripts,
+        authUser,
+        allConversationsCount,
+        lastActive,
+      },
+      partials: {
+        nav: 'app/_partials/app-nav',
         body: 'app/profile/auth-user-profile',
-			},
-		});
-	} catch (error) {
+      },
+    });
+  } catch (error) {
     redirectToLogin(error, res);
-	}
+  }
 });
 
 module.exports = router;

@@ -428,6 +428,16 @@ router.get('/', async (req, res) => {
             },
           ]
         },
+        {
+          _id: {
+            $nin: authUser.blockedUsers,
+          },
+        },
+        {
+          blockedUsers: {
+            $nin: [authUser._id],
+          },
+        },
       ]
     }
 
@@ -477,8 +487,6 @@ router.get('/', async (req, res) => {
             '/static/client/views/app/_partials/app-nav.css',
           ],
           scripts: [
-            '/static/assets/apis/axios.min.js',
-            '/static/assets/apis/js.cookie.min.js',
             '/static/client/views/app/home/init.js',
           ],
           authUser,
