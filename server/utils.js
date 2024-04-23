@@ -41,7 +41,7 @@ const checkForSocialMedia = string => {
 const socialMediaAccounts = [
   'facebook',
   'whatsapp',
-  'googlehangouts',
+  'google',
   'hangouts',
   'instagram',
   'snapchat',
@@ -118,9 +118,9 @@ const returnServerError = (res, error) => {
 }
 
 const badRequest = (req, res, message) => {
-  const userId = req.body?.userId;
-  console.log(`Errors`);
-  console.table({ userId, message })
+  const authUserId = req.body.authUserId;
+  console.log(`Errors - server/utils.js:122`);
+  console.table({ authUserId, message })
   return res.status(400).send({ message })
 }
 

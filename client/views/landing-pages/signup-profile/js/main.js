@@ -147,7 +147,7 @@
   } catch (error) {
     displayFullPageLoadingSpinner(false);
     Cookies.remove('my_match_authToken');
-    Cookies.remove('my_match_userId');
+    Cookies.remove('my_match_authUserId');
     window.location.pathname = '/signup';
   }
 })();

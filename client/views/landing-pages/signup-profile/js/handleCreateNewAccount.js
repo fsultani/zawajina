@@ -22,9 +22,9 @@ const handleBirthDay = event => (birthDay = event.target.value);
 const handleBirthYear = event => (birthYear = event.target.value);
 const handleGender = value => {
   if (value === 'female') {
-    document.querySelector('.hijab-container').style.display = 'inline-block';
+    getQuerySelector('.hijab-container').style.display = 'inline-block';
   } else {
-    document.querySelector('.hijab-container').style.display = 'none';
+    getQuerySelector('.hijab-container').style.display = 'none';
   }
   return (gender = value);
 };
@@ -42,13 +42,13 @@ const handleDiet = event => (diet = event.target.value);
 const handleSmokes = event => (smokes = event.target.value);
 const handlePrayerLevel = event => (prayerLevel = event.target.value);
 
-const createNewAccountButton = document.querySelector('#createNewAccount');
-const loadingSpinner = document.querySelector('.submit-loading-spinner');
+const createNewAccountButton = getQuerySelector('#createNewAccount');
+const loadingSpinner = getQuerySelector('.submit-loading-spinner');
 
 const handleCreateNewAccount = async () => {
   let formFields = {}
 
-  const locationData = document.querySelector('#locationInput').dataset;
+  const locationData = getQuerySelector('#locationInput').dataset;
   const city = locationData.city;
   const state = locationData.state === 'null' ? null : locationData.state;
   const country = locationData.country;
@@ -58,7 +58,7 @@ const handleCreateNewAccount = async () => {
     ethnicity.push(id);
   });
 
-  const userCountryContent = document.querySelector('.user-country-content');
+  const userCountryContent = getQuerySelector('.user-country-content');
 
   const languages = [];
   document.querySelectorAll('.user-language-content').forEach(({ id }) => {
@@ -104,53 +104,61 @@ const handleCreateNewAccount = async () => {
 
   if (!city) {
     closeAllLists('#locationInput');
-    document.querySelector('.user-location').style.cssText = 'padding-bottom: 4px';
-    document.querySelector('#city').innerHTML = 'Please select your city from the dropdown';
-    document.querySelector('#city').style.display = 'block';
+    getQuerySelector('.user-location').style.cssText = 'padding-bottom: 4px';
+    getQuerySelector('#city').innerHTML = 'Please select your city from the dropdown';
+    getQuerySelector('#city').style.display = 'block';
+    getQuerySelectorById('locationInput').classList.add('form-error');
     formFields['city'] = false;
   } else {
-    document.querySelector('.user-location').style.cssText = 'padding-bottom: 16px';
-    document.querySelector('#city').style.display = 'none';
+    getQuerySelector('.user-location').style.cssText = 'padding-bottom: 16px';
+    getQuerySelector('#city').style.display = 'none';
+    getQuerySelectorById('locationInput').classList.remove('form-error');
     formFields['city'] = true;
   }
 
   if (!userCountryContent || userCountryContent.textContent === '') {
     closeAllLists('#countryRaisedInInput');
-    document.querySelector('.country-user-raised-in').style.cssText = 'padding-bottom: 4px';
-    document.querySelector('#country-raised-in').innerHTML =
+    getQuerySelector('.country-user-raised-in').style.cssText = 'padding-bottom: 4px';
+    getQuerySelector('#country-raised-in').innerHTML =
       'Please select the country you were raised in from the dropdown';
-    document.querySelector('#country-raised-in').style.display = 'block';
+    getQuerySelector('#country-raised-in').style.display = 'block';
+    getQuerySelectorById('countryRaisedInInput').classList.add('form-error');
     formFields['userCountryContent'] = false;
   } else {
-    document.querySelector('.country-user-raised-in').style.cssText = 'padding-bottom: 16px';
-    document.querySelector('#country-raised-in').style.display = 'none';
+    getQuerySelector('.country-user-raised-in').style.cssText = 'padding-bottom: 16px';
+    getQuerySelector('#country-raised-in').style.display = 'none';
     countryRaisedIn = userCountryContent.textContent;
+    getQuerySelectorById('countryRaisedInInput').classList.remove('form-error');
     formFields['userCountryContent'] = true;
   }
 
   if (ethnicity.length === 0) {
     closeAllLists('#ethnicityInput');
-    document.querySelector('.user-ethnicity').style.cssText = 'padding-bottom: 4px';
-    document.querySelector('#ethnicity').innerHTML =
+    getQuerySelector('.user-ethnicity').style.cssText = 'padding-bottom: 4px';
+    getQuerySelector('#ethnicity').innerHTML =
       'Please select your ethnicity from the dropdown';
-    document.querySelector('#ethnicity').style.display = 'block';
+    getQuerySelector('#ethnicity').style.display = 'block';
+    getQuerySelectorById('ethnicityInput').classList.add('form-error');
     formFields['ethnicity'] = false;
   } else {
-    document.querySelector('.user-ethnicity').style.cssText = 'padding-bottom: 16px';
-    document.querySelector('#ethnicity').style.display = 'none';
+    getQuerySelector('.user-ethnicity').style.cssText = 'padding-bottom: 16px';
+    getQuerySelector('#ethnicity').style.display = 'none';
+    getQuerySelectorById('ethnicityInput').classList.remove('form-error');
     formFields['ethnicity'] = true;
   }
 
   if (languages.length === 0) {
     closeAllLists('#languageInput');
-    document.querySelector('.user-languages').style.cssText = 'padding-bottom: 4px';
-    document.querySelector('#languages').innerHTML =
+    getQuerySelector('.user-languages').style.cssText = 'padding-bottom: 4px';
+    getQuerySelector('#languages').innerHTML =
       'Please select your language(s) from the dropdown';
-    document.querySelector('#languages').style.display = 'block';
+    getQuerySelector('#languages').style.display = 'block';
+    getQuerySelectorById('languageInput').classList.add('form-error');
     formFields['languages'] = false;
   } else {
-    document.querySelector('.user-languages').style.cssText = 'padding-bottom: 16px';
-    document.querySelector('#languages').style.display = 'none';
+    getQuerySelector('.user-languages').style.cssText = 'padding-bottom: 16px';
+    getQuerySelector('#languages').style.display = 'none';
+    getQuerySelectorById('languageInput').classList.remove('form-error');
     formFields['languages'] = true;
   }
 
@@ -194,12 +202,14 @@ const handleCreateNewAccount = async () => {
     formFields['profession'] = true;
   }
 
-  if (gender === 'female' && !hijab) {
-    addErrorClass('#hijab');
-    formFields['gender'] = false;
-  } else {
-    removeErrorClass('#hijab');
-    formFields['gender'] = true;
+  if (gender === 'female') {
+    if (!hijab) {
+      addErrorClass('#hijab');
+      formFields['gender'] = false;
+    } else {
+      removeErrorClass('#hijab');
+      formFields['gender'] = true;
+    }
   }
 
   if (!hasChildren || hasChildren === 'Select One') {
@@ -261,79 +271,78 @@ const handleCreateNewAccount = async () => {
   const aboutMeValue = document.getElementById('about-me').value;
   if (!aboutMeValue || aboutMeValue.length < 100) {
     addErrorClass('.about-me');
-    document.querySelector('#about-me-error-text').innerHTML =
+    getQuerySelector('#about-me-error-text').innerHTML =
       'Please enter at least 100 characters';
-    document.querySelector('#about-me-error-text').style.display = 'block';
+    getQuerySelector('#about-me-error-text').style.display = 'block';
     formFields['aboutMeValue'] = false;
   } else if (inputHasSocialMediaAccount(aboutMeValue) || inputHasSocialMediaTag(aboutMeValue)) {
     addErrorClass('.about-me');
-    document.querySelector('#about-me-error-text').innerHTML =
+    getQuerySelector('#about-me-error-text').innerHTML =
       'No email or social media accounts allowed';
-    document.querySelector('#about-me-error-text').style.display = 'block';
+    getQuerySelector('#about-me-error-text').style.display = 'block';
     formFields['aboutMeValue'] = false;
   } else if (inputHasPhoneNumber(aboutMeValue)) {
     addErrorClass('.about-me');
-    document.querySelector('#about-me-error-text').innerHTML =
+    getQuerySelector('#about-me-error-text').innerHTML =
       'Phone numbers are not allowed';
-    document.querySelector('#about-me-error-text').style.display = 'block';
+    getQuerySelector('#about-me-error-text').style.display = 'block';
     formFields['aboutMeValue'] = false;
   } else if (invalidString(aboutMeValue)) {
     addErrorClass('.about-me');
-    document.querySelector('#about-me-error-text').innerHTML =
+    getQuerySelector('#about-me-error-text').innerHTML =
       'Special characters are not allowed';
-    document.querySelector('#about-me-error-text').style.display = 'block';
+    getQuerySelector('#about-me-error-text').style.display = 'block';
     formFields['aboutMeValue'] = false;
   } else if (preventWebLinks(aboutMeValue)) {
     addErrorClass('.about-me');
-    document.querySelector('#about-me-error-text').innerHTML =
+    getQuerySelector('#about-me-error-text').innerHTML =
       'Web links are not allowed';
-    document.querySelector('#about-me-error-text').style.display = 'block';
+    getQuerySelector('#about-me-error-text').style.display = 'block';
     formFields['aboutMeValue'] = false;
   } else {
     removeErrorClass('.about-me');
-    document.querySelector('#about-me-error-text').style.display = 'none';
+    getQuerySelector('#about-me-error-text').style.display = 'none';
     formFields['aboutMeValue'] = true;
   }
 
   const aboutMyMatchValue = document.getElementById('about-my-match').value;
   if (!aboutMyMatchValue || aboutMyMatchValue.length < 100) {
     addErrorClass('.about-my-match');
-    document.querySelector('#about-my-match-error-text').innerHTML =
+    getQuerySelector('#about-my-match-error-text').innerHTML =
       'Please enter at least 100 characters';
-    document.querySelector('#about-my-match-error-text').style.display = 'block';
+    getQuerySelector('#about-my-match-error-text').style.display = 'block';
     formFields['aboutMyMatchValue'] = false;
   } else if (inputHasSocialMediaAccount(aboutMyMatchValue) || inputHasSocialMediaTag(aboutMyMatchValue)) {
     addErrorClass('.about-my-match');
-    document.querySelector('#about-my-match-error-text').innerHTML =
+    getQuerySelector('#about-my-match-error-text').innerHTML =
       'Email addresses and social media accounts are not allowed';
-    document.querySelector('#about-my-match-error-text').style.display = 'block';
+    getQuerySelector('#about-my-match-error-text').style.display = 'block';
     formFields['aboutMyMatchValue'] = false;
   } else if (inputHasPhoneNumber(aboutMyMatchValue)) {
     addErrorClass('.about-my-match');
-    document.querySelector('#about-my-match-error-text').innerHTML =
+    getQuerySelector('#about-my-match-error-text').innerHTML =
       'Phone numbers are not allowed';
-    document.querySelector('#about-my-match-error-text').style.display = 'block';
+    getQuerySelector('#about-my-match-error-text').style.display = 'block';
     formFields['aboutMyMatchValue'] = false;
   } else if (invalidString(aboutMyMatchValue)) {
     addErrorClass('.about-my-match');
-    document.querySelector('#about-my-match-error-text').innerHTML =
+    getQuerySelector('#about-my-match-error-text').innerHTML =
       'Special characters are not allowed';
-    document.querySelector('#about-my-match-error-text').style.display = 'block';
+    getQuerySelector('#about-my-match-error-text').style.display = 'block';
     formFields['aboutMyMatchValue'] = false;
   } else if (preventWebLinks(aboutMyMatchValue)) {
     addErrorClass('.about-my-match');
-    document.querySelector('#about-my-match-error-text').innerHTML =
+    getQuerySelector('#about-my-match-error-text').innerHTML =
       'Web links are not allowed';
-    document.querySelector('#about-my-match-error-text').style.display = 'block';
+    getQuerySelector('#about-my-match-error-text').style.display = 'block';
     formFields['aboutMyMatchValue'] = false;
   } else {
     removeErrorClass('.about-my-match');
-    document.querySelector('#about-my-match-error-text').style.display = 'none';
+    getQuerySelector('#about-my-match-error-text').style.display = 'none';
     formFields['aboutMyMatchValue'] = true;
   }
 
   if (Object.values(formFields).every(entry => entry)) {
-  // if (true) {
     loadingSpinner.style.display = 'flex';
     createNewAccountButton.innerHTML = '';
     createNewAccountButton.disabled = true;
@@ -377,7 +386,7 @@ const handleCreateNewAccount = async () => {
     const images = document.forms.namedItem('signupForm');
     const userData = new FormData(images);
     userData.append('userInfo', JSON.stringify(userInfo));
-    userData.append('userId', Cookies.get('my_match_userId'));
+    userData.append('authUserId', Cookies.get('my_match_authUserId'));
 
     document.querySelectorAll('form *').forEach(item => item.disabled = true);
 
@@ -389,7 +398,7 @@ const handleCreateNewAccount = async () => {
       .then(res => {
         const { token, url } = res.data;
         Cookies.set('my_match_authToken', token, { sameSite: 'strict' });
-        Cookies.remove('my_match_userId');
+        Cookies.remove('my_match_authUserId');
         window.location.pathname = url;
       })
       .catch(error => {
@@ -404,7 +413,7 @@ const handleCreateNewAccount = async () => {
           const elementError = error.response.data.message?.split(' ')[1];
           addErrorClass(`.${elementError}`);
 
-          document.querySelector('.form-errors').style.display = 'inline-block';
+          getQuerySelector('.form-errors').style.display = 'inline-block';
           addErrorClass('#signup-button-error');
         } else {
           toast('error', 'There was an error');
@@ -416,7 +425,7 @@ const handleCreateNewAccount = async () => {
         });
       });
   } else {
-    document.querySelector('.form-errors').style.display = 'inline-block';
+    getQuerySelector('.form-errors').style.display = 'inline-block';
     window.scroll({
       top: 0,
       behavior: 'smooth',

@@ -441,9 +441,7 @@ router.get('/', async (req, res) => {
       ]
     }
 
-    const allUsersCount = await usersCollection()
-      .find(search)
-      .count();
+    const allUsersCount = await usersCollection().countDocuments();
 
     const sortResultsDictionary = {
       'lastActive': {

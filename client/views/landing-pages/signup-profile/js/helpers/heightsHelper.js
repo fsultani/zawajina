@@ -75,4 +75,4 @@ heightsOptions.map((height, index) => {
   return heightOptions.push(`<option value=${height}>${optionText}</option>`)
 });
 
-document.querySelector('.user-height').innerHTML = heightOptions;
+document.querySelector('#user-height > .select-wrapper').innerHTML = heightOptions;

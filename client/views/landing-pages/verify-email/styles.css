@@ -5,6 +5,10 @@ input::-webkit-inner-spin-button {
   display: none;
 }
 
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
 .form-subtitle {
   line-height: 1.5;
   margin: 8px auto;
@@ -18,5 +22,19 @@ input::-webkit-inner-spin-button {
 }
 
 .form-button-container {
-  padding: 0;
+  padding: 24px 0;
+}
+
+.form-bottom-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.helper-text {
+  font-size: 14px;
+  line-height: 1.7;
+  color: #666666;
+  margin: 0px;
 }

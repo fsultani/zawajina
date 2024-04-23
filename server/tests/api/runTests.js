@@ -3,7 +3,7 @@ const signupTests = require('./signup');
 const signupProfileTests = require('./signupProfile');
 
 /*
-  node server/tests/runTests.js
+  node server/tests/api/runTests.js
 */
 
 (async () => {

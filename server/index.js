@@ -103,24 +103,11 @@ app.engine('html', es6Renderer);
 app.set('views', path.join(__dirname, '../client/views'));
 app.set('view engine', 'html');
 
-app.use((req, _res, next) => {
-  // console.clear();
-  const listOfRoutesForDbAccess = [
-    ...publicRoutes.map(route => Object.keys(route)[0]),
-    ...privateRoutes.map(route => Object.keys(route)[0]),
-  ];
-
-  const requestUrl = req.originalUrl
-  const hasDbAccess = listOfRoutesForDbAccess.findIndex(route => requestUrl.startsWith(route)) > -1;
-
-  if (hasDbAccess) {
-    connectToServer((err, _) => {
-      if (err) throw err;
-      next();
-    });
-  } else {
+app.use((_req, _res, next) => {
+  connectToServer((err, _) => {
+    if (err) throw err;
     next();
-  }
+  });
 });
 
 app.use('/api/check-ip', (req, res, next) => {
@@ -145,8 +132,8 @@ privateRoutes.map(route => {
   app.use(url, checkAuthentication, method);
 })
 
-const publicViews = (res, my_match_userId) => {
-  const authorizeUser = page => my_match_userId ? page(res) : res.redirect('/signup');
+const publicViews = (res, my_match_authUserId) => {
+  const authorizeUser = page => my_match_authUserId ? page(res) : res.redirect('/signup');
 
   return [
     {
@@ -183,11 +170,11 @@ const publicViews = (res, my_match_userId) => {
 app.get('*', (req, res, next) => {
   const requestUrl = req.originalUrl;
 
-  // my_match_userId is to check for a user that lands on a public page without an ID
+  // my_match_authUserId is to check for a user that lands on a public page without an ID
   // my_match_authToken is to redirect an authenticated user that visited an invalid route
-  const { my_match_userId, my_match_authToken } = req.cookies;
+  const { my_match_authUserId, my_match_authToken } = req.cookies;
 
-  const publicView = publicViews(res, my_match_userId, my_match_authToken).find(route => Object.keys(route)[0] === requestUrl);
+  const publicView = publicViews(res, my_match_authUserId, my_match_authToken).find(route => Object.keys(route)[0] === requestUrl);
 
   if (publicView) {
     Object.values(publicView)[0]();

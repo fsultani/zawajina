@@ -6,7 +6,7 @@ const verifyEmail = async (req, res) => {
   try {
     const tokenString = req.body.token.toString();
     const verificationToken = Number(req.body.token);
-    const { my_match_userId } = req.cookies;
+    const { my_match_authUserId } = req.cookies;
 
     if (
       !tokenString.length ||
@@ -14,12 +14,12 @@ const verifyEmail = async (req, res) => {
       isNaN(verificationToken)
     ) return res.status(403).send({ message: 'Invalid Token' });
 
-    usersCollection().findOne({ _id: ObjectId(my_match_userId) }, async (_, userExists) => {
+    usersCollection().findOne({ _id: ObjectId(my_match_authUserId) }, async (_, userExists) => {
       const { emailVerificationToken } = userExists;
   
       if (verificationToken === emailVerificationToken) {
         await usersCollection().findOneAndUpdate(
-          { _id: ObjectId(my_match_userId) },
+          { _id: ObjectId(my_match_authUserId) },
           {
             $set: {
               emailVerified: new Date(),

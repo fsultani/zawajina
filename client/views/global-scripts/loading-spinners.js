@@ -107,6 +107,7 @@ const isSubmitting = (buttonId, value, color = '#fff') => {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+    position: 'relative',
   })
 
   loader.innerHTML += `
@@ -132,6 +133,7 @@ const isSubmitting = (buttonId, value, color = '#fff') => {
       opacity: '1',
       zIndex: '999',
       animationDelay: index === 0 ? '-0.45s' : index === 1 ? '-0.3s' : index === 2 ? '-0.15s' : '',
+      top: '10%',
     })
   })
 

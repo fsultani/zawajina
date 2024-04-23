@@ -1,5 +1,5 @@
 /*
-node server/queries/puppeteer/createFaridsUserWithPuppeteer.js
+node server/queries/puppeteer/createFaridsUserWithPuppeteer.js --numberOfPhotos=0
 */
 
 require('dotenv').config();
@@ -15,6 +15,32 @@ const client = new MongoClient(uri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
+
+const processArgv = process.argv.slice(2);
+
+if (!processArgv[0]) {
+  console.log(`Missing arguments: --numberOfPhotos=0`);
+  process.exit(1);
+}
+
+const firstArgument = processArgv[0]?.split('=')[0];
+
+if (firstArgument !== '--numberOfPhotos') {
+  console.log(`Missing arguments: --numberOfPhotos=0`);
+  process.exit(1);
+}
+
+/* ************************* */
+
+let numberOfPhotos;
+if (firstArgument === '--numberOfPhotos') {
+  numberOfPhotos = Number(processArgv[0].split('=')[1]);
+}
+
+if (numberOfPhotos > 3) {
+  console.log('numberOfPhotos must be less than 4');
+  process.exit(1);
+}
 
 (async () => {
   const browser = await puppeteer.launch({
@@ -254,63 +280,35 @@ Vivamus at augue eget arcu dictum varius. Mauris pellentesque pulvinar pellentes
     
 Tortor pretium viverra suspendisse potenti nullam ac tortor. Tellus id interdum velit laoreet. Nullam vehicula ipsum a arcu cursus vitae congue mauris rhoncus. Integer vitae justo eget magna fermentum iaculis. Mauris a diam maecenas sed enim ut. Commodo elit at imperdiet dui accumsan sit amet. Nulla facilisi cras fermentum odio eu feugiat. Vel orci porta non pulvinar neque. Eget aliquet nibh praesent tristique magna sit amet purus. Non sodales neque sodales ut etiam sit amet nisl purus Subḥān Allāh.`);
 
-    // const [fileChoose1] = await Promise.all([
-    //   page.waitForFileChooser(),
-    //   page.evaluate(() => document.querySelector('.image-0').click()),
-    // ]);
+    const photos = [
+      '/Users/farid/Downloads/temp/IMG_0041.jpg',
+      '/Users/farid/Downloads/temp/IMG_0047.jpg',
+      '/Users/farid/Downloads/temp/IMG_0048.jpg',
+      '/Users/farid/Downloads/temp/IMG_0051.jpg',
+      '/Users/farid/Downloads/temp/IMG_0053.jpg',
+      '/Users/farid/Downloads/temp/IMG_0063.jpg',
+    ];
 
-    // await fileChoose1.accept(['/Users/farid/Downloads/temp/IMG_0041.jpg']);
+    for (let index = 0; index < numberOfPhotos; index++) {
+      const [fileChoose] = await Promise.all([
+        page.waitForFileChooser(),
+        page.evaluate(index => document.querySelector(`.image-${index}`).click(), index),
+      ]);
 
-    await page.waitForTimeout(500);
-
-    // const [fileChoose2] = await Promise.all([
-    //   page.waitForFileChooser(),
-    //   page.evaluate(() => document.querySelector('.image-1').click()),
-    // ]);
-
-    // await fileChoose2.accept(['/Users/farid/Downloads/temp/IMG_0047.jpg']);
-
-    // await page.waitForTimeout(500);
-
-    // const [fileChoose3] = await Promise.all([
-    //   page.waitForFileChooser(),
-    //   page.evaluate(() => document.querySelector('.image-2').click()),
-    // ]);
-
-    // await fileChoose3.accept(['/Users/farid/Downloads/temp/IMG_0048.jpg']);
-
-    // await page.waitForTimeout(500);
-
-    // const [fileChoose4] = await Promise.all([
-    //   page.waitForFileChooser(),
-    //   page.evaluate(() => document.querySelector('.image-3').click()),
-    // ]);
-
-    // await fileChoose4.accept(['/Users/farid/Downloads/temp/IMG_0051.jpg']);
-
-    // await page.waitForTimeout(500);
-
-    // const [fileChoose5] = await Promise.all([
-    //   page.waitForFileChooser(),
-    //   page.evaluate(() => document.querySelector('.image-4').click()),
-    // ]);
-
-    // await fileChoose5.accept(['/Users/farid/Downloads/temp/IMG_0053.jpg']);
-
-    // await page.waitForTimeout(500);
-
-    // const [fileChoose6] = await Promise.all([
-    //   page.waitForFileChooser(),
-    //   page.evaluate(() => document.querySelector('.image-5').click()),
-    // ]);
-
-    // await fileChoose6.accept(['/Users/farid/Downloads/temp/IMG_0063.jpg']);
+      await fileChoose.accept([photos[index]]);
+    }
 
     await page.waitForTimeout(1000);
 
     await page.click('button[type="submit"]');
 
-    const formErrorsIsVisible = await page.$eval('.form-errors', element => element.getAttribute('style' === 'display: inline-block;'))
+    const formErrorsIsVisible = await page.$eval('.form-errors', element => {
+      const styleValue = element.getAttribute('style');
+      return element.hasAttribute('style') &&
+        styleValue.match(/display:\s*inline-block;/i) &&
+        element.getBoundingClientRect().height > 0;
+    });
+
     if (formErrorsIsVisible) {
       throw new Error('There should be no errors')
     }

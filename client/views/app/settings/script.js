@@ -7,7 +7,7 @@ window.onload = () => {
     <nav class="nav nav-borders">
       <a class="nav-link" id="account-page" href="/settings/account">Account</a>
       <a class="nav-link" id="password-page" href="/settings/password">Password</a>
-      <a class="nav-link" id="blocked-users-page" href="/settings/blocked">Blocked Users</a>
+      <a class="nav-link" id="blocked-users-page" href="/settings/blocked-users">Blocked Users</a>
     </nav>
     <hr class="horizontal-divider">
   `;
@@ -17,7 +17,7 @@ window.onload = () => {
       getQuerySelector('#account-page').classList.add('active');
       getQuerySelector('#account').style.display = 'flex';
       break;
-    case '/settings/blocked':
+    case '/settings/blocked-users':
       getQuerySelector('#blocked-users-page').classList.add('active');
       getQuerySelector('#blocked-users').style.display = 'block';
       break;

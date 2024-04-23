@@ -139,7 +139,7 @@ router.post('/reset', async (req, res) => {
     req.authUser = value;
     insertLogs(req, { password: bcryptHash });
 
-    const token = jwt.sign({ my_match_userId: value._id }, JWT_SECRET, {
+    const token = jwt.sign({ my_match_authUserId: value._id }, JWT_SECRET, {
       expiresIn: '1 day',
     });
 

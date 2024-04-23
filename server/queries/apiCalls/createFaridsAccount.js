@@ -119,15 +119,14 @@ const numberOfPhotos = Number(processArgv[0].split('=')[1]);
         password,
       })
 
-      const { userId, emailVerificationToken } = signupStepOneResponse.data;
-      console.log(`signupStepOneResponse.data - server/queries/apiCalls/create-farids-account.js:98\n`, signupStepOneResponse.data);
+      const { authUserId, emailVerificationToken } = signupStepOneResponse.data;
 
       await axios.put(`http://localhost:3000/api/register/verify-email`, {
         token: emailVerificationToken,
       },
         {
           headers: {
-            Cookie: `my_match_userId=${userId}`
+            Cookie: `my_match_userId=${authUserId}`
           }
         })
 
@@ -172,7 +171,7 @@ const numberOfPhotos = Number(processArgv[0].split('=')[1]);
         signupFormData.append(`image-${index}`, fs.createReadStream('/Users/farid/Downloads/temp/IMG_0041_800x800.jpg'));
       }
 
-      signupFormData.append('userId', userId);
+      signupFormData.append('authUserId', authUserId);
 
       const signupStepTwoResponse = await axios.post('http://localhost:3000/api/register/profile-details', signupFormData, {
         headers: {

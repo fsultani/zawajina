@@ -8,7 +8,7 @@ window.onload = () => {
       if (emailWasVerified) window.location.pathname = response?.url;
     }).catch(() => {
       Cookies.remove('my_match_authToken');
-      Cookies.remove('my_match_userId');
+      Cookies.remove('my_match_authUserId');
       window.location.pathname = '/signup';
     })
 };

@@ -9,7 +9,7 @@ const router = express.Router();
 router.get('/', async (req, res) => {
   try {
     let { authUser, allConversationsCount } = req;
-    const userId = authUser._id;
+    const authUserId = authUser._id;
 
     const validPhotos = await Promise.all(authUser.photos.map(async photo => {
       const photoUrl = photo?.secure_url;
@@ -59,7 +59,7 @@ router.get('/', async (req, res) => {
       hijab,
     };
 
-    const lastActive = await getLastActive(userId);
+    const lastActive = await getLastActive(authUserId);
 
     const directoryPath = ['client/views/app/profile'];
 

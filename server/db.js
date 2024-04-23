@@ -12,7 +12,7 @@ const connectToServer = callback => {
       },
       (err, client) => {
         if (err) throw err;
-        db = client.db();
+        db = client.db(process.env.NODE_ENV);
         return callback(err, db);
       }
     );
@@ -27,7 +27,7 @@ const usersCollection = () => db.collection('users');
 
 const geoLocationData = async (userIPAddress, lastActive) => {
   let locationData;
-  if (!userIPAddress) return locationData = { locationError: 'No location data available' };
+  if (!userIPAddress  && process.env.NODE_ENV !== 'development') return locationData = { locationError: 'No location data available' };
 
   const existingIP = lastActive?.userIPAddress;
 
@@ -135,7 +135,7 @@ const insertLogs = async (req, updates) => {
       }
     );
   } catch (error) {
-    console.log(`error - server/db.js:183\n`, error);
+    console.log(`error - server/db.js:137\n`, error);
     return error;
   }
 }

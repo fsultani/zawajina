@@ -51,4 +51,4 @@ const professionsList = [
 
 const professionOptions = ['<option selected disabled>Select Profession</option>'];
 professionsList.map(item => professionOptions.push(`<option>${item}</option>`));
-document.querySelector('.profession').innerHTML = professionOptions;
+document.querySelector('#profession > .select-wrapper').innerHTML = professionOptions;

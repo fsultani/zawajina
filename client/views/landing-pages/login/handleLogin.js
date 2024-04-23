@@ -59,8 +59,11 @@ const handleLogin = async event => {
         Cookies.set(cookie.type, cookie.value, { sameSite: 'strict' });
         window.location.pathname = url;
       })
-      .catch(() => {
+      .catch(error => {
         isSubmitting('form-button-loading-spinner-wrapper', false);
+
+        const errorMessage = error.response.data.userAccountStatus;
+        if (errorMessage) return inputElementError('.userPassword', false, errorMessage);
 
         // For any login errors, only display 'Invalid password' for security purposes
         inputElementError('.userPassword', true, 'Invalid Password');

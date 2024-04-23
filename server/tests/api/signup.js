@@ -5,7 +5,7 @@ const { baseHeaders, phoneNumber, invalidCharacters, digit, webLinks } = require
 const { socialMediaAccounts, socialMediaTags } = require('../utils');
 
 /*
-  node server/tests/signup.js --runAlone
+  node server/tests/api/signup.js --runAlone
 */
 
 const headers = {

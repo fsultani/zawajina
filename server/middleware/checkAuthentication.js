@@ -62,8 +62,8 @@ module.exports.checkAuthentication = async (req, res, next) => {
       if (err || !authUser) {
         req.originalUrl = '/api/expired-session/logout'
         const jwtDecoded = jwt.decode(my_match_authToken);
-        const userId = jwtDecoded?.my_match_userId;
-        const userDocument = await usersCollection().findOne({ _id: ObjectId(userId) });
+        const authUserId = jwtDecoded?.my_match_authUserId;
+        const userDocument = await usersCollection().findOne({ _id: ObjectId(authUserId) });
         req.authUser = userDocument;
 
         insertLogs(req, {});
@@ -71,7 +71,7 @@ module.exports.checkAuthentication = async (req, res, next) => {
         if (isApiCall) return res.sendStatus(401);
         loginPage(res);
       } else {
-        const userDocument = await usersCollection().findOne({ _id: ObjectId(authUser.my_match_userId) });
+        const userDocument = await usersCollection().findOne({ _id: ObjectId(authUser.my_match_authUserId) });
         if (!userDocument) return res.redirect('/login');
 
         const allConversationsCount = await messagesCollection().countDocuments({

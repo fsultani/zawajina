@@ -214,9 +214,9 @@ router.put('/api', async (req, res) => {
       sortResults,
     }
 
-    const userId = authUser._id;
+    const authUserId = authUser._id;
     await usersCollection().findOneAndUpdate(
-      { _id: ObjectId(userId) },
+      { _id: ObjectId(authUserId) },
       {
         $set: {
           searchOptions,

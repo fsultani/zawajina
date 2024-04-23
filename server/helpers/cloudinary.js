@@ -17,7 +17,7 @@ const deleteFromCloudinary = async ({ publicIds }) => {
   }
 };
 
-const uploadToCloudinary = async ({ req, userId }) => {
+const uploadToCloudinary = async ({ req, authUserId }) => {
   try {
     const cloudinary = require('cloudinary');
 
@@ -46,7 +46,7 @@ const uploadToCloudinary = async ({ req, userId }) => {
       const { statistics, errors } = result;
       if (errors.length > 0) return new Error('Error in uploadToCloudinary');
       const upload = await cloudinary.v2.uploader.upload(statistics[0].path_out_new, {
-        folder: `${process.env.NODE_ENV}/${userId}`,
+        folder: `${process.env.NODE_ENV}/${authUserId}`,
       });
 
       const uploadResponse = {

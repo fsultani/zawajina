@@ -50,7 +50,7 @@ router.post('/resend-email', [
 router.put('/verify-email', (req, res) => verifyEmail(req, res));
 
 router.get('/signup-user-first-name', (req, res) => {
-  usersCollection().findOne({ _id: ObjectId(req.cookies.my_match_userId) }, (err, user) => {
+  usersCollection().findOne({ _id: ObjectId(req.cookies.my_match_authUserId) }, (err, user) => {
     if (err || !user) return res.sendStatus(401);
     res.status(201).send({ name: user.name });
   });

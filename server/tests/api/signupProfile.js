@@ -6,7 +6,7 @@ const { baseHeaders, phoneNumber, shortPhoneNumber, invalidCharacters, webLinks 
 const { socialMediaAccounts, socialMediaTags } = require('../utils');
 
 /*
-  node server/tests/signupProfile.js --runAlone
+  node server/tests/api/signupProfile.js --runAlone
 */
 
 const originalData = mockData => [
@@ -322,10 +322,10 @@ const signupProfileTests = async (initialCount = 0) => {
         password: "asdfasdf"
       })
 
-      const { userId } = signupStepOneResponse.data;
+      const { authUserId } = signupStepOneResponse.data;
 
       signupFormData.append('userInfo', JSON.stringify(mockData));
-      signupFormData.append('userId', userId);
+      signupFormData.append('authUserId', authUserId);
 
       await axios.post('http://localhost:3000/api/register/profile-details', signupFormData, {
         headers: {

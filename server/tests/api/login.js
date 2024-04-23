@@ -4,7 +4,7 @@ const readline = require('readline');
 const { baseHeaders } = require('./data');
 
 /*
-  node server/tests/login.js --runAlone
+  node server/tests/api/login.js --runAlone
 */
 
 const loginTests = async () => {

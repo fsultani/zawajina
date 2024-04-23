@@ -8,7 +8,7 @@ const { socialMediaAccounts, socialMediaTags } = require('../../utils');
 require('../../config/cloudinary');
 
 /*
-  node server/tests/puppeteer/create-farids-user.js
+  node server/tests/puppeteer/signupTests.js
 */
 
 const greenConsoleLogColor = '32m';
@@ -74,9 +74,12 @@ const passwordTests = [
   'asdfasd',
 ];
 
+const coloredConsoleLog = ({ color = '', data = '' }) => console.log(`\x1b[${color}${data} \x1b[0m`);
+const consoleLogDivider = () => console.log(`=`.repeat(50), `\n`);
+
 (async () => {
   const browser = await puppeteer.launch({
-    headless: false,
+    // headless: false,
     args: [
       '--no-sandbox',
       '--disable-setuid-sandbox',
@@ -89,6 +92,7 @@ const passwordTests = [
     const database = client.db('development');
     await database.command({ ping: 1 });
     console.log('Connected successfully to server');
+    consoleLogDivider();
 
     const usersQuery = { name: { $regex: /farid/i } };
     const usersCollection = database.collection('users');
@@ -148,7 +152,7 @@ const passwordTests = [
 
     const nameErrorMessages = [];
     for (const nameTest of nameTests) {
-      console.log(`\x1b[${yellowConsoleLogColor} ${nameTest.testType} ${nameTest.data.length === 1 ? 'test' : 'tests'} \x1b[0m`);
+      coloredConsoleLog({ color: yellowConsoleLogColor, data: `${nameTest.testType} ${nameTest.data.length === 1 ? 'test' : 'tests'}` })
       for (const mockName of nameTest.data) {
         await page.goto('http://localhost:3000/signup');
         const username = `Farid ${mockName}`;
@@ -165,9 +169,9 @@ const passwordTests = [
         await page.click('button[type="submit"]');
         await page.waitForTimeout(waitForTimeoutValue);
 
-        const formIsSubmitting = await page.evaluate(`document.querySelector('.submit-button-loading-spinner-wrapper').getAttribute('style')`) === 'display: flex;'
+        const formIsSubmitting = await page.evaluate(`document.querySelector('#form-button-loading-spinner-wrapper').getAttribute('style')`) === 'display: flex;'
 
-        const actualErrorMessage = await page.$eval('#name-error', el => el.textContent);
+        const actualErrorMessage = await page.$eval('.username-error', el => el.textContent);
         if (!formIsSubmitting && actualErrorMessage === nameTest.message) {
           const index = nameTest.data.indexOf(mockName);
           console.log(`${index + 1} of ${nameTest.data.length}: "${username}" - \x1b[${greenConsoleLogColor} "${actualErrorMessage}" \x1b[0m`);
@@ -175,28 +179,28 @@ const passwordTests = [
           nameErrorMessages.push({
             data: mockName,
             message: nameTest.message,
-          }); 
+          });
         }
       }
 
-      console.log(`=`.repeat(50), `\n`);
+      consoleLogDivider();
     }
 
     if (nameErrorMessages.length > 0) {
-      console.log(`\x1b[${yellowConsoleLogColor} ${nameErrorMessages.length} ${nameErrorMessages.length === 1 ? 'error' : 'errors'} \x1b[0m`);
+      coloredConsoleLog({ color: yellowConsoleLogColor, data: `${nameErrorMessages.length} ${nameErrorMessages.length === 1 ? 'error' : 'errors'}` })
 
       for (const error of nameErrorMessages) {
-        console.log(`\x1b[${redConsoleLogColor} "${error}" \x1b[0m`);
+        coloredConsoleLog({ color: redConsoleLogColor, data: `"${error}"` })
       }
     } else {
-      console.log(`\x1b[${greenConsoleLogColor} All name tests passed \x1b[0m`);
+      coloredConsoleLog({ color: greenConsoleLogColor, data: `All name tests passed` })
     }
 
-    console.log(`-`.repeat(100), `\n`);    
+    consoleLogDivider();
 
     const emailErrorMessages = [];
     for (const emailTest of emailTests) {
-      console.log(`\x1b[${yellowConsoleLogColor} ${emailTest.testType} ${emailTest.data.length === 1 ? 'test' : 'tests'} \x1b[0m`);
+      coloredConsoleLog({ color: yellowConsoleLogColor, data: `${emailTest.testType} ${emailTest.data.length === 1 ? 'test' : 'tests'}` })
       for (const mockEmail of emailTest.data) {
         await page.goto('http://localhost:3000/signup');
 
@@ -212,9 +216,9 @@ const passwordTests = [
         await page.click('button[type="submit"]');
         await page.waitForTimeout(waitForTimeoutValue);
 
-        const formIsSubmitting = await page.evaluate(`document.querySelector('.submit-button-loading-spinner-wrapper').getAttribute('style')`) === 'display: flex;'
+        const formIsSubmitting = await page.evaluate(`document.querySelector('#form-button-loading-spinner-wrapper').getAttribute('style')`) === 'display: flex;'
 
-        const actualErrorMessage = await page.$eval('#email-error', el => el.textContent);
+        const actualErrorMessage = await page.$eval('.userEmail-error', el => el.textContent);
         if (!formIsSubmitting && actualErrorMessage === emailTest.message) {
           const index = emailTest.data.indexOf(mockEmail);
           console.log(`${index + 1} of ${emailTest.data.length}: "${mockEmail}" - \x1b[${greenConsoleLogColor} "${actualErrorMessage}" \x1b[0m`);
@@ -225,23 +229,23 @@ const passwordTests = [
           });
         }
       }
-    } 
+    }
 
     if (emailErrorMessages.length > 0) {
       console.log(``);
-      console.log(`\x1b[${yellowConsoleLogColor} ${emailErrorMessages.length} ${emailErrorMessages.length === 1 ? 'error' : 'errors'} \x1b[0m`);
+      coloredConsoleLog({ color: yellowConsoleLogColor, data: `${emailErrorMessages.length} ${emailErrorMessages.length === 1 ? 'error' : 'errors'}` })
 
       for (const error of emailErrorMessages) {
-        console.log(`\x1b[${redConsoleLogColor} "${error.data}" - ${error.message} \x1b[0m`);
+        coloredConsoleLog({ color: redConsoleLogColor, data: `"${error.data}" - ${error.message}` })
       }
     } else {
-      console.log(`\x1b[${greenConsoleLogColor} All email tests passed \x1b[0m`);
+      coloredConsoleLog({ color: greenConsoleLogColor, data: `All email tests passed` })
     }
 
-    console.log(`-`.repeat(100), `\n`);
+    consoleLogDivider();
 
     const passwordErrors = [];
-    console.log(`\x1b[${yellowConsoleLogColor} password tests'} \x1b[0m`);
+    coloredConsoleLog({ color: yellowConsoleLogColor, data: `password tests` })
     for (const passwordTest of passwordTests) {
       await page.goto('http://localhost:3000/signup');
 
@@ -257,7 +261,7 @@ const passwordTests = [
       await page.click('button[type="submit"]');
       await page.waitForTimeout(waitForTimeoutValue);
 
-      const formIsSubmitting = await page.evaluate(`document.querySelector('.submit-button-loading-spinner-wrapper').getAttribute('style')`) === 'display: flex;'
+      const formIsSubmitting = await page.evaluate(`document.querySelector('#form-button-loading-spinner-wrapper').getAttribute('style')`) === 'display: flex;'
 
       if (!formIsSubmitting) {
         const index = passwordTests.indexOf(passwordTest);
@@ -269,18 +273,18 @@ const passwordTests = [
 
     if (passwordErrors.length > 0) {
       console.log(``);
-      console.log(`\x1b[${yellowConsoleLogColor} ${passwordErrors.length} ${passwordErrors.length === 1 ? 'error' : 'errors'} \x1b[0m`);
+      coloredConsoleLog({ color: yellowConsoleLogColor, data: `${passwordErrors.length} ${passwordErrors.length === 1 ? 'error' : 'errors'}` })
 
       for (const error of passwordErrors) {
-        console.log(`\x1b[${redConsoleLogColor} "${error}" \x1b[0m`);
+        coloredConsoleLog({ color: redConsoleLogColor, data: `"${error}"` })
       }
     } else {
-      console.log(`\x1b[${greenConsoleLogColor} All password tests passed \x1b[0m`);
+      coloredConsoleLog({ color: greenConsoleLogColor, data: `All password tests passed` })
     }
 
-    console.log(`\x1b[${greenConsoleLogColor} Testing complete \x1b[0m`);
+    coloredConsoleLog({ color: greenConsoleLogColor, data: `Testing complete` })
 
-    console.log(`-`.repeat(100), `\n`);
+    consoleLogDivider();
   } catch (error) {
     console.log(`error - server/queries/puppeteer/create-farids-user.js:294\n`, error);
   } finally {

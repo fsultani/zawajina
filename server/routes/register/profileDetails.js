@@ -36,7 +36,7 @@ const allHobbiesData = hobbiesData.default.getAllHobbies();
 
 const profileDetails = async (req, res) => {
   try {
-    const { userId } = req.body;
+    const { authUserId } = req.body;
     let {
       birthMonth,
       birthDay,
@@ -205,12 +205,10 @@ const profileDetails = async (req, res) => {
     let photos = [];
 
     if (req.files && Object.values(req.files).length > 0) {
-      const response = await uploadToCloudinary({ req, userId });
+      const response = await uploadToCloudinary({ req, authUserId });
       response.sort((a, b) => a.index - b.index);
       photos = [...response];
     }
-
-    const blockedUsers = [];
 
     const _account = {
       userAccountStatus: 'active',
@@ -288,7 +286,7 @@ const profileDetails = async (req, res) => {
     };
 
     usersCollection().findOneAndUpdate(
-      { _id: ObjectId(userId) },
+      { _id: ObjectId(authUserId) },
       {
         $set: {
           ...userObject,
@@ -303,7 +301,7 @@ const profileDetails = async (req, res) => {
           ...userObject,
         });
 
-        const token = jwt.sign({ my_match_userId: user.value._id }, JWT_SECRET, {
+        const token = jwt.sign({ my_match_authUserId: user.value._id }, JWT_SECRET, {
           expiresIn: '1 day',
         });
         res.status(201).send({ token, url: '/search' });

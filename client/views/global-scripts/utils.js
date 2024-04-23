@@ -151,7 +151,7 @@ const checkForSocialMedia = string => {
 const socialMediaAccounts = [
   'facebook',
   'whatsapp',
-  'googlehangouts',
+  'google',
   'hangouts',
   'instagram',
   'snapchat',

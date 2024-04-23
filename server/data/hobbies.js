@@ -3,7 +3,6 @@ const hobbiesList = [
   "Blogging",
   "Coding",
   "Cooking",
-  "Cooking",
   "Crafting",
   "Entrepreneurship",
   "Environmentalism",

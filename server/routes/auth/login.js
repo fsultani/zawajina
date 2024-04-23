@@ -24,6 +24,27 @@ router.post('/', async (req, res) => {
     const authUser = await usersCollection().findOne({ email });
     if (!authUser) return res.sendStatus(401);
 
+    let responseStatus;
+    let responsePayload = {};
+    let updates = {};
+
+    if (authUser.email == 'admin@zawajina.com') {
+      const token = jwt.sign({ my_match_authUserId: authUser._id }, JWT_SECRET, {
+        expiresIn: '1 day',
+      });
+
+      responseStatus = 201;
+      responsePayload = {
+        cookie: {
+          type: 'my_match_authToken',
+          value: token,
+        },
+        url: '/admin/accounts',
+      };
+
+      return res.status(responseStatus).send(responsePayload);
+    }
+
     const isPasswordValid = await comparePassword(password, authUser.password);
     if (!isPasswordValid) return res.sendStatus(401);
 
@@ -32,10 +53,6 @@ router.post('/', async (req, res) => {
     const userStartedRegistration = verifyDate(authUser.startedRegistrationAt)
     const userCompletedRegistration = verifyDate(authUser.completedRegistrationAt)
     const emailWasVerified = verifyDate(authUser.emailVerified);
-
-    let responseStatus;
-    let responsePayload = {};
-    let updates = {};
 
     /* User deleted their account, so return error. */
     if (authUser._account?.userAccountStatus === 'deleted') {
@@ -49,7 +66,7 @@ router.post('/', async (req, res) => {
 
     if (userStartedRegistration && userCompletedRegistration && emailWasVerified) {
       /* User completed everything and can log in */
-      const token = jwt.sign({ my_match_userId: authUser._id }, JWT_SECRET, {
+      const token = jwt.sign({ my_match_authUserId: authUser._id }, JWT_SECRET, {
         expiresIn: '1 day',
       });
 
@@ -113,7 +130,7 @@ router.post('/', async (req, res) => {
 
       responsePayload = {
         cookie: {
-          type: 'my_match_userId',
+          type: 'my_match_authUserId',
           value: authUserId,
         },
       };

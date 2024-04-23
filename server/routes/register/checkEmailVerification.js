@@ -6,9 +6,9 @@ const { sendEmail } = require('../../helpers/email.js');
 const { verifyDate } = require('../../utils.js');
 
 const checkEmailVerification = (req, res) => {
-  const { my_match_userId } = req.cookies;
+  const { my_match_authUserId } = req.cookies;
 
-  usersCollection().findOne({ _id: ObjectId(my_match_userId) }, (_err, user) => {
+  usersCollection().findOne({ _id: ObjectId(my_match_authUserId) }, (_err, user) => {
     if (!user) return res.status(401).send();
 
     const userStartedRegistration = verifyDate(user.startedRegistrationAt);
