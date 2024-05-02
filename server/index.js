@@ -5,7 +5,7 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const osascript = require('node-osascript');
 
-const { connectToServer } = require('./db.js');
+const { connectToServer, pingServer } = require('./db.js');
 const { checkAuthentication, checkIPAddress } = require('./middleware/checkAuthentication');
 const {
   register,
@@ -104,8 +104,33 @@ app.set('views', path.join(__dirname, '../client/views'));
 app.set('view engine', 'html');
 
 app.use((_req, _res, next) => {
-  connectToServer((err, _) => {
+  connectToServer(async (err, _) => {
     if (err) throw err;
+    const serverPing = await pingServer()
+    const lastPing = await serverPing.find().toArray();
+    const utc = new Date();
+
+    if (!lastPing.length) {
+      const pacificLocalTime = utc.toLocaleString('en-US', { timeZone: 'America/Los_Angeles' });
+
+      const newPing = {
+        utc,
+        pacificLocalTime,
+      }
+
+      await serverPing.insertOne({ ...newPing })
+
+      setInterval(async () => {
+        exec(`curl -I -s -o /dev/null -w "%{http_code}" "https://zawajina.onrender.com/"`);
+
+        const now = new Date();
+
+        console.log(`Last pinged at ${now.toLocaleString('en-US', {
+          timeZone: 'America/Los_Angeles'
+        })}`);
+      }, 600000)
+    }
+
     next();
   });
 });

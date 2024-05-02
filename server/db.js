@@ -24,6 +24,7 @@ const connectToServer = callback => {
 const logsCollection = () => db.collection('logs');
 const messagesCollection = () => db.collection('messages');
 const usersCollection = () => db.collection('users');
+const pingServer = () => db.collection('pingServer');
 
 const geoLocationData = async (userIPAddress, lastActive) => {
   let locationData;
@@ -147,4 +148,5 @@ module.exports = {
   usersCollection,
   geoLocationData,
   insertLogs,
+  pingServer,
 };
