@@ -107,8 +107,8 @@ app.set('view engine', 'html');
 app.use((_req, _res, next) => {
   connectToServer(async (err, _) => {
     if (err) throw err;
-    const serverPing = await pingServer();
-    const lastPing = await serverPing.find().toArray();
+    const pingServerCollection = await pingServer();
+    const lastPing = await pingServerCollection.find().toArray();
 
     if (!lastPing.length) {
       const utc = new Date();
@@ -119,7 +119,7 @@ app.use((_req, _res, next) => {
         pacificLocalTime,
       };
 
-      await serverPing.insertOne({ ...newPing });
+      await pingServerCollection.insertOne({ ...newPing });
 
       setInterval(() => {
         exec(`curl -I -s -o /dev/null -w "%{http_code}" "https://zawajina.onrender.com/"`);
