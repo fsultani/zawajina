@@ -4,6 +4,7 @@ const es6Renderer = require('express-es6-template-engine');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const osascript = require('node-osascript');
+const exec = require('child_process').exec;
 
 const { connectToServer, pingServer } = require('./db.js');
 const { checkAuthentication, checkIPAddress } = require('./middleware/checkAuthentication');
@@ -106,21 +107,21 @@ app.set('view engine', 'html');
 app.use((_req, _res, next) => {
   connectToServer(async (err, _) => {
     if (err) throw err;
-    const serverPing = await pingServer()
+    const serverPing = await pingServer();
     const lastPing = await serverPing.find().toArray();
-    const utc = new Date();
 
     if (!lastPing.length) {
+      const utc = new Date();
       const pacificLocalTime = utc.toLocaleString('en-US', { timeZone: 'America/Los_Angeles' });
 
       const newPing = {
         utc,
         pacificLocalTime,
-      }
+      };
 
-      await serverPing.insertOne({ ...newPing })
+      await serverPing.insertOne({ ...newPing });
 
-      setInterval(async () => {
+      setInterval(() => {
         exec(`curl -I -s -o /dev/null -w "%{http_code}" "https://zawajina.onrender.com/"`);
 
         const now = new Date();
@@ -128,7 +129,7 @@ app.use((_req, _res, next) => {
         console.log(`Last pinged at ${now.toLocaleString('en-US', {
           timeZone: 'America/Los_Angeles'
         })}`);
-      }, 600000)
+      }, 60000);
     }
 
     next();
