@@ -49,4 +49,8 @@ document.addEventListener('click', event => {
       })
     }
   }
+
+  const now = new Date();
+  const year = now.getFullYear();
+  getQuerySelectorById('copyrightText').innerHTML = `&copy;&nbsp;${year} Zawajina. All rights reserved.`
 })();

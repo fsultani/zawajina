@@ -6,10 +6,9 @@ require('dotenv').config();
 const { MongoClient } = require('mongodb');
 const puppeteer = require('puppeteer');
 const cloudinary = require('cloudinary');
-const hobbiesList = require('../../data/hobbies');
-
 require('../../config/cloudinary');
 
+const hobbiesList = require('../../data/hobbies');
 const uri = process.env.MONGODB_URI;
 const client = new MongoClient(uri, {
   useNewUrlParser: true,
@@ -112,9 +111,8 @@ if (numberOfPhotos > 3) {
     const page = allPages[0];
 
     const keyboardTypeDelay = 25;
-    const waitForTimeoutValue = 100;
-
-    await page.setViewport({ width: 1280, height: 1400 });
+    const shortDelay = 100;
+    const longDelay = 1000;
 
     /*
       Mobile device:
@@ -136,7 +134,7 @@ if (numberOfPhotos > 3) {
     await page.keyboard.type('asdfasdf', { delay: keyboardTypeDelay });
 
     await page.click('button[type="submit"]');
-    await page.waitForTimeout(waitForTimeoutValue);
+    await page.waitForTimeout(shortDelay);
 
     await page.waitForNavigation();
     await page.waitForResponse(response => response.url());
@@ -146,128 +144,130 @@ if (numberOfPhotos > 3) {
 
     await page.focus('.verification');
     await page.keyboard.type(emailVerificationToken, { delay: keyboardTypeDelay });
-    await page.waitForTimeout(waitForTimeoutValue);
+    await page.waitForTimeout(shortDelay);
 
     await page.click('button[type="submit"]');
-    await page.waitForTimeout(waitForTimeoutValue);
+    await page.waitForTimeout(shortDelay);
 
     await page.waitForNavigation();
     await page.waitForResponse(response => response.url());
 
-    await page.waitForTimeout(waitForTimeoutValue);
+    await page.waitForTimeout(shortDelay);
     await page.waitForSelector('#dob-month');
     await page.select('#dob-month > .select-wrapper', '10');
-    await page.waitForTimeout(waitForTimeoutValue);
+    await page.waitForTimeout(shortDelay);
     await page.select('#dob-day > .select-wrapper', '14');
-    await page.waitForTimeout(waitForTimeoutValue);
+    await page.waitForTimeout(shortDelay);
     await page.select('#dob-year > .select-wrapper', '1983');
 
+    await page.waitForTimeout(longDelay);
     await (await page.waitForSelector('label[for=male]')).click();
-    await page.waitForTimeout(waitForTimeoutValue);
+    await page.waitForTimeout(shortDelay);
 
+    await page.evaluate(() => window.scrollBy(0, 350));
     await page.focus('#locationInput');
     await page.keyboard.type('orange', { delay: keyboardTypeDelay });
     await page.waitForSelector('.autocomplete-items');
-    await page.waitForTimeout(waitForTimeoutValue);
+    await page.waitForTimeout(shortDelay);
     await page.keyboard.press('ArrowDown');
-    await page.waitForTimeout(waitForTimeoutValue);
+    await page.waitForTimeout(shortDelay);
     await page.keyboard.press('Enter');
-    await page.waitForTimeout(waitForTimeoutValue);
+    await page.waitForTimeout(shortDelay);
 
     await page.focus('#countryRaisedInInput');
     await page.keyboard.type('states', { delay: keyboardTypeDelay });
     await page.waitForSelector('.autocomplete-items');
-    await page.waitForTimeout(waitForTimeoutValue);
+    await page.waitForTimeout(shortDelay);
     await page.keyboard.press('ArrowDown');
-    await page.waitForTimeout(waitForTimeoutValue);
+    await page.waitForTimeout(shortDelay);
     await page.keyboard.press('Enter');
-    await page.waitForTimeout(waitForTimeoutValue);
+    await page.waitForTimeout(shortDelay);
 
     await page.focus('#ethnicityInput');
     await page.keyboard.type('afghan', { delay: keyboardTypeDelay });
     await page.waitForSelector('.autocomplete-items');
-    await page.waitForTimeout(waitForTimeoutValue);
+    await page.waitForTimeout(shortDelay);
     await page.keyboard.press('ArrowDown');
-    await page.waitForTimeout(waitForTimeoutValue);
+    await page.waitForTimeout(shortDelay);
     await page.keyboard.press('Enter');
-    await page.waitForTimeout(waitForTimeoutValue);
+    await page.waitForTimeout(shortDelay);
 
     await page.focus('#languageInput');
     await page.keyboard.type('english', { delay: keyboardTypeDelay });
     await page.waitForSelector('.autocomplete-items');
-    await page.waitForTimeout(waitForTimeoutValue);
+    await page.waitForTimeout(shortDelay);
     await page.keyboard.press('ArrowDown');
-    await page.waitForTimeout(waitForTimeoutValue);
+    await page.waitForTimeout(shortDelay);
     await page.keyboard.press('Enter');
-    await page.waitForTimeout(waitForTimeoutValue);
+    await page.waitForTimeout(shortDelay);
 
     await page.focus('#languageInput');
     await page.keyboard.type('farsi', { delay: keyboardTypeDelay });
     await page.waitForSelector('.autocomplete-items');
-    await page.waitForTimeout(waitForTimeoutValue);
+    await page.waitForTimeout(shortDelay);
     await page.keyboard.press('ArrowDown');
-    await page.waitForTimeout(waitForTimeoutValue);
+    await page.waitForTimeout(shortDelay);
     await page.keyboard.press('Enter');
-    await page.waitForTimeout(waitForTimeoutValue);
+    await page.waitForTimeout(shortDelay);
 
-    await page.waitForSelector('.religious-conviction');
-    await page.select('.religious-conviction', 'Sunni');
-    await page.waitForTimeout(waitForTimeoutValue);
+    await page.waitForSelector('#religious-conviction');
+    await page.select('#religious-conviction > .select-wrapper', 'Sunni');
+    await page.waitForTimeout(shortDelay);
 
-    await page.waitForSelector('.religious-values');
-    await page.select('.religious-values', 'Conservative');
-    await page.waitForTimeout(waitForTimeoutValue);
+    await page.waitForSelector('#religious-values');
+    await page.select('#religious-values > .select-wrapper', 'Conservative');
+    await page.waitForTimeout(shortDelay);
 
-    await page.waitForSelector('.marital-status');
-    await page.select('.marital-status', 'Never Married');
-    await page.waitForTimeout(waitForTimeoutValue);
+    await page.waitForSelector('#marital-status');
+    await page.select('#marital-status > .select-wrapper', 'Never Married');
+    await page.waitForTimeout(shortDelay);
 
-    await page.waitForSelector('.education');
-    await page.select('.education', 'Bachelor\'s degree');
-    await page.waitForTimeout(waitForTimeoutValue);
+    await page.waitForSelector('#education');
+    await page.select('#education > .select-wrapper', 'Bachelor\'s degree');
+    await page.waitForTimeout(shortDelay);
 
-    await page.waitForSelector('.profession');
-    await page.select('.profession', 'Engineer');
-    await page.waitForTimeout(waitForTimeoutValue);
+    await page.evaluate(() => window.scrollBy(0, 500));
 
-    await page.waitForSelector('.user-height');
-    await page.select('.user-height', `180`);
-    await page.waitForTimeout(waitForTimeoutValue);
+    await page.waitForSelector('#profession');
+    await page.select('#profession > .select-wrapper', 'Engineer');
+    await page.waitForTimeout(shortDelay);
 
-    await page.waitForSelector('.can-relocate');
-    await page.select('.can-relocate', 'canRelocateNo');
-    await page.waitForTimeout(waitForTimeoutValue);
+    await page.waitForSelector('#user-height');
+    await page.select('#user-height > .select-wrapper', `180`);
+    await page.waitForTimeout(shortDelay);
 
-    await page.waitForSelector('.diet');
-    await page.select('.diet', 'Halal when possible');
-    await page.waitForTimeout(waitForTimeoutValue);
+    await page.waitForSelector('#can-relocate');
+    await page.select('#can-relocate > .select-wrapper', 'canRelocateNo');
+    await page.waitForTimeout(shortDelay);
 
-    await page.waitForSelector('.has-children');
-    await page.select('.has-children', 'hasChildrenNo');
-    await page.waitForTimeout(waitForTimeoutValue);
+    await page.waitForSelector('#diet');
+    await page.select('#diet > .select-wrapper', 'Halal when possible');
+    await page.waitForTimeout(shortDelay);
 
-    await page.waitForSelector('.wants-children');
-    await page.select('.wants-children', 'wantsChildrenMaybe');
-    await page.waitForTimeout(waitForTimeoutValue);
+    await page.waitForSelector('#has-children');
+    await page.select('#has-children > .select-wrapper', 'hasChildrenNo');
+    await page.waitForTimeout(shortDelay);
 
-    await page.waitForSelector('.smokes');
-    await page.select('.smokes', 'smokesNo');
-    await page.waitForTimeout(waitForTimeoutValue);
+    await page.waitForSelector('#wants-children');
+    await page.select('#wants-children > .select-wrapper', 'wantsChildrenMaybe');
+    await page.waitForTimeout(shortDelay);
 
-    await page.waitForSelector('.prayer-level');
-    await page.select('.prayer-level', 'Always');
-    await page.waitForTimeout(waitForTimeoutValue);
+    await page.waitForSelector('#smokes');
+    await page.select('#smokes > .select-wrapper', 'smokesNo');
+    await page.waitForTimeout(shortDelay);
 
-    await page.evaluate(() => {
-      window.scrollBy(0, 1000);
-    });
+    await page.waitForSelector('#prayer-level');
+    await page.select('#prayer-level > .select-wrapper', 'Always');
+    await page.waitForTimeout(shortDelay);
 
     const hobby = 'coding';
     const hobbyLabel = hobbiesList.default.getAllHobbies().find(item => item.toLowerCase().startsWith(hobby.toLowerCase()))
     await page.focus('#hobbiesInput');
+    await page.waitForTimeout(shortDelay);
     await page.keyboard.type(hobby, { delay: keyboardTypeDelay });
-    await page.waitForTimeout(500);
+    await page.waitForTimeout(longDelay);
     await (await page.waitForSelector(`label[for="${hobbyLabel}"]`)).click();
+    await page.waitForTimeout(shortDelay);
 
     /* This format correctly creates appropriately-aligned paragraphs */
     await page.focus('.about-me');
@@ -289,7 +289,11 @@ Tortor pretium viverra suspendisse potenti nullam ac tortor. Tellus id interdum 
       '/Users/farid/Downloads/temp/IMG_0063.jpg',
     ];
 
+    await page.evaluate(() => window.scrollBy(0, 1000));
+
     for (let index = 0; index < numberOfPhotos; index++) {
+      await page.waitForTimeout(longDelay);
+
       const [fileChoose] = await Promise.all([
         page.waitForFileChooser(),
         page.evaluate(index => document.querySelector(`.image-${index}`).click(), index),
@@ -298,7 +302,7 @@ Tortor pretium viverra suspendisse potenti nullam ac tortor. Tellus id interdum 
       await fileChoose.accept([photos[index]]);
     }
 
-    await page.waitForTimeout(1000);
+    await page.waitForTimeout(longDelay);
 
     await page.click('button[type="submit"]');
 
@@ -320,7 +324,7 @@ Tortor pretium viverra suspendisse potenti nullam ac tortor. Tellus id interdum 
       throw new Error(`The URL was not http://localhost:3000/search`);
     }
 
-    await page.waitForTimeout(1000);
+    await page.waitForTimeout(longDelay);
 
     await page.evaluate(() => document.querySelector(`a[href='/search']`).click())
   } catch (error) {

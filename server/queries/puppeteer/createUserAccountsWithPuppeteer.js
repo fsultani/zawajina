@@ -5,6 +5,8 @@ node server/queries/puppeteer/createUserAccountsWithPuppeteer.js --gender=female
 require('dotenv').config();
 const { MongoClient } = require('mongodb');
 const puppeteer = require('puppeteer');
+const cloudinary = require('cloudinary');
+require('../../config/cloudinary');
 
 const femaleNames = require('../../data/female-names');
 const maleNames = require('../../data/male-names');
@@ -124,63 +126,62 @@ const createAccount = async (newEmail = false) => {
   }
 
   try {
-    // const usersQuery = { name: { $regex: /farid/i } };
+    const usersQuery = { name: { $ne: 'Farid' }};
     const usersCollection = database.collection('users');
-    // const logsCollection = database.collection('logs');
+    const logsCollection = database.collection('logs');
 
-    // const usersCursorCount = await usersCollection.countDocuments(usersQuery);
-    // console.log(`usersCursorCount\n`, usersCursorCount);
+    const usersCursorCount = await usersCollection.countDocuments(usersQuery);
+    console.log(`usersCursorCount\n`, usersCursorCount);
 
-    // if (usersCursorCount > 0) {
-    //   const usersCursor = await usersCollection.find(usersQuery).toArray();
+    if (usersCursorCount > 0) {
+      const usersCursor = await usersCollection.find(usersQuery).toArray();
 
-    //   Promise.all(usersCursor.map(async (user, index) => {
-    //     const userId = user._id.toString();
+      Promise.all(usersCursor.map(async (user, index) => {
+        const userId = user._id.toString();
 
-    //     await cloudinary.v2.api.resources({ max_results: 10 }, async (resourcesError, resourcesResults) => {
-    //       if (resourcesError) return resourcesError;
-    //       if (resourcesResults.resources.length > 0) {
-    //         resourcesResults.resources.filter(item => item.folder === userId).map(item => {
-    //           console.log(`item - server/queries/puppeteer/create-farids-user.js:41\n`, item);
-    //           cloudinary.v2.uploader.destroy(item.public_id, function (destroyError, destroyResult) {
-    //             if (destroyError) return console.log('destroyError:\n', destroyError);
-    //             console.log('destroyResult:\n', destroyResult);
-    //           });
-    //         });
-    //       }
-    //     });
+        await cloudinary.v2.api.resources({ max_results: 10 }, async (resourcesError, resourcesResults) => {
+          if (resourcesError) return resourcesError;
+          if (resourcesResults.resources.length > 0) {
+            resourcesResults.resources.filter(item => item.folder === userId).map(item => {
+              console.log({ 'item': item });
+              cloudinary.v2.uploader.destroy(item.public_id, function (destroyError, destroyResult) {
+                if (destroyError) return console.log('destroyError:\n', destroyError);
+                console.log('destroyResult:\n', destroyResult);
+              });
+            });
+          }
+        });
 
-    //     await cloudinary.v2.api.root_folders(async (root_foldersError, root_foldersResults) => {
-    //       if (root_foldersError) return root_foldersError;
-    //       if (root_foldersResults.folders.length > 0) {
-    //         root_foldersResults.folders.filter(folder => folder.name === userId).map(folder => {
-    //           console.log(`folder - server/queries/puppeteer/create-farids-user.js:54\n`, folder);
-    //           cloudinary.v2.api.delete_folder(folder.name, function (error, result) {
-    //             if (error) return console.log('error:\n', error);
-    //             console.log('result:\n', result);
-    //           });
-    //         });
-    //       }
-    //     });
+        await cloudinary.v2.api.root_folders(async (root_foldersError, root_foldersResults) => {
+          if (root_foldersError) return root_foldersError;
+          if (root_foldersResults.folders.length > 0) {
+            root_foldersResults.folders.filter(folder => folder.name === userId).map(folder => {
+              console.log({ 'folder': folder });
+              cloudinary.v2.api.delete_folder(folder.name, function (error, result) {
+                if (error) return console.log('error:\n', error);
+                console.log('result:\n', result);
+              });
+            });
+          }
+        });
 
-    //     await usersCollection.deleteOne({ _id: user._id });
+        await usersCollection.deleteOne({ _id: user._id });
 
-    //     const logsCursor = await logsCollection.findOne({ _id: user._id });
+        const logsCursor = await logsCollection.findOne({ _id: user._id });
 
-    //     if (logsCursor) {
-    //       await logsCollection.deleteOne({ _id: user._id });
-    //       console.log(`${index + 1} of ${usersCursor.length} user accounts deleted`);
-    //     }
-    //   }));
-    // }
+        if (logsCursor) {
+          await logsCollection.deleteOne({ _id: user._id });
+          console.log(`${index + 1} of ${usersCursor.length} user accounts deleted`);
+        }
+      }));
+    }
 
     const allPages = await browser.pages();
     const page = allPages[0];
 
     const keyboardTypeDelay = 25;
-    const waitForTimeoutValue = 100;
-
-    await page.setViewport({ width: 1280, height: 1400 });
+    const shortDelay = 100;
+    const longDelay = 1000;
 
     /*
       Mobile device:
@@ -220,7 +221,7 @@ const createAccount = async (newEmail = false) => {
     await page.keyboard.type('asdfasdf', { delay: keyboardTypeDelay });
 
     await page.click('button[type="submit"]');
-    await page.waitForTimeout(waitForTimeoutValue);
+    await page.waitForTimeout(shortDelay);
 
     await page.waitForNavigation();
     await page.waitForResponse(response => response.url());
@@ -230,10 +231,10 @@ const createAccount = async (newEmail = false) => {
 
     await page.focus('.verification');
     await page.keyboard.type(emailVerificationToken, { delay: keyboardTypeDelay });
-    await page.waitForTimeout(waitForTimeoutValue);
+    await page.waitForTimeout(shortDelay);
 
     await page.click('button[type="submit"]');
-    await page.waitForTimeout(waitForTimeoutValue);
+    await page.waitForTimeout(shortDelay);
 
     await page.waitForNavigation();
     await page.waitForResponse(response => response.url());
@@ -242,23 +243,25 @@ const createAccount = async (newEmail = false) => {
     const birthDay = Math.floor(Math.random() * 31).toString();
     const birthYear = (1999 - Math.floor(Math.random() * 30)).toString();
 
-    await page.waitForTimeout(waitForTimeoutValue);
+    await page.waitForTimeout(shortDelay);
     await page.waitForSelector('#dob-month');
     await page.select('#dob-month > .select-wrapper', birthMonth);
-    await page.waitForTimeout(waitForTimeoutValue);
+    await page.waitForTimeout(shortDelay);
     await page.select('#dob-day > .select-wrapper', birthDay);
-    await page.waitForTimeout(waitForTimeoutValue);
+    await page.waitForTimeout(shortDelay);
     await page.select('#dob-year > .select-wrapper', birthYear);
 
-    await page.waitForTimeout(waitForTimeoutValue);
+    await page.waitForTimeout(longDelay);
     await (await page.waitForSelector(`label[for=${gender}]`)).click();
-    await page.waitForTimeout(waitForTimeoutValue);
+    await page.waitForTimeout(shortDelay);
 
     if (gender === 'female') {
       await page.waitForSelector('.hijab');
       await page.select('.hijab', `hijab${yesNoOptions[Math.floor(Math.random() * 2)]}`);
-      await page.waitForTimeout(waitForTimeoutValue);
+      await page.waitForTimeout(shortDelay);
     }
+
+    await page.evaluate(() => window.scrollBy(0, 350));
 
     const allLocations = worldCities.default.getAllCities();
     const location = allLocations.filter(location => {
@@ -274,20 +277,20 @@ const createAccount = async (newEmail = false) => {
     await page.focus('#locationInput');
     await page.keyboard.type(selectLocation.city, { delay: keyboardTypeDelay });
     await page.waitForSelector('.autocomplete-items');
-    await page.waitForTimeout(waitForTimeoutValue);
+    await page.waitForTimeout(shortDelay);
     await page.keyboard.press('ArrowDown');
-    await page.waitForTimeout(waitForTimeoutValue);
+    await page.waitForTimeout(shortDelay);
     await page.keyboard.press('Enter');
-    await page.waitForTimeout(waitForTimeoutValue);
+    await page.waitForTimeout(shortDelay);
 
     await page.focus('#countryRaisedInInput');
     await page.keyboard.type('states', { delay: keyboardTypeDelay });
     await page.waitForSelector('.autocomplete-items');
-    await page.waitForTimeout(waitForTimeoutValue);
+    await page.waitForTimeout(shortDelay);
     await page.keyboard.press('ArrowDown');
-    await page.waitForTimeout(waitForTimeoutValue);
+    await page.waitForTimeout(shortDelay);
     await page.keyboard.press('Enter');
-    await page.waitForTimeout(waitForTimeoutValue);
+    await page.waitForTimeout(shortDelay);
 
     const allEthnicities = ethnicities.default.getAllEthnicities();
     const randomEthnicity = Math.floor(Math.random() * allEthnicities.length);
@@ -296,11 +299,11 @@ const createAccount = async (newEmail = false) => {
     await page.focus('#ethnicityInput');
     await page.keyboard.type(ethnicity, { delay: keyboardTypeDelay });
     await page.waitForSelector('.autocomplete-items');
-    await page.waitForTimeout(waitForTimeoutValue);
+    await page.waitForTimeout(shortDelay);
     await page.keyboard.press('ArrowDown');
-    await page.waitForTimeout(waitForTimeoutValue);
+    await page.waitForTimeout(shortDelay);
     await page.keyboard.press('Enter');
-    await page.waitForTimeout(waitForTimeoutValue);
+    await page.waitForTimeout(shortDelay);
 
     const allLanguages = languagesList.default.getAllLanguages();
     const languages = allLanguages[Math.floor(Math.random() * allLanguages.length)];
@@ -308,93 +311,94 @@ const createAccount = async (newEmail = false) => {
     await page.focus('#languageInput');
     await page.keyboard.type(languages, { delay: keyboardTypeDelay });
     await page.waitForSelector('.autocomplete-items');
-    await page.waitForTimeout(waitForTimeoutValue);
+    await page.waitForTimeout(shortDelay);
     await page.keyboard.press('ArrowDown');
-    await page.waitForTimeout(waitForTimeoutValue);
+    await page.waitForTimeout(shortDelay);
     await page.keyboard.press('Enter');
-    await page.waitForTimeout(waitForTimeoutValue);
+    await page.waitForTimeout(shortDelay);
 
     const allReligiousConvictions = ['Sunni', 'Shia', 'Just Muslim'];
     const religiousConviction = allReligiousConvictions[Math.floor(Math.random() * allReligiousConvictions.length)];
 
-    await page.waitForSelector('.religious-conviction');
-    await page.select('.religious-conviction', religiousConviction);
-    await page.waitForTimeout(waitForTimeoutValue);
+    await page.waitForSelector('#religious-conviction');
+    await page.select('#religious-conviction > .select-wrapper', religiousConviction);
+    await page.waitForTimeout(shortDelay);
 
     const allReligiousValues = ['Conservative', 'Moderate', 'Liberal'];
     const religiousValues = allReligiousValues[Math.floor(Math.random() * allReligiousValues.length)];
 
-    await page.waitForSelector('.religious-values');
-    await page.select('.religious-values', religiousValues);
-    await page.waitForTimeout(waitForTimeoutValue);
+    await page.waitForSelector('#religious-values');
+    await page.select('#religious-values > .select-wrapper', religiousValues);
+    await page.waitForTimeout(shortDelay);
 
     const allMaritalStatuses = ['Never Married', 'Divorced', 'Widowed'];
     const maritalStatus = allMaritalStatuses[Math.floor(Math.random() * allMaritalStatuses.length)];
 
-    await page.waitForSelector('.marital-status');
-    await page.select('.marital-status', maritalStatus);
-    await page.waitForTimeout(waitForTimeoutValue);
+    await page.waitForSelector('#marital-status');
+    await page.select('#marital-status > .select-wrapper', maritalStatus);
+    await page.waitForTimeout(shortDelay);
 
     const allEducationLevels = ['High School', `Bachelor's degree`, `Master's degree`, 'Doctoral degree']
     const education = allEducationLevels[Math.floor(Math.random() * allEducationLevels.length)];
 
-    await page.waitForSelector('.education');
-    await page.select('.education', education);
-    await page.waitForTimeout(waitForTimeoutValue);
+    await page.waitForSelector('#education');
+    await page.select('#education > .select-wrapper', education);
+    await page.waitForTimeout(shortDelay);
+
+    await page.evaluate(() => window.scrollBy(0, 500));
 
     const profession = professionsList[Math.floor(Math.random() * professionsList.length)];
 
-    await page.waitForSelector('.profession');
-    await page.select('.profession', profession);
-    await page.waitForTimeout(waitForTimeoutValue);
+    await page.waitForSelector('#profession');
+    await page.select('#profession > .select-wrapper', profession);
+    await page.waitForTimeout(shortDelay);
 
     const height = heights[Math.floor(Math.random() * heights.length)];
 
-    await page.waitForSelector('.user-height');
-    await page.select('.user-height', height.toString());
-    await page.waitForTimeout(waitForTimeoutValue);
+    await page.waitForSelector('#user-height');
+    await page.select('#user-height > .select-wrapper', height.toString());
+    await page.waitForTimeout(shortDelay);
 
-    await page.waitForSelector('.can-relocate');
-    await page.select('.can-relocate', `canRelocate${yesNoOptions[Math.floor(Math.random() * 2)]}`);
-    await page.waitForTimeout(waitForTimeoutValue);
+    await page.waitForSelector('#can-relocate');
+    await page.select('#can-relocate > .select-wrapper', `canRelocate${yesNoOptions[Math.floor(Math.random() * 2)]}`);
+    await page.waitForTimeout(shortDelay);
 
     const allDiets = ['Halal only', 'Halal when possible', 'Eat anything', 'Eat anything except pork', 'Vegetarian'];
     const diet = allDiets[Math.floor(Math.random() * allDiets.length)];
 
-    await page.waitForSelector('.diet');
-    await page.select('.diet', diet);
-    await page.waitForTimeout(waitForTimeoutValue);
+    await page.waitForSelector('#diet');
+    await page.select('#diet > .select-wrapper', diet);
+    await page.waitForTimeout(shortDelay);
 
-    await page.waitForSelector('.has-children');
-    await page.select('.has-children', `hasChildren${yesNoOptions[Math.floor(Math.random() * 2)]}`);
-    await page.waitForTimeout(waitForTimeoutValue);
+    await page.waitForSelector('#has-children');
+    await page.select('#has-children > .select-wrapper', `hasChildren${yesNoOptions[Math.floor(Math.random() * 2)]}`);
+    await page.waitForTimeout(shortDelay);
 
-    await page.waitForSelector('.wants-children');
-    await page.select('.wants-children', `wantsChildren${yesNoDoesNotMatterOptions[Math.floor(Math.random() * 2)]}`);
-    await page.waitForTimeout(waitForTimeoutValue);
+    await page.waitForSelector('#wants-children');
+    await page.select('#wants-children > .select-wrapper', `wantsChildren${yesNoDoesNotMatterOptions[Math.floor(Math.random() * 2)]}`);
+    await page.waitForTimeout(shortDelay);
 
-    await page.waitForSelector('.smokes');
-    await page.select('.smokes', `smokes${yesNoOptions[Math.floor(Math.random() * 2)]}`);
-    await page.waitForTimeout(waitForTimeoutValue);
+    await page.waitForSelector('#smokes');
+    await page.select('#smokes > .select-wrapper', `smokes${yesNoOptions[Math.floor(Math.random() * 2)]}`);
+    await page.waitForTimeout(shortDelay);
 
     const prayerLevels = ['Rarely', 'Sometimes', 'Always'];
     const prayerLevel = prayerLevels[Math.floor(Math.random() * prayerLevels.length)];
 
-    await page.waitForSelector('.prayer-level');
-    await page.select('.prayer-level', prayerLevel);
-    await page.waitForTimeout(waitForTimeoutValue);
-
-    await page.evaluate(() => {
-      window.scrollBy(0, 1000);
-    });
+    await page.waitForSelector('#prayer-level');
+    await page.select('#prayer-level > .select-wrapper', prayerLevel);
+    await page.waitForTimeout(shortDelay);
 
     const allHobbies = hobbiesList.default.getAllHobbies();
     const hobby = allHobbies[Math.floor(Math.random() * allHobbies.length)];
     const hobbyLabel = hobbiesList.default.getAllHobbies().find(item => item.toLowerCase().startsWith(hobby.toLowerCase()))
+
     await page.focus('#hobbiesInput');
+    await page.waitForTimeout(shortDelay);
     await page.keyboard.type(hobby, { delay: keyboardTypeDelay });
-    await page.waitForTimeout(500);
+    await page.waitForTimeout(longDelay);
     await (await page.waitForSelector(`label[for="${hobbyLabel}"]`)).click();
+    await page.waitForTimeout(longDelay);
 
     /* This format correctly creates appropriately-aligned paragraphs */
     await page.focus('.about-me');
@@ -416,7 +420,11 @@ const createAccount = async (newEmail = false) => {
       '/Users/farid/Downloads/temp/IMG_0063.jpg',
     ];
 
+    await page.evaluate(() => window.scrollBy(0, 1000));
+
     for (let index = 0; index < numberOfPhotos; index++) {
+      await page.waitForTimeout(longDelay);
+
       const [fileChoose] = await Promise.all([
         page.waitForFileChooser(),
         page.evaluate(index => document.querySelector(`.image-${index}`).click(), index),
@@ -425,7 +433,7 @@ const createAccount = async (newEmail = false) => {
       await fileChoose.accept([photos[index]]);
     }
 
-    await page.waitForTimeout(1000);
+    await page.waitForTimeout(longDelay);
 
     await page.click('button[type="submit"]');
 
@@ -475,7 +483,7 @@ const createAccount = async (newEmail = false) => {
     await client.close();
     console.log(`Close client`);
 
-    await browser.close();
+    // await browser.close();
     console.log(`Close puppeteer browser`);
   } catch (error) {
     console.log(`error - server/queries/puppeteer/createUserAccountsWithPuppeteer.js:509\n`, error);
